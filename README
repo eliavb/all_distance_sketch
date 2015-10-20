@@ -1,0 +1,2 @@
+
+This all_distance_sketch library provides a sketching method for graphs, using which distances between pairs of points can be quickly estimated. 

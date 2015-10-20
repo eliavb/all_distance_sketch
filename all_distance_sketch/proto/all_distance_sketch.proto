@@ -1,0 +1,60 @@
+syntax = "proto2";
+
+package all_distance_sketch.proto;
+
+
+// Node random ID:
+// Some nodes in the graph have an attribute called “random id”, this is a float number drawn from a selected distribution.
+// According to this distribution we later estimate various traits of the graph.
+//
+// Single node sketch:
+// Single node sketch contains a summary information about selected nodes in the graph.
+//The basic information that the sketch maintains is random Id, distance from other nodes to the selected node (e.g the single node sketch of v will  contain the random ID of u and the distance from u to v).
+//except this required information we may require to hold additional information depends on the specific algorithm
+// (e.g approximate area size in the reverse rank calculation).
+//
+// All Distance sketch:
+// The all distance sketch is the collection of the subset of nodes in the graph.
+// The all distance sketch is computed according to a parameter K that determines the size of each node sketch thus it affects.
+// which nodes will be inserted to each node sketch.
+
+
+// The main concern of the serialization process would be to minimize load time and not save disk space or reduce save time
+// this is because currently disk space is abundant and we will only calculate the all distance sketch once and save it once
+// while we will load on each run. This goal in mind will dictate many of decision along the way
+
+// Yes we save the random id for each node thus we will encounter many
+// duplicates. but the main focus is the load speed.
+
+// Next ID to use: 4
+message SingleNodeSketchGpb {
+  // Next ID to use: 3
+  message NodeSummaryDetailsGpb {
+      optional uint64 node_id = 1;
+      optional double distance = 2;
+  }
+
+  optional uint64 node_id = 1;
+  optional double node_random_id = 2;
+  repeated NodeSummaryDetailsGpb node_in_sketch = 3;
+}
+
+
+// All distance sketch will hold all the node sketches and the parameter k that the sketch was computed according to him.
+// During the calculation of the all distance sketch we compute threshold values that determine which node may enter the sketch,
+// to allow fast loading we will save the values also.
+
+
+// Next ID to use: 4
+message AllDistanceSketchGpb {
+  // Next ID to use: 4
+  message NodeThresholdGpb {
+      optional uint64 node_id = 1;
+      optional double threshold = 2;
+      optional double random_id=3;
+  }
+
+  optional uint64 k = 1;
+  repeated SingleNodeSketchGpb nodes_sketches = 2;
+  repeated NodeThresholdGpb node_thresholds = 3;
+}
