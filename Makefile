@@ -51,7 +51,7 @@ TEST_OBJS = ./out/all_distance_sketch/ut/run_all
 
 .PHONY: depend clean all test src_only
 
-all:    $(TEST_OBJS)
+all:
 	@echo  Thank you for building all distance sketch!
 
 test: $(TEST_OBJS)
