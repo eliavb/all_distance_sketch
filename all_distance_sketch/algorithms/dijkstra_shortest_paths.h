@@ -14,7 +14,12 @@ struct PrunningAlgoStatistics {
   unsigned int num_pruned_nodes;
   unsigned int num_relaxed_edges;
 
-  friend std::ostream& operator<<(std::ostream& os, const PrunningAlgoStatistics& algo_statistics);
+  friend std::ostream& operator<<(std::ostream& os, const PrunningAlgoStatistics& algo_statistics) {
+    os << " num Nodes Visited=" << algo_statistics.num_visited_nodes <<
+          " num Pruned Nodes=" << algo_statistics.num_pruned_nodes <<
+          " num Relaxed Edges=" << algo_statistics.num_relaxed_edges;
+    return os;
+  }
 };
 
  struct compareNodeDistanceAndId {

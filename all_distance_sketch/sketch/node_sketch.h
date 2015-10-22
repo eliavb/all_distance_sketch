@@ -36,7 +36,11 @@ class NodeIdDistanceData {
     }
 
     friend std::ostream& operator<<(std::ostream& os,
-                                    const NodeIdDistanceData& node_id_distance);
+                                    const NodeIdDistanceData& node_details) {
+      os << " NodeId=" << node_details.GetNId()
+         << " Distance=" << node_details.GetDistance();
+      return os;
+    }
 
     friend class boost::serialization::access;
     template<class Archive>
@@ -97,7 +101,12 @@ class NodeDistanceIdRandomIdData {
     }
 
     friend std::ostream& operator<<(std::ostream& os,
-                                    const NodeDistanceIdRandomIdData& dt);
+                                    const NodeDistanceIdRandomIdData& node_details) {
+          os << " NodeId=" << node_details.GetNId()
+             << " Distance=" << node_details.GetDistance()
+             << " HashId=" << node_details.GetRandomId();
+      return os;
+    }
 
     friend class boost::serialization::access;
     template <class Archive>
