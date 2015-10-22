@@ -21,7 +21,7 @@ class GraphSketch {
 
     int GetK() const { return K_; }
 
-#if 0
+#if PROTO_BUF
     bool LoadThresholdsAndRandomId(const AllDistanceSketchGpb& all_distance_sketch) {
         int num_nodes = all_distance_sketch.node_thresholds_size();
         prunning_thresholds_.resize(num_nodes);

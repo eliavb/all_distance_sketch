@@ -7,7 +7,7 @@
 
 # define the C compiler to use
 CC = g++
-
+RM = rm -rf
 # define any compile-time flags
 CFLAGS = -std=c++0x -Wall -O3 -DNDEBUG -Wno-deprecated -Wno-strict-overflow -Wno-sign-compare -fPIC -ggdb -pthread
 
@@ -43,6 +43,7 @@ TEST_SRC = all_distance_sketch/algorithms/ut/t_skim_test.cpp all_distance_sketch
 TESTS_LIBS = ./libgtest.a ./include/Snap-2.3/snap-core/Snap.o
 TEST_INCLUDE = -isystem ./include/gtest/include
 TEST_OBJS = ./out/all_distance_sketch/ut/run_all
+PROTO = out/all_distance_sketch/proto
 #
 # The following part of the makefile is generic; it can be used to 
 # build any executable just by changing the definitions above and by
@@ -51,7 +52,7 @@ TEST_OBJS = ./out/all_distance_sketch/ut/run_all
 
 .PHONY: depend clean all test src_only
 
-all:
+all: $(PROTO)
 	@echo  Thank you for building all distance sketch!
 
 test: $(TEST_OBJS)
@@ -62,12 +63,16 @@ test: $(TEST_OBJS)
 # the rule(a .c file) and $@: the name of the target of the rule (a .o file) 
 # (see the gnu make manual section about automatic variables)
 
+out/all_distance_sketch/proto: all_distance_sketch/proto/all_distance_sketch.proto
+	@mkdir -p out/all_distance_sketch/proto
+	protoc --cpp_out=./out  all_distance_sketch/proto/all_distance_sketch.proto
+
 ./out/all_distance_sketch/ut/run_all: all_distance_sketch/graph/ut/run_all.cpp $(OBJS) $(TEST_SRC) $(HDRS) $(COMMON)
 	@mkdir -p out/all_distance_sketch/ut
 	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_INCLUDE) $(TEST_INCLUDE) -o $@  $(OBJS) $< $(BOOST) $(LIBS) $(TESTS_LIBS)
 
 clean:
-	$(RM) $(TEST_OBJS)
+	$(RM) $(TEST_OBJS) $(PROTO)
 
 depend: $(SRCS)
 	makedepend $(INCLUDES) $^
