@@ -19,10 +19,9 @@ INCLUDES = -I./include/boost_1_57_0 -I./include/Snap-2.3/snap-core  -I./include/
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
 LIBS = -lrt
-HDRS = $(all_distance_sketch/*/*.h)
-COMMON = all_distance_sketch/common.h
+HDRS = $(wildcard all_distance_sketch/*/*.h) $(wildcard all_distance_sketch/*.h)
 
-TEST_SRC = all_distance_sketch/algorithms/ut/t_skim_test.cpp all_distance_sketch/algorithms/ut/algo_test.cpp all_distance_sketch/sketch/ut/ads_test.cpp all_distance_sketch/graph/ut/basic_graph.cpp all_distance_sketch/algorithms/ut/t_skim_test.cpp
+TEST_SRC = $(wildcard all_distance_sketch/*/ut/*.cpp) 
 TESTS_LIBS = ./libgtest.a ./include/Snap-2.3/snap-core/Snap.o
 TEST_INCLUDE = -isystem ./include/gtest/include
 
@@ -40,16 +39,17 @@ test: $(TEST_OBJS)
 
 out/all_distance_sketch/proto: all_distance_sketch/proto/all_distance_sketch.proto
 	@mkdir -p out/all_distance_sketch/proto
-	protoc --cpp_out=./out  all_distance_sketch/proto/all_distance_sketch.proto
+	@protoc --cpp_out=./out  all_distance_sketch/proto/all_distance_sketch.proto
 
-./out/all_distance_sketch/ut/run_all: all_distance_sketch/graph/ut/run_all.cpp $(OBJS) $(TEST_SRC) $(HDRS) $(COMMON)
+./out/all_distance_sketch/ut/run_all: all_distance_sketch/graph/ut/run_all.cpp $(TEST_SRC) $(HDRS)
+	@echo $(TEST_SRC)
 	@mkdir -p out/all_distance_sketch/ut
-	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_INCLUDE) $(TEST_INCLUDE) -o $@  $(OBJS) $< $(BOOST) $(LIBS) $(TESTS_LIBS)
+	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_INCLUDE) -o $@  $< $(BOOST) $(LIBS) $(TESTS_LIBS)
 
 clean:
 	$(RM) $(TEST_OBJS) $(PROTO)
 
-depend: $(SRCS)
+depend: $(HDRS)
 	makedepend $(INCLUDES) $^
 
 # DO NOT DELETE THIS LINE -- make depend needs it

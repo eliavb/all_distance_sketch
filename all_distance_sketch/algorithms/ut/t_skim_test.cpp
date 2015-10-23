@@ -153,7 +153,7 @@ TEST_F(TSkimTest, CheckDistancePruning) {
   for (int distance =1; distance < 100; distance++) {
     visited.push_back(distance);
     TSkimDijkstraCallBacksDistancePrune<graph::TDirectedGraph> call_backs;
-    call_backs.InitTSkimDijkstraCallBacksDistancePrune(distance);
+    call_backs.InitTSkimDijkstraCallBacksDistancePrune(distance + 1);
     DijkstraParams param_;
     PrunedDijkstra< graph::TDirectedGraph, TSkimDijkstraCallBacksDistancePrune<graph::TDirectedGraph> > (0,
                                                                 &graph,

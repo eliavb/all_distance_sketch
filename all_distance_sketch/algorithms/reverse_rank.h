@@ -33,19 +33,19 @@ struct RankData {
 struct compareRankNode {
     bool operator()(const RankData& n1, const RankData& n2) const {
         // return n1.rank > n2.rank;
-        if (n1.rank > n2.rank) {
-            return true;
-        }
         if (n1.rank < n2.rank) {
-            return false;
-        }
-        if (n1.distance > n2.distance) {
             return true;
+        }
+        if (n1.rank > n2.rank) {
+            return false;
         }
         if (n1.distance < n2.distance) {
+            return true;
+        }
+        if (n1.distance > n2.distance) {
             return false;
         }
-        if (n1.node_id > n2.node_id) {
+        if (n1.node_id < n2.node_id) {
             return true;
         }
         return false;
@@ -67,9 +67,10 @@ static int EstimateReverseRankUpperBound(graph::Graph<T> * graph,
     int reverse_rank = sourceNodeAds->GetSizeNeighborhoodUpToDistance(distance_from_source_to_targer,
                                                                       graph_sketch->GetNodesDistributionLean());
     LOG_M(DEBUG3, " Source=" << source <<
-                " node=" << target <<
-                " distance= " << distance_from_source_to_targer <<
-                " reverse_rank=" << reverse_rank);
+                  " node=" << target <<
+                  " distance= " << distance_from_source_to_targer <<
+                  " reverse_rank=" << reverse_rank <<
+                  " Node degree=" << graph->GetNI(source).GetOutDeg());
     return reverse_rank;
 }
 
@@ -139,19 +140,25 @@ static void CalculateReverseRank(int source_node_id,
     touced[source_node_id] = true;
     heap.insert(RankData(source_node_id, (*ranking)[source_node_id], 0));
 
-    LOG_M(DEBUG4, "Starting Reverse rank from node=" << source_node_id);
+    LOG_M(DEBUG3, "Starting Reverse rank from node=" << source_node_id);
     call_backs->Started(source_node_id, graph);
+    double distance_last = 0;
+    double rank_last = 0;
     while (!heap.empty()) {
         // Get the node with the minimum rank
         int visited_node_id = heap.begin()->node_id;
-        graph::EdgeWeight distance_from_source_to_visited_node = heap.begin()->distance;
-        (*ranking)[visited_node_id] = heap.begin()->rank;
-        call_backs->NodePopedFromHeap(visited_node_id, *(heap.begin()));
-
+        auto node_data = *heap.begin();
+        graph::EdgeWeight distance_from_source_to_visited_node = node_data.distance;
+        (*ranking)[visited_node_id] = node_data.rank;
+        call_backs->NodePopedFromHeap(visited_node_id, node_data);
+        LOG_M(DEBUG3, "Poped node=" << visited_node_id << " Distance=" << node_data.distance);
+        assert(distance_last <= node_data.distance);
+        assert(rank_last <= node_data.rank);
+        _unused(distance_last);
+        _unused(rank_last);
         heap.erase(heap.begin());
         poped[visited_node_id] = true;
-
-        if (call_backs->ShouldPrune(visited_node_id, (*heap.begin()) )) {
+        if (call_backs->ShouldPrune(visited_node_id, node_data)) {
           continue;
         }
 
@@ -164,13 +171,13 @@ static void CalculateReverseRank(int source_node_id,
         typename T::TNodeI neighbors = graph->GetNI(visited_node_id);
         for (int i = 0 ; i < neighbors.GetOutDeg(); i++) {
             int id_of_neighbor_of_visited_node = neighbors.GetOutNId(i);
-
+            LOG_M(DEBUG3, "neighbors node=" << id_of_neighbor_of_visited_node);
             if (poped[id_of_neighbor_of_visited_node]) {
                 continue;
             }
             std::pair<bool, graph::EdgeWeight> edge_u_v = graph->GetEdgeWeight(visited_node_id, id_of_neighbor_of_visited_node);
             graph::EdgeWeight distance_through_u = distance_from_source_to_visited_node + edge_u_v.second; // (*nodeWeights)[i].weight;
-            LOG_M(DEBUG5, "edge weight between " <<
+            LOG_M(DEBUG3, "edge weight between " <<
                           " visited_node_id = " << visited_node_id <<
                           " id_of_neighbor_of_visited_node = " << id_of_neighbor_of_visited_node <<
                           " edge weight = " << (*nodeWeights)[i].get_edge_weight());
@@ -188,11 +195,11 @@ static void CalculateReverseRank(int source_node_id,
                                                     distance_through_u);
 
                 if (touced[id_of_neighbor_of_visited_node] == false) {
-                    LOG_M(DEBUG5, "Inserting node " << id_of_neighbor_of_visited_node <<
+                    LOG_M(DEBUG3, "Inserting node " << id_of_neighbor_of_visited_node <<
                                 " to heap with distance " << distance_through_u);
                     heap.insert(RankData(id_of_neighbor_of_visited_node, rankOfSourceNode, distance_through_u));
                 } else {
-                    LOG_M(DEBUG5, "Decreasing distance of node " << id_of_neighbor_of_visited_node <<
+                    LOG_M(DEBUG3, "Decreasing distance of node " << id_of_neighbor_of_visited_node <<
                                 " from " << min_distance[id_of_neighbor_of_visited_node] <<
                                 " to " << distance_through_u);
                     heap.erase(RankData(id_of_neighbor_of_visited_node, (*ranking)[id_of_neighbor_of_visited_node], min_distance[id_of_neighbor_of_visited_node]));

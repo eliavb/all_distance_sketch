@@ -168,7 +168,7 @@ static void PrunedDijkstra(typename T::TNode source,
   param->heap.clear();
   param->heap.insert(NodeIdDistanceData(source_node_id, 0));
   param->touched[source_node_id] = true;
-
+  double last_distance = 0;
   LOG_M(DEBUG4, "Starting Dijkstra from node=" << source_node_id << " Max node Id " << max_node_id);
   while (!param->heap.empty()) {
     NodeIdDistanceData top_node = *(param->heap.begin());
@@ -179,6 +179,9 @@ static void PrunedDijkstra(typename T::TNode source,
       LOG_M(DEBUG4, " Stopped on node=" << visited_node_id);
       return;
     }
+    assert(last_distance <= distance_from_source_to_visited_node);
+    last_distance = distance_from_source_to_visited_node;
+    _unused(last_distance);
     param->min_distance[visited_node_id] = distance_from_source_to_visited_node;
     param->heap.erase(param->heap.begin());
     param->poped[visited_node_id] = true;

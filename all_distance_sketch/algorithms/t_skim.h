@@ -92,6 +92,7 @@ class TSkimReverseRankCallBacks {
     }
     LOG_M(DEBUG3, "poped node=" << poped_node_id);
     if (T_ >= heap_value.rank) {
+      LOG_M(DEBUG3, "Inserted node to visited nodes");
       visited_nodes_including_self_.push_back(poped_node_id);
     }
     ++num_nodes_visited_;
@@ -99,12 +100,14 @@ class TSkimReverseRankCallBacks {
   }
 
   inline bool ShouldPrune(int visited_node_id, const RankData& rank_data) { 
-    LOG_M(DEBUG3, " Should prune? " << (rank_data.rank >= T_) <<
+    LOG_M(DEBUG3, " node id=" << visited_node_id <<
+                  " Should prune? " << (rank_data.rank >= T_) <<
                   " current rank =" << rank_data.rank <<
+                  " Distance =" << rank_data.distance <<
                   " T = " << T_ <<
                   " Deg= " << graph_->GetNI(visited_node_id).GetOutDeg());
 
-    if (rank_data.rank >= T_) {
+    if (rank_data.rank > T_) {
       return true;
     }
 
@@ -214,7 +217,10 @@ public:
     if (wanted_nodes_.size() != 0 && wanted_nodes_.count(poped_node_id) == 0) {
       return;
     }
-    if (heap_value.GetDistance() <= distance_stop_) {
+    LOG_M(DEBUG3, " poped node=" << poped_node_id << 
+                  " Distance=" << heap_value.GetDistance() << 
+                  " Distance to stop=" << distance_stop_);
+    if (heap_value.GetDistance() < distance_stop_) {
       visited_nodes_including_self_.push_back(poped_node_id);
       ++num_nodes_visited_;
     }
@@ -222,7 +228,7 @@ public:
   }
 
   inline bool ShouldPrune(int visited_node_id, graph::EdgeWeight distance_from_source_to_visited_node) {
-    return distance_from_source_to_visited_node > distance_stop_;
+    return distance_from_source_to_visited_node >= distance_stop_;
   }
 
   inline bool ShouldStop() { return false; }
@@ -238,7 +244,7 @@ public:
   double distance_stop_;
 };
 
-int random_gen_func (int i) { return std::rand()%i;}
+int random_gen_func (int i) { return 42 % i;}
 
 bool cmp(const std::pair<int, int>  &p1, const std::pair<int, int> &p2) {
     return p1.second > p2.second;
@@ -314,6 +320,7 @@ public:
       }
       reachable_nodes_.erase(covered_node);
     }
+    LOG_M(DEBUG3, "Seed=" << seed << " num actual covered nodes= " << num_covered_nodes);
     return num_covered_nodes;
   }
 
@@ -331,6 +338,7 @@ public:
     }
     ++(node_influence_)[visited_node];
     if (node_influence_[visited_node] >= min_influence_for_seed_) {
+      LOG_M(DEBUG3, "adding seed " << visited_node << " influence=" << node_influence_[visited_node]);
       seed_set->push_back(visited_node);
     }
     if (reachable_nodes_.count(source_node) == 0) {
@@ -370,7 +378,7 @@ public:
     CalculateRandomNodePermutation(&rankers_nodes_);
   }
 
-  virtual void CalculateVisitedNodes(int source, std::vector<int>* visited_nodes) = 0; 
+  virtual const std::vector<int>& CalculateVisitedNodes(int source) = 0;
 
   int Run(bool ShouldRunPreRunInit = true) {
     if (ShouldRunPreRunInit) {
@@ -382,14 +390,12 @@ public:
     for (const auto& source_node_id : rankers_nodes_) {
       std::cout << "\r" << num_passed  << "/" << rankers_nodes_.size();
       ++num_passed;
-
       if (cover_->IsCovered(source_node_id)) {
         continue;
       }
       LOG_M(DEBUG3, "Iterating permutation, current node = " << source_node_id);
       std::vector<int> current_iteration_seed_set;
-      std::vector<int> visited_nodes;
-      CalculateVisitedNodes(source_node_id, &visited_nodes);
+      const std::vector<int>& visited_nodes = CalculateVisitedNodes(source_node_id);
       for (const auto& visited_node : visited_nodes) {
         LOG_M(DEBUG3, "visited node = " << visited_node);
         if (cover_->IsCovered(visited_node)) {
@@ -403,7 +409,7 @@ public:
           continue;
         }
         std::unordered_map<int, int> influence_change;
-        LOG_M(DEBUG3, "Adding Seed = " << seed);
+        LOG_M(DEBUG3, "Adding Seed node =" << seed );
         num_covered_nodes += AddSeed(seed, &influence_change);
       }
     }
@@ -414,6 +420,7 @@ public:
                   " num nodes left =" << node_influence_.size());
     std::set< std::pair<int, int> , cmp_pair> heap;
     for (auto it = node_influence_.begin(); it != node_influence_.end(); it++) {
+      LOG_M(DEBUG3, "Node influence raw node =" << it->first << " Influence=" << it->second);
       heap.insert(std::make_pair(it->first, it->second));
     }
 
@@ -475,21 +482,23 @@ public:
                                                             graph_sketch_,
                                                             &ranking,
                                                             &reverse_rank_call_backs_);
-    LOG_M(DEBUG3, "Adding seed node= " << seed << " Cover size=" << reverse_rank_call_backs_.get_visited_nodes().size());
+    LOG_M(DEBUG3, "Adding seed node= " << seed << " Cover size=" << reverse_rank_call_backs_.get_visited_nodes().size() << 
+                  " Cover size=" << this->cover_->Size());
     return TSkimBase<Z>::UpdateCover(seed, influence_change, reverse_rank_call_backs_.get_visited_nodes());
   }
 
-  void CalculateVisitedNodes(int source_node_id, std::vector<int>* visited_nodes) {
+  const std::vector<int>& CalculateVisitedNodes(int source_node_id) {
       NodeIdRandomIdData source_node_details(source_node_id, graph_sketch_->GetNodeRandomId(source_node_id));
       NodeSketch * source_sketch = graph_sketch_->GetNodeSketch(source_node_details);
       double distance = source_sketch->GetDistanceCoverNeighborhood(this->T_);
       typename Z::TNode source(source_node_id);
+      LOG_M(DEBUG3, "Running from node=" << source_node_id << " T=" << this->T_ << " Distance=" << distance);
       call_backs_.InitTSkimDijkstraCallBacksDistancePrune(distance);
       PrunedDijkstra< Z, TSkimDijkstraCallBacksDistancePrune<Z> > (source,
                                                       TSkimBase<Z>::graph_,
                                                       &call_backs_,
                                                       &param_);
-      (*visited_nodes) = call_backs_.get_visited_nodes();
+      return call_backs_.get_visited_nodes();
   }
 
   int Run() {
@@ -497,8 +506,8 @@ public:
     GraphSketch local_graph_sketch;
     if (graph_sketch_ == NULL) {
       graph_sketch_ = &local_graph_sketch;
+      graph_sketch_->InitGraphSketch(K_all_distance_sketch_, this->graph_->GetMxNId());
     }
-    graph_sketch_->InitGraphSketch(K_all_distance_sketch_, this->graph_->GetMxNId());
     CalculateGraphSketch<Z>(this->graph_, graph_sketch_);
     graph_sketch_->CalculateAllDistanceNeighborhood();
     this->graph_->Transpose(&graph_transpose_);
@@ -544,18 +553,19 @@ public:
                                                             graph_sketch_,
                                                             &ranking,
                                                             &reverse_rank_call_backs_);
-    LOG_M(DEBUG3, "Adding seed node= " << seed << " Cover size=" << reverse_rank_call_backs_.get_visited_nodes().size());
+    LOG_M(DEBUG3, "Adding seed node= " << seed << " Cover size=" << reverse_rank_call_backs_.get_visited_nodes().size() << 
+                  " Cover size=" << this->cover_->Size());
     return TSkimBase<Z>::UpdateCover(seed, influence_change, reverse_rank_call_backs_.get_visited_nodes());
   }
 
-  void CalculateVisitedNodes(int source_node_id, std::vector<int>* visited_nodes) {
+  const std::vector<int>& CalculateVisitedNodes(int source_node_id) {
       typename Z::TNode source(source_node_id);
       call_backs_.InitTSkimDijkstraCallBacks(TSkimBase<Z>::T_);
       PrunedDijkstra< Z, TSkimDijkstraCallBacks<Z> > (source,
                                                       TSkimBase<Z>::graph_,
                                                       &call_backs_,
                                                       &param_);
-      (*visited_nodes) = call_backs_.get_visited_nodes();
+      return call_backs_.get_visited_nodes();
   }
 
   int Run() {
@@ -563,8 +573,8 @@ public:
     GraphSketch local_graph_sketch;
     if (graph_sketch_ == NULL) {
       graph_sketch_ = &local_graph_sketch;
+      graph_sketch_->InitGraphSketch(K_all_distance_sketch_, this->graph_->GetMxNId());
     }
-    graph_sketch_->InitGraphSketch(K_all_distance_sketch_, this->graph_->GetMxNId());
     CalculateGraphSketch<Z>(this->graph_, graph_sketch_);
     graph_sketch_->CalculateAllDistanceNeighborhood();
     this->graph_->Transpose(&graph_transpose_);
@@ -622,14 +632,14 @@ public:
     return TSkimBase<Z>::UpdateCover(seed, influence_change, convered_nodes);
   }
 
-  void CalculateVisitedNodes(int source_node_id, std::vector<int>* visited_nodes) {
+  const std::vector<int>& CalculateVisitedNodes(int source_node_id) {
       typename Z::TNode source(source_node_id);
       call_backs_.InitTSkimDijkstraCallBacks(TSkimBase<Z>::T_);
       PrunedDijkstra< Z, TSkimDijkstraCallBacks<Z> > (source,
                                                       TSkimBase<Z>::graph_,
                                                       &call_backs_,
                                                       &param_);
-      (*visited_nodes) = call_backs_.get_visited_nodes();
+      return call_backs_.get_visited_nodes();
   }
 
   int Run() {

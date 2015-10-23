@@ -416,9 +416,6 @@ class NodeSketch {
         LOG_M(DEBUG3, "Match last element");
         return neighbourhoods_.back().GetDistance() + 1;
       }
-      if ( (up - 1)->GetSize() == neighborhood_size) {
-        up -= 1;
-      }
       LOG_M(DEBUG3, " Distance= " << up->GetDistance() <<
                     " Size=" << up->GetSize() <<
                     " Wanted size=" << neighborhood_size);

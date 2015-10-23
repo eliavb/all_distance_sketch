@@ -43,6 +43,7 @@
         std::cout << __FILE__ << ":" << __LINE__ << " " << msg << std::endl; \
     } \
 
+#define _unused(x) ((void)x)
 
 namespace all_distance_sketch {
 typedef std::vector<bool> TBitSet;

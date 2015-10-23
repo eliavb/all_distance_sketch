@@ -258,6 +258,6 @@ TEST_F(BasicADS, NodeSketchNeighborhoodDistance) {
   node_sketch.CalculateAllDistanceNeighborhood(&v);
   
   for (int i =0 ; i < 99; i++) {
-    EXPECT_EQ(node_sketch.GetDistanceCoverNeighborhood(i), i+1);
+    EXPECT_EQ(node_sketch.GetDistanceCoverNeighborhood(i), i+2);
   }
 }
