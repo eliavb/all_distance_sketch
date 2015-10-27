@@ -804,7 +804,6 @@ TEST_F(AlgoGraph, ADSCalculationFacebookGraphApproximationSearlization) {
   graphAdsTemp.InitGraphSketch(100, graphtemp.GetMxNId());
   graphAdsTemp.CreateNodesDistribution(graphtemp.GetMxNId());
   CalculateGraphSketch< graph::TUnDirectedGraph >(&graphtemp, &graphAdsTemp);
-  graphAdsTemp.CalculateAllDistanceNeighborhood();
   int d = 0;
   std::ofstream ofs("./out/graph/state/facebook_k_100");
   {
@@ -905,7 +904,6 @@ TEST_F(AlgoGraph, ADSCalculationMultiFacebookGraphApproximation) {
   uniform_rank_calculator.InitUniformRankCalculator(0,1);
   graphAds.InitGraphSketch(100, graph.GetMxNId(), &uniform_rank_calculator);
   CalculateGraphSketchMultiCore< graph::TUnDirectedGraph >(&graph, &graphAds);
-  graphAds.CalculateAllDistanceNeighborhood();
   int d = 0;
   // std::cout << "Node Id,distance,neighborhood_size,neighborhood_size_approx,delta" << std::endl;
 
@@ -991,7 +989,6 @@ TEST_F(AlgoGraph, ReverseRankAverageCalculation) {
   uniform_rank_calculator.InitUniformRankCalculator(0,1);
   graph_ads.InitGraphSketch(100, graph.GetMxNId(), &uniform_rank_calculator);
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graph_ads);
-  graph_ads.CalculateAllDistanceNeighborhood();
   EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, 0, 0), 0);
   EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, 1, 1), 2);
   EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, 2, 1), 2);
@@ -1016,7 +1013,6 @@ TEST_F(AlgoGraph, ReverseRankAverageCalculation1) {
   uniform_rank_calculator.InitUniformRankCalculator(0,1);
   graph_ads.InitGraphSketch(101, graph.GetMxNId(), &uniform_rank_calculator);
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graph_ads);
-  graph_ads.CalculateAllDistanceNeighborhood();
   for (int i=1; i < 101; i++) {
     EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, i, 1), 50);
   }
@@ -1040,7 +1036,6 @@ TEST_F(AlgoGraph, ReverseRankAverageCalculation2) {
   uniform_rank_calculator.InitUniformRankCalculator(0,1);
   graph_ads.InitGraphSketch(201, graph.GetMxNId(), &uniform_rank_calculator);
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graph_ads);
-  graph_ads.CalculateAllDistanceNeighborhood();
   for (int i=1; i < 100; i++) {
     EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, i, 1), 50);
   }
@@ -1072,7 +1067,6 @@ TEST_F(AlgoGraph, ReverseRankAverageCalculation3) {
   uniform_rank_calculator.InitUniformRankCalculator(0,1);
   graph_ads.InitGraphSketch(301, graph.GetMxNId(), &uniform_rank_calculator);
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graph_ads);
-  graph_ads.CalculateAllDistanceNeighborhood();
   for (int i=1; i < 100; i++) {
     EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, i, 1), 50);
   }
@@ -1109,7 +1103,6 @@ TEST_F(AlgoGraph, RNNTree) {
   uniform_rank_calculator.InitUniformRankCalculator(0,1);
   graphAds.InitGraphSketch(100, graph.GetMxNId(), &uniform_rank_calculator);
   CalculateGraphSketch< graph::TUnDirectedGraph >(&graph, &graphAds);
-  graphAds.CalculateAllDistanceNeighborhood();
   int sourceNodeId = 3;
   std::vector<int> ranking;
   DefaultReverseRankCallBacks< graph::TUnDirectedGraph > reverse_rank_call_backs;
@@ -1157,7 +1150,6 @@ TEST_F(AlgoGraph, BasicRNN2) {
 
   std::vector<int> ranking;
   CalculateGraphSketch< graph::TUnDirectedGraph >(&graph, &graphAds);
-  graphAds.CalculateAllDistanceNeighborhood();
   DefaultReverseRankCallBacks< graph::TUnDirectedGraph > reverse_rank_call_backs;
   CalculateReverseRank< graph::TUnDirectedGraph,
                         DefaultReverseRankCallBacks< graph::TUnDirectedGraph > >(1,

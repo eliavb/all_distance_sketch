@@ -230,7 +230,7 @@ class NodeSketch {
     node_id_ = node_id;
     random_id_ = random_id;
     was_init_ = true;
-    nodes_id_distance_.reserve(K_);
+    nodes_id_distance_.clear();
     prunning_thresholds_ = prunning_thresholds;
     }
 

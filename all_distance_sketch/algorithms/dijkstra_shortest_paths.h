@@ -29,7 +29,7 @@ struct PrunningAlgoStatistics {
 };
 
  struct compareNodeDistanceAndId {
-   bool operator()(const NodeIdDistanceData& n1, const NodeIdDistanceData& n2) const {
+   inline bool operator()(const NodeIdDistanceData& n1, const NodeIdDistanceData& n2) const {
      if (n1.GetDistance() < n2.GetDistance()) {
        return true;
      }
@@ -204,8 +204,8 @@ static void PrunedDijkstra(typename T::TNode source,
   param->heap.clear();
   param->heap.insert(NodeIdDistanceData(source_node_id, 0));
   param->touched[source_node_id] = true;
-  double last_distance = 0;
   LOG_M(DEBUG4, "Starting Dijkstra from node=" << source_node_id << " Max node Id " << max_node_id);
+  double last_distance = 0;
   while (!param->heap.empty()) {
     NodeIdDistanceData top_node = *(param->heap.begin());
     graph::EdgeWeight distance_from_source_to_visited_node = top_node.GetDistance();
