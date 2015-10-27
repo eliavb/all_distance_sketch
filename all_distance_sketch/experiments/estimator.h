@@ -1,11 +1,10 @@
 #ifndef RNN_GRAPH_ESTIMATOR_H_
 #define RNN_GRAPH_ESTIMATOR_H_
 
-#include "./common.h"
-#include "./utils.h"
+#include "../common.h"
+#include "../utils/utils.h"
 
-namespace a {
-namespace est {
+namespace all_distance_sketch {
 
 typedef struct Prior_t {
     int nodeId;
@@ -96,7 +95,7 @@ typedef std::vector<int> Community;
 template <class T>
 class ClassifierAggregator {
 public:
-    void InitClassifierAggregator(BinaryClassifier * classifier, a::utils::SingleCommunity * community, a::graph::Graph< T > * aGraph) {
+    void InitClassifierAggregator(BinaryClassifier * classifier, utils::SingleCommunity * community, graph::Graph< T > * aGraph) {
         myBinaryClassifier = classifier;
         myCommunity = community;
         myGraph = aGraph;
@@ -164,8 +163,8 @@ public:
 private:
     BinaryClassifier * myBinaryClassifier;
     Community * myCommunity;
-    std::map<int, bool> myCommunityMap;
-    a::graph::Graph< T > * myGraph;
+    std::unordered_map<int, bool> myCommunityMap;
+    graph::Graph< T > * myGraph;
 };
 
 /*
@@ -222,7 +221,6 @@ class BinaryHarmonicMeanClassifier : public BinaryClassifier {
         return;
     }
 };
-} // namespace a
-} // namespace est
+} // namespace all_distance_sketch
 
 #endif  //  RNN_GRAPH_ESTIMATOR_H_

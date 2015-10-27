@@ -189,9 +189,9 @@ class Graph {
     }
 
     void LoadGraphFromDir(std::string aPath, bool aTranspose = false) {
-        a::utils::FileUtils::NodePairList nodePairList;
-        a::utils::FileUtils::GetNodePairListFromDir(aPath, &nodePairList);
-        for (a::utils::FileUtils::NodePairList::iterator itr = nodePairList.begin(); itr != nodePairList.end(); ++itr) {
+        utils::FileUtils::NodePairList nodePairList;
+        utils::FileUtils::GetNodePairListFromDir(aPath, &nodePairList);
+        for (utils::FileUtils::NodePairList::iterator itr = nodePairList.begin(); itr != nodePairList.end(); ++itr) {
             int uNodeId = itr->first;
             LOG_M(DEBUG5, "Found node " << uNodeId);
             if (IsNode(uNodeId) == false) {

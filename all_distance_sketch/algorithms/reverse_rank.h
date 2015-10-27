@@ -154,6 +154,8 @@ static void CalculateReverseRank(int source_node_id,
         LOG_M(DEBUG3, "Poped node=" << visited_node_id << " Distance=" << node_data.distance);
         assert(distance_last <= node_data.distance);
         assert(rank_last <= node_data.rank);
+        distance_last = node_data.distance;
+        rank_last = node_data.rank;
         _unused(distance_last);
         _unused(rank_last);
         heap.erase(heap.begin());

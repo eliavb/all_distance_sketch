@@ -14,6 +14,12 @@ struct PrunningAlgoStatistics {
   unsigned int num_pruned_nodes;
   unsigned int num_relaxed_edges;
 
+  void Clear() {
+    num_visited_nodes = 0;
+    num_pruned_nodes = 0;
+    num_relaxed_edges = 0;
+  }
+
   friend std::ostream& operator<<(std::ostream& os, const PrunningAlgoStatistics& algo_statistics) {
     os << " num Nodes Visited=" << algo_statistics.num_visited_nodes <<
           " num Pruned Nodes=" << algo_statistics.num_pruned_nodes <<
@@ -60,7 +66,36 @@ public:
   inline bool ShouldStop() { return false; }
 
   inline void RelaxedPath(int node_id) { }
+};
 
+template<class T>
+class DijkstraRankCallBack {
+public:
+
+  inline void Started(int source_node_id, graph::Graph<T>* graph) {
+    dijkstra_rank_.clear();
+    dijkstra_rank_.resize(graph->GetMxNId(), constants::UNREACHABLE);
+    dijkstra_rank_[source_node_id] = 0;
+    algo_statistics_.Clear();
+  }
+
+  inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
+    dijkstra_rank_[poped_node_id] = algo_statistics_.num_visited_nodes;
+    ++algo_statistics_.num_visited_nodes;
+  }
+
+  inline bool ShouldPrune(int visited_node_id, graph::EdgeWeight distance_from_source_to_visited_node) { return false; }
+
+  inline bool ShouldStop() { return false; }
+
+  inline void RelaxedPath(int node_id) { }
+
+  const std::vector<int>& get_dijkstra_rank() {
+    return dijkstra_rank_;
+  }
+private:
+  PrunningAlgoStatistics algo_statistics_;
+  std::vector<int> dijkstra_rank_;
 };
 
 template<class T>
@@ -79,6 +114,7 @@ public:
   }
 
   inline void Started(int source_node_id, graph::Graph<T>* graph) {
+    algo_statistics_.Clear();
     source_node_id_ = source_node_id;
     source_node_random_id_ = graph_sketch_->GetNodeRandomId(source_node_id_);
     if (should_calculate_dijkstra_rank_) {

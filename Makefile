@@ -25,7 +25,7 @@ TEST_SRC = $(wildcard all_distance_sketch/*/ut/*.cpp)
 TESTS_LIBS = ./libgtest.a ./include/Snap-2.3/snap-core/Snap.o
 TEST_INCLUDE = -isystem ./include/gtest/include
 
-TEST_OBJS = ./out/all_distance_sketch/ut/run_all
+TEST_OBJS = ./out/all_distance_sketch/ut/run_all ./out/all_distance_sketch/experiments/results/estimate
 PROTO = out/all_distance_sketch/proto
 
 .PHONY: depend clean all test src_only
@@ -42,8 +42,11 @@ out/all_distance_sketch/proto: all_distance_sketch/proto/all_distance_sketch.pro
 	@protoc --cpp_out=./out  all_distance_sketch/proto/all_distance_sketch.proto
 
 ./out/all_distance_sketch/ut/run_all: all_distance_sketch/graph/ut/run_all.cpp $(TEST_SRC) $(HDRS)
-	@echo $(TEST_SRC)
 	@mkdir -p out/all_distance_sketch/ut
+	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_INCLUDE) -o $@  $< $(BOOST) $(LIBS) $(TESTS_LIBS)
+
+./out/all_distance_sketch/experiments/results/estimate: all_distance_sketch/experiments/results/estimate.cpp $(HDRS)
+	@mkdir -p out/all_distance_sketch/experiments/results
 	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_INCLUDE) -o $@  $< $(BOOST) $(LIBS) $(TESTS_LIBS)
 
 clean:

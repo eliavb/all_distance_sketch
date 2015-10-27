@@ -87,6 +87,7 @@ static void CalculateGraphSketch(graph::Graph<T> *graph,
           CalculateNodeSketch<T>(source, graph, &call_backs, &param);
       }
     }
+    graph_sketch->CalculateAllDistanceNeighborhood();
 }
 
 static int GetBatchSize(int numthreads, int approxSize) {
@@ -174,6 +175,7 @@ static void CalculateGraphSketchMultiCore(graph::Graph<T> *graph,
     for (unsigned int i=0; i < threads.size(); i++) {
         threads[i].join();
     }
+    graph_sketch->CalculateAllDistanceNeighborhood();
 }
 
 template <class T>

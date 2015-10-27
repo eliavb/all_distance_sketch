@@ -1,8 +1,10 @@
 #include <limits.h>
 #include "../../gtest/include/gtest/gtest.h"
-#include "../algo.h"
+#include "../../algorithms/dijkstra_shortest_paths.h"
+#include "../../algorithms/reverse_rank.h"
+#include "../../algorithms/sketch_calculation.h"
 #include "../estimator.h"
-#include "../snap_adaptor.h"
+#include "../../graph/snap_graph_adaptor.h"
 
 
 class BasicGraph : public ::testing::Test {
@@ -34,14 +36,16 @@ class BasicGraph : public ::testing::Test {
   }
 };
 
+namespace all_distance_sketch {
+
 long long COMUUNITY_INDEX = 114;
 
 TEST_F(BasicGraph, BasicMinClassificationTest) {
-  a::utils::SingleCommunity singleCom;
+  utils::SingleCommunity singleCom;
   singleCom.push_back(0);
   singleCom.push_back(1);
   singleCom.push_back(3);
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
   graph.AddNode(0);
   graph.AddNode(1);
   graph.AddNode(2);
@@ -51,7 +55,7 @@ TEST_F(BasicGraph, BasicMinClassificationTest) {
   graph.AddNode(5);
 
   int numSamples = 3;
-  a::est::PriorVector prior;
+  PriorVector prior;
   prior.resize(numSamples);
   prior[0].nodeId = 0;
   prior[0].order.push_back(0);
@@ -78,10 +82,10 @@ TEST_F(BasicGraph, BasicMinClassificationTest) {
   prior[2].order.push_back(300);
 
   int threshold = 1;
-  a::est::BinaryMinClassifier minDistanceClassifier;
+  BinaryMinClassifier minDistanceClassifier;
   minDistanceClassifier.InitBinaryClassifier(&prior, threshold);
   
-  a::est::ClassifierAggregator< a::graph::TUnDirectedGraph > aggregator;
+  ClassifierAggregator< all_distance_sketch::graph::TUnDirectedGraph > aggregator;
   aggregator.InitClassifierAggregator(&minDistanceClassifier, &singleCom, &graph);
   
   EXPECT_EQ(minDistanceClassifier.GetRank(0), 0);
@@ -94,11 +98,11 @@ TEST_F(BasicGraph, BasicMinClassificationTest) {
 }
 
 TEST_F(BasicGraph, BasicAverageClassificationTest) {
-  a::utils::SingleCommunity singleCom;
+  utils::SingleCommunity singleCom;
   singleCom.push_back(0);
   singleCom.push_back(1);
   singleCom.push_back(3);
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
   graph.AddNode(0);
   graph.AddNode(1);
   graph.AddNode(2);
@@ -108,7 +112,7 @@ TEST_F(BasicGraph, BasicAverageClassificationTest) {
   graph.AddNode(5);
 
   int numSamples = 3;
-  a::est::PriorVector prior;
+  PriorVector prior;
   prior.resize(numSamples);
   prior[0].nodeId = 0;
   prior[0].order.push_back(0);
@@ -135,10 +139,10 @@ TEST_F(BasicGraph, BasicAverageClassificationTest) {
   prior[2].order.push_back(300);
 
   int threshold = 1;
-  a::est::BinaryAverageClassifier minDistanceClassifier;
+  BinaryAverageClassifier minDistanceClassifier;
   minDistanceClassifier.InitBinaryClassifier(&prior, threshold);
   
-  a::est::ClassifierAggregator< a::graph::TUnDirectedGraph > aggregator;
+  ClassifierAggregator< all_distance_sketch::graph::TUnDirectedGraph > aggregator;
   aggregator.InitClassifierAggregator(&minDistanceClassifier, &singleCom, &graph);
   
   EXPECT_EQ(minDistanceClassifier.GetRank(0), 0);
@@ -151,21 +155,21 @@ TEST_F(BasicGraph, BasicAverageClassificationTest) {
 
 void CreateRocCurve(std::string aBasePath,
                     std::string metric,
-                    a::est::PriorVector * prior,
-                    a::utils::SingleCommunity * singleCom,
-                    a::graph::Graph< a::graph::TUnDirectedGraph >  * graph) {
+                    PriorVector * prior,
+                    utils::SingleCommunity * singleCom,
+                    all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph >  * graph) {
   int threshold = 1;
-  a::est::BinaryMinClassifier minDistanceClassifier;
+  BinaryMinClassifier minDistanceClassifier;
   minDistanceClassifier.InitBinaryClassifier(prior, threshold);
 
-  a::est::ClassifierAggregator< a::graph::TUnDirectedGraph > aggregator;
+  ClassifierAggregator< all_distance_sketch::graph::TUnDirectedGraph > aggregator;
   aggregator.InitClassifierAggregator(&minDistanceClassifier, singleCom, graph);
   std::ofstream f;
   f.open(aBasePath + "/min_" + metric + "_roc_curve_" + std::to_string(COMUUNITY_INDEX) + ".csv");
   aggregator.PrintROCCurve(&f); 
   f.close();
 
-  a::est::BinaryAverageClassifier averageDistanceClassifier;
+  BinaryAverageClassifier averageDistanceClassifier;
   averageDistanceClassifier.InitBinaryClassifier(prior, threshold);
 
   aggregator.InitClassifierAggregator(&averageDistanceClassifier, singleCom, graph);
@@ -174,7 +178,7 @@ void CreateRocCurve(std::string aBasePath,
   aggregator.PrintROCCurve(&f_a); 
   f.close();
 
-  a::est::BinaryHarmonicMeanClassifier harmonicDistanceClassifier;
+  BinaryHarmonicMeanClassifier harmonicDistanceClassifier;
   harmonicDistanceClassifier.InitBinaryClassifier(prior, threshold);
 
   aggregator.InitClassifierAggregator(&harmonicDistanceClassifier, singleCom, graph);
@@ -184,26 +188,21 @@ void CreateRocCurve(std::string aBasePath,
   f_h.close();
 
 }
-#if 0
+#if 1
 void CreateEdithReport() {
   // nodeID    for each seed s1..s_10:  (distance, rank, reverse rank)      member of community (y/n)   #of_communities_node_is_member_of
   std::cout << "NodeId,SeedId,Metric,NumCommunitiesMember" << std::endl;
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
-  a::data::GraphADS graphAds;
-  graph.LoadGraphFromDir("/users/eng/eliavb/TAU/RNN/data/youtube");
-
-  {
-        // create and open an archive for input
-        std::ifstream ifs("./out/graph/state/youtube_128");
-        boost::archive::text_iarchive ia(ifs);
-        // read class state from archive
-        ia >> graphAds;
-        // archive and stream closed when destructors are called
-  }
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
   
-  a::utils::Community com;
-  com.LoadCommunity("/work/eng/eliavb/RNN/data/youtube_comm");
-  // a::utils::SingleCommunity * singleCom = com.GetCommunity(COMUUNITY_INDEX);
+  utils::Community com;
+  com.LoadCommunity("./data/youtube_com");
+
+  GraphSketch graphAds;
+  graphAds.InitGraphSketch(128, graph.GetMxNId());
+  all_distance_sketch::CalculateGraphSketch< all_distance_sketch::graph::TUnDirectedGraph >(&graph, &graphAds);
+  graphAds.CalculateAllDistanceNeighborhood();
+  // utils::SingleCommunity * singleCom = com.GetCommunity(COMUUNITY_INDEX);
   
   std::vector<int> _com;
   _com.push_back(33788);
@@ -225,35 +224,40 @@ void CreateEdithReport() {
   com.GetNodesDist(&dist_comm);
 
   unsigned int numSamples=10;
-  a::algo::DijkstraParams p[10];
+  DijkstraParams p[10];
+  DijkstraRankCallBack< graph::TUnDirectedGraph > dijkstra_rank_call_backs[10];
   for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
-    p[i].InitDijkstraParams(false, false, NULL, true);
-    a::algo::CalculateNodeAdsPrunedDijkstra< a::graph::TUnDirectedGraph >(source, &graph, &(p[i]), graph.GetMxNId());
+    all_distance_sketch::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
+    PrunedDijkstra< graph::TUnDirectedGraph, DijkstraRankCallBack< graph::TUnDirectedGraph > >
+                                                                                     (source,
+                                                                                      &graph,
+                                                                                      &dijkstra_rank_call_backs[i],
+                                                                                      &p[i]);
   }  
 
-  for (a::graph::TUnDirectedGraph::TNodeI it = graph.BegNI(); it != graph.EndNI(); it++) {
+  for (all_distance_sketch::graph::TUnDirectedGraph::TNodeI it = graph.BegNI(); it != graph.EndNI(); it++) {
       int nodeId = it.GetId();
       for (unsigned int i=0; i < numSamples; i++ ){
         std::cout << nodeId << "," << (*singleCom)[i] << "," << p[i].min_distance[nodeId] << ",distace," << dist_comm[nodeId] << std::endl;
       }
   }
 
-  for (a::graph::TUnDirectedGraph::TNodeI it = graph.BegNI(); it != graph.EndNI(); it++) {
+  for (all_distance_sketch::graph::TUnDirectedGraph::TNodeI it = graph.BegNI(); it != graph.EndNI(); it++) {
       int nodeId = it.GetId();
       for (unsigned int i=0; i < numSamples; i++ ){
         std::cout << nodeId << "," <<
                     (*singleCom)[i] << "," <<
-                    p[i].DijkstraRank[nodeId] <<
+                    dijkstra_rank_call_backs[i].get_dijkstra_rank()[nodeId] <<
                     ",DijkstraRank," <<
                     dist_comm[nodeId] << std::endl;
       }
   }
 
   for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
+    all_distance_sketch::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
     std::vector<int> ranking;
-    a::algo::ComputeRNN< a::graph::TUnDirectedGraph >((*singleCom)[i], &graph, &graphAds, &ranking);
+    DefaultReverseRankCallBacks< graph::TUnDirectedGraph > reverse_rank_call_backs;
+    CalculateReverseRank< all_distance_sketch::graph::TUnDirectedGraph >((*singleCom)[i], &graph, &graphAds, &ranking, &reverse_rank_call_backs);
     for (unsigned int k=0; k < ranking.size(); k++) {
       if (graph.IsNode(k) == false) {
         continue;
@@ -272,33 +276,28 @@ TEST_F(BasicGraph, EdithReport) {
 }
 
 TEST_F(BasicGraph, LiveJournalROCCurve) {
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
-  a::data::GraphADS graphAds;
-  graph.LoadGraphFromDir("/work/eng/eliavb/RNN/data/live_journal");
-  a::utils::Community com;
-  com.LoadCommunity("/work/eng/eliavb/RNN/data/live_journal_comm");
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
+  GraphSketch graphAds;
+  graph.LoadGraphFromDir("./data/live_journal");
+  utils::Community com;
+  com.LoadCommunity("./data/live_journal_comm");
   unsigned int numSamples = 10;
   long long commIndex = 4883;
-  a::utils::SingleCommunity * com1 = com.GetCommunity(commIndex);
+  utils::SingleCommunity * com1 = com.GetCommunity(commIndex);
   std::cout << "Community size=" << com1->size() << std::endl;
-  
-  {
-        // create and open an archive for input
-        std::ifstream ifs("./out/graph/state/live_journal_128");
-        boost::archive::text_iarchive ia(ifs);
-        // read class state from archive
-        ia >> graphAds;
-        // archive and stream closed when destructors are called
-  }
 
-  a::algo::DijkstraParams p[10];
+  DijkstraParams p[10];
+  DijkstraRankCallBack< graph::TUnDirectedGraph > dijkstra_rank_call_backs[10];
   for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*com1)[i]);
-    p[i].InitDijkstraParams(false, false, NULL, true);
-    a::algo::CalculateNodeAdsPrunedDijkstra< a::graph::TUnDirectedGraph >(source, &graph, &(p[i]), graph.GetMxNId());
+    all_distance_sketch::graph::TUnDirectedGraph::TNode source( (*com1)[i]);
+    PrunedDijkstra< graph::TUnDirectedGraph, DijkstraRankCallBack< graph::TUnDirectedGraph > >
+                                                                                     (source,
+                                                                                      &graph,
+                                                                                      &dijkstra_rank_call_backs[i],
+                                                                                      &p[i]);
   }
 
-  a::est::PriorVector prior;
+  PriorVector prior;
   prior.resize(numSamples);
   for (unsigned int i=0; i < numSamples; i++) {
     prior[i].nodeId = (*com1)[i];
@@ -310,12 +309,13 @@ TEST_F(BasicGraph, LiveJournalROCCurve) {
 
   CreateRocCurve("./out/graph/results/roc_curves", "_live_distance_" +std::to_string(commIndex) + "_comm", &prior, com1, &graph);
   
-  a::est::PriorVector RNNprior;
+  PriorVector RNNprior;
   RNNprior.resize(numSamples);
   for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*com1)[i]);
+    all_distance_sketch::graph::TUnDirectedGraph::TNode source( (*com1)[i]);
     std::vector<int> ranking;
-    a::algo::ComputeRNN< a::graph::TUnDirectedGraph >((*com1)[i], &graph, &graphAds, &ranking);
+    DefaultReverseRankCallBacks< graph::TUnDirectedGraph > reverse_rank_call_backs;
+    CalculateReverseRank< all_distance_sketch::graph::TUnDirectedGraph >((*com1)[i], &graph, &graphAds, &ranking, &reverse_rank_call_backs);
     RNNprior[i].nodeId = (*com1)[i];
     for (unsigned int k=0; k < ranking.size(); k++) {
       RNNprior[i].order.push_back(ranking[k]);
@@ -324,12 +324,12 @@ TEST_F(BasicGraph, LiveJournalROCCurve) {
 
   CreateRocCurve("./out/graph/results/roc_curves", "rnn_live_"+std::to_string(commIndex)+"_comm", &RNNprior, com1, &graph);
   
-  a::est::PriorVector dijkprior;
+  PriorVector dijkprior;
   dijkprior.resize(numSamples);
   for (unsigned int i=0; i < numSamples; i++) {
     prior[i].nodeId = (*com1)[i];
-    for (unsigned int k=0; k < p[i].DijkstraRank.size(); k++) {
-      dijkprior[i].order.push_back(p[i].DijkstraRank[k]);
+    for (unsigned int k=0; k < dijkstra_rank_call_backs[i].get_dijkstra_rank().size(); k++) {
+      dijkprior[i].order.push_back(dijkstra_rank_call_backs[i].get_dijkstra_rank()[k]);
     }
   }
 
@@ -338,26 +338,64 @@ TEST_F(BasicGraph, LiveJournalROCCurve) {
 }
 
 
-TEST_F(BasicGraph, ROCCurveDistance) {
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
-  graph.LoadGraphFromDir("/users/eng/eliavb/TAU/RNN/data/youtube");
-  a::utils::Community com;
-  com.LoadCommunity("/work/eng/eliavb/RNN/data/youtube_comm");
+TEST_F(BasicGraph, ROCCurveRNN) {
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
+  GraphSketch graphAds;
+  graphAds.InitGraphSketch(128, graph.GetMxNId());
+  all_distance_sketch::CalculateGraphSketch< all_distance_sketch::graph::TUnDirectedGraph >(&graph, &graphAds);
+  graphAds.CalculateAllDistanceNeighborhood();
+
+
+  PriorVector RNNprior;
   unsigned int numSamples = 10;
-  a::utils::SingleCommunity * singleCom = com.GetCommunity(COMUUNITY_INDEX);
+  RNNprior.resize(numSamples);
+
+  utils::Community com;
+  com.LoadCommunity("./data/youtube_com");
+
+  utils::SingleCommunity * singleCom = com.GetCommunity(COMUUNITY_INDEX);
+  std::cout << " community size=" << singleCom->size() << std::endl;
+
+  for (unsigned int i=0; i < numSamples; i++) {
+    all_distance_sketch::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
+    std::vector<int> ranking;
+    DefaultReverseRankCallBacks< graph::TUnDirectedGraph > reverse_rank_call_backs;
+    CalculateReverseRank< all_distance_sketch::graph::TUnDirectedGraph >((*singleCom)[i], &graph, &graphAds, &ranking, &reverse_rank_call_backs);
+    RNNprior[i].nodeId = (*singleCom)[i];
+    for (unsigned int k=0; k < ranking.size(); k++) {
+      RNNprior[i].order.push_back(ranking[k]);
+    }
+  }
+
+  CreateRocCurve("out/all_distance_sketch/experiments/results/RNN/", "rnn", &RNNprior, singleCom, &graph);
+
+}
+
+TEST_F(BasicGraph, ROCCurveDistance) {
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
+  utils::Community com;
+  com.LoadCommunity("./data/youtube_com");
+  unsigned int numSamples = 10;
+  utils::SingleCommunity * singleCom = com.GetCommunity(COMUUNITY_INDEX);
   std::cout << " community size=" << singleCom->size() << std::endl;
   /*
   Distance
   */
 
-  a::algo::DijkstraParams p[10];
+  DijkstraParams p[10];
+  DijkstraRankCallBack< graph::TUnDirectedGraph > dijkstra_rank_call_backs[10];
   for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
-    p[i].InitDijkstraParams(false);
-    a::algo::CalculateNodeAdsPrunedDijkstra< a::graph::TUnDirectedGraph >(source, &graph, &(p[i]), graph.GetMxNId());
+    all_distance_sketch::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
+    PrunedDijkstra< graph::TUnDirectedGraph, DijkstraRankCallBack< graph::TUnDirectedGraph > >
+                                                                                     (source,
+                                                                                      &graph,
+                                                                                      &dijkstra_rank_call_backs[i],
+                                                                                      &p[i]);
   }
 
-  a::est::PriorVector prior;
+  PriorVector prior;
   prior.resize(numSamples);
   for (unsigned int i=0; i < numSamples; i++) {
     prior[i].nodeId = (*singleCom)[i];
@@ -366,16 +404,16 @@ TEST_F(BasicGraph, ROCCurveDistance) {
     }
   }
 
-  CreateRocCurve("./out/graph/results/roc_curves", "distance", &prior, singleCom, &graph);
+  CreateRocCurve("./out/all_distance_sketch/experiments/", "distance", &prior, singleCom, &graph);
 }
 
 
 TEST_F(BasicGraph, ROCCurveCrossCommunity) {
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
-  a::data::GraphADS graphAds;
-  graph.LoadGraphFromDir("/users/eng/eliavb/TAU/RNN/data/youtube");
-  a::utils::Community com;
-  com.LoadCommunity("/work/eng/eliavb/RNN/data/youtube_comm");
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
+  GraphSketch graphAds;
+  graph.LoadGraphFromDir("./data/youtube");
+  utils::Community com;
+  com.LoadCommunity("./data/youtube_comm");
   unsigned int numSamples = 10;
   
   long long community1 = 7;
@@ -385,32 +423,29 @@ TEST_F(BasicGraph, ROCCurveCrossCommunity) {
   std::cout << " community1="<< community1 << " community2=" << community2 << std::endl;
   return;
   */
-  graph.LoadGraphFromDir("/users/eng/eliavb/TAU/RNN/data/youtube");
-  {
-        // create and open an archive for input
-        std::ifstream ifs("./out/graph/state/youtube_128");
-        boost::archive::text_iarchive ia(ifs);
-        // read class state from archive
-        ia >> graphAds;
-        // archive and stream closed when destructors are called
-  }
+  graph.LoadGraphFromDir("./data/youtube");
   
-  a::utils::SingleCommunity * com1 = com.GetCommunity(community1);
-  a::utils::SingleCommunity * com2 = com.GetCommunity(community2);
+  
+  utils::SingleCommunity * com1 = com.GetCommunity(community1);
+  utils::SingleCommunity * com2 = com.GetCommunity(community2);
   std::cout << " community1 size=" << com1->size() << std::endl;
   std::cout << " community2 size=" << com2->size() << std::endl;
   /*
   Distance
   */
 
-  a::algo::DijkstraParams p[10];
+  DijkstraParams p[10];
+  DijkstraRankCallBack< graph::TUnDirectedGraph > dijkstra_rank_call_backs[10];
   for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*com1)[i]);
-    p[i].InitDijkstraParams(false, false, NULL, true);
-    a::algo::CalculateNodeAdsPrunedDijkstra< a::graph::TUnDirectedGraph >(source, &graph, &(p[i]), graph.GetMxNId());
+    all_distance_sketch::graph::TUnDirectedGraph::TNode source( (*com1)[i]);
+    PrunedDijkstra< graph::TUnDirectedGraph, DijkstraRankCallBack< graph::TUnDirectedGraph > >
+                                                                                     (source,
+                                                                                      &graph,
+                                                                                      &dijkstra_rank_call_backs[i],
+                                                                                      &p[i]);
   }
 
-  a::est::PriorVector prior;
+  PriorVector prior;
   prior.resize(numSamples);
   for (unsigned int i=0; i < numSamples; i++) {
     prior[i].nodeId = (*com1)[i];
@@ -419,7 +454,7 @@ TEST_F(BasicGraph, ROCCurveCrossCommunity) {
     }
   }
 
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph2;
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph2;
   for (unsigned int i=0 ; i < com2->size(); i++) {
     graph2.AddNode((*com2)[i]);
   }
@@ -434,12 +469,13 @@ TEST_F(BasicGraph, ROCCurveCrossCommunity) {
 
   CreateRocCurve("./out/graph/results/roc_curves", "distance_" +std::to_string(community1) +"_"+std::to_string(community2)+ "_comm", &prior, com1, &graph2);
 
-  a::est::PriorVector RNNprior;
+  PriorVector RNNprior;
   RNNprior.resize(numSamples);
   for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*com1)[i]);
+    all_distance_sketch::graph::TUnDirectedGraph::TNode source( (*com1)[i]);
     std::vector<int> ranking;
-    a::algo::ComputeRNN< a::graph::TUnDirectedGraph >((*com1)[i], &graph, &graphAds, &ranking);
+    DefaultReverseRankCallBacks< graph::TUnDirectedGraph > reverse_rank_call_backs;
+    CalculateReverseRank< all_distance_sketch::graph::TUnDirectedGraph >((*com1)[i], &graph, &graphAds, &ranking, &reverse_rank_call_backs);
     RNNprior[i].nodeId = (*com1)[i];
     for (unsigned int k=0; k < ranking.size(); k++) {
       RNNprior[i].order.push_back(ranking[k]);
@@ -448,12 +484,12 @@ TEST_F(BasicGraph, ROCCurveCrossCommunity) {
 
   CreateRocCurve("./out/graph/results/roc_curves", "rnn_"+std::to_string(community1) +"_"+std::to_string(community2)+"_comm", &RNNprior, com1, &graph2);
 
-  a::est::PriorVector dijkprior;
+  PriorVector dijkprior;
   dijkprior.resize(numSamples);
   for (unsigned int i=0; i < numSamples; i++) {
     prior[i].nodeId = (*com1)[i];
-    for (unsigned int k=0; k < p[i].DijkstraRank.size(); k++) {
-      dijkprior[i].order.push_back(p[i].DijkstraRank[k]);
+    for (unsigned int k=0; k < dijkstra_rank_call_backs[i].get_dijkstra_rank().size(); k++) {
+      dijkprior[i].order.push_back(dijkstra_rank_call_backs[i].get_dijkstra_rank()[k]);
     }
   }
 
@@ -464,30 +500,34 @@ TEST_F(BasicGraph, ROCCurveCrossCommunity) {
 
 
 TEST_F(BasicGraph, ROCCurveDjkstraRank) {
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
-  graph.LoadGraphFromDir("/users/eng/eliavb/TAU/RNN/data/youtube");
-  a::utils::Community com;
-  com.LoadCommunity("/work/eng/eliavb/RNN/data/youtube_comm");
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
+  utils::Community com;
+  com.LoadCommunity("./data/youtube_comm");
   unsigned int numSamples = 10;
-  a::utils::SingleCommunity * singleCom = com.GetCommunity(COMUUNITY_INDEX);
+  utils::SingleCommunity * singleCom = com.GetCommunity(COMUUNITY_INDEX);
   std::cout << " community size=" << singleCom->size() << std::endl;
   /*
   Distance
   */
 
-  a::algo::DijkstraParams p[10];
+  DijkstraParams p[10];
+  DijkstraRankCallBack< graph::TUnDirectedGraph > dijkstra_rank_call_backs[10];
   for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
-    p[i].InitDijkstraParams(false, false, NULL, true);
-    a::algo::CalculateNodeAdsPrunedDijkstra< a::graph::TUnDirectedGraph >(source, &graph, &(p[i]), graph.GetMxNId());
+    all_distance_sketch::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
+    PrunedDijkstra< graph::TUnDirectedGraph, DijkstraRankCallBack< graph::TUnDirectedGraph > >
+                                                                                     (source,
+                                                                                      &graph,
+                                                                                      &dijkstra_rank_call_backs[i],
+                                                                                      &p[i]);
   }
 
-  a::est::PriorVector prior;
+  PriorVector prior;
   prior.resize(numSamples);
   for (unsigned int i=0; i < numSamples; i++) {
     prior[i].nodeId = (*singleCom)[i];
-    for (unsigned int k=0; k < p[i].DijkstraRank.size(); k++) {
-      prior[i].order.push_back(p[i].DijkstraRank[k]);
+    for (unsigned int k=0; k < dijkstra_rank_call_backs[i].get_dijkstra_rank().size(); k++) {
+      prior[i].order.push_back(dijkstra_rank_call_backs[i].get_dijkstra_rank()[k]);
     }
   }
 
@@ -495,45 +535,8 @@ TEST_F(BasicGraph, ROCCurveDjkstraRank) {
 }
 
 
-TEST_F(BasicGraph, ROCCurveRNN) {
-  
-
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
-  a::data::GraphADS graphAds;
-  graph.LoadGraphFromDir("/users/eng/eliavb/TAU/RNN/data/youtube");
-  {
-        // create and open an archive for input
-        std::ifstream ifs("./out/graph/state/youtube_128");
-        boost::archive::text_iarchive ia(ifs);
-        // read class state from archive
-        ia >> graphAds;
-        // archive and stream closed when destructors are called
-  }
-
-  a::est::PriorVector RNNprior;
-  unsigned int numSamples = 10;
-  RNNprior.resize(numSamples);
-
-  a::utils::Community com;
-  com.LoadCommunity("/work/eng/eliavb/RNN/data/youtube_comm");
-
-  a::utils::SingleCommunity * singleCom = com.GetCommunity(COMUUNITY_INDEX);
-  std::cout << " community size=" << singleCom->size() << std::endl;
-
-  for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
-    std::vector<int> ranking;
-    a::algo::ComputeRNN< a::graph::TUnDirectedGraph >((*singleCom)[i], &graph, &graphAds, &ranking);
-    RNNprior[i].nodeId = (*singleCom)[i];
-    for (unsigned int k=0; k < ranking.size(); k++) {
-      RNNprior[i].order.push_back(ranking[k]);
-    }
-  }
-
-  CreateRocCurve("./out/graph/results/roc_curves", "rnn", &RNNprior, singleCom, &graph);
-
-}
 #endif
+}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

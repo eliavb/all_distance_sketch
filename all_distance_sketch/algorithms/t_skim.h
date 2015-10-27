@@ -514,7 +514,7 @@ public:
     reverse_rank_call_backs_.InitTSkimReverseRankCallBacks(this->T_);
     reverse_rank_call_backs_.SetWantedNodes(this->wanted_nodes_);
     call_backs_.SetWantedNodes(this->rankees_nodes_);
-    return TSkimBase<Z>::Run(false);
+    return  TSkimBase<Z>::Run(false);
   }
 
 private:

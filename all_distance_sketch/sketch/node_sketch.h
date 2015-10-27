@@ -4,7 +4,6 @@
 #include <math.h>
 #include "../common.h"
 #include "rank_calculator.h"
-#define PROTO_BUF 0
 #if PROTO_BUF
 #include "../../out/all_distance_sketch/proto/all_distance_sketch.pb.h"
 #endif
@@ -497,8 +496,7 @@ class NodeSketch {
     /*
      * Calculate for each distance the neighborhood size.
      */
-    void CalculateAllDistanceNeighborhood(
-        const std::vector<RandomId>* node_distribution) {
+    void CalculateAllDistanceNeighborhood(const std::vector<RandomId>* node_distribution) {
         neighbourhoods_.clear();
         if (nodes_id_distance_.size() == 0) {
             return;

@@ -254,24 +254,16 @@ TEST_F(BasicGraph, LoadFiles){
  FromNodeId    ToNodeId
 */
 
-#if 0
-TEST_F(BasicGraph, ExtremeLoadFilesYoutube){
+
+TEST_F(BasicGraph, LoadFilesYoutube){
   all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
-  graph.LoadGraphFromDir("/users/eng/eliavb/TAU/RNN/data/youtube");
+  graph.LoadGraphFromDir("./data/youtube");
   // 3959
   EXPECT_EQ(graph.GetNumNodes(), 1134890);
   // 84243
   EXPECT_EQ(graph.GetNumEdges(), 2987624);
-  /*
-  all_distance_sketch::graph::TWeightMap_opt * w = graph.utGetWeightMap();
-  int n = 1;
-  std::cout << " printing node=" << n << std::endl;
-  for (unsigned int i=0; i < w->myWeights[n].size(); i++) {
-    std::cout << w->myWeights[n][i].destNId << std::endl;
-  }
-  */
 } 
-#endif
+
 
 /*
 TEST_F(BasicGraph, basicWeightMap) {

@@ -5,7 +5,7 @@
 #define __DEBUG 0
 
 
-namespace a{
+namespace all_distance_sketch {
 namespace utils{
 
 typedef std::vector<int> SingleCommunity;
@@ -46,7 +46,7 @@ public:
         int values[2] = {0, 0};
         int i = 0;
         char * pch;
-        char p[10];
+        char p[20];
         strcpy(p, line.c_str());
         pch = strtok(p, delimiter.c_str());
         while (pch != NULL) {
@@ -110,20 +110,20 @@ public:
         if ((dir = opendir (aPath.c_str())) != NULL) {
           /* print all the files and directories within directory */
           while ((ent = readdir (dir)) != NULL) {
-            if (a::utils::FileUtils::hasEnding(ent->d_name, "edges")){
+            if (utils::FileUtils::hasEnding(ent->d_name, "edges")){
                 std::string fullPath = aPath + FILE_SEPERATOR + ent->d_name;
                 std::string delimiter = " ";
-                a::utils::FileUtils::GetNodePairListFromFile(fullPath, aNodePairList, delimiter);
+                utils::FileUtils::GetNodePairListFromFile(fullPath, aNodePairList, delimiter);
             }
-            if (a::utils::FileUtils::hasEnding(ent->d_name, "txt")){
+            if (utils::FileUtils::hasEnding(ent->d_name, "txt")){
                 std::string fullPath = aPath + FILE_SEPERATOR + ent->d_name;
                 std::string delimiter = "\t";
-                a::utils::FileUtils::GetNodePairListFromFile(fullPath, aNodePairList, delimiter);
+                utils::FileUtils::GetNodePairListFromFile(fullPath, aNodePairList, delimiter);
             }
-            if (a::utils::FileUtils::hasEnding(ent->d_name, "edgelist")){
+            if (utils::FileUtils::hasEnding(ent->d_name, "edgelist")){
                 std::string fullPath = aPath + FILE_SEPERATOR + ent->d_name;
                 std::string delimiter = " ";
-                a::utils::FileUtils::GetNodePairListFromFile(fullPath, aNodePairList, delimiter);
+                utils::FileUtils::GetNodePairListFromFile(fullPath, aNodePairList, delimiter);
             }
           }
           closedir (dir);
@@ -137,19 +137,20 @@ public:
     static void GetCommunityFromDir(std::string aPath, Communities * aCommunities){
         DIR *dir;
         struct dirent *ent;
+        std::cout << aPath << std::endl;
         if ((dir = opendir (aPath.c_str())) != NULL) {
           /* print all the files and directories within directory */
           while ((ent = readdir (dir)) != NULL) {
-            if (a::utils::FileUtils::hasEnding(ent->d_name, "txt")){
+            if (utils::FileUtils::hasEnding(ent->d_name, "txt")){
                 std::string fullPath = aPath + FILE_SEPERATOR + ent->d_name;
                 std::string delimiter = "\t";
-                a::utils::FileUtils::GetCommunityFromFile(fullPath, aCommunities, delimiter);
+                utils::FileUtils::GetCommunityFromFile(fullPath, aCommunities, delimiter);
             }
           }
           closedir (dir);
         } else {
           /* could not open directory */
-          perror ("could not open directory");
+          perror ("could not open directory ");
         }
         return;
     }
@@ -202,7 +203,7 @@ public:
 class Community {
 public:
     void LoadCommunity(std::string aDirPath) {
-        a::utils::FileUtils::GetCommunityFromDir(aDirPath, &myCommun);
+        utils::FileUtils::GetCommunityFromDir(aDirPath, &myCommun);
     }
     SingleCommunity * GetCommunity(int i) {
         return &(myCommun[i]);
@@ -248,6 +249,6 @@ public:
 };
 
 } // namespace utils
-} // namespace a
+} // namespace all_distance_sketch
 
 #endif

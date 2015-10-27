@@ -13,13 +13,18 @@ class GraphSketch {
                        UniformRankCalculator* calculator = NULL,
                        const std::vector<int>* nodes_id = NULL) {
     K_ = K;
+    should_calc_z_value_ = false;
     nodes_ads_.resize(max_node_id);
     reserve_size_ = K_ * log2(max_node_id);
     prunning_thresholds_.resize(max_node_id);
     CreateNodesDistribution(max_node_id, calculator, nodes_id);
   }
 
-    int GetK() const { return K_; }
+  int GetK() const { return K_; }
+
+  void set_should_calc_zvalues(bool should_calc) {
+    should_calc_z_value_ = should_calc;
+  }
 
 #if PROTO_BUF
     bool LoadThresholdsAndRandomId(const AllDistanceSketchGpb& all_distance_sketch) {
@@ -169,9 +174,12 @@ class GraphSketch {
     bool ShouldPrune(graph::EdgeWeight distance, int node_id) {
       if (distance > prunning_thresholds_[node_id].GetDistance()) {
           return false;
-        }
-        return (distance == prunning_thresholds_[node_id].GetDistance() &&
-                nodes_ads_[node_id].HasZValue(distance));
+      }
+      if (should_calc_z_value_) {
+      return (distance == prunning_thresholds_[node_id].GetDistance() &&
+              nodes_ads_[node_id].HasZValue(distance));
+      }
+      return distance >= prunning_thresholds_[node_id].GetDistance();
     }
 
     void CalculateInsertProb(int node_id, std::vector<NodeProb> * insert_prob) {
@@ -346,6 +354,7 @@ class GraphSketch {
     }
 
     friend class boost::serialization::access;
+    bool should_calc_z_value_;
     unsigned int reserve_size_;
     unsigned int K_;
     NodesSketch nodes_ads_;

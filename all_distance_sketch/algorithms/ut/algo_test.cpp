@@ -588,7 +588,7 @@ TEST_F(AlgoGraph, ADSBasicFullDirectedGraphSketchDedicatedFunc) {
     // std::cout << " Node " << count -i << " hash=" << v[count - i] << std::endl;
   }
 
-  graphAds.InitGraphSketch(1, graph.GetMxNId());  
+  graphAds.InitGraphSketch(1, graph.GetMxNId());
   graphAds.SetNodesDistribution(&v);
   // graphAds.CreateNodesDistribution(graph.GetMxNId());
   CalculateGraphSketch< graph::TUnDirectedGraph >(&graph, &graphAds);
@@ -651,6 +651,7 @@ TEST_F(AlgoGraph, CalculateInsertProb) {
   graph.AddEdge(12 ,3); graph.AddEdge(12 ,8);
   graphAds.InitGraphSketch(k, graph.GetMxNId());
   graphAds.SetNodesDistribution(&dist);
+  graphAds.set_should_calc_zvalues(true);
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graphAds);
 
   // Node 7
@@ -721,7 +722,6 @@ TEST_F(AlgoGraph, SketchCalculationFacebookGraphApproximation) {
   graphAds.InitGraphSketch(100, graph.GetMxNId(), &uniform_rank_calculator);
   // graphAds.CreateNodesDistribution(graph.GetMxNId(), &uniform_rank_calculator);
   CalculateGraphSketch< graph::TUnDirectedGraph >(&graph, &graphAds);
-  graphAds.CalculateAllDistanceNeighborhood();
   int d = 0;
   // std::cout << "Node Id,distance,neighborhood_size,neighborhood_size_approx,delta" << std::endl;
 

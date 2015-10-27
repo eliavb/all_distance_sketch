@@ -27,7 +27,7 @@
 #include "boost/random/linear_congruential.hpp"
 
 
-
+#define PROTO_BUF 0
 
 #define NOTICE 6
 #define DEBUG1 5
