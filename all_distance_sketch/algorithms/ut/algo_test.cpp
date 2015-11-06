@@ -892,6 +892,22 @@ TEST_F(AlgoGraph, ADSCalculationFacebookGraphApproximationSearlization) {
 }
 #endif
 
+TEST_F(AlgoGraph, ADSCalculationSlashdotGraphApproximation) {
+  GraphSketch graphAds;
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
+  graphAds.InitGraphSketch(100, graph.GetMxNId());
+  CalculateGraphSketch< graph::TUnDirectedGraph >(&graph, &graphAds);
+}
+
+TEST_F(AlgoGraph, ADSCalculationMultiSlashdotGraphApproximation) {
+  GraphSketch graphAds;
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
+  graphAds.InitGraphSketch(100, graph.GetMxNId());
+  CalculateGraphSketchMultiCore< graph::TUnDirectedGraph >(&graph, &graphAds);
+}
+
 TEST_F(AlgoGraph, ADSCalculationMultiFacebookGraphApproximation) {
   std::vector<int> histo;
   histo.resize(101, 0);

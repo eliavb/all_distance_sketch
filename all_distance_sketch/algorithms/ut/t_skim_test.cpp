@@ -3,7 +3,7 @@
 
 namespace all_distance_sketch {
 
-// EXAMPLE: With a test fixture and TEST_F_Fs
+// EXAMPLE: With a test fixture and TEST_Fs
 // A test fixture is used because {TODO(eliav): put reason here}.
 class TSkimTest : public ::testing::Test {
  protected:
@@ -26,6 +26,32 @@ class TSkimTest : public ::testing::Test {
   std::string mySampleData;
 };
 
+
+TEST_F(TSkimTest, TSkimLongChain) {
+  graph::Graph< graph::TDirectedGraph > graph;
+  graph::Graph< graph::TDirectedGraph > graph_transpose;
+  int num_nodes = 100;
+  for (int i =0; i < num_nodes; ++i) {
+    graph.AddNode(i);
+  }
+  for (int i =0; i < num_nodes - 1; ++i) {
+    graph.AddEdge(i, i+1);
+  }
+  
+  Cover cover;
+  TSkim< graph::TDirectedGraph > t_skim_algo;
+  t_skim_algo.InitTSkim(101, 101, 101, &cover, &graph);
+  t_skim_algo.Run();
+
+  EXPECT_EQ(cover.Size(), 1);
+  std::vector<int> visited;
+  for (int i = 0; i < num_nodes; ++i) {
+    visited.push_back(i);
+  }
+  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(99).covered_nodes.begin()));
+}
+
+#if 1
 TEST_F(TSkimTest, CheckCover) {
   graph::Graph< graph::TDirectedGraph > graph;
   // Building a tree
@@ -137,7 +163,7 @@ TEST_F(TSkimTest, CheckBasicStarTSkim) {
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 1);
   std::vector<int> expected_cover = {0, 1, 2, 3, 4, 5};
-  EXPECT_TRUE(is_permutation(cover.GetSeedCover(0).begin(), cover.GetSeedCover(0).end(), expected_cover.begin()) );
+  EXPECT_TRUE(is_permutation(cover.GetSeedCover(0).covered_nodes.begin(), cover.GetSeedCover(0).covered_nodes.end(), expected_cover.begin()) );
 }
 
 TEST_F(TSkimTest, CheckDistancePruning) {
@@ -159,7 +185,12 @@ TEST_F(TSkimTest, CheckDistancePruning) {
                                                                 &graph,
                                                                 &call_backs,
                                                                 &param_);
-    EXPECT_TRUE(is_permutation(visited.begin(), visited.end(), call_backs.get_visited_nodes().begin()) );   
+    /*
+    for (const auto& node : visited) {
+      std::cout << node << std::endl;
+    }   
+    std::cout << "====" << std::endl;*/
+    EXPECT_TRUE(is_permutation(visited.begin(), visited.end(), call_backs.get_visited_nodes().begin()) );
   }
 }
 
@@ -200,11 +231,11 @@ TEST_F(TSkimTest, CheckBasicStarTSkim2) {
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 3);
   std::vector<int> expected_cover0 = {0, 1, 2, 3, 4, 5};
-  EXPECT_TRUE(is_permutation(cover.GetSeedCover(0).begin(), cover.GetSeedCover(0).end(), expected_cover0.begin()) );
+  EXPECT_TRUE(is_permutation(cover.GetSeedCover(0).covered_nodes.begin(), cover.GetSeedCover(0).covered_nodes.end(), expected_cover0.begin()) );
   std::vector<int> expected_cover6 = {6, 7, 8, 9};
-  EXPECT_TRUE(is_permutation(cover.GetSeedCover(6).begin(), cover.GetSeedCover(6).end(), expected_cover6.begin()) );
+  EXPECT_TRUE(is_permutation(cover.GetSeedCover(6).covered_nodes.begin(), cover.GetSeedCover(6).covered_nodes.end(), expected_cover6.begin()) );
   std::vector<int> expected_cover10 = {10};
-  EXPECT_TRUE(is_permutation(cover.GetSeedCover(10).begin(), cover.GetSeedCover(10).end(), expected_cover10.begin()) );
+  EXPECT_TRUE(is_permutation(cover.GetSeedCover(10).covered_nodes.begin(), cover.GetSeedCover(10).covered_nodes.end(), expected_cover10.begin()) );
 }
 
 TEST_F(TSkimTest, TSkimHighMinInfluenceValue) {
@@ -244,11 +275,11 @@ TEST_F(TSkimTest, TSkimHighMinInfluenceValue) {
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 3);
   std::vector<int> expected_cover0 = {0, 1, 2, 3, 4, 5};
-  EXPECT_TRUE(is_permutation(cover.GetSeedCover(0).begin(), cover.GetSeedCover(0).end(), expected_cover0.begin()) );
+  EXPECT_TRUE(is_permutation(cover.GetSeedCover(0).covered_nodes.begin(), cover.GetSeedCover(0).covered_nodes.end(), expected_cover0.begin()) );
   std::vector<int> expected_cover6 = {6, 7, 8, 9};
-  EXPECT_TRUE(is_permutation(cover.GetSeedCover(6).begin(), cover.GetSeedCover(6).end(), expected_cover6.begin()) );
+  EXPECT_TRUE(is_permutation(cover.GetSeedCover(6).covered_nodes.begin(), cover.GetSeedCover(6).covered_nodes.end(), expected_cover6.begin()) );
   std::vector<int> expected_cover10 = {10};
-  EXPECT_TRUE(is_permutation(cover.GetSeedCover(10).begin(), cover.GetSeedCover(10).end(), expected_cover10.begin()) );
+  EXPECT_TRUE(is_permutation(cover.GetSeedCover(10).covered_nodes.begin(), cover.GetSeedCover(10).covered_nodes.end(), expected_cover10.begin()) );
 }
 
 TEST_F(TSkimTest, TSkimGreedyHighMinInfluenceValue2) {
@@ -301,9 +332,9 @@ TEST_F(TSkimTest, TSkimGreedyHighMinInfluenceValue2) {
   t_skim_algo.InitTSkimGreedy(100, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
-  EXPECT_TRUE( cover.GetSeedCover(0).size() == 1 || cover.GetSeedCover(0).size() == 9 );
-  EXPECT_TRUE( cover.GetSeedCover(6).size() == 1 || cover.GetSeedCover(6).size() == 9 );
-  EXPECT_TRUE( cover.GetSeedCover(6).size() != cover.GetSeedCover(0).size() );
+  EXPECT_TRUE( cover.GetSeedCover(0).covered_nodes.size() == 1 || cover.GetSeedCover(0).covered_nodes.size() == 9 );
+  EXPECT_TRUE( cover.GetSeedCover(6).covered_nodes.size() == 1 || cover.GetSeedCover(6).covered_nodes.size() == 9 );
+  EXPECT_TRUE( cover.GetSeedCover(6).covered_nodes.size() != cover.GetSeedCover(0).covered_nodes.size() );
 }
 
 TEST_F(TSkimTest, TSkimHighMinInfluenceValue2) {
@@ -356,9 +387,9 @@ TEST_F(TSkimTest, TSkimHighMinInfluenceValue2) {
   t_skim_algo.InitTSkim(10, 64, 100, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
-  EXPECT_TRUE( cover.GetSeedCover(0).size() == 1 || cover.GetSeedCover(0).size() == 9 );
-  EXPECT_TRUE( cover.GetSeedCover(6).size() == 1 || cover.GetSeedCover(6).size() == 9 );
-  EXPECT_TRUE( cover.GetSeedCover(6).size() != cover.GetSeedCover(0).size() );
+  EXPECT_TRUE( cover.GetSeedCover(0).covered_nodes.size() == 1 || cover.GetSeedCover(0).covered_nodes.size() == 9 );
+  EXPECT_TRUE( cover.GetSeedCover(6).covered_nodes.size() == 1 || cover.GetSeedCover(6).covered_nodes.size() == 9 );
+  EXPECT_TRUE( cover.GetSeedCover(6).covered_nodes.size() != cover.GetSeedCover(0).covered_nodes.size() );
 }
 
 TEST_F(TSkimTest, TSkimHighMinInfluenceValue3) {
@@ -411,9 +442,9 @@ TEST_F(TSkimTest, TSkimHighMinInfluenceValue3) {
   t_skim_algo.InitTSkim(10, 64, 2, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
-  EXPECT_TRUE( cover.GetSeedCover(0).size() == 1 || cover.GetSeedCover(0).size() == 9 );
-  EXPECT_TRUE( cover.GetSeedCover(6).size() == 1 || cover.GetSeedCover(6).size() == 9 );
-  EXPECT_TRUE( cover.GetSeedCover(6).size() != cover.GetSeedCover(0).size() );
+  EXPECT_TRUE( cover.GetSeedCover(0).covered_nodes.size() == 1 || cover.GetSeedCover(0).covered_nodes.size() == 9 );
+  EXPECT_TRUE( cover.GetSeedCover(6).covered_nodes.size() == 1 || cover.GetSeedCover(6).covered_nodes.size() == 9 );
+  EXPECT_TRUE( cover.GetSeedCover(6).covered_nodes.size() != cover.GetSeedCover(0).covered_nodes.size() );
 }
 
 TEST_F(TSkimTest, TSkimClusters) {
@@ -446,7 +477,7 @@ TEST_F(TSkimTest, TSkimClusters) {
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
   for (auto it = cover.Begin(); it != cover.End(); ++it) {
-    EXPECT_TRUE(it->second.size() == 3);
+    EXPECT_TRUE(it->second.covered_nodes.size() == 3);
   }
 }
 
@@ -480,7 +511,7 @@ TEST_F(TSkimTest, TSkimGreedyClusters) {
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
   for (auto it = cover.Begin(); it != cover.End(); ++it) {
-    EXPECT_TRUE(it->second.size() == 3);
+    EXPECT_TRUE(it->second.covered_nodes.size() == 3);
   }
 }
 
@@ -535,6 +566,7 @@ TEST_F(TSkimTest, TSkimSelective) {
   EXPECT_EQ(cover.Size(), 1);
 }
 
+#if 1
 TEST_F(TSkimTest, TSkimSelective2) {
   graph::Graph< graph::TDirectedGraph > graph;
   graph.AddNode(0);
@@ -561,30 +593,10 @@ TEST_F(TSkimTest, TSkimSelective2) {
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 1);
   std::vector<int> visited = {0 , 1, 5};
-  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(0).begin()));
+  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(0).covered_nodes.begin()));
 }
+#endif
 
-TEST_F(TSkimTest, TSkimLongChain) {
-  graph::Graph< graph::TDirectedGraph > graph;
-  int num_nodes = 100;
-  for (int i =0; i < num_nodes; ++i) {
-    graph.AddNode(i);
-  }
-  for (int i =0; i < num_nodes - 1; ++i) {
-    graph.AddEdge(i, i+1);
-  }
-  Cover cover;
-  TSkim< graph::TDirectedGraph > t_skim_algo;
-  t_skim_algo.InitTSkim(101, 64, 101, &cover, &graph);
-  t_skim_algo.Run();
-
-  EXPECT_EQ(cover.Size(), 1);
-  std::vector<int> visited;
-  for (int i = 0; i < num_nodes; ++i) {
-    visited.push_back(i);
-  }
-  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(99).begin()));
-}
 
 TEST_F(TSkimTest, TSkimLongChainGreedy) {
   graph::Graph< graph::TDirectedGraph > graph;
@@ -605,7 +617,7 @@ TEST_F(TSkimTest, TSkimLongChainGreedy) {
   for (int i = 0; i < num_nodes; ++i) {
     visited.push_back(i);
   }
-  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(99).begin()));
+  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(99).covered_nodes.begin()));
 }
 
 TEST_F(TSkimTest, TSkimLongChain2) {
@@ -625,14 +637,14 @@ TEST_F(TSkimTest, TSkimLongChain2) {
     }
   }
 
-  TSkim< graph::TDirectedGraph > t_skim_algo;
-  t_skim_algo.InitTSkim(101, 64, 101, &cover, &graph);
+  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  t_skim_algo.InitTSkim(101, 101, 101, &cover, &graph);
   t_skim_algo.set_rankees_nodes(visited);
   t_skim_algo.set_wanted_cover_nodes(visited);
   t_skim_algo.Run();
 
   EXPECT_EQ(cover.Size(), 1);
-  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(98).begin()));
+  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(98).covered_nodes.begin()));
 }
 
 
@@ -660,36 +672,11 @@ TEST_F(TSkimTest, TSkimLongChainGreedy2) {
   t_skim_algo.Run();
 
   EXPECT_EQ(cover.Size(), 1);
-  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(98).begin()));
+  EXPECT_TRUE( std::is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(98).covered_nodes.begin()));
 }
 
 
-TEST_F(TSkimTest, TSkimFacebook) {
-  graph::Graph< graph::TDirectedGraph > graph;
-  graph.LoadGraphFromDir(GetSampleData());
-  Cover cover;
-  std::vector<int> visited;
-  for (int i = 0; i < graph.GetMxNId(); ++i) {
-    if (i % 2 == 0) {
-      if (graph.IsNode(i)) {
-        visited.push_back(i);
-      }
-    }
-  }
-  TSkim< graph::TDirectedGraph > t_skim_algo;
-  t_skim_algo.InitTSkim(101, 64, 101, &cover, &graph);
-  t_skim_algo.set_rankees_nodes(visited);
-  t_skim_algo.set_wanted_cover_nodes(visited);
-  t_skim_algo.Run();
 
-  EXPECT_TRUE(cover.Size() > 0);
-
-  for (auto it=cover.Begin(); it != cover.End(); it++) {
-    for (auto node_id : it->second) {
-      EXPECT_TRUE( node_id % 2 == 0);
-    }
-  }
-}
 
 TEST_F(TSkimTest, TSkimGreedyRankCheck) {
   graph::Graph< graph::TDirectedGraph > graph;
@@ -714,7 +701,7 @@ TEST_F(TSkimTest, TSkimGreedyRankCheck) {
   tskim_algo.InitTSkimGreedy(2, &cover, &graph);
   tskim_algo.Run();
   std::vector<int> covered = {0 , 1, 2, 3, 4, 5};
-  EXPECT_TRUE( std::is_permutation(covered.begin(), covered.end(), cover.GetSeedCover(0).begin()));
+  EXPECT_TRUE( std::is_permutation(covered.begin(), covered.end(), cover.GetSeedCover(0).covered_nodes.begin()));
 }
 
 
@@ -742,9 +729,35 @@ TEST_F(TSkimTest, TSkimReverseRankCheck) {
   tskim_algo.Run();
   // TSkim< graph::TDirectedGraph >(2, 64, 3, &cover, &graph);
   std::vector<int> covered = {0 , 1, 2, 3, 4, 5};
-  EXPECT_TRUE( std::is_permutation(covered.begin(), covered.end(), cover.GetSeedCover(0).begin()));
+  EXPECT_TRUE( std::is_permutation(covered.begin(), covered.end(), cover.GetSeedCover(0).covered_nodes.begin()));
 }
 
+TEST_F(TSkimTest, TSkimFacebook) {
+  graph::Graph< graph::TDirectedGraph > graph;
+  graph.LoadGraphFromDir(GetSampleData());
+  Cover cover;
+  std::vector<int> visited;
+  for (int i = 0; i < graph.GetMxNId(); ++i) {
+    if (i % 2 == 0) {
+      if (graph.IsNode(i)) {
+        visited.push_back(i);
+      }
+    }
+  }
+  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  t_skim_algo.InitTSkim(101, 64, 101, &cover, &graph);
+  t_skim_algo.set_rankees_nodes(visited);
+  t_skim_algo.set_wanted_cover_nodes(visited);
+  t_skim_algo.Run();
+
+  EXPECT_TRUE(cover.Size() > 0);
+
+  for (auto it=cover.Begin(); it != cover.End(); it++) {
+    for (auto node_id : it->second.covered_nodes) {
+      EXPECT_TRUE( node_id % 2 == 0);
+    }
+  }
+}
 
 TEST_F(TSkimTest, TSkimGreedyFacebook) {
   graph::Graph< graph::TDirectedGraph > graph;
@@ -765,10 +778,10 @@ TEST_F(TSkimTest, TSkimGreedyFacebook) {
   t_skim_algo.Run();
 
   for (auto it=cover.Begin(); it != cover.End(); it++) {
-    for (auto node_id : it->second) {
+    for (auto node_id : it->second.covered_nodes) {
       EXPECT_TRUE( node_id % 2 == 0);
     }
   }
 }
-
+#endif
 }  // namespace all_distance_sketch

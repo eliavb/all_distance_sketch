@@ -1,19 +1,23 @@
 #ifndef THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_
 #define THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_
 
-#include <limits.h>
 
 #include "sketch_calculation.h"
 #include "../sketch/graph_sketch.h"
 #include "../graph/graph.h"
-#include "reverse_rank.h"
+#include "./reverse_rank.h"
 
 namespace all_distance_sketch {
 
+typedef struct SeedCover_t {
+  int seed;
+  int index;
+  std::vector<int> covered_nodes;
+} SeedCover;
 
 class Cover {
   public:
-    typedef std::unordered_map< int, std::vector<int> >::iterator Iterator;
+    typedef std::unordered_map< int, SeedCover >::iterator Iterator;
 
     Cover() {
       Clear();
@@ -24,15 +28,23 @@ class Cover {
     }
     inline void AddSeed(int seed) {
       is_covered[seed] = true;
-      cover[seed] = std::vector<int>();
-      cover[seed].push_back(seed);
+      cover[seed] = SeedCover();
+      cover[seed].index = cover.size();
+      cover[seed].covered_nodes.push_back(seed);
+    }
+    inline void SetSeedEstimate(int seed, double estimate_cover_size) {
+      estimated_cover[seed] = estimate_cover_size;
+    }
+    inline double GetSeedEstimate(int seed) {
+      return estimated_cover[seed];
     }
     inline void AddNodeToSeed(int seed, int node_id) {
       is_covered[node_id] = true;
       if (cover.count(seed) == 0) {
-        cover[seed] = std::vector<int>();
+        cover[seed] = SeedCover();
+        cover[seed].index = cover.size();
       }
-      cover[seed].push_back(node_id);
+      cover[seed].covered_nodes.push_back(node_id);
     }
     inline bool IsCovered(int node_id) {
       return (is_covered.count(node_id) != 0);
@@ -40,7 +52,7 @@ class Cover {
     inline unsigned int Size() {
       return cover.size();
     }
-    inline const std::vector<int>& GetSeedCover(int seed) {
+    inline const SeedCover& GetSeedCover(int seed) {
       if (cover.count(seed) == 0) {
         return empty_cover;
       }
@@ -53,19 +65,18 @@ class Cover {
       return cover.end();
     }
   private:
-    std::vector<int> empty_cover;
-    std::unordered_map< int, std::vector<int> > cover;
+    SeedCover empty_cover;
+    std::unordered_map< int, SeedCover > cover;
     std::unordered_map< int, bool > is_covered;
+    std::unordered_map< int, double> estimated_cover;
 };
 
 
 template<class Z>
 class TSkimReverseRankCallBacks {
  public:
-  void SetWantedNodes(const std::vector<int>& nodes) {
-    for (auto node : nodes) {
-      wanted_nodes_[node] = true;
-    }
+  void SetWantedNodes(const std::unordered_map<int, bool>& nodes) {
+    wanted_nodes_ = nodes;
   }
   void InitTSkimReverseRankCallBacks(int T) {
     T_ = T;
@@ -151,10 +162,8 @@ public:
     visited_nodes_including_self_.clear();
   }
 
-  void SetWantedNodes(const std::vector<int>& nodes) {
-    for (auto node : nodes) {
-      wanted_nodes_[node] = true;
-    }
+  void SetWantedNodes(const std::unordered_map<int, bool>& nodes) {
+    wanted_nodes_ = nodes;
   }
 
   inline void Started(int source_node_id, graph::Graph<Z>* graph) {
@@ -201,10 +210,8 @@ public:
     distance_stop_ = distance_stop;
   }
 
-  void SetWantedNodes(const std::vector<int>& nodes) {
-    for (auto node : nodes) {
-      wanted_nodes_[node] = true;
-    }
+  void SetWantedNodes(const std::unordered_map<int, bool>& nodes) {
+    wanted_nodes_ = nodes;
   }
 
   inline void Started(int source_node_id, graph::Graph<Z>* graph) {
@@ -290,11 +297,63 @@ public:
   }
 
   void set_rankees_nodes(const std::vector<int>& rankees_nodes) {
-    rankees_nodes_ = rankees_nodes;
+    for (const auto& node : rankees_nodes ) {
+      rankees_nodes_[node] = true;
+    }
   }
 
   void set_wanted_cover_nodes(const std::vector<int>& wanted_cover_nodes) {
-    wanted_nodes_ = wanted_cover_nodes;
+    for (const auto& node : wanted_cover_nodes ) {
+      wanted_nodes_[node] = true;
+    }
+  }
+
+  void CalculateRankeeNodes() {
+    ExtractNodesFromGraph(&rankees_nodes_);
+  }
+
+  void CalculateRankerNodes() {
+    ExtractNodesFromGraph(&rankers_nodes_);
+  }
+
+  void CalculateWantedNodes() {
+    ExtractNodesFromGraph(&wanted_nodes_);
+  }
+
+  void CalculateRandomNodePermutation(std::vector<int>* nodes) {
+    for (int i=0; i < nodes->size(); i++) {
+      std::random_device rd;
+      std::mt19937 gen(rd());
+      std::uniform_int_distribution<> dis(i, nodes->size() - 1);
+      int swap_index = dis(gen);
+      int a = (*nodes)[i];
+      int b = (*nodes)[swap_index];
+      (*nodes)[i] = b;
+      (*nodes)[swap_index] = a;
+    }
+  }
+
+  void ExtractNodesFromGraph(std::unordered_map<int, bool>* candidates) {
+    if (candidates->size() == 0) {
+      for (auto node_itr = graph_->BegNI();  /*node_itr.HasMore()*/ node_itr != graph_->EndNI() ; node_itr++ ){
+        (*candidates)[node_itr.GetId()] = true;
+      }
+    }
+  }
+
+  void ExtractNodesFromGraph(std::vector<int>* candidates) {
+    if (candidates->size() == 0) {
+      for (auto node_itr = graph_->BegNI();  /*node_itr.HasMore()*/  node_itr != graph_->EndNI() ; node_itr++ ){
+        candidates->push_back(node_itr.GetId());
+      }
+    }
+  }
+
+  void PreRunInit() {
+    CalculateRankerNodes();
+    CalculateRankeeNodes();
+    CalculateWantedNodes();
+    CalculateRandomNodePermutation(&rankers_nodes_);
   }
 
   int UpdateCover(int seed, std::unordered_map<int, int>* influence_change, const std::vector<int>& covered_nodes) {
@@ -304,10 +363,13 @@ public:
         // Covered by a different node
         continue;
       }
-      LOG_M(DEBUG3, "Covered node= " << covered_node);
+      LOG_M(DEBUG3, "Seed=" << seed << "Covered node= " << covered_node);
       ++num_covered_nodes;
       cover_->AddNodeToSeed(seed, covered_node);
       node_influence_.erase(covered_node);
+    }
+
+    for (const auto& covered_node : covered_nodes) {
       if (reachable_nodes_.count(covered_node) == 0) {
         continue;
       }
@@ -316,7 +378,11 @@ public:
           // Covered by a different node
           continue;
         }
-        --node_influence_[reachable_node_from_covered_node];
+        LOG_M(DEBUG3, "Node " << reachable_node_from_covered_node << " reachable from " << covered_node);
+        if (influence_change->count(reachable_node_from_covered_node) == 0) {
+          (*influence_change)[reachable_node_from_covered_node] = node_influence_[reachable_node_from_covered_node];
+        }
+        node_influence_[reachable_node_from_covered_node] = node_influence_[reachable_node_from_covered_node] - 1;
       }
       reachable_nodes_.erase(covered_node);
     }
@@ -347,37 +413,6 @@ public:
     reachable_nodes_[source_node].push_back(visited_node);
   }
 
-  void ExtractNodesFromGraph(std::vector<int>* candidates) {
-    if (candidates->size() == 0) {
-      for (auto node_itr = graph_->BegNI();  /* node_itr.HasMore()*/ node_itr != graph_->EndNI() ; node_itr++ ){
-        candidates->push_back(node_itr.GetId());
-      }
-    }
-  }
-
-  void CalculateRankeeNodes() {
-    ExtractNodesFromGraph(&rankees_nodes_);
-  }
-
-  void CalculateRankerNodes() {
-    ExtractNodesFromGraph(&rankers_nodes_);
-  }
-
-  void CalculateWantedNodes() {
-    ExtractNodesFromGraph(&wanted_nodes_);
-  }
-
-  void CalculateRandomNodePermutation(std::vector<int>* nodes) {
-    std::random_shuffle (nodes->begin(), nodes->end(), random_gen_func);
-  }
-
-  void PreRunInit() {
-    CalculateRankerNodes();
-    CalculateRankeeNodes();
-    CalculateWantedNodes();
-    CalculateRandomNodePermutation(&rankers_nodes_);
-  }
-
   virtual const std::vector<int>& CalculateVisitedNodes(int source) = 0;
 
   int Run(bool ShouldRunPreRunInit = true) {
@@ -405,16 +440,16 @@ public:
       }
 
       for (const auto& seed : current_iteration_seed_set) {
-        if (cover_->IsCovered(source_node_id)) {
+        if (cover_->IsCovered(source_node_id) || node_influence_[seed] < min_influence_for_seed_) {
           continue;
         }
         std::unordered_map<int, int> influence_change;
         LOG_M(DEBUG3, "Adding Seed node =" << seed );
-        num_covered_nodes += AddSeed(seed, &influence_change);
+        double estimate_seed_cover_size = ( min_influence_for_seed_ * (static_cast<double>(rankers_nodes_.size()) / static_cast<double>(num_passed)) );
+        cover_->SetSeedEstimate(seed, estimate_seed_cover_size);
+        num_covered_nodes += AddSeed(seed, &influence_change);        
       }
     }
-
-    std::cout << std::endl;
 
     LOG_M(DEBUG3, " num covered nodes =" << num_covered_nodes <<
                   " num nodes left =" << node_influence_.size());
@@ -423,21 +458,43 @@ public:
       LOG_M(DEBUG3, "Node influence raw node =" << it->first << " Influence=" << it->second);
       heap.insert(std::make_pair(it->first, it->second));
     }
-
+    int last_cover_size = INT_MAX;
+    int last_influence = INT_MAX;
     while (!heap.empty()) {
       auto node_details = (*heap.begin());
       heap.erase(heap.begin());
       int seed = node_details.first;
+      int seed_influence = node_details.second;
+      if (seed_influence > last_influence) {
+        LOG_M(NOTICE, "Assumption failed num influence increased" <<
+                      "last influence=" << last_influence <<
+                      "current influence=" << seed_influence);
+        assert(seed_influence <= last_influence);
+      }
+      last_influence = seed_influence;
       if (cover_->IsCovered(seed)) {
         assert(node_influence_.count(seed) == 0);
         continue;
       }
-      LOG_M(DEBUG3, "Adding Seed node =" << seed << " Influence=" << node_details.second);
       std::unordered_map<int, int> influence_change;
-      num_covered_nodes += AddSeed(seed, &influence_change);
+      auto num_covered_nodes_by_seed = AddSeed(seed, &influence_change);
+      if (this->wanted_nodes_.size() == this->graph_->GetNumNodes()) {
+        assert(num_covered_nodes_by_seed == seed_influence);
+      }
+      if (num_covered_nodes_by_seed > last_cover_size && 
+          this->wanted_nodes_.size() == this->graph_->GetNumNodes())  {
+        LOG_M(NOTICE, "Assumption failed num covered nodes increased" <<
+                      " last=" << last_cover_size <<
+                      " current="<< num_covered_nodes_by_seed);
+        assert(num_covered_nodes_by_seed <= last_cover_size);
+      }
+      last_cover_size = num_covered_nodes_by_seed;
+      LOG_M(DEBUG3, "Adding Seed node =" << seed << " Influence=" << seed_influence << "covered nodes=" << num_covered_nodes_by_seed);
+      num_covered_nodes += num_covered_nodes_by_seed;
+      cover_->SetSeedEstimate(seed, num_covered_nodes_by_seed);
       for (auto change_it : influence_change) {
         heap.erase(std::make_pair(change_it.first, change_it.second));
-        heap.insert( std::make_pair(change_it.first, change_it.second));
+        heap.insert( std::make_pair(change_it.first, node_influence_[change_it.first]));
       }
     }
     return 0;
@@ -449,8 +506,8 @@ protected:
   Cover * cover_;
   graph::Graph<Z>* graph_;
   std::vector<int> rankers_nodes_;
-  std::vector<int> rankees_nodes_;
-  std::vector<int> wanted_nodes_;
+  std::unordered_map<int, bool> rankees_nodes_;
+  std::unordered_map<int, bool> wanted_nodes_;
 
   std::unordered_map<int, int> node_influence_;
   std::unordered_map<int, std::vector<int> > reachable_nodes_;
@@ -482,7 +539,7 @@ public:
                                                             graph_sketch_,
                                                             &ranking,
                                                             &reverse_rank_call_backs_);
-    LOG_M(DEBUG3, "Adding seed node= " << seed << " Cover size=" << reverse_rank_call_backs_.get_visited_nodes().size() << 
+    LOG_M(DEBUG3, "Adding seed node= " << seed << " Cover size=" << reverse_rank_call_backs_.get_visited_nodes().size() <<
                   " Cover size=" << this->cover_->Size());
     return TSkimBase<Z>::UpdateCover(seed, influence_change, reverse_rank_call_backs_.get_visited_nodes());
   }
@@ -504,13 +561,12 @@ public:
   int Run() {
     TSkimBase<Z>::PreRunInit();
     GraphSketch local_graph_sketch;
+    this->graph_->Transpose(&graph_transpose_);
     if (graph_sketch_ == NULL) {
       graph_sketch_ = &local_graph_sketch;
       graph_sketch_->InitGraphSketch(K_all_distance_sketch_, this->graph_->GetMxNId());
+      CalculateGraphSketch<Z>(&graph_transpose_, graph_sketch_);
     }
-    CalculateGraphSketch<Z>(this->graph_, graph_sketch_);
-    graph_sketch_->CalculateAllDistanceNeighborhood();
-    this->graph_->Transpose(&graph_transpose_);
     reverse_rank_call_backs_.InitTSkimReverseRankCallBacks(this->T_);
     reverse_rank_call_backs_.SetWantedNodes(this->wanted_nodes_);
     call_backs_.SetWantedNodes(this->rankees_nodes_);
@@ -575,9 +631,8 @@ public:
       graph_sketch_ = &local_graph_sketch;
       graph_sketch_->InitGraphSketch(K_all_distance_sketch_, this->graph_->GetMxNId());
     }
-    CalculateGraphSketch<Z>(this->graph_, graph_sketch_);
-    graph_sketch_->CalculateAllDistanceNeighborhood();
     this->graph_->Transpose(&graph_transpose_);
+    CalculateGraphSketch<Z>(&graph_transpose_, graph_sketch_);
     reverse_rank_call_backs_.InitTSkimReverseRankCallBacks(this->T_);
     reverse_rank_call_backs_.SetWantedNodes(this->wanted_nodes_);
     call_backs_.SetWantedNodes(this->rankees_nodes_);
@@ -619,12 +674,10 @@ public:
     LOG_M(DEBUG3, "seed node = " << seed);
     std::vector<int> convered_nodes;
     for (const auto& node: this->coveres_[seed]) {
-      for (const auto& wanted_node : this->wanted_nodes_) {
-        if (wanted_node == node) {
-          convered_nodes.push_back(node);
-          break;
-        }
+      if (this->wanted_nodes_.count(node) == 0) {
+        continue;
       }
+      convered_nodes.push_back(node);
     }
     LOG_M(DEBUG3, " Converted nodes size=" << convered_nodes.size() <<
                   " coveres_ size=" << this->coveres_[seed].size() <<
@@ -663,7 +716,6 @@ public:
             Cover * cover,
             graph::Graph<Z>* graph) {
     K_all_distance_sketch_ = K_all_distance_sketch;
-    graph_sketch_exact = NULL;
     graph_sketch_approx = NULL;
     TSkimBase<Z>::InitTSkimBase(T, min_influence_for_seed, cover, graph);
   }
@@ -671,14 +723,7 @@ public:
   int AddSeed(int seed, std::unordered_map<int, int>* influence_change) {
     LOG_M(DEBUG3, "seed node = " << seed);
     std::vector<int> ranking;
-    reverse_rank_call_backs_.PrepareForIteration();
-    CalculateReverseRank<Z, TSkimReverseRankCallBacks<Z> > (seed,
-                                                            &graph_transpose_,
-                                                            graph_sketch_exact,
-                                                            &ranking,
-                                                            &reverse_rank_call_backs_);
-    LOG_M(DEBUG3, "Adding seed node= " << seed << " Cover size=" << reverse_rank_call_backs_.get_visited_nodes().size() << 
-                  " Cover size=" << this->cover_->Size());
+    
     return TSkimBase<Z>::UpdateCover(seed, influence_change, reverse_rank_call_backs_.get_visited_nodes());
   }
 
@@ -699,26 +744,12 @@ public:
   int Run() {
     TSkimBase<Z>::PreRunInit();
     GraphSketch local_graph_sketch_approx;
-    GraphSketch local_graph_sketch_exact;
     graph_sketch_approx = &local_graph_sketch_approx;
-    graph_sketch_approx->InitGraphSketch(K_all_distance_sketch_, this->graph_->GetMxNId());
-    
-    graph_sketch_exact = &local_graph_sketch_exact;
-    graph_sketch_exact->InitGraphSketch(this->graph_->GetMxNId(), this->graph_->GetMxNId());
 
-    auto approx_d = graph_sketch_approx->GetNodesDistributionLean();
-    auto exact_d = graph_sketch_exact->GetNodesDistributionLean();
-    assert(approx_d->size() == exact_d->size());
-    for (int i=0; i < approx_d->size(); i++) {
-      assert( (*approx_d)[i] == (*exact_d)[i]);
-    }
-    _unused(exact_d);
+    graph_sketch_approx->GetNodesDistributionLean();
     
-    CalculateGraphSketch<Z>(this->graph_, graph_sketch_approx);
-    CalculateGraphSketch<Z>(this->graph_, graph_sketch_exact);
-    graph_sketch_approx->CalculateAllDistanceNeighborhood();
-    graph_sketch_exact->CalculateAllDistanceNeighborhood();
     this->graph_->Transpose(&graph_transpose_);
+    CalculateGraphSketch<Z>(&graph_transpose_, graph_sketch_approx);
     reverse_rank_call_backs_.InitTSkimReverseRankCallBacks(this->T_);
     reverse_rank_call_backs_.SetWantedNodes(this->wanted_nodes_);
     call_backs_.SetWantedNodes(this->rankees_nodes_);
@@ -728,11 +759,12 @@ public:
 private:
   int K_all_distance_sketch_;
   graph::Graph<Z> graph_transpose_;
-  GraphSketch* graph_sketch_exact;
   GraphSketch* graph_sketch_approx;
   TSkimReverseRankCallBacks<Z> reverse_rank_call_backs_;
   DijkstraParams param_;
   TSkimDijkstraCallBacksDistancePrune<Z> call_backs_;
+  std::unordered_map<int , std::set<int> > coveres;
+  std::unordered_map<int, int> exact_influence_;
 };
 
 

@@ -7,7 +7,7 @@
 namespace all_distance_sketch {
 
 template <class T, class CallBacks>
-static void CalculateReverseRank(typename T::TNode source,
+static void CalculateReverseRank(int source,
                        graph::Graph<T> * graph,
                        GraphSketch * graph_sketch,
                        std::vector<int> * ranking,
@@ -142,7 +142,6 @@ static void CalculateReverseRank(int source_node_id,
 
     LOG_M(DEBUG3, "Starting Reverse rank from node=" << source_node_id);
     call_backs->Started(source_node_id, graph);
-    double distance_last = 0;
     double rank_last = 0;
     while (!heap.empty()) {
         // Get the node with the minimum rank
@@ -151,12 +150,10 @@ static void CalculateReverseRank(int source_node_id,
         graph::EdgeWeight distance_from_source_to_visited_node = node_data.distance;
         (*ranking)[visited_node_id] = node_data.rank;
         call_backs->NodePopedFromHeap(visited_node_id, node_data);
-        LOG_M(DEBUG3, "Poped node=" << visited_node_id << " Distance=" << node_data.distance);
-        assert(distance_last <= node_data.distance);
+        LOG_M(DEBUG3, "Poped node=" << visited_node_id << " Distance=" << node_data.distance <<
+                      " Rank=" << node_data.rank);
         assert(rank_last <= node_data.rank);
-        distance_last = node_data.distance;
         rank_last = node_data.rank;
-        _unused(distance_last);
         _unused(rank_last);
         heap.erase(heap.begin());
         poped[visited_node_id] = true;
@@ -182,12 +179,9 @@ static void CalculateReverseRank(int source_node_id,
             LOG_M(DEBUG3, "edge weight between " <<
                           " visited_node_id = " << visited_node_id <<
                           " id_of_neighbor_of_visited_node = " << id_of_neighbor_of_visited_node <<
-                          " edge weight = " << (*nodeWeights)[i].get_edge_weight());
-            // relax
-            LOG_M(DEBUG5, "Node " << visited_node_id
-                        << " neighbor=" << id_of_neighbor_of_visited_node
-                        << " Distance before relax=" << distance_from_source_to_visited_node
-                        << " distance through visited_node_id=" << distance_through_u);
+                          " edge weight = " << (*nodeWeights)[i].get_edge_weight() <<
+                          " Distance before relax=" << distance_from_source_to_visited_node <<
+                          " distance through visited_node_id=" << distance_through_u);
 
             if (touced[id_of_neighbor_of_visited_node] == false || distance_through_u <  min_distance[id_of_neighbor_of_visited_node]) {
                 int rankOfSourceNode =  EstimateReverseRankUpperBound<T>(graph,

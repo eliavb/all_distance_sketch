@@ -127,6 +127,7 @@ class GraphSketch {
             return false;   
         }
 
+        CalculateAllDistanceNeighborhood();
         return true;
     }
 
