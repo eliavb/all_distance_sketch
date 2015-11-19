@@ -22,7 +22,10 @@
 #include "boost/archive/text_oarchive.hpp"
 #include "boost/archive/text_iarchive.hpp"
 #include "boost/config.hpp"
+#include "boost/random/mersenne_twister.hpp"
 #include "boost/random/uniform_real.hpp"
+#include "boost/random/uniform_real_distribution.hpp"
+#include "boost/random/uniform_int_distribution.hpp"
 #include "boost/random/variate_generator.hpp"
 #include "boost/random/linear_congruential.hpp"
 

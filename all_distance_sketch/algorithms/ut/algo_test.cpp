@@ -281,7 +281,8 @@ TEST_F(AlgoGraph, ADSBasic) {
   graphAds.SetNodesDistribution(&v);
 
   DijkstraParams param;
-  SketchDijkstraCallBacks<graph::TUnDirectedGraph> call_backs(&graphAds);
+  SketchDijkstraCallBacks<graph::TUnDirectedGraph> call_backs;
+  call_backs.InitSketchDijkstraCallBacks(&graphAds);
   CalculateNodeSketch< graph::TUnDirectedGraph >  (source,
                                                   &graph,
                                                   &call_backs,
@@ -332,7 +333,8 @@ TEST_F(AlgoGraph, ADSBasic2) {
   graphAds.SetNodesDistribution(&v);
 
   DijkstraParams param;
-  SketchDijkstraCallBacks<graph::TUnDirectedGraph> call_backs(&graphAds);
+  SketchDijkstraCallBacks<graph::TUnDirectedGraph> call_backs;
+  call_backs.InitSketchDijkstraCallBacks(&graphAds);
   CalculateNodeSketch< graph::TUnDirectedGraph >
                                                   (source,
                                                   &graph,
@@ -386,7 +388,8 @@ TEST_F(AlgoGraph, ADSBasicK2) {
   EXPECT_EQ(graph.GetEdgeWeight(2, 1).second, 1);
 
   DijkstraParams param;
-  SketchDijkstraCallBacks<graph::TUnDirectedGraph> call_backs(&graphAds);
+  SketchDijkstraCallBacks<graph::TUnDirectedGraph> call_backs;
+  call_backs.InitSketchDijkstraCallBacks(&graphAds);
   CalculateNodeSketch< graph::TUnDirectedGraph > (source,
                                                   &graph,
                                                   &call_backs,
@@ -445,7 +448,8 @@ TEST_F(AlgoGraph, ADSBasicK2Directed) {
   EXPECT_EQ(graph.GetEdgeWeight(1, 2).second, 1);
 
   DijkstraParams param;
-  SketchDijkstraCallBacks<graph::TDirectedGraph> call_backs(&graphAds);
+  SketchDijkstraCallBacks<graph::TDirectedGraph> call_backs;
+  call_backs.InitSketchDijkstraCallBacks(&graphAds);
   CalculateNodeSketch< graph::TDirectedGraph > (source,
                                                   &graph,
                                                   &call_backs,
@@ -494,7 +498,8 @@ TEST_F(AlgoGraph, ADSBasicFullGraphADS) {
   graphAds.SetNodesDistribution(&v);
   
   DijkstraParams param;
-  SketchDijkstraCallBacks<graph::TUnDirectedGraph> call_backs(&graphAds);
+  SketchDijkstraCallBacks<graph::TUnDirectedGraph> call_backs;
+  call_backs.InitSketchDijkstraCallBacks(&graphAds);
   for (int i=0; i < count; ++i){
       graph::TUnDirectedGraph::TNode source(i);
       CalculateNodeSketch< graph::TUnDirectedGraph > (source,
@@ -890,7 +895,7 @@ TEST_F(AlgoGraph, ADSCalculationFacebookGraphApproximationSearlization) {
   }
   
 }
-#endif
+
 
 TEST_F(AlgoGraph, ADSCalculationSlashdotGraphApproximation) {
   GraphSketch graphAds;
@@ -907,7 +912,7 @@ TEST_F(AlgoGraph, ADSCalculationMultiSlashdotGraphApproximation) {
   graphAds.InitGraphSketch(100, graph.GetMxNId());
   CalculateGraphSketchMultiCore< graph::TUnDirectedGraph >(&graph, &graphAds);
 }
-
+#endif
 TEST_F(AlgoGraph, ADSCalculationMultiFacebookGraphApproximation) {
   std::vector<int> histo;
   histo.resize(101, 0);
@@ -1187,3 +1192,61 @@ TEST_F(AlgoGraph, BasicRNN2) {
     }
   }
 }
+
+/*
+TEST_F(AlgoGraph, Analysis1) {
+  std::vector<int> nodes = {40, 78, 511, 368749, 3394, 480};
+  const std::string file_name = "/work/eng/eliavb/all_distance_sketch/out/all_distance_sketch/youtube_signal_compare.csv";
+  std::string del = "\t";
+  std::ofstream file(file_name);
+  file << "Name,CoverSize,Signal\n";
+  file.flush();
+  graph::Graph< graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
+  GraphSketch graph_sketch;
+  graph_sketch.InitGraphSketch(128, graph.GetMxNId());
+  CalculateGraphSketch(&graph, &graph_sketch);
+  for (int i=0; i < nodes.size(); i++) {
+    std::vector<int> ranking;
+    DefaultReverseRankCallBacks< graph::TUnDirectedGraph > reverse_rank_call_backs;
+    CalculateReverseRank< graph::TUnDirectedGraph,
+                        DefaultReverseRankCallBacks< graph::TUnDirectedGraph > > 
+                        (nodes[i],
+                        &graph,
+                        &graph_sketch,
+                        &ranking,
+                        &reverse_rank_call_backs);
+    file << "ReverseRank" + del;
+    file << std::to_string(static_cast<long long>(nodes[i]));
+    file << del;
+    std::string seperator = ",";
+    for (int j=0; j < ranking.size(); j++) {
+      if (ranking[j] == constants::UNREACHABLE) {
+        continue;
+      }
+      file << std::to_string(static_cast<long long>(ranking[j])) + seperator;
+    }
+    file << "\n";
+    file.flush();
+    graph::TUnDirectedGraph::TNode source(nodes[i]);
+    DijkstraParams param;
+    DefaultDijkstraCallBacks< graph::TUnDirectedGraph > call_backs;
+    PrunedDijkstra< graph::TUnDirectedGraph, DefaultDijkstraCallBacks< graph::TUnDirectedGraph > >
+                                                                                     (source,
+                                                                                      &graph,
+                                                                                      &call_backs,
+                                                                                      &param);
+
+    file << "Distance" + del;
+    file << std::to_string(static_cast<long long>(nodes[i]));
+    file << del;
+    for (int j=0; j < param.min_distance.size(); j++) {
+      if (param.min_distance[j] == constants::UNREACHABLE) {
+        continue;
+      }
+      file << std::to_string(static_cast<long long>(param.min_distance[j])) + seperator;
+    }
+    file << "\n";                                                                                     
+    file.flush();
+  }
+}*/

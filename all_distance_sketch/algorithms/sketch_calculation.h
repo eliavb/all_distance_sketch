@@ -79,7 +79,8 @@ static void CalculateGraphSketch(graph::Graph<T> *graph,
                                  GraphSketch * graph_sketch) {
     // The vector is sorted
     DijkstraParams param;
-    SketchDijkstraCallBacks<T> call_backs(graph_sketch);
+    SketchDijkstraCallBacks<T> call_backs;
+    call_backs.InitSketchDijkstraCallBacks(graph_sketch);
     const std::vector<NodeDistanceIdRandomIdData> * distribution = graph_sketch->GetNodesDistribution();
     for (unsigned int i=0; i < distribution->size(); i++) {
       typename T::TNode source((*distribution)[i].GetNId());
@@ -130,22 +131,24 @@ static void CalculateGraphSketchMultiCore(graph::Graph<T> *graph,
     const std::vector<NodeDistanceIdRandomIdData> * distribution = graph_sketch->GetNodesDistribution();
     std::vector<std::thread> threads;
     std::vector<DijkstraParams> params;
-    std::vector<SketchDijkstraCallBacks<T> > call_backs;
+    std::vector<SketchDijkstraCallBacks<T>* > call_backs;
+    call_backs.resize(num_threads);
     params.resize(num_threads);
     thread::ModuloLock lock;
     lock.InitModuloLock();
     thread::MessageChannel communication_channel;
     communication_channel.InitMessageChannel(num_threads);
     for (int i=0; i < num_threads; ++i) {
-      call_backs.emplace_back(graph_sketch);
-      call_backs.back().set_multi_threaded_params(true, &lock);
+      call_backs[i] = new SketchDijkstraCallBacks<T>();
+      call_backs[i]->InitSketchDijkstraCallBacks(graph_sketch);
+      call_backs[i]->set_multi_threaded_params(true, &lock);
     }
     for (unsigned int i=0; i < num_threads; i++) {
         threads.push_back( std::thread( ThreadLoop<T>,
                                        &communication_channel,
                                        graph,
                                        graph_sketch,
-                                       &(call_backs[i]),
+                                       (call_backs[i]),
                                        &(params[i]),
                                        i) );
 

@@ -22,6 +22,7 @@ class Cover {
     Cover() {
       Clear();
     }
+
     inline void Clear() {
       cover.clear();
       is_covered.clear();
@@ -297,14 +298,14 @@ public:
   }
 
   void set_rankees_nodes(const std::vector<int>& rankees_nodes) {
-    for (const auto& node : rankees_nodes ) {
-      rankees_nodes_[node] = true;
+    for (int i=0; i < rankees_nodes.size(); i++) {
+      rankees_nodes_[rankees_nodes[i]] = true;
     }
   }
 
   void set_wanted_cover_nodes(const std::vector<int>& wanted_cover_nodes) {
-    for (const auto& node : wanted_cover_nodes ) {
-      wanted_nodes_[node] = true;
+    for (int i=0; i < wanted_cover_nodes.size(); i++) {
+      wanted_nodes_[wanted_cover_nodes[i]] = true;
     }
   }
 
@@ -322,9 +323,8 @@ public:
 
   void CalculateRandomNodePermutation(std::vector<int>* nodes) {
     for (int i=0; i < nodes->size(); i++) {
-      std::random_device rd;
-      std::mt19937 gen(rd());
-      std::uniform_int_distribution<> dis(i, nodes->size() - 1);
+      boost::random::mt19937 gen;
+      boost::random::uniform_int_distribution<> dis(i, nodes->size() - 1);
       int swap_index = dis(gen);
       int a = (*nodes)[i];
       int b = (*nodes)[swap_index];
@@ -358,7 +358,8 @@ public:
 
   int UpdateCover(int seed, std::unordered_map<int, int>* influence_change, const std::vector<int>& covered_nodes) {
     int num_covered_nodes = 0;
-    for (const auto& covered_node : covered_nodes) {
+    for (int j=0; j < covered_nodes.size(); j++) {
+      int covered_node = covered_nodes[j];
       if (cover_->IsCovered(covered_node)) {
         // Covered by a different node
         continue;
@@ -369,11 +370,13 @@ public:
       node_influence_.erase(covered_node);
     }
 
-    for (const auto& covered_node : covered_nodes) {
+    for (int j=0; j < covered_nodes.size(); j++) {
+      int covered_node = covered_nodes[j];
       if (reachable_nodes_.count(covered_node) == 0) {
         continue;
       }
-      for (const auto& reachable_node_from_covered_node : reachable_nodes_[covered_node]) {
+      for (int i=0; i < reachable_nodes_[covered_node].size(); i++) {
+        int reachable_node_from_covered_node = reachable_nodes_[covered_node][i];
         if (cover_->IsCovered(reachable_node_from_covered_node)) {
           // Covered by a different node
           continue;
@@ -422,7 +425,8 @@ public:
     int num_covered_nodes = 0;
     // Itrating the permutation of nodes
     int num_passed = 0;
-    for (const auto& source_node_id : rankers_nodes_) {
+    for (int i=0; i < rankers_nodes_.size(); i++) {
+      int source_node_id = rankers_nodes_[i];
       // std::cout << "\r" << num_passed  << "/" << rankers_nodes_.size();
       ++num_passed;
       if (cover_->IsCovered(source_node_id)) {
@@ -431,7 +435,8 @@ public:
       LOG_M(DEBUG3, "Iterating permutation, current node = " << source_node_id);
       std::vector<int> current_iteration_seed_set;
       const std::vector<int>& visited_nodes = CalculateVisitedNodes(source_node_id);
-      for (const auto& visited_node : visited_nodes) {
+      for (int i=0; i < visited_nodes.size(); i++) {
+        int visited_node = visited_nodes[i];
         LOG_M(DEBUG3, "visited node = " << visited_node);
         if (cover_->IsCovered(visited_node)) {
           continue;
@@ -439,7 +444,8 @@ public:
         UpdateInfluceAndSeedSet(source_node_id, visited_node, &current_iteration_seed_set);
       }
 
-      for (const auto& seed : current_iteration_seed_set) {
+      for (int i=0; i <current_iteration_seed_set.size(); i++) {
+        int seed = current_iteration_seed_set[i];
         if (cover_->IsCovered(source_node_id) || node_influence_[seed] < min_influence_for_seed_) {
           continue;
         }
@@ -492,9 +498,11 @@ public:
       LOG_M(DEBUG3, "Adding Seed node =" << seed << " Influence=" << seed_influence << "covered nodes=" << num_covered_nodes_by_seed);
       num_covered_nodes += num_covered_nodes_by_seed;
       cover_->SetSeedEstimate(seed, num_covered_nodes_by_seed);
-      for (auto change_it : influence_change) {
-        heap.erase(std::make_pair(change_it.first, change_it.second));
-        heap.insert( std::make_pair(change_it.first, node_influence_[change_it.first]));
+      for (std::unordered_map<int, int>::iterator change_it = influence_change.begin();
+          change_it != influence_change.end();
+          change_it++) {
+        heap.erase(std::make_pair(change_it->first, change_it->second));
+        heap.insert( std::make_pair(change_it->first, node_influence_[change_it->first]));
       }
     }
     return 0;
@@ -673,7 +681,8 @@ public:
   int AddSeed(int seed, std::unordered_map<int, int>* influence_change) {
     LOG_M(DEBUG3, "seed node = " << seed);
     std::vector<int> convered_nodes;
-    for (const auto& node: this->coveres_[seed]) {
+    for (int i=0; i< this->coveres_[seed].size(); i++) {
+      int node = this->coveres_[seed][i];
       if (this->wanted_nodes_.count(node) == 0) {
         continue;
       }

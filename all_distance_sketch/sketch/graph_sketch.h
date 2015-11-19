@@ -80,7 +80,8 @@ class GraphSketch {
             // Init the NodeSketch
             nodes_ads_[node_id].InitNodeSketch(K_, node_id, node_random_id,
                                                &prunning_thresholds_,
-                                               reserve_size_);
+                                               reserve_size_,
+                                               should_calc_z_value_);
 
             // Load All nodes in the sketch
             for (int k=0; 
@@ -174,7 +175,7 @@ class GraphSketch {
 #endif
     bool ShouldPrune(graph::EdgeWeight distance, int node_id) {
       if (distance > prunning_thresholds_[node_id].GetDistance()) {
-          return false;
+          return true;
       }
       if (should_calc_z_value_) {
       return (distance == prunning_thresholds_[node_id].GetDistance() &&
@@ -202,7 +203,7 @@ class GraphSketch {
         if (nodes_ads_[node_details.GetNodeId()].IsInit() == false) {
           nodes_ads_[node_details.GetNodeId()].InitNodeSketch(
               K_, node_details.GetNodeId(), node_details.GetRandomId(),
-              &prunning_thresholds_, reserve_size_);
+              &prunning_thresholds_, reserve_size_, should_calc_z_value_);
         }
         return &nodes_ads_[node_details.GetNodeId()];
     }

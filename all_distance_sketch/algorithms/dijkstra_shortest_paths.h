@@ -101,8 +101,14 @@ private:
 template<class T>
 class SketchDijkstraCallBacks {
 public:
-  SketchDijkstraCallBacks(GraphSketch* graph_sketch) : graph_sketch_(graph_sketch), is_multi_threaded_(false),
-                              should_calculate_dijkstra_rank_(false), sketch_lock_(NULL), stop_after_(-1) {}
+  void InitSketchDijkstraCallBacks(GraphSketch* graph_sketch) { 
+    graph_sketch_ = graph_sketch;
+    is_multi_threaded_ = false;
+    should_calculate_dijkstra_rank_ = false;
+    sketch_lock_ = NULL;
+    stop_after_ = -1;
+    algo_statistics_.Clear();
+  }                             
 
   void set_multi_threaded_params(bool multi_threaded_run, thread::ModuloLock * lock) {
     is_multi_threaded_ = multi_threaded_run;
@@ -158,6 +164,7 @@ public:
       ++algo_statistics_.num_pruned_nodes;
       return true;
     }
+
     return should_prune;
   }
 
@@ -170,6 +177,10 @@ public:
   
   inline void RelaxedPath(int node_id) {
     ++algo_statistics_.num_relaxed_edges;
+  }
+
+  inline int get_num_pruned_nodes() {
+    return algo_statistics_.num_pruned_nodes;
   }
 private:
   GraphSketch * graph_sketch_;
@@ -198,7 +209,6 @@ static void PrunedDijkstra(typename T::TNode source,
   param->touched.resize(max_node_id, false);
   call_backs->Started(source_node_id, graph);
 
-  param->min_distance.clear();
   param->min_distance.resize(max_node_id, constants::UNREACHABLE);
   param->min_distance[source.GetId()] = 0;
   param->heap.clear();

@@ -225,13 +225,15 @@ class NodeSketch {
   void InitNodeSketch(
       int K, int node_id, RandomId random_id,
       std::vector<PrunningThreshold>* prunning_thresholds = NULL,
-      unsigned int reserve_size = 1) {
+      unsigned int reserve_size = 1,
+      bool should_calc_z_value = false) {
     K_ = K;
     node_id_ = node_id;
     random_id_ = random_id;
     was_init_ = true;
     nodes_id_distance_.clear();
     prunning_thresholds_ = prunning_thresholds;
+    should_calc_z_value_ = should_calc_z_value;
     }
 
     bool IsInit() const { return was_init_; }
@@ -263,24 +265,25 @@ class NodeSketch {
                       bool* is_zvalue) {
       NodeIdDistanceVector::reverse_iterator it_k =
           nodes_id_distance_.rbegin() + (K_ - 1);
+      
       if (node_details.GetDistance() > it_k->GetDistance()) {
         (*is_zvalue) = false;
         (*should_insert) = false;
             return;
+      }
+      if (node_details.GetDistance() == it_k->GetDistance()) {
+        if (z_values_.find(node_details.GetDistance()) != z_values_.end()) {
+          (*should_insert) = false;
+          (*is_zvalue) = false;
+        } else {
+          (*should_insert) = false;
+          (*is_zvalue) = true;
         }
-        if (node_details.GetDistance() == it_k->GetDistance()) {
-          if (z_values_.find(node_details.GetDistance()) != z_values_.end()) {
-            (*should_insert) = false;
-            (*is_zvalue) = false;
-            } else {
-              (*should_insert) = false;
-              (*is_zvalue) = true;
-            }
-            return;
-        }
-        (*should_insert) = true;
-        (*is_zvalue) = false;
         return;
+      }
+      (*should_insert) = true;
+      (*is_zvalue) = false;
+      return;
     }
 
     bool Add(NodeIdDistanceData node_details) {
@@ -710,6 +713,7 @@ class NodeSketch {
     friend class boost::serialization::access;
     friend class GraphSketch;
     bool was_init_;
+    bool should_calc_z_value_;
     unsigned int K_;
     int node_id_;
     RandomId random_id_;

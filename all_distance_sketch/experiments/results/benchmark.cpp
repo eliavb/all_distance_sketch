@@ -1,16 +1,20 @@
 #include <limits.h>
 #include <string>
+#include "../../common.h"
 #include "../../gtest/include/gtest/gtest.h"
-#include "../algo.h"
-#include "../estimator.h"
-#include "../snap_adaptor.h"
+#include "../../algorithms/dijkstra_shortest_paths.h"
+#include "../../algorithms/sketch_calculation.h"
+#include "../../algorithms/reverse_rank.h"
+// #include "../estimator.h"
+#include "../../graph/snap_graph_adaptor.h"
+
+namespace all_distance_sketch {
 
 static std::ofstream myfile;
 
 typedef std::vector<int>  RandomNodes;
 
-namespace a {
-  class DataSetDetails {
+class DataSetDetails {
   public:
     bool isDirected;
     std::string dirPath;
@@ -24,12 +28,12 @@ namespace a {
       numSamples = aNumSamples;
       name = aName;
     }
-  };
-}
+};
+
 
 
 template<class T>
-RandomNodes * GetRandomNodes(a::DataSetDetails * dataSet, a::graph::Graph< T > * aGraph) {
+RandomNodes * GetRandomNodes(DataSetDetails * dataSet, graph::Graph< T > * aGraph) {
   if (dataSet->randomNodes.size() == dataSet->numSamples) {
     return &dataSet->randomNodes;
   }
@@ -52,7 +56,7 @@ RandomNodes * GetRandomNodes(a::DataSetDetails * dataSet, a::graph::Graph< T > *
   return &dataSet->randomNodes;
 }
 
-static std::vector<a::DataSetDetails > dataSetDetails;
+static std::vector<DataSetDetails > dataSetDetails;
 static std::vector<int> KValues;
 class BasicGraph : public ::testing::Test {
  protected:
@@ -65,11 +69,11 @@ class BasicGraph : public ::testing::Test {
     int numSamples = 1000;
     dataSetDetails.resize(5);
     
-    dataSetDetails[0].InitDataSetDetails(false, "../../data/facebook", numSamples, "facebook");
-    dataSetDetails[1].InitDataSetDetails(true, "../../data/slashdot", numSamples, "slashdot");
-    dataSetDetails[2].InitDataSetDetails(true, "../../data/tweeter", numSamples, "tweeter");
-    dataSetDetails[3].InitDataSetDetails(false, "../../data/youtube", numSamples, "youtube");
-    dataSetDetails[4].InitDataSetDetails(false, "../../data/live_journal", numSamples, "live_journal");
+    dataSetDetails[0].InitDataSetDetails(false, "./data/facebook", numSamples, "facebook");
+    dataSetDetails[1].InitDataSetDetails(true, "./data/slashdot", numSamples, "slashdot");
+    dataSetDetails[2].InitDataSetDetails(true, "./data/tweeter", numSamples, "tweeter");
+    dataSetDetails[3].InitDataSetDetails(false, "./data/youtube", numSamples, "youtube");
+    dataSetDetails[4].InitDataSetDetails(false, "./data/live_journal", numSamples, "live_journal");
     
     // dataSetDetails[0].InitDataSetDetails(false, "../../data/live_journal", numSamples);
     
@@ -118,13 +122,13 @@ long long GetCurrentTimeMilliSec() {
 #if 0
 template <class T>
 void SearlizeADSCalculation(std::string aDirPath, unsigned int k, std::string fileName) {
-  a::graph::Graph< T > graph;
-  a::data::GraphADS graphAds;
+  graph::Graph< T > graph;
+  datgraphADS graphAds;
   graph.LoadGraphFromDir(aDirPath);
   graphAds.initGraphADS(k, graph.GetMxNId());
   graphAds.CreateNodesDistribution(graph.GetMxNId());
-  a::algo::ADSStats stats;  
-  a::algo::CalculateGraphADS<T>(&graph, &graphAds);
+  algo::ADSStats stats;  
+  algo::CalculateGraphADS<T>(&graph, &graphAds);
   graphAds.CalculateAllDistanceNeighborhood();
   std::ofstream ofs(fileName);
   {
@@ -136,7 +140,7 @@ void SearlizeADSCalculation(std::string aDirPath, unsigned int k, std::string fi
 
 
 template <class T>
-void LoadGraph(a::graph::Graph< T > * graph, a::data::GraphADS * aGraphAds, std::string aDirPath, int k, std::string fileName) {
+void LoadGraph(graph::Graph< T > * graph, datgraphADS * aGraphAds, std::string aDirPath, int k, std::string fileName) {
   graph->LoadGraphFromDir(aDirPath);
   aGraphAds->initGraphADS(k, graph->GetMxNId());
   {
@@ -148,54 +152,12 @@ void LoadGraph(a::graph::Graph< T > * graph, a::data::GraphADS * aGraphAds, std:
 }
 #endif 
 
-template <class T>
-void BanchMarkDataSetADSCalculation(std::string aDirPath, int k, std::ostream * f = (&std::cout),  a::DataSetDetails * aDetails = NULL) {
-  std::cout << " k= " << k << std::endl;
-  (*f)  << aDirPath << "," << k << ",";
-  /*
-  Part 1 build the graph
-  */
-  long long mslongBefore = GetCurrentTimeMilliSec();
-  
-  a::graph::Graph< T > graph;
-  a::data::GraphADS graphAds;
-  graph.LoadGraphFromDir(aDirPath);
-  graphAds.initGraphADS(k, graph.GetMxNId());
-  graphAds.CreateNodesDistribution(graph.GetMxNId());
-  a::algo::ADSStats stats;
-  
-  long long mslongAfter = GetCurrentTimeMilliSec();
-  long long graphTime = mslongAfter - mslongBefore;
-  (*f) <<  graphTime << ", " ;
-  (*f) << graph.GetNumNodes() << ", " << graph.GetNumEdges() << ", " ;
-  
-
-  /*
-  Part 2 compute the ADS
-  */
-  mslongBefore = GetCurrentTimeMilliSec();
-  // int numVMUsed;
-  // int numRSSUsed;
-  a::algo::RunTimeResourcesStats resources;
-  a::algo::CalculateGraphADS<T>(&graph, &graphAds, &stats, &resources);
-
-  mslongAfter = GetCurrentTimeMilliSec();
-  
-  (*f) << "ADS=" << mslongAfter - mslongBefore << ",";
-  // (*f) << numVMUsed << "," << numRSSUsed  << ",";
-  /*
-  Part 3 compute all the distances
-  */
-  mslongBefore = GetCurrentTimeMilliSec();
-  graphAds.CalculateAllDistanceNeighborhood();
-  mslongAfter = GetCurrentTimeMilliSec();
-  (*f) << mslongAfter - mslongBefore << std::endl;
-
-}
 
 template <class T>
-void ComputeRNNSamples(a::graph::Graph< T > * graph, a::data::GraphADS * aGraphAds, std::string aDirPath, int k, a::DataSetDetails * aDetails, std::ostream * f = (&std::cout)) {
-  (*f)  << aDirPath << "," << k << ",";
+void ComputeReverseRankSamples(graph::Graph< T > * graph,
+                      GraphSketch * aGraphAds,
+                      DataSetDetails * aDetails,
+                      std::ostream * f = (&std::cout)) {
   long long mslongBefore, mslongAfter;
   unsigned int numSamples = 0;
   mslongBefore = GetCurrentTimeMilliSec();
@@ -207,7 +169,8 @@ void ComputeRNNSamples(a::graph::Graph< T > * graph, a::data::GraphADS * aGraphA
         continue;
     }
     numSamples += 1;
-    a::algo::ComputeRNN<T>(node, graph, aGraphAds, &ranking);
+    DefaultReverseRankCallBacks< T > reverse_rank_call_backs;
+    CalculateReverseRank<T, DefaultReverseRankCallBacks< T > >(node, graph, aGraphAds, &ranking, &reverse_rank_call_backs);
   }  
   
   
@@ -215,15 +178,141 @@ void ComputeRNNSamples(a::graph::Graph< T > * graph, a::data::GraphADS * aGraphA
   double timePerRequest = 0;
   timePerRequest = (double )(mslongAfter - mslongBefore) / numSamples;  
   
-  (*f) << mslongAfter - mslongBefore << ","  << timePerRequest << std::endl;
+  (*f) << mslongAfter - mslongBefore << ","  << timePerRequest;
 }
 
+
 template <class T>
-void BanchMarkDataSetDijkstraUpToK(std::string aDirPath, int whenToStop, bool shouldUseRandomNodes = false, a::DataSetDetails * aDetails = NULL) {
+void BanchMarkDataSetADSCalculation(std::string aDirPath,
+                                   int k,
+                                   std::ostream * f = (&std::cout), 
+                                   DataSetDetails * aDetails = NULL) {
+  std::cout << " k= " << k << std::endl;
+  (*f)  << aDirPath << "," << k << ",";
+  /*
+  Part 1 build the graph
+  */
   long long mslongBefore = GetCurrentTimeMilliSec();
   
-  a::graph::Graph< T > graph;
-  a::data::GraphADS graphAds;
+  graph::Graph< T > graph;
+  GraphSketch graphAds;
+  graph.LoadGraphFromDir(aDirPath);
+  graphAds.InitGraphSketch(k, graph.GetMxNId());
+  // graphAds.CreateNodesDistribution(graph.GetMxNId());
+  
+  long long mslongAfter = GetCurrentTimeMilliSec();
+  long long graphTime = mslongAfter - mslongBefore;
+  (*f) <<  graphTime << ", " ;
+  (*f) << graph.GetNumNodes() << ", " << graph.GetNumEdges() << ", " ;
+  
+
+  /*
+  Part 2 compute the ADS
+  */
+  mslongBefore = GetCurrentTimeMilliSec();
+  CalculateGraphSketch<T>(&graph, &graphAds);
+  mslongAfter = GetCurrentTimeMilliSec();
+  (*f) << mslongAfter - mslongBefore << ",";
+  
+  mslongBefore = GetCurrentTimeMilliSec();
+  graphAds.CalculateAllDistanceNeighborhood();
+  mslongAfter = GetCurrentTimeMilliSec();
+  
+
+  (*f) << mslongAfter - mslongBefore << ",";
+
+  mslongBefore = GetCurrentTimeMilliSec();
+  ComputeReverseRankSamples<T>(&graph, &graphAds, aDetails, f);
+  mslongAfter = GetCurrentTimeMilliSec();
+  (*f) << mslongAfter - mslongBefore << std::endl;
+
+}
+
+TEST_F(BasicGraph, BenchMarkAll) {
+  struct timeval tp;
+  gettimeofday(&tp, NULL);
+  long long timeStamp = (long long) tp.tv_sec * 1000L + tp.tv_usec / 1000;
+  std::string fileName = "./out/all_distance_sketch/result/result_" + std::to_string(timeStamp) + ".csv";
+  std::ofstream f;
+  f.open(fileName);
+  f << "dataset, K, timeToLoadGraphMilliSec, numNodes, numEdges, timeToCalculateADSMilliSec, VMUsedKB, RSSUsedKB, timeToCalculateDistancesMilliSec, timePerRNNComputationMilliSec" << std::endl;
+  int K[] = {16, 64, 128};
+  for (volatile unsigned int i=0; i < 3; i++) {
+      int k = K[i];
+      for (volatile unsigned int j=0; j < dataSetDetails.size(); j++) {
+        std::cout << dataSetDetails[j].dirPath << std::endl;
+        if (dataSetDetails[j].isDirected) {
+          BanchMarkDataSetADSCalculation< graph::TDirectedGraph >( dataSetDetails[j].dirPath,
+                                                                        k,
+                                                                        &f,
+                                                                        &dataSetDetails[j]);
+        } else {
+          BanchMarkDataSetADSCalculation< graph::TUnDirectedGraph >( dataSetDetails[j].dirPath,
+                                                                          k,
+                                                                          &f,
+                                                                          &dataSetDetails[j]);
+        }
+
+      }
+  }
+  f.close();
+}
+
+
+template <class T>
+void BanchMarkDataSetMultiADSCalculation(std::string aDirPath, int k, int aNumThreads, std::ostream * f = (&std::cout), double factor = 1.1) {
+  (*f)  << aDirPath << "," << k << ",";
+  /*
+  Part 1 build the graph
+  */
+  long long mslongBefore = GetCurrentTimeMilliSec();
+  
+  graph::Graph< T > graph;
+  GraphSketch graphAds;
+  graph.LoadGraphFromDir(aDirPath);
+  graphAds.InitGraphSketch(k, graph.GetMxNId());
+  
+  long long mslongAfter = GetCurrentTimeMilliSec();
+  long long graphTime = mslongAfter - mslongBefore;
+  (*f) <<  graphTime ;
+  (*f) << "," << graph.GetNumNodes() << "," <<  graph.GetNumEdges() << ",";
+  /*
+  Part 2 compute the ADS
+  */
+  mslongBefore = GetCurrentTimeMilliSec();
+  CalculateGraphSketchMultiCore< T >(&graph, &graphAds, aNumThreads);
+  mslongAfter = GetCurrentTimeMilliSec();
+  
+  (*f) << mslongAfter - mslongBefore << ",";
+  (*f) << aNumThreads << "," <<  factor << std::endl;
+  
+}
+
+
+TEST_F(BasicGraph, BenchMarkMultiADS) {
+  std::ofstream f;
+  f.open("./out/all_distance_sketch/result/threads_performance.csv");
+  f << "data,K,graphTime,nodes,edges,ADSCalcTime,Threads" <<std::endl;
+  for (unsigned int j=0; j < 1 /*dataSetDetails.size()*/; j++) {
+    std::string dataSet = dataSetDetails[j].dirPath;
+    for (unsigned int i=1; i < 15; i++) {   
+      if (dataSetDetails[j].isDirected) {
+      BanchMarkDataSetMultiADSCalculation< graph::TDirectedGraph >(dataSet, 16, i, &f);
+      } else {
+      BanchMarkDataSetMultiADSCalculation< graph::TUnDirectedGraph >(dataSet, 16, i, &f);
+      }  
+    }
+  }
+  f.close();
+}
+
+#if 0
+template <class T>
+void BanchMarkDataSetDijkstraUpToK(std::string aDirPath, int whenToStop, bool shouldUseRandomNodes = false, DataSetDetails * aDetails = NULL) {
+  long long mslongBefore = GetCurrentTimeMilliSec();
+  
+  graph::Graph< T > graph;
+  data::GraphADS graphAds;
   graph.LoadGraphFromDir(aDirPath);
   
   long long mslongAfter = GetCurrentTimeMilliSec();
@@ -232,7 +321,7 @@ void BanchMarkDataSetDijkstraUpToK(std::string aDirPath, int whenToStop, bool sh
   */
   std::cout << "finished loading the graph " << std::endl;
   mslongBefore = GetCurrentTimeMilliSec();
-  a::algo::DijkstraParams p;
+  algo::DijkstraParams p;
   unsigned int numNodesRan = 0;
   RandomNodes * randomNodes = NULL;
   if (aDetails != NULL) {
@@ -246,7 +335,7 @@ void BanchMarkDataSetDijkstraUpToK(std::string aDirPath, int whenToStop, bool sh
     }
     typename T::TNode source(nodeId);
     p.InitDijkstraParams(false);
-    a::algo::CalculateNodeAdsPrunedDijkstra< T >(source, &graph, &p, graph.GetMxNId(), NULL, NULL, whenToStop);  
+    algo::CalculateNodeAdsPrunedDijkstra< T >(source, &graph, &p, graph.GetMxNId(), NULL, NULL, whenToStop);  
     numNodesRan++;
     if (shouldUseRandomNodes && numNodesRan == randomNodes->size()) {
       break;
@@ -262,60 +351,27 @@ void BanchMarkDataSetDijkstraUpToK(std::string aDirPath, int whenToStop, bool sh
 }
 
 
-template <class T>
-void BanchMarkDataSetMultiADSCalculation(std::string aDirPath, int k, int aNumThreads, std::ostream * f = (&std::cout), double factor = 1.1) {
-  (*f)  << aDirPath << "," << k << ",";
-  /*
-  Part 1 build the graph
-  */
-  long long mslongBefore = GetCurrentTimeMilliSec();
-  
-  a::graph::Graph< T > graph;
-  a::data::GraphADS graphAds;
-  graph.LoadGraphFromDir(aDirPath);
-  graphAds.initGraphADS(k, graph.GetMxNId());
-  graphAds.CreateNodesDistribution(graph.GetMxNId());
-  a::algo::ADSStats stats;
-  
-  long long mslongAfter = GetCurrentTimeMilliSec();
-  long long graphTime = mslongAfter - mslongBefore;
-  (*f) <<  graphTime ;
-  (*f) << "," << graph.GetNumNodes() << "," <<  graph.GetNumEdges() << ",";
-  /*
-  Part 2 compute the ADS
-  */
-  mslongBefore = GetCurrentTimeMilliSec();
-  a::algo::RunTimeResourcesStats resources;
-  a::algo::CalculateGraphADSMulti< T >(&graph, &graphAds, aNumThreads, factor, NULL, &resources);
-
-  mslongAfter = GetCurrentTimeMilliSec();
-  
-  (*f) << mslongAfter - mslongBefore << ",";
-  (*f) << aNumThreads << "," << resources.numVMUsed << "," << resources.numRSSUsed  << "," <<  factor << std::endl;
-  
-}
-
 template<class T>
 void ADSCalculationApproximationCheck(std::string aDirPath,
                                       int k,
                                       bool directed,
-                                      a::DataSetDetails * aDetails,
+                                      DataSetDetails * aDetails,
                                       std::ostream * f = (&std::cout)) {
   std::vector<int> histo;
   histo.resize(101, 0);
   int numCompared = 0;
   bool transpose = directed == true;
   
-  a::graph::Graph< T > graphTranspose;
-  a::data::GraphADS graphAds;
+  graph::Graph< T > graphTranspose;
+  data::GraphADS graphAds;
   graphTranspose.LoadGraphFromDir(aDirPath, transpose);
   graphAds.initGraphADS(k, graphTranspose.GetMxNId());
   graphAds.CreateNodesDistribution(graphTranspose.GetMxNId());
-  a::algo::CalculateGraphADS<T>(&graphTranspose, &graphAds);
+  algo::CalculateGraphADS<T>(&graphTranspose, &graphAds);
   graphAds.CalculateAllDistanceNeighborhood();
 
   
-  a::graph::Graph< T > graph;
+  graph::Graph< T > graph;
   graph.LoadGraphFromDir(aDirPath);
   
   int d = 0;
@@ -327,23 +383,23 @@ void ADSCalculationApproximationCheck(std::string aDirPath,
   for (unsigned z=0; z < randomNodes->size(); z++) {
     numSampled++;
     int nodeId = (*randomNodes)[z];
-    a::algo::DijkstraParams param;
+    algo::DijkstraParams param;
     param.InitDijkstraParams(false);
     typename T::TNode source(nodeId);
-    a::algo::CalculateNodeAdsPrunedDijkstra< T >( source,
+    algo::CalculateNodeAdsPrunedDijkstra< T >( source,
                                           &graph,
                                           &param,
                                           graph.GetMxNId());
     
-    a::graph::edge_weight_t max_distance = 0;
+    graph::edge_weight_t max_distance = 0;
     for (unsigned int i =0 ; i < param.min_distance.size(); i++){
-      if (param.min_distance[i] != a::Constants::UNREACHABLE){
+      if (param.min_distance[i] != Constants::UNREACHABLE){
         max_distance = max_distance > param.min_distance[i] ? max_distance : param.min_distance[i];
       }
     }
 
-    a::data::NodeIdAdsData sourceDetails(nodeId, graphAds.GetNodeRandomId(nodeId));
-    a::data::ADS * nodeAds = graphAds.GetNodeADS(sourceDetails);
+    data::NodeIdAdsData sourceDetails(nodeId, graphAds.GetNodeRandomId(nodeId));
+    data::ADS * nodeAds = graphAds.GetNodeADS(sourceDetails);
 
     for (unsigned int i = 0; i < max_distance; i++){
       int num_neighbors = 0;
@@ -386,35 +442,7 @@ void ADSCalculationApproximationCheck(std::string aDirPath,
   
 }
 
-TEST_F(BasicGraph, BenchMarkAll) {
-  struct timeval tp;
-  gettimeofday(&tp, NULL);
-  long long timeStamp = (long long) tp.tv_sec * 1000L + tp.tv_usec / 1000;
-  std::string fileName = "./out/graph/results/result_" + std::to_string(timeStamp) + ".csv";
-  std::ofstream f;
-  f.open(fileName);
-  f << "dataset, K, timeToLoadGraphMilliSec, numNodes, numEdges, timeToCalculateADSMilliSec, VMUsedKB, RSSUsedKB, timeToCalculateDistancesMilliSec, timePerRNNComputationMilliSec" << std::endl;
-  int K[] = {16, 64, 128};
-  for (volatile unsigned int i=0; i < 3; i++) {
-      int k = K[i];
-      for (volatile unsigned int j=0; j < dataSetDetails.size(); j++) {
-        std::cout << dataSetDetails[j].dirPath << std::endl;
-        if (dataSetDetails[j].isDirected) {
-          ::BanchMarkDataSetADSCalculation< a::graph::TDirectedGraph >( dataSetDetails[j].dirPath,
-                                                                        k,
-                                                                        &f,
-                                                                        &dataSetDetails[j]);
-        } else {
-          ::BanchMarkDataSetADSCalculation< a::graph::TUnDirectedGraph >( dataSetDetails[j].dirPath,
-                                                                          k,
-                                                                          &f,
-                                                                          &dataSetDetails[j]);
-        }
 
-      }
-  }
-  f.close();
-}
 
 
 TEST_F(BasicGraph, BenchMarkExactAll) {
@@ -423,9 +451,9 @@ TEST_F(BasicGraph, BenchMarkExactAll) {
       int whenToStop = exact[i];
       for (unsigned int j=0; j < dataSetDetails.size(); j++) {
         if (dataSetDetails[j].isDirected) {
-          ::BanchMarkDataSetDijkstraUpToK< a::graph::TDirectedGraph >(dataSetDetails[j].dirPath, whenToStop);
+          ::BanchMarkDataSetDijkstraUpToK< graph::TDirectedGraph >(dataSetDetails[j].dirPath, whenToStop);
         } else {
-          ::BanchMarkDataSetDijkstraUpToK< a::graph::TUnDirectedGraph >(dataSetDetails[j].dirPath, whenToStop);
+          ::BanchMarkDataSetDijkstraUpToK< graph::TUnDirectedGraph >(dataSetDetails[j].dirPath, whenToStop);
         }
 
       }
@@ -442,15 +470,15 @@ TEST_F(BasicGraph, BenchMarkRNNComputation) {
         std::string f_name = "./out/graph/state/" + dataSetDetails[j].name + "_" + std::to_string(k);
         std::cout << "loading file=" << f_name << std::endl;
         if (dataSetDetails[j].isDirected) {
-          a::graph::Graph < a::graph::TDirectedGraph > graph;
-          a::data::GraphADS graphAds;
-          ::LoadGraph< a::graph::TDirectedGraph> (&graph, &graphAds, dataSetDetails[j].dirPath, k, f_name);
-          ::ComputeRNNSamples< a::graph::TDirectedGraph >(&graph, &graphAds, dataSetDetails[j].dirPath, k, &dataSetDetails[j]);
+          graph::Graph < graph::TDirectedGraph > graph;
+          data::GraphADS graphAds;
+          ::LoadGraph< graph::TDirectedGraph> (&graph, &graphAds, dataSetDetails[j].dirPath, k, f_name);
+          ::ComputeRNNSamples< graph::TDirectedGraph >(&graph, &graphAds, dataSetDetails[j].dirPath, k, &dataSetDetails[j]);
         } else {
-          a::graph::Graph < a::graph::TUnDirectedGraph > graph;
-          a::data::GraphADS graphAds;
-          ::LoadGraph< a::graph::TUnDirectedGraph> (&graph, &graphAds, dataSetDetails[j].dirPath, k, f_name);
-          ::ComputeRNNSamples< a::graph::TUnDirectedGraph >(&graph, &graphAds, dataSetDetails[j].dirPath, k, &dataSetDetails[j]);
+          graph::Graph < graph::TUnDirectedGraph > graph;
+          data::GraphADS graphAds;
+          ::LoadGraph< graph::TUnDirectedGraph> (&graph, &graphAds, dataSetDetails[j].dirPath, k, f_name);
+          ::ComputeRNNSamples< graph::TUnDirectedGraph >(&graph, &graphAds, dataSetDetails[j].dirPath, k, &dataSetDetails[j]);
         }
 
       }
@@ -462,30 +490,15 @@ TEST_F(BasicGraph, BenchMarkDijkstraSampleAll) {
   int whenToStop = -1;
   for (unsigned int j=0; j < dataSetDetails.size(); j++) {
     if (dataSetDetails[j].isDirected) {
-      ::BanchMarkDataSetDijkstraUpToK< a::graph::TDirectedGraph >(dataSetDetails[j].dirPath , whenToStop, true, &dataSetDetails[j]);
+      ::BanchMarkDataSetDijkstraUpToK< graph::TDirectedGraph >(dataSetDetails[j].dirPath , whenToStop, true, &dataSetDetails[j]);
     } else {
-      ::BanchMarkDataSetDijkstraUpToK< a::graph::TUnDirectedGraph >(dataSetDetails[j].dirPath, whenToStop, true, &dataSetDetails[j]);
+      ::BanchMarkDataSetDijkstraUpToK< graph::TUnDirectedGraph >(dataSetDetails[j].dirPath, whenToStop, true, &dataSetDetails[j]);
     }
   }
 }
 
 
-TEST_F(BasicGraph, BenchMarkMultiADS) {
-  std::ofstream f;
-  f.open("./out/graph/results/threads_performance.csv");
-  f << "data,K,graphTime,nodes,edges,ADSCalcTime,Threads,VM,RSS" <<std::endl;
-  for (unsigned int j=0; j < dataSetDetails.size(); j++) {
-    std::string dataSet = dataSetDetails[j].dirPath;
-    for (unsigned int i=1; i < 15; i++) {   
-      if (dataSetDetails[j].isDirected) {
-      ::BanchMarkDataSetMultiADSCalculation< a::graph::TDirectedGraph >(dataSet, 16, i, &f);
-      } else {
-      ::BanchMarkDataSetMultiADSCalculation< a::graph::TUnDirectedGraph >(dataSet, 16, i, &f);
-      }  
-    }
-  }
-  f.close();
-}
+
 
 TEST_F(BasicGraph, BenchMarkMultiADSIncreaseFactor) {
   std::string dataSets[] = { "./data/slashdot"}; //GetSampleData()}; 
@@ -500,9 +513,9 @@ TEST_F(BasicGraph, BenchMarkMultiADSIncreaseFactor) {
       std::string dataSet = dataSets[j];
       for (unsigned int i=1; i < 15; i++) {   
         if (directed[j]) {
-        ::BanchMarkDataSetMultiADSCalculation< a::graph::TDirectedGraph >(dataSet, 64, i, &f, factors[z]);
+        ::BanchMarkDataSetMultiADSCalculation< graph::TDirectedGraph >(dataSet, 64, i, &f, factors[z]);
         } else {
-        ::BanchMarkDataSetMultiADSCalculation< a::graph::TUnDirectedGraph >(dataSet, 64, i, &f, factors[z]);
+        ::BanchMarkDataSetMultiADSCalculation< graph::TUnDirectedGraph >(dataSet, 64, i, &f, factors[z]);
         }  
       }
     }
@@ -519,13 +532,13 @@ TEST_F(BasicGraph, BenchMarkCorrectness) {
       std::ofstream f;
       f.open(fileName);
       if (dataSetDetails[j].isDirected) {
-        ::ADSCalculationApproximationCheck< a::graph::TDirectedGraph >(dataSetDetails[j].dirPath,
+        ::ADSCalculationApproximationCheck< graph::TDirectedGraph >(dataSetDetails[j].dirPath,
                                                                        exact[z],
                                                                        dataSetDetails[j].isDirected,
                                                                        &dataSetDetails[j],
                                                                        &f);
       } else {
-        ::ADSCalculationApproximationCheck< a::graph::TUnDirectedGraph >(dataSetDetails[j].dirPath,
+        ::ADSCalculationApproximationCheck< graph::TUnDirectedGraph >(dataSetDetails[j].dirPath,
                                                                          exact[z],
                                                                          dataSetDetails[j].isDirected,
                                                                          &dataSetDetails[j],
@@ -543,9 +556,9 @@ TEST_F(BasicGraph, SerializeGraphsADSSketch) {
       std::string filename = "./out/graph/state/" + dataSetDetails[j].name + "_" + std::to_string(exact[z]);
       std::cout << "Creating " << filename << std::endl;
       if (dataSetDetails[j].isDirected) {
-        ::SearlizeADSCalculation< a::graph::TDirectedGraph >(dataSetDetails[j].dirPath, exact[z], filename );
+        ::SearlizeADSCalculation< graph::TDirectedGraph >(dataSetDetails[j].dirPath, exact[z], filename );
       } else {
-        ::SearlizeADSCalculation< a::graph::TUnDirectedGraph >(dataSetDetails[j].dirPath, exact[z], filename);
+        ::SearlizeADSCalculation< graph::TUnDirectedGraph >(dataSetDetails[j].dirPath, exact[z], filename);
       }
     }
   }
@@ -553,25 +566,25 @@ TEST_F(BasicGraph, SerializeGraphsADSSketch) {
 #endif
 
 TEST_F(BasicGraph, ADSCalculationExtremeFacebookGraphK16) {
-  ::BanchMarkDataSetADSCalculation< a::graph::TUnDirectedGraph >(GetSampleData(), 16);
+  ::BanchMarkDataSetADSCalculation< graph::TUnDirectedGraph >(GetSampleData(), 16);
 }
 
 TEST_F(BasicGraph, ADSCalculationExtremeFacebookGraphK64) {
-  ::BanchMarkDataSetADSCalculation< a::graph::TUnDirectedGraph >(GetSampleData(), 64);
+  ::BanchMarkDataSetADSCalculation< graph::TUnDirectedGraph >(GetSampleData(), 64);
 }
 
 TEST_F(BasicGraph, ADSCalculationExtremeFacebookGraphK128) {
-  ::BanchMarkDataSetADSCalculation< a::graph::TUnDirectedGraph >(GetSampleData(), 128); 
+  ::BanchMarkDataSetADSCalculation< graph::TUnDirectedGraph >(GetSampleData(), 128); 
 }
 
 
 TEST_F(BasicGraph, ADSCalculationSlashdotGraphK16) {
-  ::BanchMarkDataSetADSCalculation< a::graph::TDirectedGraph >("../../data/slashdot", 16);
+  ::BanchMarkDataSetADSCalculation< graph::TDirectedGraph >("../../data/slashdot", 16);
 }
 
 
 TEST_F(BasicGraph, ADSCalculationExtremeTweeterGraphK64) {
-  ::BanchMarkDataSetADSCalculation< a::graph::TDirectedGraph >("../../data/tweeter", 64);
+  ::BanchMarkDataSetADSCalculation< graph::TDirectedGraph >("../../data/tweeter", 64);
 }
 
 
@@ -583,28 +596,28 @@ TEST_F(BasicGraph, ADSCalculationExtremeTweeterGraphK64) {
 */
 
 TEST_F(BasicGraph, ADSCalculationExtremeLiveJournalGraphK64) {
-  ::BanchMarkDataSetADSCalculation< a::graph::TUnDirectedGraph >("../../data/live_journal", 64);
+  ::BanchMarkDataSetADSCalculation< graph::TUnDirectedGraph >("../../data/live_journal", 64);
 }
 
 TEST_F(BasicGraph, ADSCalculationExtremeYoutubeGraph64) {
-  ::BanchMarkDataSetADSCalculation< a::graph::TUnDirectedGraph >("../../data/youtube", 64);
+  ::BanchMarkDataSetADSCalculation< graph::TUnDirectedGraph >("../../data/youtube", 64);
 }
 
 TEST_F(BasicGraph, sizes) {
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
+  graph::Graph< graph::TUnDirectedGraph > graph;
   std::cout << " graph=" << sizeof(graph) << std::endl;
 //  std::cout << " node ADS=" << sizeof(graph.myNodesADSId) << std::endl;
 //  std::cout << " sorted_v=" << sizeof(graph.sorted_v) << std::endl;
   std::cout << " myWeightMap=" << sizeof(graph.myWeightMap) << std::endl;
   std::cout << " myGraph=" << sizeof(graph.myGraph) << std::endl;
 //   std::cout << " myGraphADS=" << sizeof(graph.myGraphADS) << std::endl;
-  std::cout << " Dijkstra params " << sizeof(a::algo::DijkstraParams) << std::endl;
+  std::cout << " Dijkstra params " << sizeof(algo::DijkstraParams) << std::endl;
 }
 
 
 
 typedef struct rank_t {
-    a::graph::edge_weight_t distance;
+    graph::edge_weight_t distance;
     int node;
   } rank;
   
@@ -616,24 +629,24 @@ typedef struct rank_t {
 
 TEST_F(BasicGraph, EstimateCommunityUsingDistance) {
 
-  a::graph::Graph< a::graph::TUnDirectedGraph > graph;
+  graph::Graph< graph::TUnDirectedGraph > graph;
   graph.LoadGraphFromDir("../../data/youtube");
 
-  a::utils::Community com;
+  utils::Community com;
   com.LoadCommunity("../../data/youtube_comm");
 
   unsigned int numSamples = 10;
-  a::algo::DijkstraParams p[10];
-  a::utils::SingleCommunity * singleCom = com.GetCommunity(0);
+  algo::DijkstraParams p[10];
+  utils::SingleCommunity * singleCom = com.GetCommunity(0);
   std::cout << " community size=" << singleCom->size() << std::endl;
   
   for (unsigned int i=0; i < numSamples; i++) {
-    a::graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
+    graph::TUnDirectedGraph::TNode source( (*singleCom)[i]);
     p[i].InitDijkstraParams(false);
-    a::algo::CalculateNodeAdsPrunedDijkstra< a::graph::TUnDirectedGraph >(source, &graph, &(p[i]), graph.GetMxNId());
+    algo::CalculateNodeAdsPrunedDijkstra< graph::TUnDirectedGraph >(source, &graph, &(p[i]), graph.GetMxNId());
   }
 
-  a::est::PriorVector prior;
+  est::PriorVector prior;
   prior.resize(numSamples);
   for (unsigned int i=0; i < numSamples; i++) {
     prior[i].nodeId = (*singleCom)[i];
@@ -645,10 +658,10 @@ TEST_F(BasicGraph, EstimateCommunityUsingDistance) {
   int threshold = 1;
   for (unsigned int i=1; i < 10; i++) {
     threshold = i;
-    a::est::BinaryMinClassifier minDistanceClassifier;
+    est::BinaryMinClassifier minDistanceClassifier;
     minDistanceClassifier.InitBinaryClassifier(&prior, threshold);
 
-    a::est::ClassifierAggregator< a::graph::TUnDirectedGraph > aggregator;
+    est::ClassifierAggregator< graph::TUnDirectedGraph > aggregator;
     aggregator.InitClassifierAggregator(&minDistanceClassifier, singleCom, &graph);
     double TPR;
     double FPR;
@@ -659,10 +672,10 @@ TEST_F(BasicGraph, EstimateCommunityUsingDistance) {
   
   for (unsigned int i=1; i < 10; i++) {
     threshold = i;
-    a::est::BinaryAverageClassifier minDistanceClassifier;
+    est::BinaryAverageClassifier minDistanceClassifier;
     minDistanceClassifier.InitBinaryClassifier(&prior, threshold);
 
-    a::est::ClassifierAggregator< a::graph::TUnDirectedGraph > aggregator;
+    est::ClassifierAggregator< graph::TUnDirectedGraph > aggregator;
     aggregator.InitClassifierAggregator(&minDistanceClassifier, singleCom, &graph);
     double TPR;
     double FPR;
@@ -712,6 +725,9 @@ TEST_F(BasicGraph, EstimateCommunityUsingDistance) {
       std::cout << "Average percentile random= " << averagePercentileRandom / singleCom->size() << std::endl;
   }
 */
+#endif
+} // namespace all_distance_sketch
+
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

@@ -13,7 +13,7 @@ CFLAGS += -std=c++0x -Wall -O3 -DNDEBUG -Wno-deprecated -Wno-strict-overflow -Wn
 
 # define any directories containing header files other than /usr/include
 #
-INCLUDES = -I./include/boost_1_57_0 -I./include/Snap-2.3/snap-core  -I./include/Snap-2.3/snap-adv -I./include/Snap-2.3/glib-core   -I./include/Snap-2.3/snap-exp -I./include/sparsehash-2.0.2/usr/local/include -I./include/gpref/include
+INCLUDES = -I./include/boost -I./include/Snap-2.3/snap-core  -I./include/Snap-2.3/snap-adv -I./include/Snap-2.3/glib-core   -I./include/Snap-2.3/snap-exp -I./include/sparsehash-2.0.2/usr/local/include -I./include/gpref/include
 
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
@@ -25,7 +25,7 @@ TEST_SRC = $(wildcard all_distance_sketch/*/ut/*.cpp)
 TESTS_LIBS = ./libgtest.a ./include/Snap-2.3/snap-core/Snap.o
 TEST_INCLUDE = -isystem ./include/gtest/include
 
-TEST_OBJS = ./out/all_distance_sketch/ut/run_all ./out/all_distance_sketch/experiments/results/estimate
+TEST_OBJS = ./out/all_distance_sketch/ut/run_all ./out/all_distance_sketch/experiments/results/estimate ./out/all_distance_sketch/experiments/results/benchmark
 PROTO = out/all_distance_sketch/proto
 
 .PHONY: depend clean all test src_only
@@ -46,6 +46,10 @@ out/all_distance_sketch/proto: all_distance_sketch/proto/all_distance_sketch.pro
 	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_INCLUDE) -o $@  $< $(BOOST) $(LIBS) $(TESTS_LIBS)
 
 ./out/all_distance_sketch/experiments/results/estimate: all_distance_sketch/experiments/results/estimate.cpp $(HDRS)
+	@mkdir -p out/all_distance_sketch/experiments/results
+	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_INCLUDE) -o $@  $< $(BOOST) $(LIBS) $(TESTS_LIBS)
+
+./out/all_distance_sketch/experiments/results/benchmark: all_distance_sketch/experiments/results/benchmark.cpp $(HDRS)
 	@mkdir -p out/all_distance_sketch/experiments/results
 	$(CC) $(CFLAGS) $(INCLUDES) $(TEST_INCLUDE) -o $@  $< $(BOOST) $(LIBS) $(TESTS_LIBS)
 
