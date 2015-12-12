@@ -450,7 +450,7 @@ public:
           continue;
         }
         std::unordered_map<int, int> influence_change;
-        LOG_M(DEBUG3, "Adding Seed node =" << seed );
+        LOG_M(NOTICE, "Adding Seed node =" << seed );
         double estimate_seed_cover_size = ( min_influence_for_seed_ * (static_cast<double>(rankers_nodes_.size()) / static_cast<double>(num_passed)) );
         cover_->SetSeedEstimate(seed, estimate_seed_cover_size);
         num_covered_nodes += AddSeed(seed, &influence_change);        
@@ -491,7 +491,9 @@ public:
           this->wanted_nodes_.size() == this->graph_->GetNumNodes())  {
         LOG_M(NOTICE, "Assumption failed num covered nodes increased" <<
                       " last=" << last_cover_size <<
-                      " current="<< num_covered_nodes_by_seed);
+                      " current="<< num_covered_nodes_by_seed << 
+                      " seed=" << seed <<
+                      " seed influence=" << seed_influence);
         assert(num_covered_nodes_by_seed <= last_cover_size);
       }
       last_cover_size = num_covered_nodes_by_seed;
@@ -590,17 +592,18 @@ private:
   TSkimDijkstraCallBacksDistancePrune<Z> call_backs_;
 };
 
-
 template <class Z>
-class TSkim : public TSkimBase<Z> {
+class TSkimApproxSeedExactCover : public TSkimBase<Z> {
 public:
   void InitTSkim(int T,
             int K_all_distance_sketch,
             int min_influence_for_seed,
+            std::vector<std::vector<int>>* reverse_refernce,
             Cover * cover,
             graph::Graph<Z>* graph) {
     K_all_distance_sketch_ = K_all_distance_sketch;
     graph_sketch_ = NULL;
+    reverse_refernce_ = reverse_refernce;
     TSkimBase<Z>::InitTSkimBase(T, min_influence_for_seed, cover, graph);
   }
 
@@ -610,22 +613,17 @@ public:
 
   int AddSeed(int seed, std::unordered_map<int, int>* influence_change) {
     LOG_M(DEBUG3, "seed node = " << seed);
-    std::vector<int> ranking;
-    reverse_rank_call_backs_.PrepareForIteration();
-    CalculateReverseRank<Z, TSkimReverseRankCallBacks<Z> > (seed,
-                                                            &graph_transpose_,
-                                                            graph_sketch_,
-                                                            &ranking,
-                                                            &reverse_rank_call_backs_);
-    LOG_M(DEBUG3, "Adding seed node= " << seed << " Cover size=" << reverse_rank_call_backs_.get_visited_nodes().size() << 
-                  " Cover size=" << this->cover_->Size());
-    return TSkimBase<Z>::UpdateCover(seed, influence_change, reverse_rank_call_backs_.get_visited_nodes());
+    return TSkimBase<Z>::UpdateCover(seed, influence_change, (*reverse_refernce_)[seed]);
   }
 
   const std::vector<int>& CalculateVisitedNodes(int source_node_id) {
+      NodeIdRandomIdData source_node_details(source_node_id, graph_sketch_->GetNodeRandomId(source_node_id));
+      NodeSketch * source_sketch = graph_sketch_->GetNodeSketch(source_node_details);
+      double distance = source_sketch->GetDistanceCoverNeighborhood(this->T_);
       typename Z::TNode source(source_node_id);
-      call_backs_.InitTSkimDijkstraCallBacks(TSkimBase<Z>::T_);
-      PrunedDijkstra< Z, TSkimDijkstraCallBacks<Z> > (source,
+      LOG_M(DEBUG3, "Running from node=" << source_node_id << " T=" << this->T_ << " Distance=" << distance);
+      call_backs_.InitTSkimDijkstraCallBacksDistancePrune(distance);
+      PrunedDijkstra< Z, TSkimDijkstraCallBacksDistancePrune<Z> > (source,
                                                       TSkimBase<Z>::graph_,
                                                       &call_backs_,
                                                       &param_);
@@ -635,12 +633,12 @@ public:
   int Run() {
     TSkimBase<Z>::PreRunInit();
     GraphSketch local_graph_sketch;
+    this->graph_->Transpose(&graph_transpose_);
     if (graph_sketch_ == NULL) {
       graph_sketch_ = &local_graph_sketch;
       graph_sketch_->InitGraphSketch(K_all_distance_sketch_, this->graph_->GetMxNId());
+      CalculateGraphSketch<Z>(&graph_transpose_, graph_sketch_);
     }
-    this->graph_->Transpose(&graph_transpose_);
-    CalculateGraphSketch<Z>(&graph_transpose_, graph_sketch_);
     reverse_rank_call_backs_.InitTSkimReverseRankCallBacks(this->T_);
     reverse_rank_call_backs_.SetWantedNodes(this->wanted_nodes_);
     call_backs_.SetWantedNodes(this->rankees_nodes_);
@@ -653,67 +651,38 @@ private:
   GraphSketch* graph_sketch_;
   TSkimReverseRankCallBacks<Z> reverse_rank_call_backs_;
   DijkstraParams param_;
-  TSkimDijkstraCallBacks<Z> call_backs_;
+  TSkimDijkstraCallBacksDistancePrune<Z> call_backs_;
+  std::vector<std::vector<int>>* reverse_refernce_;
 };
 
-
 template <class Z>
-class TSkimGreedy : public TSkimBase<Z> {
+class TSkimExactComputationBased : public TSkimBase<Z> {
 public:
-  void InitTSkimGreedy(int T,
-                      Cover * cover,
-                      graph::Graph<Z>* graph) {
-    int min_influence_for_seed = INT_MAX;
-    TSkimBase<Z>::InitTSkimBase(T, min_influence_for_seed, cover, graph);
-  }
-
-  void UpdateInfluceAndSeedSet(int source_node,
-                                 int visited_node,
-                                 std::vector<int>* seed_set) {
-    if (coveres_.count(visited_node) == 0) {
-      coveres_[visited_node] = std::vector<int>();
-    }
-    coveres_[visited_node].push_back(source_node);
-    TSkimBase<Z>::UpdateInfluceAndSeedSet(source_node, visited_node, seed_set);
-    assert(coveres_[visited_node].size() == this->node_influence_[visited_node]);
+  void InitTSkim(int T,
+                 Cover * cover,
+                 std::vector<std::vector<int> >* reachable_nodes,
+                 std::vector<std::vector<int> >* reverse_refernce,
+                 graph::Graph<Z>* graph) {
+    reverse_refernce_ = reverse_refernce;
+    reachable_nodes_ = reachable_nodes;
+    TSkimBase<Z>::InitTSkimBase(T, INT_MAX, cover, graph);
   }
 
   int AddSeed(int seed, std::unordered_map<int, int>* influence_change) {
     LOG_M(DEBUG3, "seed node = " << seed);
-    std::vector<int> convered_nodes;
-    for (int i=0; i< this->coveres_[seed].size(); i++) {
-      int node = this->coveres_[seed][i];
-      if (this->wanted_nodes_.count(node) == 0) {
-        continue;
-      }
-      convered_nodes.push_back(node);
-    }
-    LOG_M(DEBUG3, " Converted nodes size=" << convered_nodes.size() <<
-                  " coveres_ size=" << this->coveres_[seed].size() <<
-                  " Influence=" << this->node_influence_[seed]);
-    return TSkimBase<Z>::UpdateCover(seed, influence_change, convered_nodes);
+    return TSkimBase<Z>::UpdateCover(seed, influence_change, (*reverse_refernce_)[seed]);
   }
 
   const std::vector<int>& CalculateVisitedNodes(int source_node_id) {
-      typename Z::TNode source(source_node_id);
-      call_backs_.InitTSkimDijkstraCallBacks(TSkimBase<Z>::T_);
-      PrunedDijkstra< Z, TSkimDijkstraCallBacks<Z> > (source,
-                                                      TSkimBase<Z>::graph_,
-                                                      &call_backs_,
-                                                      &param_);
-      return call_backs_.get_visited_nodes();
-  }
-
-  int Run() {
-    call_backs_.SetWantedNodes(this->rankees_nodes_);
-    return TSkimBase<Z>::Run();
+      return (*reachable_nodes_)[source_node_id];
   }
 
 private:
-  std::unordered_map<int, std::vector<int> > coveres_;
-  DijkstraParams param_;
-  TSkimDijkstraCallBacks<Z> call_backs_;
+  std::vector<std::vector<int> >* reachable_nodes_;
+  std::vector<std::vector<int> >* reverse_refernce_;
 };
+
+
 
 
 template <class Z>
@@ -722,6 +691,7 @@ public:
   void InitTSkim(int T,
             int K_all_distance_sketch,
             int min_influence_for_seed,
+            std::vector<std::vector<int>>* reverse_refernce,
             Cover * cover,
             graph::Graph<Z>* graph) {
     K_all_distance_sketch_ = K_all_distance_sketch;
@@ -774,8 +744,34 @@ private:
   TSkimDijkstraCallBacksDistancePrune<Z> call_backs_;
   std::unordered_map<int , std::set<int> > coveres;
   std::unordered_map<int, int> exact_influence_;
+  std::vector<std::vector<int>>* reverse_refernce;
 };
 
+
+template<class Z>
+void ExactCoverGreedy(graph::Graph<Z>* graph,
+                      int T,
+                      std::vector<std::vector<NodeIdDistanceData> >* reachable_nodes) {
+  reachable_nodes->resize(graph->GetMxNId());
+  CollectorNodesUpToTRank<Z> collect_nodes_call_backs;
+  int j=0;
+  for (auto it = graph->BegNI(); it != graph->EndNI(); it++) {
+    j++;
+    if (j % 1000 == 0) {
+      std::cout << j << "/" << graph->GetMxNId() << std::endl;
+    }
+    int node_id = it.GetId();
+    DijkstraParams params;
+    typename Z::TNode source(node_id);
+    collect_nodes_call_backs.InitCollectorNodesUpToTRank(T+1);
+    PrunedDijkstra<Z, CollectorNodesUpToTRank<Z> > (source, 
+                                                    graph,
+                                                    &collect_nodes_call_backs,
+                                                    &params);
+    
+    (*reachable_nodes)[node_id] = collect_nodes_call_backs.get_nodes_found();
+  }
+}
 
 }  //  all_distance_sketch
 #endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_

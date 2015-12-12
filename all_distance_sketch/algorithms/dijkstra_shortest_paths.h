@@ -68,6 +68,41 @@ public:
   inline void RelaxedPath(int node_id) { }
 };
 
+template<class Z>
+class CollectorNodesUpToTRank {
+public:
+  void InitCollectorNodesUpToTRank(int T) {
+    T_ = T;
+  }
+  inline void Started(int source_node_id, graph::Graph<Z>* graph) {
+    nodes_found_.clear();
+    algo_statistics_.Clear();
+  }
+
+  inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
+    if (algo_statistics_.num_visited_nodes <= T_) {
+      nodes_found_.push_back(heap_value);
+    }
+    ++algo_statistics_.num_visited_nodes;
+  }
+
+  inline bool ShouldPrune(int visited_node_id, graph::EdgeWeight distance_from_source_to_visited_node) {
+    return algo_statistics_.num_visited_nodes >= T_;
+  }
+
+  inline bool ShouldStop() { return algo_statistics_.num_visited_nodes >= T_; }
+
+  inline void RelaxedPath(int node_id) { }
+
+  const std::vector<NodeIdDistanceData>& get_nodes_found() {
+    return nodes_found_;
+  }
+private:
+  PrunningAlgoStatistics algo_statistics_;
+  std::vector<NodeIdDistanceData> nodes_found_;
+  int T_;
+};
+
 template<class T>
 class DijkstraRankCallBack {
 public:

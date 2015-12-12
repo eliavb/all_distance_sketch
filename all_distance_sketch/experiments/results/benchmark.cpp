@@ -5,6 +5,7 @@
 #include "../../algorithms/dijkstra_shortest_paths.h"
 #include "../../algorithms/sketch_calculation.h"
 #include "../../algorithms/reverse_rank.h"
+#include "../../algorithms/t_skim.h"
 // #include "../estimator.h"
 #include "../../graph/snap_graph_adaptor.h"
 
@@ -305,6 +306,163 @@ TEST_F(BasicGraph, BenchMarkMultiADS) {
   }
   f.close();
 }
+
+TEST_F(BasicGraph, GreedySeedExactCover) {
+  graph::Graph< graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
+  std::vector<int> Ts = {10, 100, 1000};
+  for (int i=0; i < Ts.size(); i++) {
+    std::vector<std::vector<NodeIdDistanceData> > reachable_nodes;
+    std::ofstream f;
+    f.open("./out/all_distance_sketch/result/cover_yt_" + std::to_string(static_cast<long long>(Ts[i])) + ".csv");
+    auto before = GetCurrentTimeMilliSec();
+    ExactCoverGreedy( &graph, Ts[i], &reachable_nodes);
+    auto after = GetCurrentTimeMilliSec();
+    std::ofstream f_time;
+    f_time.open("./out/all_distance_sketch/result/cover_yt_" + std::to_string(static_cast<long long>(Ts[i])) + ".time");
+    f_time << after - before << std::endl;
+    for (int j=0; j < reachable_nodes.size(); j++) {
+      for (int k=0; k < reachable_nodes[j].size(); k++) {
+        f << reachable_nodes[j][k].GetNId() << "," << reachable_nodes[j][k].GetDistance();
+        if (k != reachable_nodes[j].size() -1) {
+          f << ","; 
+        }
+      }
+      if (reachable_nodes[j].size() != 0) {
+        f << std::endl;
+      }
+    }
+    f.flush();
+    f.close();
+    f_time.close();
+  }
+}
+
+static void LoadCover(std::string file_name, std::vector<std::vector<int> >* reachable_nodes,
+                          std::vector<std::vector<int> >* reverse_refernce,
+                          int T) {
+  std::ifstream f(file_name);
+  while ( f.good() ) {
+    std::string value;
+    getline ( f, value, '\n' ); 
+    if (f.eof()) {
+      return;
+    }
+    const char delimiter = ',';
+    size_t pos = 0;
+    std::string token;
+    bool first = true;
+    int source_node_id;
+    while ((pos = value.find(delimiter)) != std::string::npos) {
+        token = value.substr(0, pos);
+        // std::cout << token << std::endl;
+        int node_id = std::stoi(token, NULL, 0);
+        if (first) {
+          source_node_id = node_id;
+          first = false;
+        }
+        (*reachable_nodes)[source_node_id].push_back(node_id);
+        (*reverse_refernce)[node_id].push_back(source_node_id);
+        value.erase(0, pos + sizeof(delimiter));
+    }
+    // std::cout << value << std::endl;
+    int node_id = std::stoi(value, NULL, 0);
+    (*reachable_nodes)[source_node_id].push_back(node_id);
+    (*reverse_refernce)[node_id].push_back(source_node_id);
+    EXPECT_EQ((*reachable_nodes)[source_node_id].size(), T);
+  }
+}
+
+struct triple {
+  int index;
+  int cover_size;
+  int estimation;
+};
+
+bool tripleCompare(const triple& first, const triple& second) {
+  return first.cover_size > second.cover_size;
+}
+
+void DumpTSkimToCSV(std::string file_name,
+                    std::string name,
+                    int T,
+                    int K,
+                    int min_influence,
+                    unsigned long time,
+                    all_distance_sketch::Cover * cover,
+                    std::string delimiter = "\t") {
+  std::ofstream file(file_name);
+  std::string meta_data = name + delimiter +
+                     std::to_string(static_cast<long long>(T)) + delimiter +
+                     std::to_string(static_cast<long long>(K)) + delimiter +
+                     std::to_string(static_cast<long long>(min_influence)) + delimiter +
+                     std::to_string(static_cast<long long>(time)) + delimiter;
+  std::vector< triple > cover_size;
+  for (auto it = cover->Begin(); it != cover->End(); it++) {
+    triple t;
+    auto seed = it->first;
+    auto estimated_cover = cover->GetSeedEstimate(seed);
+    t.estimation = estimated_cover;
+    t.index = it->second.seed;
+    t.cover_size = it->second.covered_nodes.size();
+    cover_size.push_back(t);
+  }
+  std::sort(cover_size.begin(), cover_size.end(), tripleCompare);
+  file << meta_data;
+  std::string sorted_cover;
+  std::string cover_del = ",";
+  std::string sep = " ";
+  std::string left = "(";
+  std::string right = ")";
+  for (int i=0; i < cover_size.size(); i++) {
+    auto c = cover_size[i];
+    // std::cout << c.index << std::endl;
+    sorted_cover += std::to_string(static_cast<long long>(c.cover_size)) + sep + left + std::to_string(static_cast<long long>(c.estimation)) + right + cover_del;
+  }
+  sorted_cover += "\n";
+  file << sorted_cover;
+  file.close();
+}
+
+TEST_F(BasicGraph, ApproxCover) {
+  graph::Graph< graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
+  int T = 100;
+  int K_ADS = 128;
+  int min_influence = 100000;
+  TSkimForwardRank< graph::TUnDirectedGraph > greedy_approx;
+  Cover cover;
+  greedy_approx.InitTSkim(T, K_ADS, min_influence, &cover, &graph);
+  greedy_approx.Run();
+  DumpTSkimToCSV("./out/all_distance_sketch/result/approx_cover_100k.csv",
+                 "approx",
+                 T,
+                 K_ADS,
+                 min_influence,
+                 0,
+                 &cover);
+}
+
+TEST_F(BasicGraph, GreedyExactCover) {
+  graph::Graph< graph::TUnDirectedGraph > graph;
+  graph.LoadGraphFromDir("./data/youtube");
+  std::string file_name = "./out/all_distance_sketch/result/cover_100.csv";
+  int T = 100;
+  TSkimExactComputationBased< graph::TUnDirectedGraph > greedy_exact;
+  Cover cover;
+  std::vector<std::vector<int> > reachable_nodes;
+  std::vector<std::vector<int> > reverse_refernce;
+  LoadCover(file_name, &reachable_nodes, &reverse_refernce, T);
+  greedy_exact.InitTSkim(T, &cover, &reachable_nodes, &reverse_refernce, &graph);
+  greedy_exact.Run();
+  DumpTSkimToCSV("./out/all_distance_sketch/result/approx_cover.csv",
+                 "exact",
+                 T,
+                 INT_MAX,
+                 INT_MAX,
+                 0,
+                 &cover);
+} 
 
 #if 0
 template <class T>
