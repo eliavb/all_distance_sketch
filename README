@@ -1,14 +1,22 @@
 
 This all_distance_sketch library provides a sketching method for graphs, using which distances between pairs of points can be quickly estimated.
 
-Installing:
+==========================
+The package has the following dependencies:
+1. Gtest
+2. SNAP graph
+3. Boost
 
-The package is dependent on:
+=========================
+Installing the
 CONFIG_SITE=/work/eng/eliavb/install/local/share/config.site 
 
 config.site:
 CPPFLAGS="${CPPFLAGS} -I/work/eng/eliavb/include/gtest-1.7.0/include/ -I/work/eng/eliavb/include/Snap-2.3/snap-adv/ -I/work/eng/eliavb/include/Snap-2.3/snap-core/ -I/work/eng/eliavb/include/Snap-2.3/snap-exp/ -I/work/eng/eliavb/include/Snap-2.3/glib-core/" 
 LIBS="${LIBS} /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.o /work/eng/eliavb/bin/libgtest.a -lpthread"
 
+
+Example:
+
 Compile code:
-g++ --std=c++11  test.cpp -I/work/eng/eliavb/include/gtest-1.7.0/include/ -I/work/eng/eliavb/include/Snap-2.3/snap-adv/ -I/work/eng/eliavb/include/Snap-2.3/snap-core/ -I/work/eng/eliavb/include/Snap-2.3/snap-exp/ -I/work/eng/eliavb/include/Snap-2.3/glib-core/  /work/eng/eliavb/install/lib/liball_distance_sketch.a /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.o /work/eng/eliavb/bin/libgtest.a  -o test
+g++ --std=c++11  test.cpp -I/work/eng/eliavb/include/Snap-2.3/snap-adv/ -I/work/eng/eliavb/include/Snap-2.3/snap-core/ -I/work/eng/eliavb/include/Snap-2.3/snap-exp/ -I/work/eng/eliavb/include/Snap-2.3/glib-core/  /work/eng/eliavb/install/lib/liball_distance_sketch.a /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.o  -o test

@@ -14,3 +14,5 @@ test_all_SOURCES = graph/ut/run_all.cpp $(HDRS) $(TEST_SRC)
 
 lib_LIBRARIES = liball_distance_sketch.a
 liball_distance_sketch_a_SOURCES = $(HDRS)
+
+include_HEADERS = ./all_distance_sketch.h
