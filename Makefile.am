@@ -7,3 +7,5 @@ fb_testdir = $(prefix)/bin/data/facebook
 fb_test_DATA = $(wildcard ./data/facebook/*)
 yt_testdir = $(prefix)/bin/data/youtube
 yt_test_DATA = $(wildcard ./data/youtube/*)
+
+TESTS = $(prefix)/bin/test_all

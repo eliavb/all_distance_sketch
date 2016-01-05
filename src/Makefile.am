@@ -11,7 +11,6 @@ bin_PROGRAMS = test_all # estimate benchmark test_all
 #estimate_SOURCES = experiments/results/estimate.cpp $(HDRS)
 #benchmark_SOURCES = experiments/results/benchmark.cpp $(HDRS)
 test_all_SOURCES = graph/ut/run_all.cpp $(HDRS) $(TEST_SRC)
-
 lib_LIBRARIES = liball_distance_sketch.a
 liball_distance_sketch_a_SOURCES = $(HDRS)
 
