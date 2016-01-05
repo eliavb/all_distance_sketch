@@ -28,7 +28,7 @@ These are the base requirements to build and use Google Test from a source
 package (as described below):
   * GNU-compatible Make
   * POSIX-standard shell
-  * A C++11-compliant compiler (version >= 4.8.3)
+  * GCC compiler (version >= 4.8.3)
   * SNAP (https://snap.stanford.edu/snap/ version >= 2.3)
   * Boost (http://www.boost.org/ version >= 1.58)
   * Gtest (https://github.com/google/googletest)
