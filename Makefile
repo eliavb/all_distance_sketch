@@ -79,7 +79,7 @@ POST_UNINSTALL = :
 subdir = .
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) README ar-lib \
-	depcomp install-sh missing
+	install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
@@ -226,7 +226,7 @@ AUTOCONF = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing autoconf
 AUTOHEADER = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing autoheader
 AUTOMAKE = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing automake-1.13
 AWK = gawk
-CPPFLAGS =  -I/work/eng/eliavb/include/gtest-1.7.0/include/ -I/work/eng/eliavb/include/Snap-2.3/snap-adv/ -I/work/eng/eliavb/include/Snap-2.3/snap-core/ -I/work/eng/eliavb/include/Snap-2.3/snap-exp/ -I/work/eng/eliavb/include/Snap-2.3/glib-core/
+CPPFLAGS = 
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
@@ -248,7 +248,7 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = 
 LIBOBJS = 
-LIBS =  /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.o /work/eng/eliavb/bin/libgtest.a -lpthread
+LIBS = 
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing makeinfo
 MKDIR_P = /usr/bin/mkdir -p
