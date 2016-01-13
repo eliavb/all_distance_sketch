@@ -10,11 +10,12 @@
 namespace all_distance_sketch {
 
 /*! \brief Single seed information
+
 */
 typedef struct SeedCover_t {
-  int seed;
-  int index;
-  std::vector<int> covered_nodes;
+  int seed; /*!< The same id as the graph the cover was created from */
+  int index; /*!< index indicating the order of selection */
+  std::vector<int> covered_nodes; /*!< covered nodes */
 } SeedCover;
 
 /*! \brief Cover extracted by the influence maximization algorithms

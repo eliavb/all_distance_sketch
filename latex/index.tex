@@ -1,0 +1,76 @@
+\hypertarget{index_Background}{}\section{Background}\label{index_Background}
+This package was designed and implemented by Eliav Buchnik as part of a M.\+Sc in Computer Science at \href{https://english.tau.ac.il/}{\tt Tel Aviv University }, Israel under Prof. \href{http://www.cohenwang.com/edith/}{\tt Edith Cohen}.\hypertarget{index_intro_sec}{}\section{Introduction}\label{index_intro_sec}
+Collection of randomized algorithm based on the all distance sketch (\href{http://arxiv.org/abs/1306.3284}{\tt http\+://arxiv.\+org/abs/1306.\+3284}). The algorithms are compatible to Linux based platforms.
+
+Package contains the following algorithms\+:
+\begin{DoxyEnumerate}
+\item Bottom-\/k sketch (\href{http://arxiv.org/abs/1306.3284}{\tt http\+://arxiv.\+org/abs/1306.\+3284})
+\item Reverse rank (\href{http://arxiv.org/abs/1506.02386}{\tt http\+://arxiv.\+org/abs/1506.\+02386})
+\item T\+Skim algorithm based on reverse rank (\href{http://arxiv.org/pdf/1506.02386v1.pdf}{\tt http\+://arxiv.\+org/pdf/1506.\+02386v1.\+pdf})
+\end{DoxyEnumerate}\hypertarget{index_Prerequisites}{}\section{Prerequisites}\label{index_Prerequisites}
+The package is designed to have fairly minimal requirements to build and use with your projects, but there are some. Currently, we support Linux based paltforms.
+
+\subsubsection*{Linux Requirements}
+
+These are the base requirements to build and use Google Test from a source package (as described below)\+:
+\begin{DoxyEnumerate}
+\item G\+N\+U-\/compatible Make
+\item G\+C\+C compiler (version $>$= 4.\+8.\+3)
+\item S\+N\+A\+P (\href{https://snap.stanford.edu/snap/}{\tt https\+://snap.\+stanford.\+edu/snap/} version $>$= 2.\+3)
+\item Boost (\href{http://www.boost.org/}{\tt http\+://www.\+boost.\+org/} version $>$= 1.\+58)
+\item Gtest (\href{https://github.com/google/googletest}{\tt https\+://github.\+com/google/googletest})
+\end{DoxyEnumerate}\hypertarget{index_install_sec}{}\section{Installation}\label{index_install_sec}
+\subsubsection*{Build Instructions for root users}
+
+After installing all the other packages as root. \begin{DoxyVerb}>./configure
+>make
+>make install
+>make check
+\end{DoxyVerb}
+
+
+\subsubsection*{Build Instructions for non root users}
+
+After you installed Gtest (in \$\{G\+T\+E\+S\+T\+\_\+\+D\+I\+R\}) and S\+N\+A\+P (in \$\{S\+N\+A\+P\+\_\+\+D\+I\+R\}) create a file named config.\+site (I ommit Boost but if you need to install it just do the same as the others).
+
+The file should contain the location of S\+N\+A\+P and Gtest\+:
+
+\paragraph*{config.\+site content}
+
+\begin{DoxyVerb}CPPFLAGS="${CPPFLAGS} -I${GTEST_DIR}/include/ -I{SNAP_DIR}/snap-adv/ \
+-I{SNAP_DIR}/snap-core/ -I{SNAP_DIR}/snap-exp/ -I{SNAP_DIR}/glib-core/" 
+LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread" 
+\end{DoxyVerb}
+
+
+\paragraph*{C\+O\+N\+F\+I\+G\+\_\+\+S\+I\+T\+E}
+
+After the file was created we need to set an env variable named C\+O\+N\+F\+I\+G\+\_\+\+S\+I\+T\+E to point to the config.\+site\+: \begin{DoxyVerb}>export CONFIG_SITE=$CONFIG_SITE:<path>/config.site
+\end{DoxyVerb}
+
+
+\paragraph*{B\+U\+I\+L\+D!}
+
+Suppose you placed the package in \$\{A\+D\+S\+\_\+\+D\+I\+R\} and want to install it in \$\{A\+D\+S\+\_\+\+D\+E\+S\+T\}.
+
+Enter to the \$\{A\+D\+S\+\_\+\+D\+I\+R\} and run\+:
+
+\begin{DoxyVerb}>./configure --prefix=${ADS_DEST}
+>make
+>make install
+>make check
+\end{DoxyVerb}
+\hypertarget{index_Use}{}\section{the package}\label{index_Use}
+\subsection*{Using the package as library}
+
+To use the package in your code you must include \$\{A\+D\+S\+\_\+\+D\+E\+S\+T\}/include/all\+\_\+distance\+\_\+sketch.h and link with \$\{A\+D\+S\+\_\+\+D\+E\+S\+T\}/lib/liball\+\_\+distance\+\_\+sketch.a
+
+Compiling test.\+cpp\+:
+
+\begin{DoxyVerb}>g++ --std=c++11  test.cpp -I${SNAP_DEST}/snap-adv/ -I${SNAP_DEST}/snap-core/ -I${SNAP_DEST}/snap-exp/ -I${SNAP_DEST}/glib-core/  ${ADS_DEST}/lib/liball_distance_sketch.a ${SNAP_DEST}/snap-core/Snap.o  -o test
+\end{DoxyVerb}
+
+
+\subsection*{Run algorithms as binary}
+
+T\+O\+D\+O 

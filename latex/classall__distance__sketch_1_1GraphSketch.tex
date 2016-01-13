@@ -21,34 +21,10 @@ Data structure for the graph sketch.
 \hypertarget{classall__distance__sketch_1_1GraphSketch_a8d5aaa1b4e94e0361ea0b1afdbfcf8bc}{}void {\bfseries set\+\_\+should\+\_\+calc\+\_\+zvalues} (bool should\+\_\+calc)\label{classall__distance__sketch_1_1GraphSketch_a8d5aaa1b4e94e0361ea0b1afdbfcf8bc}
 
 \item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_afcb9c618075afba4f3eb577e883d014e}{}bool {\bfseries Should\+Prune} (graph\+::\+Edge\+Weight distance, int node\+\_\+id)\label{classall__distance__sketch_1_1GraphSketch_afcb9c618075afba4f3eb577e883d014e}
-
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a20cd1f2b7bae03eec392d9b1b608db55}{}void {\bfseries Calculate\+Insert\+Prob} (int node\+\_\+id, std\+::vector$<$ Node\+Prob $>$ $\ast$insert\+\_\+prob)\label{classall__distance__sketch_1_1GraphSketch_a20cd1f2b7bae03eec392d9b1b608db55}
-
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a98d608f3c2eb8a12cfd997d7e8f69805}{}void {\bfseries Set\+Prunning\+Thresholds} ()\label{classall__distance__sketch_1_1GraphSketch_a98d608f3c2eb8a12cfd997d7e8f69805}
-
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a1e701218b3a5147e14dd43881a6588a3}{}\hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} $\ast$ {\bfseries U\+T\+Get\+Node\+Sketch} (int node\+\_\+id)\label{classall__distance__sketch_1_1GraphSketch_a1e701218b3a5147e14dd43881a6588a3}
-
-\item 
 \hypertarget{classall__distance__sketch_1_1GraphSketch_ad0b0931712a19b47983a24ef73500316}{}\hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} $\ast$ {\bfseries Get\+Node\+Sketch} (const Node\+Id\+Random\+Id\+Data \&node\+\_\+details)\label{classall__distance__sketch_1_1GraphSketch_ad0b0931712a19b47983a24ef73500316}
 
 \item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a76a7bed0b3f7d3769ecbeb334a0734b8}{}void {\bfseries Printthresholds} ()\label{classall__distance__sketch_1_1GraphSketch_a76a7bed0b3f7d3769ecbeb334a0734b8}
-
-\item 
 \hypertarget{classall__distance__sketch_1_1GraphSketch_a696af8492f42fbbb60afbc2ff2a68a96}{}\hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} $\ast$ {\bfseries Get\+Node\+Sketch} (Node\+Distance\+Id\+Random\+Id\+Data node\+\_\+details)\label{classall__distance__sketch_1_1GraphSketch_a696af8492f42fbbb60afbc2ff2a68a96}
-
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a5f82eda7cb2dc9ad9460283c026861e4}{}int {\bfseries Insert\+Candidates\+Nodes} ()\label{classall__distance__sketch_1_1GraphSketch_a5f82eda7cb2dc9ad9460283c026861e4}
-
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_aa630b4a199d612823fde932ed70916cd}{}int {\bfseries Insert\+Candidates\+Nodes} (unsigned int start, unsigned int end)\label{classall__distance__sketch_1_1GraphSketch_aa630b4a199d612823fde932ed70916cd}
-
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a84dbd59d7a2b5b300f07ca93a8002260}{}void {\bfseries Calculate\+All\+Distance\+Neighborhood} ()\label{classall__distance__sketch_1_1GraphSketch_a84dbd59d7a2b5b300f07ca93a8002260}
 
 \item 
 \hypertarget{classall__distance__sketch_1_1GraphSketch_ae31e8b23fc7063927b2368a06bc57adb}{}const std\+::vector$<$ Node\+Distance\+Id\+Random\+Id\+Data $>$ $\ast$ {\bfseries Get\+Nodes\+Distribution} () const \label{classall__distance__sketch_1_1GraphSketch_ae31e8b23fc7063927b2368a06bc57adb}
@@ -65,18 +41,6 @@ Data structure for the graph sketch.
 \item 
 \hypertarget{classall__distance__sketch_1_1GraphSketch_aab18dbc5e7923b7bfe036777c9862ddb}{}void {\bfseries Create\+Nodes\+Distribution} (unsigned int max\+\_\+node\+\_\+id, Uniform\+Rank\+Calculator $\ast$calculator=N\+U\+L\+L, const std\+::vector$<$ int $>$ $\ast$nodes\+\_\+id=N\+U\+L\+L)\label{classall__distance__sketch_1_1GraphSketch_aab18dbc5e7923b7bfe036777c9862ddb}
 
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_aff8e85b1427635ff20b1035469a50b33}{}const std\+::vector$<$ Prunning\+Threshold $>$ $\ast$ {\bfseries Get\+Thresholds} () const \label{classall__distance__sketch_1_1GraphSketch_aff8e85b1427635ff20b1035469a50b33}
-
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a818165eb0002ab99756bc71cb740e222}{}const Nodes\+Sketch \& {\bfseries Get\+Nodes\+Sketch} () const \label{classall__distance__sketch_1_1GraphSketch_a818165eb0002ab99756bc71cb740e222}
-
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a11f287817797d4433d148843e8c7fbb9}{}bool {\bfseries operator==} (const \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} \&other) const \label{classall__distance__sketch_1_1GraphSketch_a11f287817797d4433d148843e8c7fbb9}
-
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_ad62599e5e41b2aaf7a8a7c2e1e5c3617}{}{\footnotesize template$<$class Archive $>$ }\\void {\bfseries serialize} (Archive \&ar, const unsigned int version)\label{classall__distance__sketch_1_1GraphSketch_ad62599e5e41b2aaf7a8a7c2e1e5c3617}
-
 \end{DoxyCompactItemize}
 \subsection*{Friends}
 \begin{DoxyCompactItemize}
@@ -87,7 +51,10 @@ Data structure for the graph sketch.
 
 
 \subsection{Detailed Description}
-Data structure for the graph sketch. 
+Data structure for the graph sketch. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{examples_2sketch_8cpp-example}{examples/sketch.\+cpp}.\end{Desc}
+
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

@@ -26,7 +26,8 @@ class GraphSketch {
   void set_should_calc_zvalues(bool should_calc) {
     should_calc_z_value_ = should_calc;
   }
-
+/*! \cond
+*/
 #if PROTO_BUF
     bool LoadThresholdsAndRandomId(const AllDistanceSketchGpb& all_distance_sketch) {
         int num_nodes = all_distance_sketch.node_thresholds_size();
@@ -196,7 +197,8 @@ class GraphSketch {
     }
 
     NodeSketch* UTGetNodeSketch(int node_id) { return &nodes_ads_[node_id]; }
-
+/*! \endcond
+*/
     NodeSketch* GetNodeSketch(const NodeIdRandomIdData& node_details) {
       if (nodes_ads_.size() <= (unsigned int)node_details.GetNodeId()) {
             return NULL;
@@ -208,17 +210,14 @@ class GraphSketch {
         }
         return &nodes_ads_[node_details.GetNodeId()];
     }
-
+/*! \cond
+*/
     void Printthresholds() {
       for (unsigned int i = 0; i < prunning_thresholds_.size(); i++) {
         std::cout << "i=" << i
                   << " thresholds=" << prunning_thresholds_[i].GetDistance()
                   << std::endl;
         }
-    }
-
-    NodeSketch* GetNodeSketch(NodeDistanceIdRandomIdData node_details) {
-      return GetNodeSketch(node_details.GetDetails());
     }
 
     int InsertCandidatesNodes() {
@@ -241,6 +240,57 @@ class GraphSketch {
       for (unsigned int i = 0; i < nodes_ads_.size(); i++) {
         nodes_ads_[i].CalculateAllDistanceNeighborhood(&nodes_random_id_);
         }
+    }
+
+    const std::vector<PrunningThreshold>* GetThresholds() const {
+      return &prunning_thresholds_;
+    }
+
+    const NodesSketch& GetNodesSketch() const { return nodes_ads_; }
+
+    bool operator==(const GraphSketch& other) const {
+        if  (GetK() != other.GetK()) {
+            LOG_M(NOTICE, "K is different!" <<
+                          "lhs = " << GetK() << 
+                          "rhs = " << other.GetK());
+            return false;
+        }
+        if ((*GetNodesDistributionLean()) != (*other.GetNodesDistributionLean())) {
+            LOG_M(NOTICE, "Distribution are not euqal!");
+            return false;
+        }
+
+        if ( (*GetThresholds()) != (*other.GetThresholds())) {
+            LOG_M(NOTICE, "thresholds are not equal!");
+            return false;
+        }
+
+        if ((*GetNodesDistribution()) != (*GetNodesDistribution())) {
+            LOG_M(NOTICE, "Distribution sorted are not equal!");
+            return false;
+        }
+
+        if (GetNodesSketch() != other.GetNodesSketch()) {
+          LOG_M(NOTICE, "Nodes NodeSketch are not equal!");
+            return false;
+        }
+        return true;
+    }
+
+    template <class Archive>
+    void serialize(Archive& ar, const unsigned int version) {
+      ar& K_;
+      ar& nodes_ads_;
+      ar& prunning_thresholds_;
+      ar& nodes_random_id_;
+      ar& nodes_random_id_sorted_increasing_;
+      SetPrunningThresholds();
+    }
+    
+/*! \endcond
+*/
+    NodeSketch* GetNodeSketch(NodeDistanceIdRandomIdData node_details) {
+      return GetNodeSketch(node_details.GetDetails());
     }
 
     const std::vector<NodeDistanceIdRandomIdData>* GetNodesDistribution()
@@ -297,50 +347,7 @@ class GraphSketch {
                   compare_node_randomid_decreasing());
     }
 
-    const std::vector<PrunningThreshold>* GetThresholds() const {
-      return &prunning_thresholds_;
-    }
-
-    const NodesSketch& GetNodesSketch() const { return nodes_ads_; }
-
-    bool operator==(const GraphSketch& other) const {
-        if  (GetK() != other.GetK()) {
-            LOG_M(NOTICE, "K is different!" <<
-                          "lhs = " << GetK() << 
-                          "rhs = " << other.GetK());
-            return false;
-        }
-        if ((*GetNodesDistributionLean()) != (*other.GetNodesDistributionLean())) {
-            LOG_M(NOTICE, "Distribution are not euqal!");
-            return false;
-        }
-
-        if ( (*GetThresholds()) != (*other.GetThresholds())) {
-            LOG_M(NOTICE, "thresholds are not equal!");
-            return false;
-        }
-
-        if ((*GetNodesDistribution()) != (*GetNodesDistribution())) {
-            LOG_M(NOTICE, "Distribution sorted are not equal!");
-            return false;
-        }
-
-        if (GetNodesSketch() != other.GetNodesSketch()) {
-          LOG_M(NOTICE, "Nodes NodeSketch are not equal!");
-            return false;
-        }
-        return true;
-    }
-
-    template <class Archive>
-    void serialize(Archive& ar, const unsigned int version) {
-      ar& K_;
-      ar& nodes_ads_;
-      ar& prunning_thresholds_;
-      ar& nodes_random_id_;
-      ar& nodes_random_id_sorted_increasing_;
-      SetPrunningThresholds();
-    }
+    
 
  private:
 
@@ -365,7 +372,9 @@ class GraphSketch {
     std::vector<RandomId> nodes_random_id_;
     std::vector<NodeDistanceIdRandomIdData> nodes_random_id_sorted_increasing_;
 };
-
+/** \example examples/sketch.cpp
+ * Examples on how to use GraphSketch class.
+ */
 }  //  namespace all_distance_sketch
 
 #endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_SKETCH_GRAPH_SKETCH_H_

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>All Distance Sketch: Main Page</title>
+<title>All Distance Sketch: All distance sketch</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -43,6 +43,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -78,13 +79,66 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div class="header">
   <div class="headertitle">
-<div class="title">All Distance Sketch Documentation</div>  </div>
+<div class="title">All distance sketch </div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><h1><a class="anchor" id="Background"></a>
+Background</h1>
+<p>This package was designed and implemented by Eliav Buchnik as part of a M.Sc in Computer Science at <a href="https://english.tau.ac.il/">Tel Aviv University </a>, Israel under Prof. <a href="http://www.cohenwang.com/edith/">Edith Cohen</a>.</p>
+<h1><a class="anchor" id="intro_sec"></a>
+Introduction</h1>
+<p>Collection of randomized algorithm based on the all distance sketch (<a href="http://arxiv.org/abs/1306.3284">http://arxiv.org/abs/1306.3284</a>). The algorithms are compatible to Linux based platforms.</p>
+<p>Package contains the following algorithms:</p><ol type="1">
+<li>Bottom-k sketch (<a href="http://arxiv.org/abs/1306.3284">http://arxiv.org/abs/1306.3284</a>)</li>
+<li>Reverse rank (<a href="http://arxiv.org/abs/1506.02386">http://arxiv.org/abs/1506.02386</a>)</li>
+<li>TSkim algorithm based on reverse rank (<a href="http://arxiv.org/pdf/1506.02386v1.pdf">http://arxiv.org/pdf/1506.02386v1.pdf</a>)</li>
+</ol>
+<h1><a class="anchor" id="Prerequisites"></a>
+Prerequisites</h1>
+<p>The package is designed to have fairly minimal requirements to build and use with your projects, but there are some. Currently, we support Linux based paltforms.</p>
+<h3>Linux Requirements</h3>
+<p>These are the base requirements to build and use Google Test from a source package (as described below):</p><ol type="1">
+<li>GNU-compatible Make</li>
+<li>GCC compiler (version &gt;= 4.8.3)</li>
+<li>SNAP (<a href="https://snap.stanford.edu/snap/">https://snap.stanford.edu/snap/</a> version &gt;= 2.3)</li>
+<li>Boost (<a href="http://www.boost.org/">http://www.boost.org/</a> version &gt;= 1.58)</li>
+<li>Gtest (<a href="https://github.com/google/googletest">https://github.com/google/googletest</a>)</li>
+</ol>
+<h1><a class="anchor" id="install_sec"></a>
+Installation</h1>
+<h3>Build Instructions for root users</h3>
+<p>After installing all the other packages as root. </p><pre class="fragment">&gt;./configure
+&gt;make
+&gt;make install
+&gt;make check
+</pre><h3>Build Instructions for non root users</h3>
+<p>After you installed Gtest (in ${GTEST_DIR}) and SNAP (in ${SNAP_DIR}) create a file named config.site (I ommit Boost but if you need to install it just do the same as the others).</p>
+<p>The file should contain the location of SNAP and Gtest:</p>
+<h4>config.site content</h4>
+<pre class="fragment">CPPFLAGS="${CPPFLAGS} -I${GTEST_DIR}/include/ -I{SNAP_DIR}/snap-adv/ \
+-I{SNAP_DIR}/snap-core/ -I{SNAP_DIR}/snap-exp/ -I{SNAP_DIR}/glib-core/" 
+LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread" 
+</pre><h4>CONFIG_SITE</h4>
+<p>After the file was created we need to set an env variable named CONFIG_SITE to point to the config.site: </p><pre class="fragment">&gt;export CONFIG_SITE=$CONFIG_SITE:&lt;path&gt;/config.site
+</pre><h4>BUILD!</h4>
+<p>Suppose you placed the package in ${ADS_DIR} and want to install it in ${ADS_DEST}.</p>
+<p>Enter to the ${ADS_DIR} and run:</p>
+<pre class="fragment">&gt;./configure --prefix=${ADS_DEST}
+&gt;make
+&gt;make install
+&gt;make check
+</pre><h1><a class="anchor" id="Use"></a>
+the package</h1>
+<h2>Using the package as library</h2>
+<p>To use the package in your code you must include ${ADS_DEST}/include/all_distance_sketch.h and link with ${ADS_DEST}/lib/liball_distance_sketch.a</p>
+<p>Compiling test.cpp:</p>
+<pre class="fragment">&gt;g++ --std=c++11  test.cpp -I${SNAP_DEST}/snap-adv/ -I${SNAP_DEST}/snap-core/ -I${SNAP_DEST}/snap-exp/ -I${SNAP_DEST}/glib-core/  ${ADS_DEST}/lib/liball_distance_sketch.a ${SNAP_DEST}/snap-core/Snap.o  -o test
+</pre><h2>Run algorithms as binary</h2>
+<p>TODO </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 13 2016 15:23:33 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jan 13 2016 18:33:42 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

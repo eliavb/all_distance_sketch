@@ -1,0 +1,66 @@
+\hypertarget{examples_2graph_8cpp-example}{}\section{examples/graph.\+cpp}
+Examples on how to use graph\+::\+Graph class.
+
+
+\begin{DoxyCodeInclude}
+
+\textcolor{keyword}{using namespace }\hyperlink{namespaceall__distance__sketch_1_1graph}{all\_distance\_sketch::graph};
+\textcolor{keywordtype}{void} how\_to\_build\_undirected\_unweighted\_graph() \{
+  \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph< TUnDirectedGraph >} graph;
+  \textcolor{keywordtype}{int} count = 100;
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count; ++i) \{
+    graph.AddNode(i);
+  \}
+  
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count-1; ++i) \{
+    graph.AddEdge(i, i+1);
+  \}
+
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count-1; ++i) \{
+    EXPECT\_TRUE(graph.IsEdge(i, i+1));
+    EXPECT\_TRUE(graph.IsEdge(i+1, i));
+  \}
+\}
+
+\textcolor{keywordtype}{void} how\_to\_build\_directed\_unweighted\_graph() \{
+  \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph< TUnDirectedGraph >} graph;
+  \textcolor{keywordtype}{int} count = 100;
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count; ++i) \{
+    graph.AddNode(i);
+  \}
+  
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count-1; ++i) \{
+    graph.AddEdge(i, i+1);
+  \}
+
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count-1; ++i) \{
+    EXPECT\_TRUE(graph.IsEdge(i, i+1));
+  \}
+\}
+
+\textcolor{keywordtype}{void} how\_to\_build\_undirected\_weighted\_graph() \{
+  \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph< TUnDirectedGraph >} graph;
+  \textcolor{keywordtype}{int} count = 100;
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count; ++i) \{
+    graph.AddNode(i);
+  \}
+  
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count-1; ++i) \{
+    graph.AddEdge(i, i+1, i);
+  \}
+  
+  \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count-1; ++i)
+  \{
+     EXPECT\_TRUE(graph.IsEdge(i, i+1));
+     EXPECT\_TRUE(graph.IsEdge(i+1, i));
+     std::pair<bool, EdgeWeight> res = graph.GetEdgeWeight(i, i+1);
+     EXPECT\_TRUE(res.first);
+     EXPECT\_EQ(res.second, i);
+     \textcolor{comment}{// Check that the undirected graph }
+     std::pair<bool, EdgeWeight> res1 = graph.GetEdgeWeight(i+1, i);
+     EXPECT\_TRUE(res1.first);
+     EXPECT\_EQ(res1.second, i);
+  \}
+\}
+\end{DoxyCodeInclude}
+ 

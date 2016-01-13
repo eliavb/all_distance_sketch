@@ -225,6 +225,10 @@ class Graph {
 };
 
 }  // namespace graph
+
+/** \example examples/graph.cpp
+ * Examples on how to use graph::Graph class.
+ */
 }  // namespace all_distance_sketch
 
 #endif // ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_GRAPH_GRAPH_H_
