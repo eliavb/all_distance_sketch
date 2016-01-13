@@ -9,12 +9,16 @@
 
 namespace all_distance_sketch {
 
+/*! \brief Single seed information
+*/
 typedef struct SeedCover_t {
   int seed;
   int index;
   std::vector<int> covered_nodes;
 } SeedCover;
 
+/*! \brief Cover extracted by the influence maximization algorithms
+*/
 class Cover {
   public:
     typedef std::unordered_map< int, SeedCover >::iterator Iterator;
@@ -72,7 +76,8 @@ class Cover {
     std::unordered_map< int, double> estimated_cover;
 };
 
-
+/*! \cond
+*/
 template<class Z>
 class TSkimReverseRankCallBacks {
  public:
@@ -522,10 +527,24 @@ protected:
   std::unordered_map<int, int> node_influence_;
   std::unordered_map<int, std::vector<int> > reachable_nodes_;
 };
+/*! \endcond
+*/
 
+/*! \brief Infuelnce maximization based on forward ranks
+*/
 template <class Z>
 class TSkimForwardRank : public TSkimBase<Z> {
 public:
+  /*! \brief Initialize the class.
+      \param[in] T -  The influence of each node, e.g. if T=100 then each nodes 
+                      has influence over all nodes that rank him among their top 100
+      \param[in] K_all_distance_sketch - The first step of the algorithm is to
+                                          calculate the graph sketch. This parameter detetmines 
+                                          the accuracy of the influence.
+      \param[out] cover - The result cover
+      \param[in] graph - The graph to conduct the influence maximization on
+      \see GraphSketch
+  */
   void InitTSkim(int T,
             int K_all_distance_sketch,
             int min_influence_for_seed,
@@ -535,11 +554,16 @@ public:
     graph_sketch_ = NULL;
     TSkimBase<Z>::InitTSkimBase(T, min_influence_for_seed, cover, graph);
   }
-
+  /*! \brief Sets the graph sketch and prevents the algorithm from performing the calculation
+      Calculating the graph sketch may be expensive specially if you want to play with different value of
+      T.
+  */
   void set_graph_sketch(GraphSketch* graph_sketch) {
     graph_sketch_ = graph_sketch;
   }
 
+  /*! \cond
+  */
   int AddSeed(int seed, std::unordered_map<int, int>* influence_change) {
     LOG_M(DEBUG3, "seed node = " << seed);
     std::vector<int> ranking;
@@ -567,7 +591,8 @@ public:
                                                       &param_);
       return call_backs_.get_visited_nodes();
   }
-
+  /*! \endcond
+  */
   int Run() {
     TSkimBase<Z>::PreRunInit();
     GraphSketch local_graph_sketch;
@@ -592,6 +617,10 @@ private:
   TSkimDijkstraCallBacksDistancePrune<Z> call_backs_;
 };
 
+
+
+/*! \cond
+*/
 template <class Z>
 class TSkimApproxSeedExactCover : public TSkimBase<Z> {
 public:
@@ -772,6 +801,9 @@ void ExactCoverGreedy(graph::Graph<Z>* graph,
     (*reachable_nodes)[node_id] = collect_nodes_call_backs.get_nodes_found();
   }
 }
+
+/*! \endcond
+*/
 
 }  //  all_distance_sketch
 #endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_

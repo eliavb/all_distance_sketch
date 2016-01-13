@@ -98,7 +98,9 @@ struct GraphTrait {
     static const bool directed = false;
 };
 
-
+/*! \brief Graph data structure
+    Thin wrapper over SNAP graph
+*/
 template <class T>
 class Graph {
  public:
@@ -164,11 +166,13 @@ class Graph {
     int GetNumEdges() const {
         return graph_.GetEdges();
     }
-
+    /*! \cond
+    */
     WeightMap * utGeWeightMap() {
         return &weight_map_;
     }
-
+    /*! \endcond
+    */
     typename T::TNodeI GetNI(const int& node_id) const {
         return graph_.GetNI(node_id);
     }
@@ -187,7 +191,8 @@ class Graph {
         }
       }
     }
-
+    /*! \cond
+    */
     void LoadGraphFromDir(std::string aPath, bool aTranspose = false) {
         utils::FileUtils::NodePairList nodePairList;
         utils::FileUtils::GetNodePairListFromDir(aPath, &nodePairList);
@@ -215,6 +220,8 @@ class Graph {
 
     WeightMap weight_map_;
     T graph_;
+    /*! \endcond
+    */
 };
 
 }  // namespace graph

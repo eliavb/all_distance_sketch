@@ -1,0 +1,68 @@
+\hypertarget{classall__distance__sketch_1_1TSkimForwardRank}{}\section{all\+\_\+distance\+\_\+sketch\+:\+:T\+Skim\+Forward\+Rank$<$ Z $>$ Class Template Reference}
+\label{classall__distance__sketch_1_1TSkimForwardRank}\index{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank$<$ Z $>$@{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank$<$ Z $>$}}
+
+
+Infuelnce maximization based on forward ranks.  
+
+
+
+
+{\ttfamily \#include $<$t\+\_\+skim.\+h$>$}
+
+
+
+Inherits T\+Skim\+Base$<$ Z $>$.
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classall__distance__sketch_1_1TSkimForwardRank_aa360ffd108fa094c74b27637712caae9}{Init\+T\+Skim} (int T, int K\+\_\+all\+\_\+distance\+\_\+sketch, int min\+\_\+influence\+\_\+for\+\_\+seed, \hyperlink{classall__distance__sketch_1_1Cover}{Cover} $\ast$cover, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ Z $>$ $\ast$graph)
+\begin{DoxyCompactList}\small\item\em Initialize the class. \end{DoxyCompactList}\item 
+\hypertarget{classall__distance__sketch_1_1TSkimForwardRank_af8661108000d31d53f986a159fe1f133}{}void \hyperlink{classall__distance__sketch_1_1TSkimForwardRank_af8661108000d31d53f986a159fe1f133}{set\+\_\+graph\+\_\+sketch} (\hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch)\label{classall__distance__sketch_1_1TSkimForwardRank_af8661108000d31d53f986a159fe1f133}
+
+\begin{DoxyCompactList}\small\item\em Sets the graph sketch and prevents the algorithm from performing the calculation Calculating the graph sketch may be expensive specially if you want to play with different value of T. \end{DoxyCompactList}\item 
+\hypertarget{classall__distance__sketch_1_1TSkimForwardRank_a6a93f3df6f811a2f1ad863075504be2c}{}int {\bfseries Run} ()\label{classall__distance__sketch_1_1TSkimForwardRank_a6a93f3df6f811a2f1ad863075504be2c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class Z$>$class all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank$<$ Z $>$}
+
+Infuelnce maximization based on forward ranks. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classall__distance__sketch_1_1TSkimForwardRank_aa360ffd108fa094c74b27637712caae9}{}\index{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank@{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank}!Init\+T\+Skim@{Init\+T\+Skim}}
+\index{Init\+T\+Skim@{Init\+T\+Skim}!all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank@{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank}}
+\subsubsection[{Init\+T\+Skim}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Z $>$ void {\bf all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank}$<$ Z $>$\+::Init\+T\+Skim (
+\begin{DoxyParamCaption}
+\item[{int}]{T, }
+\item[{int}]{K\+\_\+all\+\_\+distance\+\_\+sketch, }
+\item[{int}]{min\+\_\+influence\+\_\+for\+\_\+seed, }
+\item[{{\bf Cover} $\ast$}]{cover, }
+\item[{{\bf graph\+::\+Graph}$<$ Z $>$ $\ast$}]{graph}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classall__distance__sketch_1_1TSkimForwardRank_aa360ffd108fa094c74b27637712caae9}
+
+
+Initialize the class. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em T} & -\/ The influence of each node, e.\+g. if T=100 then each nodes has influence over all nodes that rank him among their top 100 \\
+\hline
+\mbox{\tt in}  & {\em K\+\_\+all\+\_\+distance\+\_\+sketch} & -\/ The first step of the algorithm is to calculate the graph sketch. This parameter detetmines the accuracy of the influence. \\
+\hline
+\mbox{\tt out}  & {\em cover} & -\/ The result cover \\
+\hline
+\mbox{\tt in}  & {\em graph} & -\/ The graph to conduct the influence maximization on \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/algorithms/t\+\_\+skim.\+h\end{DoxyCompactItemize}

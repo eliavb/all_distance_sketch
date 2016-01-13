@@ -1172,12 +1172,11 @@ TEST_F(AlgoGraph, BasicRNN2) {
   std::vector<int> ranking;
   CalculateGraphSketch< graph::TUnDirectedGraph >(&graph, &graphAds);
   DefaultReverseRankCallBacks< graph::TUnDirectedGraph > reverse_rank_call_backs;
-  CalculateReverseRank< graph::TUnDirectedGraph,
-                        DefaultReverseRankCallBacks< graph::TUnDirectedGraph > >(1,
-                                                                                 &graph,
-                                                                                 &graphAds,
-                                                                                 &ranking,
-                                                                                 &reverse_rank_call_backs);
+  CalculateReverseRank< graph::TUnDirectedGraph >(1,
+                                                   &graph,
+                                                   &graphAds,
+                                                   &ranking,
+                                                   &reverse_rank_call_backs);
   
   for (unsigned int j=1; j < ranking.size(); ++j){
     if (j == 1){

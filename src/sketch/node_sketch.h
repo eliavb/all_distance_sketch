@@ -218,6 +218,8 @@ typedef std::vector<NodeDistanceIdRandomIdData>
 typedef std::vector<NodeDistanceIdRandomIdData>::iterator
     NodeDistanceIdRandomIdDataVectorItr;
 
+/*! \brief Single node sketch
+*/
 class NodeSketch {
  public:
   NodeSketch() { was_init_ = false; }

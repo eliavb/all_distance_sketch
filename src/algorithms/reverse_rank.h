@@ -4,8 +4,40 @@
 #include "../common.h"
 #include "../sketch/graph_sketch.h"
 
+/*! \file reverse_rank.h
+    \brief Contains all reverse rank algorithms
+*/
+
+/*! project namespace */
 namespace all_distance_sketch {
 
+/*! \brief Calculates the reverse ranks of a single node
+  \param[in] source - node id. for this node the algorithm will calculate how all the other nodes rank it.
+  \param[in] graph - The graph to run the calculation on.
+  \param[in] graph_sketch - See doc for more infromation.
+  \param[out] ranking - here the result of the calculation is stored. 
+            the ranking of j to source will be stored in (*ranking)[j]
+  \see GraphSketch
+  \see graph::Graph
+*/
+template <class T>
+static void CalculateReverseRank(int source,
+                       graph::Graph<T> * graph,
+                       GraphSketch * graph_sketch,
+                       std::vector<int> * ranking);
+
+/*! \brief Calculates the reverse ranks of a single node
+  \param[in] source - node id. for this node the algorithm will calculate how all the other nodes rank it.
+  \param[in] graph - The graph to run the calculation on.
+  \param[in] graph_sketch - See doc for more infromation.
+  \param[out] ranking - here the result of the calculation is stored. 
+            the ranking of j to source will be stored in (*ranking)[j]
+  \param[in] call_backs - Call backs class with function that will be called in each major event.
+                          It can be used to stop the calucation once we reached all nodes that rank 
+                          source up to a certain level e.g. stop when ranking[i] >= 100
+  \see GraphSketch
+  \see graph::Graph
+*/
 template <class T, class CallBacks>
 static void CalculateReverseRank(int source,
                        graph::Graph<T> * graph,
@@ -13,6 +45,8 @@ static void CalculateReverseRank(int source,
                        std::vector<int> * ranking,
                        CallBacks* call_backs);
 
+/*! \cond
+*/
 template <class T>
 static int EstimateReverseRankUpperBound(graph::Graph<T> * graph,
                     GraphSketch * graph_sketch,
@@ -121,6 +155,16 @@ public:
 
 };
 
+
+template <class T>
+static void CalculateReverseRank(int source,
+                       graph::Graph<T> * graph,
+                       GraphSketch * graph_sketch,
+                       std::vector<int> * ranking) {
+  DefaultReverseRankCallBacks<T> default_reverse_rank_call_backs;
+  CalculateReverseRank(source, graph, graph_sketch, ranking, &default_reverse_rank_call_backs);
+}
+
 template <class T, class CallBacks>
 static void CalculateReverseRank(int source_node_id,
                        graph::Graph<T> * graph,
@@ -211,7 +255,8 @@ static void CalculateReverseRank(int source_node_id,
         }
     }
 }
-
+/*! \endcond
+*/
 
 };  //  namespace all_distance_sketch
 #endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_REVERSE_RANK_H_

@@ -1,0 +1,118 @@
+\hypertarget{classall__distance__sketch_1_1NodeSketch}{}\section{all\+\_\+distance\+\_\+sketch\+:\+:Node\+Sketch Class Reference}
+\label{classall__distance__sketch_1_1NodeSketch}\index{all\+\_\+distance\+\_\+sketch\+::\+Node\+Sketch@{all\+\_\+distance\+\_\+sketch\+::\+Node\+Sketch}}
+
+
+Single node sketch.  
+
+
+
+
+{\ttfamily \#include $<$node\+\_\+sketch.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_ae6f17ef2bbcc0ec070be6ad4c668e214}{}void {\bfseries Init\+Node\+Sketch} (int K, int node\+\_\+id, Random\+Id random\+\_\+id, std\+::vector$<$ Prunning\+Threshold $>$ $\ast$prunning\+\_\+thresholds=N\+U\+L\+L, unsigned int reserve\+\_\+size=1, bool should\+\_\+calc\+\_\+z\+\_\+value=false)\label{classall__distance__sketch_1_1NodeSketch_ae6f17ef2bbcc0ec070be6ad4c668e214}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a125a3c3d42b4ee2a81087861568f7af4}{}bool {\bfseries Is\+Init} () const \label{classall__distance__sketch_1_1NodeSketch_a125a3c3d42b4ee2a81087861568f7af4}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a3a5af0bc95c5d6dc2a309c390ab88323}{}bool {\bfseries Add\+To\+Candidates} (Node\+Distance\+Id\+Random\+Id\+Data node\+\_\+details)\label{classall__distance__sketch_1_1NodeSketch_a3a5af0bc95c5d6dc2a309c390ab88323}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a81fccf7bada85317e4da936e56e804ce}{}int {\bfseries Insert\+Candidates\+Nodes} ()\label{classall__distance__sketch_1_1NodeSketch_a81fccf7bada85317e4da936e56e804ce}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a769e9f5b63b1b0d735b4caff2812f430}{}bool {\bfseries Add} (Node\+Distance\+Id\+Random\+Id\+Data node\+\_\+details)\label{classall__distance__sketch_1_1NodeSketch_a769e9f5b63b1b0d735b4caff2812f430}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a255ee09f6a495ff7f016e955bc67b5db}{}void {\bfseries Should\+Insert} (Node\+Id\+Distance\+Data node\+\_\+details, bool $\ast$should\+\_\+insert, bool $\ast$is\+\_\+zvalue)\label{classall__distance__sketch_1_1NodeSketch_a255ee09f6a495ff7f016e955bc67b5db}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_add89c73110e18a1bc4295ec666bc33cb}{}bool {\bfseries Add} (Node\+Id\+Distance\+Data node\+\_\+details)\label{classall__distance__sketch_1_1NodeSketch_add89c73110e18a1bc4295ec666bc33cb}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_adaf41826d457225b832c8aace7af0167}{}void {\bfseries Get} (graph\+::\+Edge\+Weight distance, Node\+Id\+Distance\+Vector $\ast$nodes\+\_\+id\+\_\+distance\+\_\+vector)\label{classall__distance__sketch_1_1NodeSketch_adaf41826d457225b832c8aace7af0167}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_ada61bb576888d1624329386e5fd4f7f7}{}void {\bfseries Get\+All\+Distances} (Node\+Id\+Distance\+Vector $\ast$nodes\+\_\+id\+\_\+distance\+\_\+vector)\label{classall__distance__sketch_1_1NodeSketch_ada61bb576888d1624329386e5fd4f7f7}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_ad7a0937c7470108e2a62b00288c1f7de}{}int {\bfseries Get\+Sketch\+Size} ()\label{classall__distance__sketch_1_1NodeSketch_ad7a0937c7470108e2a62b00288c1f7de}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a33789e3a32ecc8c1db906bfb90f262ef}{}double {\bfseries Get\+Distance\+Cover\+Neighborhood} (int neighborhood\+\_\+size)\label{classall__distance__sketch_1_1NodeSketch_a33789e3a32ecc8c1db906bfb90f262ef}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_aa22236240ca50b02f673d6127240588d}{}int {\bfseries Get\+Neighborhood\+Distance\+Index} (graph\+::\+Edge\+Weight distance)\label{classall__distance__sketch_1_1NodeSketch_aa22236240ca50b02f673d6127240588d}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a2ca7507cb573aa193761fd8d3b79bb7f}{}double {\bfseries Get\+Neighborhood\+Distance\+By\+Index} (int index)\label{classall__distance__sketch_1_1NodeSketch_a2ca7507cb573aa193761fd8d3b79bb7f}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_ad3224ffe5a9915427504d91234eba9f8}{}int {\bfseries Get\+Size\+Neighborhood\+Up\+To\+Distance} (graph\+::\+Edge\+Weight distance, const std\+::vector$<$ Random\+Id $>$ $\ast$node\+\_\+distribution)\label{classall__distance__sketch_1_1NodeSketch_ad3224ffe5a9915427504d91234eba9f8}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a23375a66d300aa5a2b12fe4d94827bfb}{}void {\bfseries Calculate\+All\+Distance\+Neighborhood} (const std\+::vector$<$ Random\+Id $>$ $\ast$node\+\_\+distribution)\label{classall__distance__sketch_1_1NodeSketch_a23375a66d300aa5a2b12fe4d94827bfb}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a309d1cd0d46cc59ef021f768f3b545c3}{}Neighbourhood\+Vector $\ast$ {\bfseries U\+T\+Get\+Neighbourhood\+Vector} ()\label{classall__distance__sketch_1_1NodeSketch_a309d1cd0d46cc59ef021f768f3b545c3}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_abd0a89894fa7d740ae5536f3b0185b2e}{}Node\+Id\+Distance\+Vector $\ast$ {\bfseries U\+T\+Get\+Node\+Ads\+Vector} ()\label{classall__distance__sketch_1_1NodeSketch_abd0a89894fa7d740ae5536f3b0185b2e}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_aa429b859c91df5cd50c3e4d6f41f5c2c}{}void {\bfseries Set\+Prunning\+Thresholds} (std\+::vector$<$ Prunning\+Threshold $>$ $\ast$athresholds)\label{classall__distance__sketch_1_1NodeSketch_aa429b859c91df5cd50c3e4d6f41f5c2c}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a8d8633dbc488df5b512ab7c455085c9d}{}{\footnotesize template$<$class Archive $>$ }\\void {\bfseries serialize} (Archive \&ar, const unsigned int version)\label{classall__distance__sketch_1_1NodeSketch_a8d8633dbc488df5b512ab7c455085c9d}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_ac2200cc2ae91ab7745d4b3151229bfe3}{}const Node\+Id\+Distance\+Vector $\ast$ {\bfseries Get\+Node\+Ads\+Vector} () const \label{classall__distance__sketch_1_1NodeSketch_ac2200cc2ae91ab7745d4b3151229bfe3}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_af55cb9bdc148cba0c2bb35a8e101b6e9}{}int {\bfseries Get\+K} () const \label{classall__distance__sketch_1_1NodeSketch_af55cb9bdc148cba0c2bb35a8e101b6e9}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a15156f70b8b148d4706ce13c3db5ead7}{}int {\bfseries Get\+N\+Id} () const \label{classall__distance__sketch_1_1NodeSketch_a15156f70b8b148d4706ce13c3db5ead7}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a75e3d722870d4ff73e6943484a4ab62e}{}Random\+Id {\bfseries Get\+Random\+Id} () const \label{classall__distance__sketch_1_1NodeSketch_a75e3d722870d4ff73e6943484a4ab62e}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a7c05d7a8520827c11551b056f332ffc5}{}const Neighbourhood\+Vector \& {\bfseries Get\+Neighbour\+Hood\+Vector} () const \label{classall__distance__sketch_1_1NodeSketch_a7c05d7a8520827c11551b056f332ffc5}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_aab453f65996756b68a45d1773a401f3c}{}const std\+::vector$<$ Node\+Distance\+Id\+Random\+Id\+Data $>$ \& {\bfseries Get\+Candidates} () const \label{classall__distance__sketch_1_1NodeSketch_aab453f65996756b68a45d1773a401f3c}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_af2e6e41daf345e722eb46aed1333e7d8}{}bool {\bfseries operator==} (const \hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} \&other) const \label{classall__distance__sketch_1_1NodeSketch_af2e6e41daf345e722eb46aed1333e7d8}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_ac2f6c35d3a99dbe26192a796ea783bfe}{}const Z\+Values \& {\bfseries Get\+Z\+Values} ()\label{classall__distance__sketch_1_1NodeSketch_ac2f6c35d3a99dbe26192a796ea783bfe}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a2ae23f00223064c83bad0f18d3f3f1bd}{}bool {\bfseries Has\+Z\+Value} (graph\+::\+Edge\+Weight distance)\label{classall__distance__sketch_1_1NodeSketch_a2ae23f00223064c83bad0f18d3f3f1bd}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_a2596a7734b00e9807f1d4e1cbfe2dcaf}{}void {\bfseries Calculate\+Insert\+Prob} (const std\+::vector$<$ Random\+Id $>$ $\ast$node\+\_\+distribution, std\+::vector$<$ Node\+Prob $>$ $\ast$insert\+\_\+prob)\label{classall__distance__sketch_1_1NodeSketch_a2596a7734b00e9807f1d4e1cbfe2dcaf}
+
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_ac98d07dd8f7b70e16ccb9a01abf56b9c}{}class {\bfseries boost\+::serialization\+::access}\label{classall__distance__sketch_1_1NodeSketch_ac98d07dd8f7b70e16ccb9a01abf56b9c}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1NodeSketch_af8070bfbe7b00c7838a9a7605e361af2}{}class {\bfseries Graph\+Sketch}\label{classall__distance__sketch_1_1NodeSketch_af8070bfbe7b00c7838a9a7605e361af2}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Single node sketch. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/sketch/node\+\_\+sketch.\+h\end{DoxyCompactItemize}

@@ -50,12 +50,18 @@
 #define _unused(x) ((void)x)
 
 namespace all_distance_sketch {
+/*! \cond
+*/
 typedef std::vector<bool> TBitSet;
+/*! \endcond
+*/
 
+/*! Constants */
 namespace constants {
     const float UNREACHABLE = 999999999;
 }  // namespace constants
 
+/*! Graph namesapce */
 namespace graph {
     typedef float EdgeWeight;
 }  // namespace graph

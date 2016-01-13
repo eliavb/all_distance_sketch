@@ -1,0 +1,192 @@
+\hypertarget{namespaceall__distance__sketch}{}\section{all\+\_\+distance\+\_\+sketch Namespace Reference}
+\label{namespaceall__distance__sketch}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceall__distance__sketch_1_1constants}{constants}
+\item 
+ \hyperlink{namespaceall__distance__sketch_1_1graph}{graph}
+\end{DoxyCompactItemize}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classall__distance__sketch_1_1Cover}{Cover}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classall__distance__sketch_1_1Cover}{Cover} extracted by the influence maximization algorithms. \end{DoxyCompactList}\item 
+class \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch}
+\begin{DoxyCompactList}\small\item\em Data structure for the graph sketch. \end{DoxyCompactList}\item 
+class \hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch}
+\begin{DoxyCompactList}\small\item\em Single node sketch. \end{DoxyCompactList}\item 
+struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{Seed\+Cover\+\_\+t}
+\begin{DoxyCompactList}\small\item\em Single seed information. \end{DoxyCompactList}\item 
+class \hyperlink{classall__distance__sketch_1_1TSkimForwardRank}{T\+Skim\+Forward\+Rank}
+\begin{DoxyCompactList}\small\item\em Infuelnce maximization based on forward ranks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}{}typedef struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover\+\_\+t} \hyperlink{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}{Seed\+Cover}\label{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}
+
+\begin{DoxyCompactList}\small\item\em Single seed information. \end{DoxyCompactList}\item 
+\hypertarget{namespaceall__distance__sketch_aa6fb9f0cba2c34476603e744606c5d6a}{}typedef std\+::vector$<$ \hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} $>$ {\bfseries Nodes\+Sketch}\label{namespaceall__distance__sketch_aa6fb9f0cba2c34476603e744606c5d6a}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_a07dc7ca615a83c4e656f52297eda4bb4}{}typedef double {\bfseries Random\+Id}\label{namespaceall__distance__sketch_a07dc7ca615a83c4e656f52297eda4bb4}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_afe1012f59c9acefad48d9c8b254f62da}{}typedef struct all\+\_\+distance\+\_\+sketch\+::\+Node\+Prob\+\_\+t {\bfseries Node\+Prob}\label{namespaceall__distance__sketch_afe1012f59c9acefad48d9c8b254f62da}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_a1b6c1bccb4c2618347ee06c820a5ab9d}{}typedef std\+::vector$<$ Neighbourhood $>$ {\bfseries Neighbourhood\+Vector}\label{namespaceall__distance__sketch_a1b6c1bccb4c2618347ee06c820a5ab9d}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_a60854de6ec0a7d77c5e111cce0c2f1fd}{}typedef std\+::unordered\+\_\+map$<$ int, Node\+Id\+Distance\+Data $>$ {\bfseries Z\+Values}\label{namespaceall__distance__sketch_a60854de6ec0a7d77c5e111cce0c2f1fd}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_a21b129900de9d9cfbb3406f7e0d1a75a}{}typedef std\+::vector$<$ Node\+Id\+Distance\+Data $>$ {\bfseries Node\+Id\+Distance\+Vector}\label{namespaceall__distance__sketch_a21b129900de9d9cfbb3406f7e0d1a75a}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_aeb3aa8f88e2ff80d4625d227ad385dae}{}typedef std\+::vector$<$ Node\+Id\+Distance\+Data $>$\+::iterator {\bfseries Node\+Id\+Distance\+Vector\+Itr}\label{namespaceall__distance__sketch_aeb3aa8f88e2ff80d4625d227ad385dae}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_aba91dd69245d43d635e9aa605e31d85e}{}typedef std\+::vector$<$ Node\+Distance\+Id\+Random\+Id\+Data $>$ {\bfseries Node\+Distance\+Id\+Random\+Id\+Data\+Vector}\label{namespaceall__distance__sketch_aba91dd69245d43d635e9aa605e31d85e}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_ab3b8677a1a08a8cd393e4dc0cc0f90e2}{}typedef std\+::vector$<$ Node\+Distance\+Id\+Random\+Id\+Data $>$\+::iterator {\bfseries Node\+Distance\+Id\+Random\+Id\+Data\+Vector\+Itr}\label{namespaceall__distance__sketch_ab3b8677a1a08a8cd393e4dc0cc0f90e2}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_afd0190bdb1b259b86910f87a565d592d}{}typedef boost\+::minstd\+\_\+rand {\bfseries base\+\_\+generator\+\_\+type}\label{namespaceall__distance__sketch_afd0190bdb1b259b86910f87a565d592d}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_affbf72c369d687330a3f3d0ae32c9fed}{Calculate\+Reverse\+Rank} (int source, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch, std\+::vector$<$ int $>$ $\ast$ranking)
+\begin{DoxyCompactList}\small\item\em Calculates the reverse ranks of a single node. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T , class Call\+Backs $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a644b744de6f24ffc45a7d9dea1d95574}{Calculate\+Reverse\+Rank} (int source, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch, std\+::vector$<$ int $>$ $\ast$ranking, Call\+Backs $\ast$call\+\_\+backs)
+\begin{DoxyCompactList}\small\item\em Calculates the reverse ranks of a single node. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a7fea917111c3851d7c909e896fbad571}{Calculate\+Graph\+Sketch\+Multi\+Core} (\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch, unsigned int num\+\_\+threads=5, double increase\+\_\+factor=1.\+1)
+\begin{DoxyCompactList}\small\item\em Calculate the bottom K graph sketch in parallel This implementation is faster than the single threaded implementation but the cost is in memory. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a1e07f2d9df73bee36e926822ce0bb2ea}{Calculate\+Graph\+Sketch} (\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch)
+\begin{DoxyCompactList}\small\item\em Calculate the bottom K single threaded. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+project namespace 
+
+\subsection{Function Documentation}
+\hypertarget{namespaceall__distance__sketch_a1e07f2d9df73bee36e926822ce0bb2ea}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Calculate\+Graph\+Sketch@{Calculate\+Graph\+Sketch}}
+\index{Calculate\+Graph\+Sketch@{Calculate\+Graph\+Sketch}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
+\subsubsection[{Calculate\+Graph\+Sketch}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ static void all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Graph\+Sketch (
+\begin{DoxyParamCaption}
+\item[{{\bf graph\+::\+Graph}$<$ T $>$ $\ast$}]{graph, }
+\item[{{\bf Graph\+Sketch} $\ast$}]{graph\+\_\+sketch}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{namespaceall__distance__sketch_a1e07f2d9df73bee36e926822ce0bb2ea}
+
+
+Calculate the bottom K single threaded. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em graph} & -\/ Graph data structure to calculate his sketch \\
+\hline
+\mbox{\tt out}  & {\em graph\+\_\+sketch} & -\/ The result graph sketch \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph} 
+
+\hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} 
+\end{DoxySeeAlso}
+\hypertarget{namespaceall__distance__sketch_a7fea917111c3851d7c909e896fbad571}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Calculate\+Graph\+Sketch\+Multi\+Core@{Calculate\+Graph\+Sketch\+Multi\+Core}}
+\index{Calculate\+Graph\+Sketch\+Multi\+Core@{Calculate\+Graph\+Sketch\+Multi\+Core}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
+\subsubsection[{Calculate\+Graph\+Sketch\+Multi\+Core}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ static void all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Graph\+Sketch\+Multi\+Core (
+\begin{DoxyParamCaption}
+\item[{{\bf graph\+::\+Graph}$<$ T $>$ $\ast$}]{graph, }
+\item[{{\bf Graph\+Sketch} $\ast$}]{graph\+\_\+sketch, }
+\item[{unsigned int}]{num\+\_\+threads = {\ttfamily 5}, }
+\item[{double}]{increase\+\_\+factor = {\ttfamily 1.1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{namespaceall__distance__sketch_a7fea917111c3851d7c909e896fbad571}
+
+
+Calculate the bottom K graph sketch in parallel This implementation is faster than the single threaded implementation but the cost is in memory. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em graph} & -\/ Graph data structure to calculate his sketch \\
+\hline
+\mbox{\tt out}  & {\em graph\+\_\+sketch} & -\/ The result graph sketch \\
+\hline
+\mbox{\tt in}  & {\em num\+\_\+threads} & -\/ The number of threads to use in the calculation \\
+\hline
+\mbox{\tt in}  & {\em increase\+\_\+factor} & -\/ The calculation divides the work to batchs of increasing size. This factor will determine the size of each batch when the starting batch size is defined to be of size K received from the graph\+\_\+sketch. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph} 
+
+\hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} 
+\end{DoxySeeAlso}
+\hypertarget{namespaceall__distance__sketch_affbf72c369d687330a3f3d0ae32c9fed}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}}
+\index{Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
+\subsubsection[{Calculate\+Reverse\+Rank}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ static void all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Reverse\+Rank (
+\begin{DoxyParamCaption}
+\item[{int}]{source, }
+\item[{{\bf graph\+::\+Graph}$<$ T $>$ $\ast$}]{graph, }
+\item[{{\bf Graph\+Sketch} $\ast$}]{graph\+\_\+sketch, }
+\item[{std\+::vector$<$ int $>$ $\ast$}]{ranking}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{namespaceall__distance__sketch_affbf72c369d687330a3f3d0ae32c9fed}
+
+
+Calculates the reverse ranks of a single node. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em source} & -\/ node id. for this node the algorithm will calculate how all the other nodes rank it. \\
+\hline
+\mbox{\tt in}  & {\em graph} & -\/ The graph to run the calculation on. \\
+\hline
+\mbox{\tt in}  & {\em graph\+\_\+sketch} & -\/ See doc for more infromation. \\
+\hline
+\mbox{\tt out}  & {\em ranking} & -\/ here the result of the calculation is stored. the ranking of j to source will be stored in ($\ast$ranking)\mbox{[}j\mbox{]} \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} 
+
+\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph} 
+\end{DoxySeeAlso}
+\hypertarget{namespaceall__distance__sketch_a644b744de6f24ffc45a7d9dea1d95574}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}}
+\index{Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
+\subsubsection[{Calculate\+Reverse\+Rank}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T , class Call\+Backs $>$ static void all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Reverse\+Rank (
+\begin{DoxyParamCaption}
+\item[{int}]{source, }
+\item[{{\bf graph\+::\+Graph}$<$ T $>$ $\ast$}]{graph, }
+\item[{{\bf Graph\+Sketch} $\ast$}]{graph\+\_\+sketch, }
+\item[{std\+::vector$<$ int $>$ $\ast$}]{ranking, }
+\item[{Call\+Backs $\ast$}]{call\+\_\+backs}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{namespaceall__distance__sketch_a644b744de6f24ffc45a7d9dea1d95574}
+
+
+Calculates the reverse ranks of a single node. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em source} & -\/ node id. for this node the algorithm will calculate how all the other nodes rank it. \\
+\hline
+\mbox{\tt in}  & {\em graph} & -\/ The graph to run the calculation on. \\
+\hline
+\mbox{\tt in}  & {\em graph\+\_\+sketch} & -\/ See doc for more infromation. \\
+\hline
+\mbox{\tt out}  & {\em ranking} & -\/ here the result of the calculation is stored. the ranking of j to source will be stored in ($\ast$ranking)\mbox{[}j\mbox{]} \\
+\hline
+\mbox{\tt in}  & {\em call\+\_\+backs} & -\/ Call backs class with function that will be called in each major event. It can be used to stop the calucation once we reached all nodes that rank source up to a certain level e.\+g. stop when ranking\mbox{[}i\mbox{]} $>$= 100 \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} 
+
+\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph} 
+\end{DoxySeeAlso}

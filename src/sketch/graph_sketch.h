@@ -6,7 +6,8 @@
 namespace all_distance_sketch {
 
 typedef std::vector<NodeSketch> NodesSketch;
-
+/*! \brief Data structure for the graph sketch
+*/
 class GraphSketch {
  public:
   void InitGraphSketch(unsigned int K, int max_node_id,

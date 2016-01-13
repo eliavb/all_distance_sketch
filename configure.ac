@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.63])
-AC_INIT(all_distance_sketch, 1, eliavbuh@gmail.com)
-AM_INIT_AUTOMAKE(all_distance_sketch, 1)
+AC_INIT(all_distance_sketch, 0.1, eliavbuh@gmail.com)
+AM_INIT_AUTOMAKE(all_distance_sketch, 0.1)
 AC_OUTPUT(Makefile src/Makefile)
 AC_CONFIG_SRCDIR([src/all_distance_sketch.h])
 

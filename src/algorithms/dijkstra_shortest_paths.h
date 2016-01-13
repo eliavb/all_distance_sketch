@@ -8,6 +8,9 @@
 
 namespace all_distance_sketch {
 
+/*! \cond
+*/
+
 struct PrunningAlgoStatistics {
   PrunningAlgoStatistics() : num_visited_nodes(0), num_pruned_nodes(0), num_relaxed_edges(0) {}
   unsigned int num_visited_nodes;
@@ -319,6 +322,9 @@ static void PrunedDijkstra(typename T::TNode source,
     }
   }
 }
+
+/*! \endcond
+*/
 
 }  //  namespace all_distance_sketch
 #endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_DIJKSTRA_SHORTEST_PATHS_H_

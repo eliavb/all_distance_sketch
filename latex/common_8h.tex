@@ -1,0 +1,119 @@
+\hypertarget{common_8h}{}\section{src/common.h File Reference}
+\label{common_8h}\index{src/common.\+h@{src/common.\+h}}
+{\ttfamily \#include $<$limits.\+h$>$}\\*
+{\ttfamily \#include $<$dirent.\+h$>$}\\*
+{\ttfamily \#include $<$mutex$>$}\\*
+{\ttfamily \#include $<$thread$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$list$>$}\\*
+{\ttfamily \#include $<$set$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$random$>$}\\*
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\\*
+{\ttfamily \#include $<$utility$>$}\\*
+{\ttfamily \#include \char`\"{}boost/archive/text\+\_\+oarchive.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}boost/archive/text\+\_\+iarchive.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}boost/config.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}boost/random/mersenne\+\_\+twister.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}boost/random/uniform\+\_\+real.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}boost/random/uniform\+\_\+real\+\_\+distribution.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}boost/random/uniform\+\_\+int\+\_\+distribution.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}boost/random/variate\+\_\+generator.\+hpp\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}boost/random/linear\+\_\+congruential.\+hpp\char`\"{}}\\*
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceall__distance__sketch}{all\+\_\+distance\+\_\+sketch}
+\item 
+ \hyperlink{namespaceall__distance__sketch_1_1constants}{all\+\_\+distance\+\_\+sketch\+::constants}
+\item 
+ \hyperlink{namespaceall__distance__sketch_1_1graph}{all\+\_\+distance\+\_\+sketch\+::graph}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{common_8h_a6fafd62eb0a62fba48c56753959fb3d4}{P\+R\+O\+T\+O\+\_\+\+B\+U\+F}~0
+\item 
+\#define \hyperlink{common_8h_ac928dfd31c92720cd32a0124aec032f8}{N\+O\+T\+I\+C\+E}~6
+\item 
+\#define \hyperlink{common_8h_a8a1c50884986470fb31604484158b637}{D\+E\+B\+U\+G1}~5
+\item 
+\#define \hyperlink{common_8h_a76f3f41704b017cd5003628dd0bc366b}{D\+E\+B\+U\+G2}~4
+\item 
+\#define \hyperlink{common_8h_a2f6055296691625d4d13d6bb0a77e315}{D\+E\+B\+U\+G3}~3
+\item 
+\#define \hyperlink{common_8h_afa444ae73475ba4602754138ed59d27e}{D\+E\+B\+U\+G4}~2
+\item 
+\#define \hyperlink{common_8h_aef7ac3911268e55538d419e30fe773c6}{D\+E\+B\+U\+G5}~1
+\item 
+\#define \hyperlink{common_8h_a6a7df2583546833eabb20f043aca3be4}{C\+U\+R\+R\+E\+N\+T\+\_\+\+L\+O\+G\+\_\+\+L\+E\+V\+E\+L}~\hyperlink{common_8h_ac928dfd31c92720cd32a0124aec032f8}{N\+O\+T\+I\+C\+E}
+\item 
+\#define \hyperlink{common_8h_ac4fde5ca67ffb6395e61fd98b0a84cf3}{L\+O\+G\+\_\+\+M}(level,  msg)
+\item 
+\#define \hyperlink{common_8h_a0d638fe48e408fa87f9b8f86164d38b1}{\+\_\+unused}(x)~((void)x)
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::vector$<$ bool $>$ \hyperlink{namespaceall__distance__sketch_ad60b77c831b10515b82f15db0c369265}{all\+\_\+distance\+\_\+sketch\+::\+T\+Bit\+Set}
+\item 
+typedef float \hyperlink{namespaceall__distance__sketch_1_1graph_a2d175db5da8d4d16b4ca78fdf5bb5030}{all\+\_\+distance\+\_\+sketch\+::graph\+::\+Edge\+Weight}
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const float \hyperlink{namespaceall__distance__sketch_1_1constants_ad55fbc1415d8bf353aaa21bd70c3077f}{all\+\_\+distance\+\_\+sketch\+::constants\+::\+U\+N\+R\+E\+A\+C\+H\+A\+B\+L\+E} = 999999999
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{common_8h_a0d638fe48e408fa87f9b8f86164d38b1}{}\index{common.\+h@{common.\+h}!\+\_\+unused@{\+\_\+unused}}
+\index{\+\_\+unused@{\+\_\+unused}!common.\+h@{common.\+h}}
+\subsubsection[{\+\_\+unused}]{\setlength{\rightskip}{0pt plus 5cm}\#define \+\_\+unused(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)~((void)x)}\label{common_8h_a0d638fe48e408fa87f9b8f86164d38b1}
+\hypertarget{common_8h_a6a7df2583546833eabb20f043aca3be4}{}\index{common.\+h@{common.\+h}!C\+U\+R\+R\+E\+N\+T\+\_\+\+L\+O\+G\+\_\+\+L\+E\+V\+E\+L@{C\+U\+R\+R\+E\+N\+T\+\_\+\+L\+O\+G\+\_\+\+L\+E\+V\+E\+L}}
+\index{C\+U\+R\+R\+E\+N\+T\+\_\+\+L\+O\+G\+\_\+\+L\+E\+V\+E\+L@{C\+U\+R\+R\+E\+N\+T\+\_\+\+L\+O\+G\+\_\+\+L\+E\+V\+E\+L}!common.\+h@{common.\+h}}
+\subsubsection[{C\+U\+R\+R\+E\+N\+T\+\_\+\+L\+O\+G\+\_\+\+L\+E\+V\+E\+L}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\+U\+R\+R\+E\+N\+T\+\_\+\+L\+O\+G\+\_\+\+L\+E\+V\+E\+L~{\bf N\+O\+T\+I\+C\+E}}\label{common_8h_a6a7df2583546833eabb20f043aca3be4}
+\hypertarget{common_8h_a8a1c50884986470fb31604484158b637}{}\index{common.\+h@{common.\+h}!D\+E\+B\+U\+G1@{D\+E\+B\+U\+G1}}
+\index{D\+E\+B\+U\+G1@{D\+E\+B\+U\+G1}!common.\+h@{common.\+h}}
+\subsubsection[{D\+E\+B\+U\+G1}]{\setlength{\rightskip}{0pt plus 5cm}\#define D\+E\+B\+U\+G1~5}\label{common_8h_a8a1c50884986470fb31604484158b637}
+\hypertarget{common_8h_a76f3f41704b017cd5003628dd0bc366b}{}\index{common.\+h@{common.\+h}!D\+E\+B\+U\+G2@{D\+E\+B\+U\+G2}}
+\index{D\+E\+B\+U\+G2@{D\+E\+B\+U\+G2}!common.\+h@{common.\+h}}
+\subsubsection[{D\+E\+B\+U\+G2}]{\setlength{\rightskip}{0pt plus 5cm}\#define D\+E\+B\+U\+G2~4}\label{common_8h_a76f3f41704b017cd5003628dd0bc366b}
+\hypertarget{common_8h_a2f6055296691625d4d13d6bb0a77e315}{}\index{common.\+h@{common.\+h}!D\+E\+B\+U\+G3@{D\+E\+B\+U\+G3}}
+\index{D\+E\+B\+U\+G3@{D\+E\+B\+U\+G3}!common.\+h@{common.\+h}}
+\subsubsection[{D\+E\+B\+U\+G3}]{\setlength{\rightskip}{0pt plus 5cm}\#define D\+E\+B\+U\+G3~3}\label{common_8h_a2f6055296691625d4d13d6bb0a77e315}
+\hypertarget{common_8h_afa444ae73475ba4602754138ed59d27e}{}\index{common.\+h@{common.\+h}!D\+E\+B\+U\+G4@{D\+E\+B\+U\+G4}}
+\index{D\+E\+B\+U\+G4@{D\+E\+B\+U\+G4}!common.\+h@{common.\+h}}
+\subsubsection[{D\+E\+B\+U\+G4}]{\setlength{\rightskip}{0pt plus 5cm}\#define D\+E\+B\+U\+G4~2}\label{common_8h_afa444ae73475ba4602754138ed59d27e}
+\hypertarget{common_8h_aef7ac3911268e55538d419e30fe773c6}{}\index{common.\+h@{common.\+h}!D\+E\+B\+U\+G5@{D\+E\+B\+U\+G5}}
+\index{D\+E\+B\+U\+G5@{D\+E\+B\+U\+G5}!common.\+h@{common.\+h}}
+\subsubsection[{D\+E\+B\+U\+G5}]{\setlength{\rightskip}{0pt plus 5cm}\#define D\+E\+B\+U\+G5~1}\label{common_8h_aef7ac3911268e55538d419e30fe773c6}
+\hypertarget{common_8h_ac4fde5ca67ffb6395e61fd98b0a84cf3}{}\index{common.\+h@{common.\+h}!L\+O\+G\+\_\+\+M@{L\+O\+G\+\_\+\+M}}
+\index{L\+O\+G\+\_\+\+M@{L\+O\+G\+\_\+\+M}!common.\+h@{common.\+h}}
+\subsubsection[{L\+O\+G\+\_\+\+M}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\+O\+G\+\_\+\+M(
+\begin{DoxyParamCaption}
+\item[{}]{level, }
+\item[{}]{msg}
+\end{DoxyParamCaption}
+)}\label{common_8h_ac4fde5ca67ffb6395e61fd98b0a84cf3}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if} ((level) >= \hyperlink{common_8h_a6a7df2583546833eabb20f043aca3be4}{CURRENT\_LOG\_LEVEL}) \{\(\backslash\)
+        std::cout << \_\_FILE\_\_ << \textcolor{stringliteral}{":"} << \_\_LINE\_\_ << \textcolor{stringliteral}{" "} << msg << std::endl; \(\backslash\)
+    \} \(\backslash\)
+\end{DoxyCode}
+\hypertarget{common_8h_ac928dfd31c92720cd32a0124aec032f8}{}\index{common.\+h@{common.\+h}!N\+O\+T\+I\+C\+E@{N\+O\+T\+I\+C\+E}}
+\index{N\+O\+T\+I\+C\+E@{N\+O\+T\+I\+C\+E}!common.\+h@{common.\+h}}
+\subsubsection[{N\+O\+T\+I\+C\+E}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\+O\+T\+I\+C\+E~6}\label{common_8h_ac928dfd31c92720cd32a0124aec032f8}
+\hypertarget{common_8h_a6fafd62eb0a62fba48c56753959fb3d4}{}\index{common.\+h@{common.\+h}!P\+R\+O\+T\+O\+\_\+\+B\+U\+F@{P\+R\+O\+T\+O\+\_\+\+B\+U\+F}}
+\index{P\+R\+O\+T\+O\+\_\+\+B\+U\+F@{P\+R\+O\+T\+O\+\_\+\+B\+U\+F}!common.\+h@{common.\+h}}
+\subsubsection[{P\+R\+O\+T\+O\+\_\+\+B\+U\+F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+R\+O\+T\+O\+\_\+\+B\+U\+F~0}\label{common_8h_a6fafd62eb0a62fba48c56753959fb3d4}

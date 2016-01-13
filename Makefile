@@ -402,13 +402,13 @@ AUTOCONF = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing autoconf
 AUTOHEADER = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing autoheader
 AUTOMAKE = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing automake-1.13
 AWK = gawk
-CPPFLAGS =  -I$/work/eng/eliavb/include/gtest-1.7.0/include/ -I/work/eng/eliavb/include/Snap-2.3/snap-adv/ -I/work/eng/eliavb/include/Snap-2.3/snap-core/ -I/work/eng/eliavb/include/Snap-2.3/snap-exp/ -I/work/eng/eliavb/include/Snap-2.3/glib-core/
+CPPFLAGS =  -I/work/eng/eliavb/include/gtest-1.7.0/include/ -I/work/eng/eliavb/include/Snap-2.3/snap-adv/ -I/work/eng/eliavb/include/Snap-2.3/snap-core/ -I/work/eng/eliavb/include/Snap-2.3/snap-exp/ -I/work/eng/eliavb/include/Snap-2.3/glib-core/
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2 -std=gnu++11
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"all_distance_sketch\" -DPACKAGE_TARNAME=\"all_distance_sketch\" -DPACKAGE_VERSION=\"1\" -DPACKAGE_STRING=\"all_distance_sketch\ 1\" -DPACKAGE_BUGREPORT=\"eliavbuh@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"all_distance_sketch\" -DVERSION=\"1\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDBOOL_H=1 -DHAVE_GETTIMEOFDAY=1
+DEFS = -DPACKAGE_NAME=\"all_distance_sketch\" -DPACKAGE_TARNAME=\"all_distance_sketch\" -DPACKAGE_VERSION=\"0.1\" -DPACKAGE_STRING=\"all_distance_sketch\ 0.1\" -DPACKAGE_BUGREPORT=\"eliavbuh@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"all_distance_sketch\" -DVERSION=\"0.1\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDBOOL_H=1 -DHAVE_GETTIMEOFDAY=1
 DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
@@ -432,16 +432,16 @@ OBJEXT = o
 PACKAGE = all_distance_sketch
 PACKAGE_BUGREPORT = eliavbuh@gmail.com
 PACKAGE_NAME = all_distance_sketch
-PACKAGE_STRING = all_distance_sketch 1
+PACKAGE_STRING = all_distance_sketch 0.1
 PACKAGE_TARNAME = all_distance_sketch
 PACKAGE_URL = 
-PACKAGE_VERSION = 1
+PACKAGE_VERSION = 0.1
 PATH_SEPARATOR = :
 RANLIB = ranlib
 SET_MAKE = 
 SHELL = /bin/sh
 STRIP = 
-VERSION = 1
+VERSION = 0.1
 abs_builddir = /work/eng/eliavb/all_distance_sketch
 abs_srcdir = /work/eng/eliavb/all_distance_sketch
 abs_top_builddir = /work/eng/eliavb/all_distance_sketch

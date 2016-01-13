@@ -1,0 +1,52 @@
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune}{}\section{all\+\_\+distance\+\_\+sketch\+:\+:T\+Skim\+Dijkstra\+Call\+Backs\+Distance\+Prune$<$ Z $>$ Class Template Reference}
+\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune}\index{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Dijkstra\+Call\+Backs\+Distance\+Prune$<$ Z $>$@{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Dijkstra\+Call\+Backs\+Distance\+Prune$<$ Z $>$}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a467e752dfbd2dc22a0fb175b956f5765}{}void {\bfseries Init\+T\+Skim\+Dijkstra\+Call\+Backs\+Distance\+Prune} (double distance\+\_\+stop)\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a467e752dfbd2dc22a0fb175b956f5765}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a72dcdb9dbe41c2a7bc2beefbf4466210}{}void {\bfseries Set\+Wanted\+Nodes} (const std\+::unordered\+\_\+map$<$ int, bool $>$ \&nodes)\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a72dcdb9dbe41c2a7bc2beefbf4466210}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a20cfa0d71c093815fe0660648f6667d6}{}void {\bfseries Started} (int source\+\_\+node\+\_\+id, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ Z $>$ $\ast$graph)\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a20cfa0d71c093815fe0660648f6667d6}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a0de5c64e1639099d7c55e8f4d63d1cdc}{}void {\bfseries Node\+Poped\+From\+Heap} (int poped\+\_\+node\+\_\+id, const Node\+Id\+Distance\+Data \&heap\+\_\+value)\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a0de5c64e1639099d7c55e8f4d63d1cdc}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_ad7b8ae1a1a13e8ff3494147aff93f9fa}{}bool {\bfseries Should\+Prune} (int visited\+\_\+node\+\_\+id, graph\+::\+Edge\+Weight distance\+\_\+from\+\_\+source\+\_\+to\+\_\+visited\+\_\+node)\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_ad7b8ae1a1a13e8ff3494147aff93f9fa}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a7a5a4ff2ba3f2fc2a1a21926b38033f1}{}bool {\bfseries Should\+Stop} ()\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a7a5a4ff2ba3f2fc2a1a21926b38033f1}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a6f2193ce869cd569e6fb13d33ec12381}{}const std\+::vector$<$ int $>$ \& {\bfseries get\+\_\+visited\+\_\+nodes} ()\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a6f2193ce869cd569e6fb13d33ec12381}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a3169828de5c51e15e911988f35c50916}{}void {\bfseries Relaxed\+Path} (int node\+\_\+id)\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a3169828de5c51e15e911988f35c50916}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a818d8d8095dba88dc5c325a67bc3eb74}{}std\+::unordered\+\_\+map$<$ int, bool $>$ {\bfseries wanted\+\_\+nodes\+\_\+}\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a818d8d8095dba88dc5c325a67bc3eb74}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_ac8a5b78c2d0a21750522479476daf3d1}{}int {\bfseries source\+\_\+node\+\_\+id\+\_\+}\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_ac8a5b78c2d0a21750522479476daf3d1}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a8333d299b5fcbb5146c79d13a8df2a48}{}std\+::vector$<$ int $>$ {\bfseries visited\+\_\+nodes\+\_\+including\+\_\+self\+\_\+}\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a8333d299b5fcbb5146c79d13a8df2a48}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a1f84d231b92aba8f3727de3cad782b17}{}int {\bfseries num\+\_\+nodes\+\_\+visited\+\_\+}\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a1f84d231b92aba8f3727de3cad782b17}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a878ec07ca1d8f42bee8901a62f8be572}{}double {\bfseries distance\+\_\+stop\+\_\+}\label{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune_a878ec07ca1d8f42bee8901a62f8be572}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/algorithms/t\+\_\+skim.\+h\end{DoxyCompactItemize}

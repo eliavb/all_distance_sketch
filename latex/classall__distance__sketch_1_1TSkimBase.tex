@@ -1,0 +1,94 @@
+\hypertarget{classall__distance__sketch_1_1TSkimBase}{}\section{all\+\_\+distance\+\_\+sketch\+:\+:T\+Skim\+Base$<$ Z $>$ Class Template Reference}
+\label{classall__distance__sketch_1_1TSkimBase}\index{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Base$<$ Z $>$@{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Base$<$ Z $>$}}
+Inheritance diagram for all\+\_\+distance\+\_\+sketch\+:\+:T\+Skim\+Base$<$ Z $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.828402cm]{classall__distance__sketch_1_1TSkimBase}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a8b5f182c267f0f0479c9c660c70fd730}{}void {\bfseries Init\+T\+Skim\+Base} (int T, int min\+\_\+influence\+\_\+for\+\_\+seed, \hyperlink{classall__distance__sketch_1_1Cover}{Cover} $\ast$cover, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ Z $>$ $\ast$graph)\label{classall__distance__sketch_1_1TSkimBase_a8b5f182c267f0f0479c9c660c70fd730}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a0accb1c413d88a969cd94b367fa928f3}{}void {\bfseries set\+\_\+rankers\+\_\+nodes} (const std\+::vector$<$ int $>$ \&rankers\+\_\+nodes)\label{classall__distance__sketch_1_1TSkimBase_a0accb1c413d88a969cd94b367fa928f3}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a8081d78cabc70bd2a0c8d1cbeef1d922}{}void {\bfseries set\+\_\+rankees\+\_\+nodes} (const std\+::vector$<$ int $>$ \&rankees\+\_\+nodes)\label{classall__distance__sketch_1_1TSkimBase_a8081d78cabc70bd2a0c8d1cbeef1d922}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a57a9bdc61418a76d97728285f19173f8}{}void {\bfseries set\+\_\+wanted\+\_\+cover\+\_\+nodes} (const std\+::vector$<$ int $>$ \&wanted\+\_\+cover\+\_\+nodes)\label{classall__distance__sketch_1_1TSkimBase_a57a9bdc61418a76d97728285f19173f8}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a0f6bdc9626337dc24f8bc9295760bd0e}{}void {\bfseries Calculate\+Rankee\+Nodes} ()\label{classall__distance__sketch_1_1TSkimBase_a0f6bdc9626337dc24f8bc9295760bd0e}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a30b184f9cd5cb27de3ef041b70cb90a6}{}void {\bfseries Calculate\+Ranker\+Nodes} ()\label{classall__distance__sketch_1_1TSkimBase_a30b184f9cd5cb27de3ef041b70cb90a6}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a3adf0e3599cacf4f31e512c3316069b6}{}void {\bfseries Calculate\+Wanted\+Nodes} ()\label{classall__distance__sketch_1_1TSkimBase_a3adf0e3599cacf4f31e512c3316069b6}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_afd1a3b750c5132a449ea45355c04b1f2}{}void {\bfseries Calculate\+Random\+Node\+Permutation} (std\+::vector$<$ int $>$ $\ast$nodes)\label{classall__distance__sketch_1_1TSkimBase_afd1a3b750c5132a449ea45355c04b1f2}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a6e0d5d59fe29bb04b3882ee0459d2889}{}void {\bfseries Extract\+Nodes\+From\+Graph} (std\+::unordered\+\_\+map$<$ int, bool $>$ $\ast$candidates)\label{classall__distance__sketch_1_1TSkimBase_a6e0d5d59fe29bb04b3882ee0459d2889}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_adf0a8900cc01ed5a8235f471307d1485}{}void {\bfseries Extract\+Nodes\+From\+Graph} (std\+::vector$<$ int $>$ $\ast$candidates)\label{classall__distance__sketch_1_1TSkimBase_adf0a8900cc01ed5a8235f471307d1485}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a9396a79c42cae4977677d67901de2886}{}void {\bfseries Pre\+Run\+Init} ()\label{classall__distance__sketch_1_1TSkimBase_a9396a79c42cae4977677d67901de2886}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a1d013a1e99a73d9bcffd0384455ea93b}{}int {\bfseries Update\+Cover} (int seed, std\+::unordered\+\_\+map$<$ int, int $>$ $\ast$influence\+\_\+change, const std\+::vector$<$ int $>$ \&covered\+\_\+nodes)\label{classall__distance__sketch_1_1TSkimBase_a1d013a1e99a73d9bcffd0384455ea93b}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_ae21117104d99b25935b20e26eb5c5af2}{}virtual int {\bfseries Add\+Seed} (int seed, std\+::unordered\+\_\+map$<$ int, int $>$ $\ast$influence\+\_\+change)=0\label{classall__distance__sketch_1_1TSkimBase_ae21117104d99b25935b20e26eb5c5af2}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a0fc27a7ac6c598c37edf50b497ebaa99}{}virtual void {\bfseries Update\+Influce\+And\+Seed\+Set} (int source\+\_\+node, int visited\+\_\+node, std\+::vector$<$ int $>$ $\ast$seed\+\_\+set)\label{classall__distance__sketch_1_1TSkimBase_a0fc27a7ac6c598c37edf50b497ebaa99}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a5e17ec1245203075b8163c2481ee922c}{}virtual const std\+::vector$<$ int $>$ \& {\bfseries Calculate\+Visited\+Nodes} (int source)=0\label{classall__distance__sketch_1_1TSkimBase_a5e17ec1245203075b8163c2481ee922c}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_ac317f707da7c5b52a2237c4048c246ee}{}int {\bfseries Run} (bool Should\+Run\+Pre\+Run\+Init=true)\label{classall__distance__sketch_1_1TSkimBase_ac317f707da7c5b52a2237c4048c246ee}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a6696be3e044b45f74c0611f7fb7dab6b}{}int {\bfseries T\+\_\+}\label{classall__distance__sketch_1_1TSkimBase_a6696be3e044b45f74c0611f7fb7dab6b}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_ab4557b968fa626f627941a8fd6e9477f}{}int {\bfseries min\+\_\+influence\+\_\+for\+\_\+seed\+\_\+}\label{classall__distance__sketch_1_1TSkimBase_ab4557b968fa626f627941a8fd6e9477f}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a16c599359159c78738946fc9f0b51134}{}\hyperlink{classall__distance__sketch_1_1Cover}{Cover} $\ast$ {\bfseries cover\+\_\+}\label{classall__distance__sketch_1_1TSkimBase_a16c599359159c78738946fc9f0b51134}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a87a1c5d5c361d40e453668889238f82e}{}\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ Z $>$ $\ast$ {\bfseries graph\+\_\+}\label{classall__distance__sketch_1_1TSkimBase_a87a1c5d5c361d40e453668889238f82e}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a5022127245fdcc2cc5ae48d176862111}{}std\+::vector$<$ int $>$ {\bfseries rankers\+\_\+nodes\+\_\+}\label{classall__distance__sketch_1_1TSkimBase_a5022127245fdcc2cc5ae48d176862111}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a600142c224e4db501198d939b35e5212}{}std\+::unordered\+\_\+map$<$ int, bool $>$ {\bfseries rankees\+\_\+nodes\+\_\+}\label{classall__distance__sketch_1_1TSkimBase_a600142c224e4db501198d939b35e5212}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a34fdd3df68618943532311530b316978}{}std\+::unordered\+\_\+map$<$ int, bool $>$ {\bfseries wanted\+\_\+nodes\+\_\+}\label{classall__distance__sketch_1_1TSkimBase_a34fdd3df68618943532311530b316978}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_aa0551fbe6332f402873d5ceff1291282}{}std\+::unordered\+\_\+map$<$ int, int $>$ {\bfseries node\+\_\+influence\+\_\+}\label{classall__distance__sketch_1_1TSkimBase_aa0551fbe6332f402873d5ceff1291282}
+
+\item 
+\hypertarget{classall__distance__sketch_1_1TSkimBase_a33fac25371d3b5c087eb00fcff41239b}{}std\+::unordered\+\_\+map$<$ int, std\+::vector$<$ int $>$ $>$ {\bfseries reachable\+\_\+nodes\+\_\+}\label{classall__distance__sketch_1_1TSkimBase_a33fac25371d3b5c087eb00fcff41239b}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/algorithms/t\+\_\+skim.\+h\end{DoxyCompactItemize}

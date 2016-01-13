@@ -11,20 +11,37 @@
 
 namespace all_distance_sketch {
 
-struct PrunningAlgoStatistics;
-
+/*! \brief Calculate the bottom K graph sketch in parallel
+  This implementation is faster than the single threaded implementation but
+  the cost is in memory.
+  \param[in] graph - Graph data structure to calculate his sketch
+  \param[out] graph_sketch - The result graph sketch
+  \param[in] num_threads - The number of threads to use in the calculation
+  \param[in] increase_factor - The calculation divides the work to batchs of increasing size.
+                               This factor will determine the size of each batch when the starting 
+                               batch size is defined to be of size K received from the graph_sketch.
+  \see graph::Graph
+  \see GraphSketch
+*/
 template <class T>
 static void CalculateGraphSketchMultiCore(graph::Graph<T>* graph,
                                    GraphSketch * graph_sketch,
                                    unsigned int num_threads = 5,
                                    double increase_factor = 1.1);
 
+/*! \brief Calculate the bottom K single threaded
+  \param[in] graph - Graph data structure to calculate his sketch
+  \param[out] graph_sketch - The result graph sketch
+  \see graph::Graph
+  \see GraphSketch
+*/
 template <class T>
 static void CalculateGraphSketch(graph::Graph<T> *graph,
                                  GraphSketch * graph_sketch);
 
-
-
+/*! \cond
+*/
+struct PrunningAlgoStatistics;
 
 /*
 * Forward declaration
@@ -212,6 +229,9 @@ static void CalculateSketchBatch(graph::Graph<T> *graph,
         }
     }
 }
+
+/*! \endcond
+*/
 
 }  //  namespace all_distance_sketch
 #endif  //  ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_SKETCH_CALCULATION_H_
