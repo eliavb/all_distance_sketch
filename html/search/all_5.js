@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['reverse_5frank_2eh',['reverse_rank.h',['../reverse__rank_8h.html',1,'']]]
+  ['nodesketch',['NodeSketch',['../classall__distance__sketch_1_1NodeSketch.html',1,'all_distance_sketch']]]
 ];

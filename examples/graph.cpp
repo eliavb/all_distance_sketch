@@ -1,8 +1,14 @@
 
 using namespace all_distance_sketch::graph;
-/*! \brief How to build a directed graph
+/*
+	The EXPECT_TRUE Macro are here just to help you understand what is the expected result.
 */
-void how_to_build_undirected_unweighted_graph() {
+
+
+/* 
+	How to build an undirected graph
+*/
+void build_undirected_unweighted_graph() {
   Graph< TUnDirectedGraph > graph;
   int count = 100;
   for (int i = 0; i < count; ++i) {
@@ -19,7 +25,11 @@ void how_to_build_undirected_unweighted_graph() {
   }
 }
 
-void how_to_build_directed_unweighted_graph() {
+
+/* 
+	How to build a directed graph
+*/
+void build_directed_unweighted_graph() {
   Graph< TUnDirectedGraph > graph;
   int count = 100;
   for (int i = 0; i < count; ++i) {
@@ -35,7 +45,11 @@ void how_to_build_directed_unweighted_graph() {
   }
 }
 
-void how_to_build_undirected_weighted_graph() {
+
+/* 
+	How to build an undirected weighted graph
+*/
+void build_undirected_weighted_graph() {
   Graph< TUnDirectedGraph > graph;
   int count = 100;
   for (int i = 0; i < count; ++i) {
@@ -58,4 +72,25 @@ void how_to_build_undirected_weighted_graph() {
      EXPECT_TRUE(res1.first);
      EXPECT_EQ(res1.second, i);
   }
+}
+
+
+/*
+	Loading the graph from a directory
+	The format of the files is documented in the Class graph::Graph
+*/
+void load_graph_from_dir() {
+	std::string path = "some path to dir";
+	Graph< TUnDirectedGraph > graph;
+	graph.LoadGraphFromDir(path);
+}
+
+
+/*
+	Iterating the graph
+*/
+void iterate_graph(Graph<T>* graph) {
+	for (T::TNodeI nodeItr = graph->BegNI();  nodeItr != graph->EndNI() ; nodeItr++ ){
+	    int node_id = nodeItr.GetId();
+	}
 }

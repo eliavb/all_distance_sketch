@@ -29,8 +29,6 @@ struct WeightMap {
     void SetDirected() { is_directed_ = true;}
     void SetUnDirected() { is_directed_ = false;}
 
-    void Hint(int num_expected_edges) {}
-
     bool AddEdge(int source_node_id, int dest_node_id, EdgeWeight weight) {
         if (is_directed_) {
             return _AddEdge(source_node_id, dest_node_id, weight);
@@ -112,10 +110,6 @@ class Graph {
         }
     }
 
-    void Hint(int aNumExpectedEdges) {
-        weight_map_.Hint(aNumExpectedEdges);
-    }
-
     int AddNode(int node_id) {
         return graph_.AddNode(node_id);
     }
@@ -180,7 +174,9 @@ class Graph {
     int GetMxNId() const {
         return graph_.GetMxNId();
     }
-
+    /*! \brief Changes the direction of all edges
+        For undirected graph this has no effect.
+    */
     void Transpose(Graph<T> * transpose) {
       for (auto node_itr = this->BegNI(); node_itr != this->EndNI() /* node_itr.HasMore()*/ ; node_itr++) {
         transpose->AddNode(node_itr.GetId());
@@ -191,7 +187,18 @@ class Graph {
         }
       }
     }
-    /*! \cond
+    /*! \brief Loads the graph from files located in a dir
+        \param[in] aPath -  path to dir. The directory should contain a file with .txt suffix that contains
+                            pairs of nodes in each line indicating an edge between the nodes, e.g.
+                            
+                            1   2
+                            
+                            1   268635
+                            
+                            The above example will create the nodes 1, 2, 268635 and edges (1, 2) and (1, 26835)
+                            If you have nodes that have no edges to other nodes then insert them manually.
+        \param[in] aTranspose - should load the graph with reverse edges.
+                                If set to True the above example will insert (2, 1) and (268635, 1).
     */
     void LoadGraphFromDir(std::string aPath, bool aTranspose = false) {
         utils::FileUtils::NodePairList nodePairList;
@@ -218,6 +225,8 @@ class Graph {
         }
     }
 
+    /*! \cond
+    */
     WeightMap weight_map_;
     T graph_;
     /*! \endcond

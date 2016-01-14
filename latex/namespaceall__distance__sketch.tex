@@ -58,9 +58,9 @@ typedef struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_affbf72c369d687330a3f3d0ae32c9fed}{Calculate\+Reverse\+Rank} (int source, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch, std\+::vector$<$ int $>$ $\ast$ranking)
+{\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a025f777de5a9df1594dd306f9037f385}{Calculate\+Reverse\+Rank} (int source, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch, std\+::vector$<$ int $>$ $\ast$ranking)
 \begin{DoxyCompactList}\small\item\em Calculates the reverse ranks of a single node. \end{DoxyCompactList}\item 
-{\footnotesize template$<$class T , class Call\+Backs $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a644b744de6f24ffc45a7d9dea1d95574}{Calculate\+Reverse\+Rank} (int source, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch, std\+::vector$<$ int $>$ $\ast$ranking, Call\+Backs $\ast$call\+\_\+backs)
+{\footnotesize template$<$class T , class Call\+Backs $>$ }\\static void \hyperlink{namespaceall__distance__sketch_acd397719d04e49914cac475154a15735}{Calculate\+Reverse\+Rank} (int source, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch, std\+::vector$<$ int $>$ $\ast$ranking, Call\+Backs $\ast$call\+\_\+backs)
 \begin{DoxyCompactList}\small\item\em Calculates the reverse ranks of a single node. \end{DoxyCompactList}\item 
 {\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a7fea917111c3851d7c909e896fbad571}{Calculate\+Graph\+Sketch\+Multi\+Core} (\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch, unsigned int num\+\_\+threads=5, double increase\+\_\+factor=1.\+1)
 \begin{DoxyCompactList}\small\item\em Calculate the bottom K graph sketch in parallel This implementation is faster than the single threaded implementation but the cost is in memory. \end{DoxyCompactList}\item 
@@ -136,16 +136,16 @@ Calculate the bottom K graph sketch in parallel This implementation is faster th
 
 \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} 
 \end{DoxySeeAlso}
-\hypertarget{namespaceall__distance__sketch_affbf72c369d687330a3f3d0ae32c9fed}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}}
+\hypertarget{namespaceall__distance__sketch_a025f777de5a9df1594dd306f9037f385}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}}
 \index{Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
-\subsubsection[{Calculate\+Reverse\+Rank}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ static void all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Reverse\+Rank (
+\subsubsection[{Calculate\+Reverse\+Rank}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Reverse\+Rank (
 \begin{DoxyParamCaption}
 \item[{int}]{source, }
 \item[{{\bf graph\+::\+Graph}$<$ T $>$ $\ast$}]{graph, }
 \item[{{\bf Graph\+Sketch} $\ast$}]{graph\+\_\+sketch, }
 \item[{std\+::vector$<$ int $>$ $\ast$}]{ranking}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}}\label{namespaceall__distance__sketch_affbf72c369d687330a3f3d0ae32c9fed}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{namespaceall__distance__sketch_a025f777de5a9df1594dd306f9037f385}
 
 
 Calculates the reverse ranks of a single node. 
@@ -158,17 +158,22 @@ Calculates the reverse ranks of a single node.
 \hline
 \mbox{\tt in}  & {\em graph\+\_\+sketch} & -\/ See doc for more infromation. \\
 \hline
-\mbox{\tt out}  & {\em ranking} & -\/ here the result of the calculation is stored. the ranking of j to source will be stored in ($\ast$ranking)\mbox{[}j\mbox{]} \\
+\mbox{\tt out}  & {\em ranking} & -\/ here the result of the calculation is stored. the ranking of j to source will be stored in ($\ast$ranking)\mbox{[}j\mbox{]} If there is not path between j and source then ($\ast$ranking)\mbox{[}j\mbox{]} == \hyperlink{namespaceall__distance__sketch_1_1constants_ad55fbc1415d8bf353aaa21bd70c3077f}{constants\+::\+U\+N\+R\+E\+A\+C\+H\+A\+B\+L\+E} The same goes for j such that j is not a node in the graph \\
 \hline
 \end{DoxyParams}
 \begin{DoxySeeAlso}{See also}
 \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} 
 
 \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph} 
+
+\hyperlink{namespaceall__distance__sketch_1_1constants_ad55fbc1415d8bf353aaa21bd70c3077f}{constants\+::\+U\+N\+R\+E\+A\+C\+H\+A\+B\+L\+E} 
 \end{DoxySeeAlso}
-\hypertarget{namespaceall__distance__sketch_a644b744de6f24ffc45a7d9dea1d95574}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}}
+\begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{examples_2reverse_rank_8cpp-example}{examples/reverse\+\_\+rank.\+cpp}.\end{Desc}
+\hypertarget{namespaceall__distance__sketch_acd397719d04e49914cac475154a15735}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}}
 \index{Calculate\+Reverse\+Rank@{Calculate\+Reverse\+Rank}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
-\subsubsection[{Calculate\+Reverse\+Rank}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T , class Call\+Backs $>$ static void all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Reverse\+Rank (
+\subsubsection[{Calculate\+Reverse\+Rank}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T , class Call\+Backs $>$ all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Reverse\+Rank (
 \begin{DoxyParamCaption}
 \item[{int}]{source, }
 \item[{{\bf graph\+::\+Graph}$<$ T $>$ $\ast$}]{graph, }
@@ -176,7 +181,7 @@ Calculates the reverse ranks of a single node.
 \item[{std\+::vector$<$ int $>$ $\ast$}]{ranking, }
 \item[{Call\+Backs $\ast$}]{call\+\_\+backs}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [static]}}\label{namespaceall__distance__sketch_a644b744de6f24ffc45a7d9dea1d95574}
+)\hspace{0.3cm}{\ttfamily [static]}}\label{namespaceall__distance__sketch_acd397719d04e49914cac475154a15735}
 
 
 Calculates the reverse ranks of a single node. 
@@ -189,7 +194,7 @@ Calculates the reverse ranks of a single node.
 \hline
 \mbox{\tt in}  & {\em graph\+\_\+sketch} & -\/ See doc for more infromation. \\
 \hline
-\mbox{\tt out}  & {\em ranking} & -\/ here the result of the calculation is stored. the ranking of j to source will be stored in ($\ast$ranking)\mbox{[}j\mbox{]} \\
+\mbox{\tt out}  & {\em ranking} & -\/ here the result of the calculation is stored. the ranking of j to source will be stored in ($\ast$ranking)\mbox{[}j\mbox{]}. If there is not path between j and source then ($\ast$ranking)\mbox{[}j\mbox{]} == \hyperlink{namespaceall__distance__sketch_1_1constants_ad55fbc1415d8bf353aaa21bd70c3077f}{constants\+::\+U\+N\+R\+E\+A\+C\+H\+A\+B\+L\+E} The same goes for j such that j is not a node in the graph \\
 \hline
 \mbox{\tt in}  & {\em call\+\_\+backs} & -\/ Call backs class with function that will be called in each major event. It can be used to stop the calucation once we reached all nodes that rank source up to a certain level e.\+g. stop when ranking\mbox{[}i\mbox{]} $>$= 100 \\
 \hline
@@ -198,4 +203,6 @@ Calculates the reverse ranks of a single node.
 \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} 
 
 \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph} 
+
+\hyperlink{namespaceall__distance__sketch_1_1constants_ad55fbc1415d8bf353aaa21bd70c3077f}{constants\+::\+U\+N\+R\+E\+A\+C\+H\+A\+B\+L\+E} 
 \end{DoxySeeAlso}

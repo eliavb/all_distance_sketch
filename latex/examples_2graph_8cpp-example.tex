@@ -5,7 +5,15 @@ Examples on how to use graph\+::\+Graph class.
 \begin{DoxyCodeInclude}
 
 \textcolor{keyword}{using namespace }\hyperlink{namespaceall__distance__sketch_1_1graph}{all\_distance\_sketch::graph};
-\textcolor{keywordtype}{void} how\_to\_build\_undirected\_unweighted\_graph() \{
+\textcolor{comment}{/*}
+\textcolor{comment}{    The EXPECT\_TRUE Macro are here just to help you understand what is the expected result.}
+\textcolor{comment}{*/}
+
+
+\textcolor{comment}{/* }
+\textcolor{comment}{    How to build an undirected graph}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} build\_undirected\_unweighted\_graph() \{
   \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph< TUnDirectedGraph >} graph;
   \textcolor{keywordtype}{int} count = 100;
   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count; ++i) \{
@@ -22,7 +30,11 @@ Examples on how to use graph\+::\+Graph class.
   \}
 \}
 
-\textcolor{keywordtype}{void} how\_to\_build\_directed\_unweighted\_graph() \{
+
+\textcolor{comment}{/* }
+\textcolor{comment}{    How to build a directed graph}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} build\_directed\_unweighted\_graph() \{
   \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph< TUnDirectedGraph >} graph;
   \textcolor{keywordtype}{int} count = 100;
   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count; ++i) \{
@@ -38,7 +50,11 @@ Examples on how to use graph\+::\+Graph class.
   \}
 \}
 
-\textcolor{keywordtype}{void} how\_to\_build\_undirected\_weighted\_graph() \{
+
+\textcolor{comment}{/* }
+\textcolor{comment}{    How to build an undirected weighted graph}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} build\_undirected\_weighted\_graph() \{
   \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph< TUnDirectedGraph >} graph;
   \textcolor{keywordtype}{int} count = 100;
   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i = 0; i < count; ++i) \{
@@ -61,6 +77,27 @@ Examples on how to use graph\+::\+Graph class.
      EXPECT\_TRUE(res1.first);
      EXPECT\_EQ(res1.second, i);
   \}
+\}
+
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    Loading the graph from a directory}
+\textcolor{comment}{    The format of the files is documented in the Class graph::Graph}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} load\_graph\_from\_dir() \{
+    std::string path = \textcolor{stringliteral}{"some path to dir"};
+    \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph< TUnDirectedGraph >} graph;
+    graph.\hyperlink{classall__distance__sketch_1_1graph_1_1Graph_ad219191cafee53dfdd1fee987f256b18}{LoadGraphFromDir}(path);
+\}
+
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    Iterating the graph}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} iterate\_graph(\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph<T>}* graph) \{
+    \textcolor{keywordflow}{for} (T::TNodeI nodeItr = graph->BegNI();  nodeItr != graph->EndNI() ; nodeItr++ )\{
+        \textcolor{keywordtype}{int} node\_id = nodeItr.GetId();
+    \}
 \}
 \end{DoxyCodeInclude}
  

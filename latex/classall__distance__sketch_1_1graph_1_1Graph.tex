@@ -12,9 +12,6 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{classall__distance__sketch_1_1graph_1_1Graph_a416617d5902220be6142c5e6d8360805}{}void {\bfseries Hint} (int a\+Num\+Expected\+Edges)\label{classall__distance__sketch_1_1graph_1_1Graph_a416617d5902220be6142c5e6d8360805}
-
-\item 
 \hypertarget{classall__distance__sketch_1_1graph_1_1Graph_a77bbd4ece697aadad9f29819862046f9}{}int {\bfseries Add\+Node} (int node\+\_\+id)\label{classall__distance__sketch_1_1graph_1_1Graph_a77bbd4ece697aadad9f29819862046f9}
 
 \item 
@@ -51,9 +48,11 @@
 \hypertarget{classall__distance__sketch_1_1graph_1_1Graph_a85ded127ea770a1132802e6828ba231a}{}int {\bfseries Get\+Mx\+N\+Id} () const \label{classall__distance__sketch_1_1graph_1_1Graph_a85ded127ea770a1132802e6828ba231a}
 
 \item 
-\hypertarget{classall__distance__sketch_1_1graph_1_1Graph_a815e0dd181344a9834b65021f2973887}{}void {\bfseries Transpose} (\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph}$<$ T $>$ $\ast$transpose)\label{classall__distance__sketch_1_1graph_1_1Graph_a815e0dd181344a9834b65021f2973887}
+\hypertarget{classall__distance__sketch_1_1graph_1_1Graph_a815e0dd181344a9834b65021f2973887}{}void \hyperlink{classall__distance__sketch_1_1graph_1_1Graph_a815e0dd181344a9834b65021f2973887}{Transpose} (\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph}$<$ T $>$ $\ast$transpose)\label{classall__distance__sketch_1_1graph_1_1Graph_a815e0dd181344a9834b65021f2973887}
 
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Changes the direction of all edges For undirected graph this has no effect. \end{DoxyCompactList}\item 
+void \hyperlink{classall__distance__sketch_1_1graph_1_1Graph_ad219191cafee53dfdd1fee987f256b18}{Load\+Graph\+From\+Dir} (std\+::string a\+Path, bool a\+Transpose=false)
+\begin{DoxyCompactList}\small\item\em Loads the graph from files located in a dir. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -61,7 +60,36 @@
 
 \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{Graph} data structure Thin wrapper over S\+N\+A\+P graph. \begin{Desc}
 \item[Examples\+: ]\par
-\hyperlink{examples_2graph_8cpp-example}{examples/graph.\+cpp}, and \hyperlink{examples_2sketch_8cpp-example}{examples/sketch.\+cpp}.\end{Desc}
+\hyperlink{examples_2graph_8cpp-example}{examples/graph.\+cpp}, \hyperlink{examples_2reverse_rank_8cpp-example}{examples/reverse\+\_\+rank.\+cpp}, and \hyperlink{examples_2sketch_8cpp-example}{examples/sketch.\+cpp}.\end{Desc}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classall__distance__sketch_1_1graph_1_1Graph_ad219191cafee53dfdd1fee987f256b18}{}\index{all\+\_\+distance\+\_\+sketch\+::graph\+::\+Graph@{all\+\_\+distance\+\_\+sketch\+::graph\+::\+Graph}!Load\+Graph\+From\+Dir@{Load\+Graph\+From\+Dir}}
+\index{Load\+Graph\+From\+Dir@{Load\+Graph\+From\+Dir}!all\+\_\+distance\+\_\+sketch\+::graph\+::\+Graph@{all\+\_\+distance\+\_\+sketch\+::graph\+::\+Graph}}
+\subsubsection[{Load\+Graph\+From\+Dir}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T$>$ void {\bf all\+\_\+distance\+\_\+sketch\+::graph\+::\+Graph}$<$ T $>$\+::Load\+Graph\+From\+Dir (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{a\+Path, }
+\item[{bool}]{a\+Transpose = {\ttfamily false}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classall__distance__sketch_1_1graph_1_1Graph_ad219191cafee53dfdd1fee987f256b18}
+
+
+Loads the graph from files located in a dir. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em a\+Path} & -\/ path to dir. The directory should contain a file with .txt suffix that contains pairs of nodes in each line indicating an edge between the nodes, e.\+g.\\
+\hline
+\end{DoxyParams}
+1 2
+
+1 268635
+
+The above example will create the nodes 1, 2, 268635 and edges (1, 2) and (1, 26835) If you have nodes that have no edges to other nodes then insert them manually. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em a\+Transpose} & -\/ should load the graph with reverse edges. If set to True the above example will insert (2, 1) and (268635, 1). \\
+\hline
+\end{DoxyParams}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}

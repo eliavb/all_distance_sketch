@@ -11,14 +11,13 @@ typedef std::vector<NodeSketch> NodesSketch;
 class GraphSketch {
  public:
   void InitGraphSketch(unsigned int K, int max_node_id,
-                       UniformRankCalculator* calculator = NULL,
                        const std::vector<int>* nodes_id = NULL) {
     K_ = K;
     should_calc_z_value_ = false;
     nodes_ads_.resize(max_node_id);
     reserve_size_ = K_ * log2(max_node_id);
     prunning_thresholds_.resize(max_node_id);
-    CreateNodesDistribution(max_node_id, calculator, nodes_id);
+    CreateNodesDistribution(max_node_id, NULL, nodes_id);
   }
 
   int GetK() const { return K_; }
@@ -287,6 +286,35 @@ class GraphSketch {
       SetPrunningThresholds();
     }
     
+    void CreateNodesDistribution(unsigned int max_node_id,
+                                 UniformRankCalculator* calculator = NULL,
+                                 const std::vector<int>* nodes_id = NULL) {
+        UniformRankCalculator c;
+        c.InitUniformRankCalculator();
+        if (calculator == NULL ) {
+          calculator = &c;
+        }
+        typedef boost::minstd_rand base_generator_type;
+        base_generator_type generator(42u);
+        boost::uniform_real<> uni_dist(0, 1);
+        boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
+        nodes_random_id_.resize(max_node_id);
+        int num_nodes = nodes_id == NULL ? max_node_id : nodes_id->size();
+        for (unsigned int i = 0 ; i < num_nodes; i++) {
+          int node_id = nodes_id == NULL ? i : (*nodes_id)[i];
+          nodes_random_id_[node_id] =
+              calculator->CalculateNodeRank(node_id);  // uni();
+        }
+
+        for (unsigned int i=0; i < num_nodes; i++) {
+          int node_id = nodes_id == NULL ? i : (*nodes_id)[i];
+          NodeDistanceIdRandomIdData b(0, node_id, nodes_random_id_[node_id]);
+          nodes_random_id_sorted_increasing_.push_back(b);
+        }
+        std::sort(nodes_random_id_sorted_increasing_.begin(),
+                  nodes_random_id_sorted_increasing_.end(),
+                  compare_node_randomid_decreasing());
+    }    
 /*! \endcond
 */
     NodeSketch* GetNodeSketch(NodeDistanceIdRandomIdData node_details) {
@@ -316,38 +344,6 @@ class GraphSketch {
                 nodes_random_id_.begin());
       ExtractSortedVersionFromDist();
     }
-
-    void CreateNodesDistribution(unsigned int max_node_id,
-                                 UniformRankCalculator* calculator = NULL,
-                                 const std::vector<int>* nodes_id = NULL) {
-        UniformRankCalculator c;
-        c.InitUniformRankCalculator();
-        if (calculator == NULL ) {
-          calculator = &c;
-        }
-        typedef boost::minstd_rand base_generator_type;
-        base_generator_type generator(42u);
-        boost::uniform_real<> uni_dist(0, 1);
-        boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
-        nodes_random_id_.resize(max_node_id);
-        int num_nodes = nodes_id == NULL ? max_node_id : nodes_id->size();
-        for (unsigned int i = 0 ; i < num_nodes; i++) {
-          int node_id = nodes_id == NULL ? i : (*nodes_id)[i];
-          nodes_random_id_[node_id] =
-              calculator->CalculateNodeRank(node_id);  // uni();
-        }
-
-        for (unsigned int i=0; i < num_nodes; i++) {
-          int node_id = nodes_id == NULL ? i : (*nodes_id)[i];
-          NodeDistanceIdRandomIdData b(0, node_id, nodes_random_id_[node_id]);
-          nodes_random_id_sorted_increasing_.push_back(b);
-        }
-        std::sort(nodes_random_id_sorted_increasing_.begin(),
-                  nodes_random_id_sorted_increasing_.end(),
-                  compare_node_randomid_decreasing());
-    }
-
-    
 
  private:
 

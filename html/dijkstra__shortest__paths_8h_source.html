@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -202,7 +203,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keyword">inline</span> <span class="keywordtype">void</span> Started(<span class="keywordtype">int</span> source_node_id, graph::Graph&lt;T&gt;* graph) {</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    dijkstra_rank_.clear();</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    dijkstra_rank_.resize(graph-&gt;GetMxNId(), constants::UNREACHABLE);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    dijkstra_rank_.resize(graph-&gt;GetMxNId(), <a class="code" href="namespaceall__distance__sketch_1_1constants.html#ad55fbc1415d8bf353aaa21bd70c3077f">constants::UNREACHABLE</a>);</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    dijkstra_rank_[source_node_id] = 0;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    algo_statistics_.Clear();</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  }</div>
@@ -253,7 +254,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    source_node_random_id_ = graph_sketch_-&gt;GetNodeRandomId(source_node_id_);</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">if</span> (should_calculate_dijkstra_rank_) {</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;      dijkstra_rank_.clear();</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      dijkstra_rank_.resize(graph-&gt;GetMxNId(), constants::UNREACHABLE);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      dijkstra_rank_.resize(graph-&gt;GetMxNId(), <a class="code" href="namespaceall__distance__sketch_1_1constants.html#ad55fbc1415d8bf353aaa21bd70c3077f">constants::UNREACHABLE</a>);</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      dijkstra_rank_[source_node_id_] = 0;</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    }</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  }</div>
@@ -337,7 +338,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;  param-&gt;touched.resize(max_node_id, <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;  call_backs-&gt;Started(source_node_id, graph);</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  param-&gt;min_distance.resize(max_node_id, constants::UNREACHABLE);</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  param-&gt;min_distance.resize(max_node_id, <a class="code" href="namespaceall__distance__sketch_1_1constants.html#ad55fbc1415d8bf353aaa21bd70c3077f">constants::UNREACHABLE</a>);</div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;  param-&gt;min_distance[source.GetId()] = 0;</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;  param-&gt;heap.clear();</div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  param-&gt;heap.insert(NodeIdDistanceData(source_node_id, 0));</div>
@@ -416,10 +417,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;}  <span class="comment">//  namespace all_distance_sketch</span></div>
 <div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;<span class="preprocessor">#endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_DIJKSTRA_SHORTEST_PATHS_H_</span></div>
 <div class="ttc" id="namespaceall__distance__sketch_html"><div class="ttname"><a href="namespaceall__distance__sketch.html">all_distance_sketch</a></div><div class="ttdef"><b>Definition:</b> common.h:52</div></div>
+<div class="ttc" id="namespaceall__distance__sketch_1_1constants_html_ad55fbc1415d8bf353aaa21bd70c3077f"><div class="ttname"><a href="namespaceall__distance__sketch_1_1constants.html#ad55fbc1415d8bf353aaa21bd70c3077f">all_distance_sketch::constants::UNREACHABLE</a></div><div class="ttdeci">const float UNREACHABLE</div><div class="ttdef"><b>Definition:</b> common.h:61</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 13 2016 18:33:42 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 14 2016 13:56:22 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

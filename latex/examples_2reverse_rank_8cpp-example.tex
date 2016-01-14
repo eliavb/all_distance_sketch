@@ -1,0 +1,116 @@
+\hypertarget{examples_2reverse_rank_8cpp-example}{}\section{examples/reverse\+\_\+rank.\+cpp}
+Examples on how to use Calculate\+Reverse\+Rank functions
+
+
+\begin{DoxyCodeInclude}
+\textcolor{comment}{/*}
+\textcolor{comment}{    Calculate node id 3 ranks. The vector ranking will hold how each node i in the graph}
+\textcolor{comment}{    ranks node 3. If a there is no path between i to 3 then the value would be}
+\textcolor{comment}{    UNREACHABLE (see doc)}
+\textcolor{comment}{*/}
+\textcolor{keyword}{using namespace }\hyperlink{namespaceall__distance__sketch}{all\_distance\_sketch};
+\textcolor{keyword}{template} <\textcolor{keyword}{class} T>
+\textcolor{keywordtype}{void} calculate\_reverse\_rank(\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph<T>}* graph) \{
+  \hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch} graph\_sketch;
+  \textcolor{keywordtype}{int} k = 64;
+  graph\_sketch.InitGraphSketch(64, graph->GetMxNId());
+  CalculateGraphSketch<T>(graph, &graphAds);
+  \textcolor{keywordtype}{int} node\_id = 3;
+  std::vector<int> ranking;
+  \textcolor{comment}{// Drop line to help doc tagging}
+  \hyperlink{namespaceall__distance__sketch_a025f777de5a9df1594dd306f9037f385}{CalculateReverseRank}
+                        <T>(node\_id,
+                            graph,
+                            &graph\_sketch,
+                            &ranking);
+\}
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    For advanced use you can use the call back class.}
+\textcolor{comment}{    I will show how to find only the nodes that rank 3 in their top 100.}
+\textcolor{comment}{*/}
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    This is the prototype of the call back class which we can use}
+\textcolor{comment}{    to extend to our needs. Since the function only takes a template}
+\textcolor{comment}{    argument there is no need for inheritance.}
+\textcolor{comment}{*/}
+\textcolor{keyword}{template}<\textcolor{keyword}{class} T>
+\textcolor{keyword}{class }DefaultReverseRankCallBacks \{
+\textcolor{keyword}{public}:
+
+  \textcolor{keyword}{inline} \textcolor{keywordtype}{void} Started(\textcolor{keywordtype}{int} source\_node\_id, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph<T>}* graph) \{ \textcolor{keywordflow}{return}; \}
+
+  \textcolor{keyword}{inline} \textcolor{keywordtype}{void} NodePopedFromHeap(\textcolor{keywordtype}{int} poped\_node\_id, \textcolor{keyword}{const} RankData& heap\_value) \{ \textcolor{keywordflow}{return}; \}
+
+  \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} ShouldPrune(\textcolor{keywordtype}{int} visited\_node\_id, \textcolor{keyword}{const} RankData& rank\_data) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}
+
+  \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} ShouldStop() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}
+
+  \textcolor{keyword}{inline} \textcolor{keywordtype}{void} RelaxedPath(\textcolor{keywordtype}{int} node\_id) \{ \}
+
+\};
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    Build a class that will collect all ranks <= 100 and}
+\textcolor{comment}{    tell the algorithm to stop once he reaches nodes with rank 100.}
+\textcolor{comment}{*/}
+\textcolor{keyword}{template}<\textcolor{keyword}{class} T>
+  \textcolor{keyword}{class }StopAfterReverseRankCallBacks \{
+  \textcolor{keyword}{public}:
+    \textcolor{comment}{// New init function}
+    \textcolor{keyword}{inline} \textcolor{keywordtype}{void} InitStopAfterReverseRankCallBacks(\textcolor{keywordtype}{int} stop\_after\_rank) \{
+      \_stop\_rank = stop\_after\_rank;
+    \}
+    \textcolor{keyword}{inline} \textcolor{keywordtype}{void} Started(\textcolor{keywordtype}{int} source\_node\_id, \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph<T>}* graph) \{ \textcolor{keywordflow}{return}; \}
+
+    \textcolor{comment}{// Collect the node only if its rank is <= \_stop\_rank}
+    \textcolor{keyword}{inline} \textcolor{keywordtype}{void} NodePopedFromHeap(\textcolor{keywordtype}{int} poped\_node\_id, \textcolor{keyword}{const} RankData& heap\_value) \{
+      \textcolor{keywordflow}{if} (heap\_value.rank <= \_stop\_rank) \{
+        ranks[poped\_node\_id] = heap\_value.rank;
+      \}
+    \}
+
+    \textcolor{comment}{// Prune all nodes with rank > \_stop\_rank}
+    \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} ShouldPrune(\textcolor{keywordtype}{int} visited\_node\_id, \textcolor{keyword}{const} RankData& rank\_data) \{ 
+      \textcolor{keywordflow}{return} rank\_data.rank > \_stop\_rank; 
+    \}
+
+    \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} ShouldStop() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}
+
+    \textcolor{keyword}{inline} \textcolor{keywordtype}{void} RelaxedPath(\textcolor{keywordtype}{int} node\_id) \{ \}
+
+    \textcolor{keyword}{const} std::unordered\_map<int, int>& get\_ranks() \{
+      \textcolor{keywordflow}{return} ranks;
+    \}
+  \textcolor{keyword}{private}:
+    \textcolor{keywordtype}{int} \_stop\_rank;
+    std::unordered\_map<int, int> ranks;
+\};
+\textcolor{keywordtype}{void} calculate\_reverse\_rank\_up\_to\_100() \{
+    \textcolor{comment}{// Load the graph}
+    \hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph< graph::TUnDirectedGraph>} graph;
+    graph.\hyperlink{classall__distance__sketch_1_1graph_1_1Graph_ad219191cafee53dfdd1fee987f256b18}{LoadGraphFromDir}(\textcolor{stringliteral}{"path to data"});
+    \hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch} graph\_sketch;
+    \textcolor{keywordtype}{int} k = 64;
+    graph\_sketch.InitGraphSketch(k, graph.GetMxNId());
+    CalculateGraphSketch<graph::TUnDirectedGraph>(&graph, &graph\_sketch);
+    \textcolor{keywordtype}{int} node\_id = 3;
+    std::vector<int> ranking;
+    \textcolor{comment}{// Drop line to help doc tagging}
+    StopAfterReverseRankCallBacks<graph::TUnDirectedGraph> stop\_after\_100;
+    stop\_after\_100.InitStopAfterReverseRankCallBacks(100);
+    \hyperlink{namespaceall__distance__sketch_a025f777de5a9df1594dd306f9037f385}{CalculateReverseRank}
+              <graph::TUnDirectedGraph, StopAfterReverseRankCallBacks<graph::TUnDirectedGraph> >
+                  (node\_id,
+                  &graph,
+                  &graph\_sketch,
+                  &ranking,
+                  &stop\_after\_100);
+    \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} node\_rank : stop\_after\_100.get\_ranks()) \{
+        EXPECT\_TRUE(node\_rank.second <= 100);
+        std::cout << \textcolor{stringliteral}{"node id="} << node\_rank.first << \textcolor{stringliteral}{" rank="} << node\_rank.second << std::endl;
+    \}
+\}
+\end{DoxyCodeInclude}
+ 

@@ -58,7 +58,7 @@ typedef std::vector<bool> TBitSet;
 
 /*! Constants */
 namespace constants {
-    const float UNREACHABLE = 999999999;
+    const float UNREACHABLE = 999999999; /*!< Constant to mark unreachable */
 }  // namespace constants
 
 /*! Graph namesapce */

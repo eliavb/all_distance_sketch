@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -104,9 +105,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a416617d5902220be6142c5e6d8360805"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a416617d5902220be6142c5e6d8360805"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Hint</b> (int aNumExpectedEdges)</td></tr>
-<tr class="separator:a416617d5902220be6142c5e6d8360805"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77bbd4ece697aadad9f29819862046f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a77bbd4ece697aadad9f29819862046f9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>AddNode</b> (int node_id)</td></tr>
 <tr class="separator:a77bbd4ece697aadad9f29819862046f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,22 +142,79 @@ T::TNodeI&#160;</td><td class="memItemRight" valign="bottom"><b>GetNI</b> (const
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetMxNId</b> () const </td></tr>
 <tr class="separator:a85ded127ea770a1132802e6828ba231a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a815e0dd181344a9834b65021f2973887"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a815e0dd181344a9834b65021f2973887"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Transpose</b> (<a class="el" href="classall__distance__sketch_1_1graph_1_1Graph.html">Graph</a>&lt; T &gt; *transpose)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1graph_1_1Graph.html#a815e0dd181344a9834b65021f2973887">Transpose</a> (<a class="el" href="classall__distance__sketch_1_1graph_1_1Graph.html">Graph</a>&lt; T &gt; *transpose)</td></tr>
+<tr class="memdesc:a815e0dd181344a9834b65021f2973887"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the direction of all edges For undirected graph this has no effect. <br /></td></tr>
 <tr class="separator:a815e0dd181344a9834b65021f2973887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad219191cafee53dfdd1fee987f256b18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1graph_1_1Graph.html#ad219191cafee53dfdd1fee987f256b18">LoadGraphFromDir</a> (std::string aPath, bool aTranspose=false)</td></tr>
+<tr class="memdesc:ad219191cafee53dfdd1fee987f256b18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the graph from files located in a dir.  <a href="#ad219191cafee53dfdd1fee987f256b18">More...</a><br /></td></tr>
+<tr class="separator:ad219191cafee53dfdd1fee987f256b18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class T&gt;<br />
 class all_distance_sketch::graph::Graph&lt; T &gt;</h3>
 
 <p><a class="el" href="classall__distance__sketch_1_1graph_1_1Graph.html" title="Graph data structure Thin wrapper over SNAP graph. ">Graph</a> data structure Thin wrapper over SNAP graph. </p>
-<dl><dt><b>Examples: </b></dt><dd><a class="el" href="examples_2graph_8cpp-example.html#_a0">examples/graph.cpp</a>, and <a class="el" href="examples_2sketch_8cpp-example.html#_a0">examples/sketch.cpp</a>.</dd>
-</dl></div><hr/>The documentation for this class was generated from the following file:<ul>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="examples_2graph_8cpp-example.html#_a0">examples/graph.cpp</a>, <a class="el" href="examples_2reverse_rank_8cpp-example.html#_a0">examples/reverse_rank.cpp</a>, and <a class="el" href="examples_2sketch_8cpp-example.html#_a0">examples/sketch.cpp</a>.</dd>
+</dl></div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ad219191cafee53dfdd1fee987f256b18"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classall__distance__sketch_1_1graph_1_1Graph.html">all_distance_sketch::graph::Graph</a>&lt; T &gt;::LoadGraphFromDir </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>aPath</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>aTranspose</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Loads the graph from files located in a dir. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">aPath</td><td>- path to dir. The directory should contain a file with .txt suffix that contains pairs of nodes in each line indicating an edge between the nodes, e.g.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>1 2</p>
+<p>1 268635</p>
+<p>The above example will create the nodes 1, 2, 268635 and edges (1, 2) and (1, 26835) If you have nodes that have no edges to other nodes then insert them manually. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">aTranspose</td><td>- should load the graph with reverse edges. If set to True the above example will insert (2, 1) and (268635, 1). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/graph/<a class="el" href="graph_8h_source.html">graph.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 13 2016 18:33:42 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 14 2016 13:56:22 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

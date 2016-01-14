@@ -720,12 +720,10 @@ TEST_F(AlgoGraph, SketchCalculationFacebookGraphApproximation) {
   int numCompared = 0;
   graph::Graph< graph::TUnDirectedGraph > graph;
   GraphSketch graphAds;
-  graph.Hint(90000);
+  
   graph.LoadGraphFromDir(GetSampleData());
-  UniformRankCalculator uniform_rank_calculator;
-  uniform_rank_calculator.InitUniformRankCalculator(0,1);
-  graphAds.InitGraphSketch(100, graph.GetMxNId(), &uniform_rank_calculator);
-  // graphAds.CreateNodesDistribution(graph.GetMxNId(), &uniform_rank_calculator);
+  graphAds.InitGraphSketch(100, graph.GetMxNId());
+  
   CalculateGraphSketch< graph::TUnDirectedGraph >(&graph, &graphAds);
   int d = 0;
   // std::cout << "Node Id,distance,neighborhood_size,neighborhood_size_approx,delta" << std::endl;
@@ -804,7 +802,7 @@ TEST_F(AlgoGraph, ADSCalculationFacebookGraphApproximationSearlization) {
   int numCompared = 0;
   graph::Graph< graph::TUnDirectedGraph > graphtemp;
   GraphSketch graphAdsTemp;
-  graphtemp.Hint(90000);
+  
   graphtemp.LoadGraphFromDir(GetSampleData());
   graphAdsTemp.InitGraphSketch(100, graphtemp.GetMxNId());
   graphAdsTemp.CreateNodesDistribution(graphtemp.GetMxNId());
@@ -919,11 +917,9 @@ TEST_F(AlgoGraph, ADSCalculationMultiFacebookGraphApproximation) {
   int numCompared = 0;
   graph::Graph< graph::TUnDirectedGraph > graph;
   GraphSketch graphAds;
-  graph.Hint(90000);
+  
   graph.LoadGraphFromDir(GetSampleData());
-  UniformRankCalculator uniform_rank_calculator;
-  uniform_rank_calculator.InitUniformRankCalculator(0,1);
-  graphAds.InitGraphSketch(100, graph.GetMxNId(), &uniform_rank_calculator);
+  graphAds.InitGraphSketch(100, graph.GetMxNId());
   CalculateGraphSketchMultiCore< graph::TUnDirectedGraph >(&graph, &graphAds);
   int d = 0;
   // std::cout << "Node Id,distance,neighborhood_size,neighborhood_size_approx,delta" << std::endl;
@@ -1006,9 +1002,7 @@ TEST_F(AlgoGraph, ReverseRankAverageCalculation) {
   graph.AddEdge(5, 2);
   graph.AddEdge(6, 3);
 
-  UniformRankCalculator uniform_rank_calculator;
-  uniform_rank_calculator.InitUniformRankCalculator(0,1);
-  graph_ads.InitGraphSketch(100, graph.GetMxNId(), &uniform_rank_calculator);
+  graph_ads.InitGraphSketch(100, graph.GetMxNId());
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graph_ads);
   EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, 0, 0), 0);
   EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, 1, 1), 2);
@@ -1030,9 +1024,8 @@ TEST_F(AlgoGraph, ReverseRankAverageCalculation1) {
     graph.AddEdge(i, 0);
   }
 
-  UniformRankCalculator uniform_rank_calculator;
-  uniform_rank_calculator.InitUniformRankCalculator(0,1);
-  graph_ads.InitGraphSketch(101, graph.GetMxNId(), &uniform_rank_calculator);
+
+  graph_ads.InitGraphSketch(101, graph.GetMxNId());
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graph_ads);
   for (int i=1; i < 101; i++) {
     EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, i, 1), 50);
@@ -1053,9 +1046,7 @@ TEST_F(AlgoGraph, ReverseRankAverageCalculation2) {
     graph.AddEdge(i, 99);
   }
 
-  UniformRankCalculator uniform_rank_calculator;
-  uniform_rank_calculator.InitUniformRankCalculator(0,1);
-  graph_ads.InitGraphSketch(201, graph.GetMxNId(), &uniform_rank_calculator);
+  graph_ads.InitGraphSketch(201, graph.GetMxNId());
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graph_ads);
   for (int i=1; i < 100; i++) {
     EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, i, 1), 50);
@@ -1084,9 +1075,7 @@ TEST_F(AlgoGraph, ReverseRankAverageCalculation3) {
     graph.AddEdge(i, 199);
   }
 
-  UniformRankCalculator uniform_rank_calculator;
-  uniform_rank_calculator.InitUniformRankCalculator(0,1);
-  graph_ads.InitGraphSketch(301, graph.GetMxNId(), &uniform_rank_calculator);
+  graph_ads.InitGraphSketch(301, graph.GetMxNId());
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graph_ads);
   for (int i=1; i < 100; i++) {
     EXPECT_EQ(EstimateReverseRankAverage(&graph, &graph_ads, 0, i, 1), 50);
@@ -1105,7 +1094,7 @@ TEST_F(AlgoGraph, ReverseRankAverageCalculation3) {
 TEST_F(AlgoGraph, RNNTree) {
   graph::Graph< graph::TUnDirectedGraph > graph;
   GraphSketch graphAds;
-  graph.Hint(90000);
+  
   for (unsigned int i=1; i < 13; i++) {
     graph.AddNode(i);
   }
@@ -1120,9 +1109,8 @@ TEST_F(AlgoGraph, RNNTree) {
   graph.AddEdge(9, 12, 6);
   graph.AddEdge(10, 12, 4);
   graph.AddEdge(11, 12, 2);
-  UniformRankCalculator uniform_rank_calculator;
-  uniform_rank_calculator.InitUniformRankCalculator(0,1);
-  graphAds.InitGraphSketch(100, graph.GetMxNId(), &uniform_rank_calculator);
+  
+  graphAds.InitGraphSketch(100, graph.GetMxNId());
   CalculateGraphSketch< graph::TUnDirectedGraph >(&graph, &graphAds);
   int sourceNodeId = 3;
   std::vector<int> ranking;
@@ -1165,9 +1153,8 @@ TEST_F(AlgoGraph, BasicRNN2) {
     graph.AddEdge(i, i+1);
   }
 
-  UniformRankCalculator uniform_rank_calculator;
-  uniform_rank_calculator.InitUniformRankCalculator(0,1);
-  graphAds.InitGraphSketch(100, graph.GetMxNId(), &uniform_rank_calculator);
+
+  graphAds.InitGraphSketch(100, graph.GetMxNId());
 
   std::vector<int> ranking;
   CalculateGraphSketch< graph::TUnDirectedGraph >(&graph, &graphAds);
@@ -1249,3 +1236,57 @@ TEST_F(AlgoGraph, Analysis1) {
     file.flush();
   }
 }*/
+
+template<class T>
+  class StopAfterReverseRankCallBacks {
+  public:
+    inline void InitStopAfterReverseRankCallBacks(int stop_after_rank) {
+      _stop_rank = stop_after_rank;
+    }
+    inline void Started(int source_node_id, graph::Graph<T>* graph) { return; }
+
+    inline void NodePopedFromHeap(int poped_node_id, const RankData& heap_value) {
+      if (heap_value.rank <= _stop_rank) {
+        ranks[poped_node_id] = heap_value.rank;
+      }
+    }
+
+    inline bool ShouldPrune(int visited_node_id, const RankData& rank_data) { 
+      return rank_data.rank > _stop_rank; 
+    }
+
+    inline bool ShouldStop() { return false; }
+
+    inline void RelaxedPath(int node_id) { }
+
+    const std::unordered_map<int, int>& get_ranks() {
+      return ranks;
+    }
+  private:
+    int _stop_rank;
+    std::unordered_map<int, int> ranks;
+};
+TEST_F(AlgoGraph, CheckRankUpTo100) {
+  graph::Graph< graph::TUnDirectedGraph> graph;
+  graph.LoadGraphFromDir(GetSampleData());
+  GraphSketch graph_sketch;
+  int k = 64;
+  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
+  CalculateGraphSketch<graph::TUnDirectedGraph>(&graph, &graph_sketch);
+  int node_id = 3;
+  std::vector<int> ranking;
+  // Drop line to help doc tagging
+  StopAfterReverseRankCallBacks<graph::TUnDirectedGraph> stop_after_100;
+  stop_after_100.InitStopAfterReverseRankCallBacks(100);
+  CalculateReverseRank
+              <graph::TUnDirectedGraph, StopAfterReverseRankCallBacks<graph::TUnDirectedGraph> >
+                (node_id,
+                          &graph,
+                          &graph_sketch,
+                          &ranking,
+                          &stop_after_100);
+  for (auto node_rank : stop_after_100.get_ranks()) {
+    EXPECT_TRUE(node_rank.second <= 100);
+    std::cout << "node id=" << node_rank.first << " rank=" << node_rank.second << std::endl;
+  }
+}

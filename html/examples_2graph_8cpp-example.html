@@ -40,6 +40,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -85,7 +86,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Examples on how to use graph::Graph class.</p>
 <div class="fragment"><div class="line"></div>
 <div class="line"><span class="keyword">using namespace </span><a class="code" href="namespaceall__distance__sketch_1_1graph.html">all_distance_sketch::graph</a>;</div>
-<div class="line"><span class="keywordtype">void</span> how_to_build_undirected_unweighted_graph() {</div>
+<div class="line"><span class="comment">/*</span></div>
+<div class="line"><span class="comment">    The EXPECT_TRUE Macro are here just to help you understand what is the expected result.</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/* </span></div>
+<div class="line"><span class="comment">    How to build an undirected graph</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"><span class="keywordtype">void</span> build_undirected_unweighted_graph() {</div>
 <div class="line">  <a name="_a0"></a><a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">Graph&lt; TUnDirectedGraph &gt;</a> graph;</div>
 <div class="line">  <span class="keywordtype">int</span> count = 100;</div>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; count; ++i) {</div>
@@ -102,7 +111,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  }</div>
 <div class="line">}</div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span> how_to_build_directed_unweighted_graph() {</div>
+<div class="line"></div>
+<div class="line"><span class="comment">/* </span></div>
+<div class="line"><span class="comment">    How to build a directed graph</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"><span class="keywordtype">void</span> build_directed_unweighted_graph() {</div>
 <div class="line">  <a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">Graph&lt; TUnDirectedGraph &gt;</a> graph;</div>
 <div class="line">  <span class="keywordtype">int</span> count = 100;</div>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; count; ++i) {</div>
@@ -118,7 +131,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">  }</div>
 <div class="line">}</div>
 <div class="line"></div>
-<div class="line"><span class="keywordtype">void</span> how_to_build_undirected_weighted_graph() {</div>
+<div class="line"></div>
+<div class="line"><span class="comment">/* </span></div>
+<div class="line"><span class="comment">    How to build an undirected weighted graph</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"><span class="keywordtype">void</span> build_undirected_weighted_graph() {</div>
 <div class="line">  <a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">Graph&lt; TUnDirectedGraph &gt;</a> graph;</div>
 <div class="line">  <span class="keywordtype">int</span> count = 100;</div>
 <div class="line">  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; count; ++i) {</div>
@@ -142,10 +159,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">     EXPECT_EQ(res1.second, i);</div>
 <div class="line">  }</div>
 <div class="line">}</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*</span></div>
+<div class="line"><span class="comment">    Loading the graph from a directory</span></div>
+<div class="line"><span class="comment">    The format of the files is documented in the Class graph::Graph</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"><span class="keywordtype">void</span> load_graph_from_dir() {</div>
+<div class="line">    std::string path = <span class="stringliteral">&quot;some path to dir&quot;</span>;</div>
+<div class="line">    <a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">Graph&lt; TUnDirectedGraph &gt;</a> graph;</div>
+<div class="line">    graph.<a name="a5"></a><a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html#ad219191cafee53dfdd1fee987f256b18">LoadGraphFromDir</a>(path);</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*</span></div>
+<div class="line"><span class="comment">    Iterating the graph</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"><span class="keywordtype">void</span> iterate_graph(<a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">Graph&lt;T&gt;</a>* graph) {</div>
+<div class="line">    <span class="keywordflow">for</span> (T::TNodeI nodeItr = graph-&gt;<a name="a6"></a>BegNI();  nodeItr != graph-&gt;<a name="a7"></a>EndNI() ; nodeItr++ ){</div>
+<div class="line">        <span class="keywordtype">int</span> node_id = nodeItr.GetId();</div>
+<div class="line">    }</div>
+<div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 13 2016 18:33:42 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Jan 14 2016 13:56:22 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>
