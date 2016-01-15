@@ -5,7 +5,7 @@
 #include "../common.h"
 #include "rank_calculator.h"
 #if PROTO_BUF
-#include "../../out/all_distance_sketch/proto/all_distance_sketch.pb.h"
+#include "../proto/all_distance_sketch.pb.h"
 #endif
 
 namespace all_distance_sketch {

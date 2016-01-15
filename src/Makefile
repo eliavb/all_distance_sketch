@@ -17,6 +17,7 @@
 
 
 
+
 am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'
 am__make_running_with_option = \
   case $${target_option-} in \
@@ -81,7 +82,7 @@ POST_UNINSTALL = :
 bin_PROGRAMS = test_all$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-	$(top_srcdir)/depcomp $(include_HEADERS)
+	$(top_srcdir)/depcomp $(dist_noinst_DATA) $(include_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx.m4 \
 	$(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
@@ -129,12 +130,13 @@ am__v_AR_1 =
 liball_distance_sketch_a_AR = $(AR) $(ARFLAGS)
 liball_distance_sketch_a_LIBADD =
 am__objects_1 =
-am_liball_distance_sketch_a_OBJECTS = $(am__objects_1)
+am_liball_distance_sketch_a_OBJECTS = $(am__objects_1) \
+	all_distance_sketch.pb.$(OBJEXT)
 liball_distance_sketch_a_OBJECTS =  \
 	$(am_liball_distance_sketch_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
 am_test_all_OBJECTS = run_all.$(OBJEXT) $(am__objects_1) \
-	$(am__objects_1)
+	$(am__objects_1) all_distance_sketch.pb.$(OBJEXT)
 test_all_OBJECTS = $(am_test_all_OBJECTS)
 test_all_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_$(V))
@@ -189,6 +191,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
+DATA = $(dist_noinst_DATA)
 HEADERS = $(include_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
@@ -218,7 +221,7 @@ AUTOCONF = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing autoconf
 AUTOHEADER = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing autoheader
 AUTOMAKE = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing automake-1.13
 AWK = gawk
-CPPFLAGS =  -I/work/eng/eliavb/include/gtest-1.7.0/include/ -I/work/eng/eliavb/include/Snap-2.3/snap-adv/ -I/work/eng/eliavb/include/Snap-2.3/snap-core/ -I/work/eng/eliavb/include/Snap-2.3/snap-exp/ -I/work/eng/eliavb/include/Snap-2.3/glib-core/
+CPPFLAGS =  -I/work/eng/eliavb/include/gtest-1.7.0/include/ -I/work/eng/eliavb/include/Snap-2.3/snap-adv/ -I/work/eng/eliavb/include/Snap-2.3/snap-core/ -I/work/eng/eliavb/include/Snap-2.3/snap-exp/ -I/work/eng/eliavb/include/Snap-2.3/glib-core/ -I/work/eng/eliavb/protobuf_install/include/
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
@@ -238,7 +241,7 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LDFLAGS = 
+LDFLAGS =  -L/work/eng/eliavb/protobuf_install/lib
 LIBOBJS = 
 LIBS =  /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.o /work/eng/eliavb/bin/libgtest.a -lpthread
 LTLIBOBJS = 
@@ -253,6 +256,13 @@ PACKAGE_TARNAME = all_distance_sketch
 PACKAGE_URL = 
 PACKAGE_VERSION = 0.1
 PATH_SEPARATOR = :
+PKG_CONFIG = /usr/bin/pkg-config
+PKG_CONFIG_LIBDIR = 
+PKG_CONFIG_PATH = /work/eng/eliavb/protobuf_install/lib/pkgconfig/
+PROTOBUF_CFLAGS = -pthread -I/work/eng/eliavb/protobuf_install/include  
+PROTOBUF_LIBS = -pthread -L/work/eng/eliavb/protobuf_install/lib -lprotobuf -lpthread  
+PROTOBUF_VERSION = 
+PROTOC =  /work/eng/eliavb/protobuf_install/bin/protoc
 RANLIB = ranlib
 SET_MAKE = 
 SHELL = /bin/sh
@@ -303,8 +313,10 @@ top_builddir = ..
 top_srcdir = ..
 
 # what flags you want to pass to the C compiler & linker
-AM_CPPFLAGS = -std=c++0x -Wall -O3 -DNDEBUG -Wno-deprecated -Wno-strict-overflow -Wno-sign-compare -fPIC -ggdb -pthread
-AM_LDFLAGS = -lboost_system$(BOOST_LIB_SUFFIX)
+AM_CPPFLAGS = -std=c++0x -Wall -O3 -DNDEBUG -Wno-deprecated \
+	-Wno-strict-overflow -Wno-sign-compare -fPIC -ggdb -pthread \
+	-I$(builddir)
+AM_LDFLAGS = -lboost_system$(BOOST_LIB_SUFFIX) -lprotobuf
 # AM_CPPFLAGS = -I./include/gtest
 
 # this lists the binaries to produce, the (non-PHONY, binary) targets in
@@ -313,14 +325,18 @@ HDRS = $(wildcard ./*/*.h) $(wildcard ./*.h)
 TEST_SRC = $(wildcard ./*/ut/*.cpp)
 #estimate_SOURCES = experiments/results/estimate.cpp $(HDRS)
 #benchmark_SOURCES = experiments/results/benchmark.cpp $(HDRS)
-test_all_SOURCES = graph/ut/run_all.cpp $(HDRS) $(TEST_SRC)
+test_all_SOURCES = graph/ut/run_all.cpp $(HDRS) $(TEST_SRC) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
 lib_LIBRARIES = liball_distance_sketch.a
-liball_distance_sketch_a_SOURCES = $(HDRS)
+liball_distance_sketch_a_SOURCES = $(HDRS) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
 include_HEADERS = ./all_distance_sketch.h
-all: all-am
+BUILT_SOURCES = $(builddir)/proto/all_distance_sketch.pb.h $(builddir)/proto/all_distance_sketch.pb.cc
+dist_noinst_DATA = $(wildcard ./proto/*)
+MOSTLYCLEANFILES = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .o .obj
+.SUFFIXES: .cc .cpp .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -330,9 +346,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/Makefile
+	  $(AUTOMAKE) --gnu src/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -440,21 +456,36 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/all_distance_sketch.pb.Po
 include ./$(DEPDIR)/run_all.Po
 
-.cpp.o:
+.cc.o:
 	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
 	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
 #	$(AM_V_CXX)source='$<' object='$@' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ $<
 
-.cpp.obj:
+.cc.obj:
 	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
 	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
 #	$(AM_V_CXX)source='$<' object='$@' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+all_distance_sketch.pb.o: $(builddir)/proto/all_distance_sketch.pb.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all_distance_sketch.pb.o -MD -MP -MF $(DEPDIR)/all_distance_sketch.pb.Tpo -c -o all_distance_sketch.pb.o `test -f '$(builddir)/proto/all_distance_sketch.pb.cc' || echo '$(srcdir)/'`$(builddir)/proto/all_distance_sketch.pb.cc
+	$(AM_V_at)$(am__mv) $(DEPDIR)/all_distance_sketch.pb.Tpo $(DEPDIR)/all_distance_sketch.pb.Po
+#	$(AM_V_CXX)source='$(builddir)/proto/all_distance_sketch.pb.cc' object='all_distance_sketch.pb.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all_distance_sketch.pb.o `test -f '$(builddir)/proto/all_distance_sketch.pb.cc' || echo '$(srcdir)/'`$(builddir)/proto/all_distance_sketch.pb.cc
+
+all_distance_sketch.pb.obj: $(builddir)/proto/all_distance_sketch.pb.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT all_distance_sketch.pb.obj -MD -MP -MF $(DEPDIR)/all_distance_sketch.pb.Tpo -c -o all_distance_sketch.pb.obj `if test -f '$(builddir)/proto/all_distance_sketch.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/all_distance_sketch.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/all_distance_sketch.pb.cc'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/all_distance_sketch.pb.Tpo $(DEPDIR)/all_distance_sketch.pb.Po
+#	$(AM_V_CXX)source='$(builddir)/proto/all_distance_sketch.pb.cc' object='all_distance_sketch.pb.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all_distance_sketch.pb.obj `if test -f '$(builddir)/proto/all_distance_sketch.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/all_distance_sketch.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/all_distance_sketch.pb.cc'; fi`
 
 run_all.o: graph/ut/run_all.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT run_all.o -MD -MP -MF $(DEPDIR)/run_all.Tpo -c -o run_all.o `test -f 'graph/ut/run_all.cpp' || echo '$(srcdir)/'`graph/ut/run_all.cpp
@@ -469,6 +500,20 @@ run_all.obj: graph/ut/run_all.cpp
 #	$(AM_V_CXX)source='graph/ut/run_all.cpp' object='run_all.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o run_all.obj `if test -f 'graph/ut/run_all.cpp'; then $(CYGPATH_W) 'graph/ut/run_all.cpp'; else $(CYGPATH_W) '$(srcdir)/graph/ut/run_all.cpp'; fi`
+
+.cpp.o:
+	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+#	$(AM_V_CXX)source='$<' object='$@' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ $<
+
+.cpp.obj:
+	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+#	$(AM_V_CXX)source='$<' object='$@' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 install-includeHEADERS: $(include_HEADERS)
 	@$(NORMAL_INSTALL)
 	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
@@ -574,13 +619,15 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: check-am
-all-am: Makefile $(LIBRARIES) $(PROGRAMS) $(HEADERS)
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-am
+all-am: Makefile $(LIBRARIES) $(PROGRAMS) $(DATA) $(HEADERS)
 installdirs:
 	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-am
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -600,6 +647,7 @@ install-strip:
 	    "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'" install; \
 	fi
 mostlyclean-generic:
+	-test -z "$(MOSTLYCLEANFILES)" || rm -f $(MOSTLYCLEANFILES)
 
 clean-generic:
 
@@ -610,6 +658,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libLIBRARIES \
@@ -681,7 +730,7 @@ ps-am:
 uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS \
 	uninstall-libLIBRARIES
 
-.MAKE: install-am install-strip
+.MAKE: all check install install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
 	clean-binPROGRAMS clean-generic clean-libLIBRARIES \
@@ -699,6 +748,10 @@ uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS \
 	uninstall-am uninstall-binPROGRAMS uninstall-includeHEADERS \
 	uninstall-libLIBRARIES
 
+
+# Build proto files first
+$(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h: $(srcdir)/proto/all_distance_sketch.proto
+	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/all_distance_sketch.proto
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

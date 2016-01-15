@@ -10,6 +10,7 @@ These are the base requirements to build and use the package (as described below
 \item S\+N\+A\+P (\href{https://snap.stanford.edu/snap/}{\tt https\+://snap.\+stanford.\+edu/snap/} version $>$= 2.\+3)
 \item Boost (\href{http://www.boost.org/}{\tt http\+://www.\+boost.\+org/} version $>$= 1.\+58)
 \item Gtest (\href{https://github.com/google/googletest}{\tt https\+://github.\+com/google/googletest})
+\item Protobuf compiler (\href{https://developers.google.com/protocol-buffers/docs/downloads}{\tt https\+://developers.\+google.\+com/protocol-\/buffers/docs/downloads} version $>$= 2.\+6.\+0)
 \end{DoxyEnumerate}\hypertarget{Install_install_sec}{}\section{Installation}\label{Install_install_sec}
 \subsubsection*{Build Instructions for root users}
 
@@ -22,7 +23,7 @@ After installing all the other packages as root. \begin{DoxyVerb}>./configure
 
 \subsubsection*{Build Instructions for non root users}
 
-After you installed Gtest (in \$\{G\+T\+E\+S\+T\+\_\+\+D\+I\+R\}) and S\+N\+A\+P (in \$\{S\+N\+A\+P\+\_\+\+D\+I\+R\}) create a file named config.\+site (I ommit Boost but if you need to install it just do the same as the others).
+After you installed Gtest (in \$\{G\+T\+E\+S\+T\+\_\+\+D\+I\+R\}), S\+N\+A\+P (in \$\{S\+N\+A\+P\+\_\+\+D\+I\+R\}) and P\+R\+O\+T\+O\+B\+U\+F (in \$\{P\+R\+O\+T\+O\+\_\+\+D\+E\+S\+T\}) create a file named config.\+site (I ommit Boost but if you need to install it just do the same as the others).
 
 The file should contain the location of S\+N\+A\+P and Gtest\+:
 
@@ -30,7 +31,10 @@ The file should contain the location of S\+N\+A\+P and Gtest\+:
 
 \begin{DoxyVerb}CPPFLAGS="${CPPFLAGS} -I${GTEST_DIR}/include/ -I{SNAP_DIR}/snap-adv/ \
 -I{SNAP_DIR}/snap-core/ -I{SNAP_DIR}/snap-exp/ -I{SNAP_DIR}/glib-core/" 
-LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread" 
+LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread"
+LDFLAGS="${LDFLAGS} -L${PROTO_DEST}/lib"
+PROTOC="${PROTO_DEST}/bin/protoc"
+PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/" 
 \end{DoxyVerb}
 
 
@@ -49,5 +53,11 @@ Enter to the \$\{A\+D\+S\+\_\+\+D\+I\+R\} and run\+:
 \begin{DoxyVerb}>./configure --prefix=${ADS_DEST}
 >make
 >make install
+\end{DoxyVerb}
+
+
+\subsubsection*{Checking the install was a success}
+
+Since this is not a root install we need to add the location of the proto lib \begin{DoxyVerb}>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PROTO_DEST}/lib
 >make check\end{DoxyVerb}
  

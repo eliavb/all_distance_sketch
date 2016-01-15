@@ -3,3 +3,6 @@ data/
 include/
 libgtest.a
 all_distance_sketch.sublime-workspace
+src/all_distance_sketch.pb.o
+src/proto/all_distance_sketch.pb.cc
+src/proto/all_distance_sketch.pb.h

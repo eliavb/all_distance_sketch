@@ -14,6 +14,7 @@
 	  3. SNAP (https://snap.stanford.edu/snap/ version >= 2.3)
 	  4. Boost (http://www.boost.org/ version >= 1.58)
 	  5. Gtest (https://github.com/google/googletest)
+	  6. Protobuf compiler (https://developers.google.com/protocol-buffers/docs/downloads version >= 2.6.0)
 
 	\section install_sec Installation
 	
@@ -27,7 +28,7 @@
 
 	### Build Instructions for non root users###
 
-	After you installed Gtest (in ${GTEST_DIR}) and SNAP (in ${SNAP_DIR}) 
+	After you installed Gtest (in ${GTEST_DIR}), SNAP (in ${SNAP_DIR}) and PROTOBUF (in ${PROTO_DEST})
 	create a file named config.site (I ommit Boost but if you need to install it just do the same as the others).
 
 	The file should contain the location of SNAP and Gtest:
@@ -37,7 +38,10 @@
 
   		CPPFLAGS="${CPPFLAGS} -I${GTEST_DIR}/include/ -I{SNAP_DIR}/snap-adv/ \
   		-I{SNAP_DIR}/snap-core/ -I{SNAP_DIR}/snap-exp/ -I{SNAP_DIR}/glib-core/" 
-  		LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread" 
+  		LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread"
+  		LDFLAGS="${LDFLAGS} -L${PROTO_DEST}/lib"
+		PROTOC="${PROTO_DEST}/bin/protoc"
+		PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/" 
 
 	#### CONFIG_SITE ####
 	After the file was created we need to set an env variable named 
@@ -54,7 +58,13 @@
   		>./configure --prefix=${ADS_DEST}
   		>make
   		>make install
+
+  	### Checking the install was a success ###
+  	Since this is not a root install we need to add the location of the proto lib
+  		
+  		>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PROTO_DEST}/lib
   		>make check
+
 
 */
 

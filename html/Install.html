@@ -93,6 +93,7 @@ Prerequisites</h1>
 <li>SNAP (<a href="https://snap.stanford.edu/snap/">https://snap.stanford.edu/snap/</a> version &gt;= 2.3)</li>
 <li>Boost (<a href="http://www.boost.org/">http://www.boost.org/</a> version &gt;= 1.58)</li>
 <li>Gtest (<a href="https://github.com/google/googletest">https://github.com/google/googletest</a>)</li>
+<li>Protobuf compiler (<a href="https://developers.google.com/protocol-buffers/docs/downloads">https://developers.google.com/protocol-buffers/docs/downloads</a> version &gt;= 2.6.0)</li>
 </ol>
 <h1><a class="anchor" id="install_sec"></a>
 Installation</h1>
@@ -102,12 +103,15 @@ Installation</h1>
 &gt;make install
 &gt;make check
 </pre><h3>Build Instructions for non root users</h3>
-<p>After you installed Gtest (in ${GTEST_DIR}) and SNAP (in ${SNAP_DIR}) create a file named config.site (I ommit Boost but if you need to install it just do the same as the others).</p>
+<p>After you installed Gtest (in ${GTEST_DIR}), SNAP (in ${SNAP_DIR}) and PROTOBUF (in ${PROTO_DEST}) create a file named config.site (I ommit Boost but if you need to install it just do the same as the others).</p>
 <p>The file should contain the location of SNAP and Gtest:</p>
 <h4>config.site content</h4>
 <pre class="fragment">CPPFLAGS="${CPPFLAGS} -I${GTEST_DIR}/include/ -I{SNAP_DIR}/snap-adv/ \
 -I{SNAP_DIR}/snap-core/ -I{SNAP_DIR}/snap-exp/ -I{SNAP_DIR}/glib-core/" 
-LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread" 
+LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread"
+LDFLAGS="${LDFLAGS} -L${PROTO_DEST}/lib"
+PROTOC="${PROTO_DEST}/bin/protoc"
+PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/" 
 </pre><h4>CONFIG_SITE</h4>
 <p>After the file was created we need to set an env variable named CONFIG_SITE to point to the config.site: </p><pre class="fragment">&gt;export CONFIG_SITE=$CONFIG_SITE:&lt;path&gt;/config.site
 </pre><h4>BUILD!</h4>
@@ -116,10 +120,12 @@ LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread"
 <pre class="fragment">&gt;./configure --prefix=${ADS_DEST}
 &gt;make
 &gt;make install
+</pre><h3>Checking the install was a success</h3>
+<p>Since this is not a root install we need to add the location of the proto lib </p><pre class="fragment">&gt;export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PROTO_DEST}/lib
 &gt;make check</pre> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Jan 14 2016 13:56:22 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 01:08:20 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>
