@@ -242,7 +242,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            }</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            nodes_ads_[node_id].set_z_values(&amp;z);</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        }</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        SetDisributionToNodes();</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    }</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
@@ -297,7 +297,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    }</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <span class="keywordtype">void</span> CalculateInsertProb(<span class="keywordtype">int</span> node_id, std::vector&lt;NodeProb&gt; * insert_prob) {</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;      nodes_ads_[node_id].CalculateInsertProb(&amp;nodes_random_id_, insert_prob);</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;      nodes_ads_[node_id].CalculateInsertProb(insert_prob);</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    }</div>
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keywordtype">void</span> SetPrunningThresholds() {</div>
@@ -344,7 +344,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordtype">void</span> CalculateAllDistanceNeighborhood() {</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; nodes_ads_.size(); i++) {</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        nodes_ads_[i].CalculateAllDistanceNeighborhood(&amp;nodes_random_id_);</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        nodes_ads_[i].CalculateAllDistanceNeighborhood();</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        }</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    }</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;</div>
@@ -403,72 +403,81 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;              calculator-&gt;CalculateNodeRank(node_id);  <span class="comment">// uni();</span></div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        }</div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i=0; i &lt; num_nodes; i++) {</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;          <span class="keywordtype">int</span> node_id = nodes_id == NULL ? i : (*nodes_id)[i];</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;          NodeDistanceIdRandomIdData b(0, node_id, nodes_random_id_[node_id]);</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;          nodes_random_id_sorted_increasing_.push_back(b);</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        }</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        std::sort(nodes_random_id_sorted_increasing_.begin(),</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;                  nodes_random_id_sorted_increasing_.end(),</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;                  compare_node_randomid_decreasing());</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    }    </div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    <span class="keyword">const</span> std::vector&lt;NodeDistanceIdRandomIdData&gt;* GetNodesDistribution()<span class="keyword"></span></div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="keyword">        const </span>{</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;      <span class="keywordflow">return</span> &amp;nodes_random_id_sorted_increasing_;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    }</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    NodeSketch* GetNodeSketch(NodeDistanceIdRandomIdData node_details) {</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;      <span class="keywordflow">return</span> GetNodeSketch(node_details.GetDetails());</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    }</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;</div>
-<div class="line"><a name="l00356"></a><span class="lineno"><a class="line" href="classall__distance__sketch_1_1GraphSketch.html#af463db872f2cc5cc635dffe4aaf136e6">  356</a></span>&#160;    <span class="keyword">const</span> std::vector&lt;RandomId&gt;* <a class="code" href="classall__distance__sketch_1_1GraphSketch.html#af463db872f2cc5cc635dffe4aaf136e6">GetNodesDistributionLean</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;      <span class="keywordflow">return</span> &amp;nodes_random_id_;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    }</div>
-<div class="line"><a name="l00361"></a><span class="lineno"><a class="line" href="classall__distance__sketch_1_1GraphSketch.html#af9bbe3a02d29880b7218c52b53375e31">  361</a></span>&#160;    <a class="code" href="namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4">RandomId</a> <a class="code" href="classall__distance__sketch_1_1GraphSketch.html#af9bbe3a02d29880b7218c52b53375e31">GetNodeRandomId</a>(<span class="keyword">const</span> <span class="keywordtype">int</span>&amp; node_id) {</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;      <span class="keywordflow">if</span> ((<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>)node_id &gt; nodes_random_id_.size()) {</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;            <span class="keywordflow">return</span> 2;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        }</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        <span class="keywordflow">return</span> nodes_random_id_[node_id];</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    }</div>
-<div class="line"><a name="l00370"></a><span class="lineno"><a class="line" href="classall__distance__sketch_1_1GraphSketch.html#af57117f7a70b714dedc882d8f213207c">  370</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classall__distance__sketch_1_1GraphSketch.html#af57117f7a70b714dedc882d8f213207c">SetNodesDistribution</a>(<span class="keyword">const</span> std::vector&lt;RandomId&gt;* nodes_random_id) {</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;      nodes_random_id_.clear();</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;      nodes_random_id_.resize(nodes_random_id-&gt;size());</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;      std::copy(nodes_random_id-&gt;begin(), nodes_random_id-&gt;end(),</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;                nodes_random_id_.begin());</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;      ExtractSortedVersionFromDist();</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    }</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keywordtype">void</span> ExtractSortedVersionFromDist() {</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;      nodes_random_id_sorted_increasing_.clear();</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; nodes_random_id_.size(); i++) {</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        NodeDistanceIdRandomIdData b(0, i, nodes_random_id_[i]);</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;        nodes_random_id_sorted_increasing_.push_back(b);</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;        }</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        std::sort(nodes_random_id_sorted_increasing_.begin(),</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                  nodes_random_id_sorted_increasing_.end(),</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;                  compare_node_randomid_decreasing());</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    }</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keywordtype">bool</span> should_calc_z_value_;</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> reserve_size_;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> K_;</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    NodesSketch nodes_ads_;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    std::vector&lt;PrunningThreshold&gt; prunning_thresholds_;</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    std::vector&lt;RandomId&gt; nodes_random_id_;</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    std::vector&lt;NodeDistanceIdRandomIdData&gt; nodes_random_id_sorted_increasing_;</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;};</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;}  <span class="comment">//  namespace all_distance_sketch</span></div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="preprocessor">#endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_SKETCH_GRAPH_SKETCH_H_</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        ExtractSortedVersionFromDist();</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        SetDisributionToNodes();</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="comment">/*</span></div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;<span class="comment">        for (unsigned int i=0; i &lt; num_nodes; i++) {</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="comment">          int node_id = nodes_id == NULL ? i : (*nodes_id)[i];</span></div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;<span class="comment">          NodeDistanceIdRandomIdData b(0, node_id, nodes_random_id_[node_id]);</span></div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="comment">          nodes_random_id_sorted_increasing_.push_back(b);</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="comment">        std::sort(nodes_random_id_sorted_increasing_.begin(),</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="comment">                  nodes_random_id_sorted_increasing_.end(),</span></div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="comment">                  compare_node_randomid_decreasing());*/</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    }    </div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keyword">const</span> std::vector&lt;NodeDistanceIdRandomIdData&gt;* GetNodesDistribution()<span class="keyword"></span></div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="keyword">        const </span>{</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;      <span class="keywordflow">return</span> &amp;nodes_random_id_sorted_increasing_;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    }</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    NodeSketch* GetNodeSketch(NodeDistanceIdRandomIdData node_details) {</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;      <span class="keywordflow">return</span> GetNodeSketch(node_details.GetDetails());</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    }</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;</div>
+<div class="line"><a name="l00360"></a><span class="lineno"><a class="line" href="classall__distance__sketch_1_1GraphSketch.html#af463db872f2cc5cc635dffe4aaf136e6">  360</a></span>&#160;    <span class="keyword">const</span> std::vector&lt;RandomId&gt;* <a class="code" href="classall__distance__sketch_1_1GraphSketch.html#af463db872f2cc5cc635dffe4aaf136e6">GetNodesDistributionLean</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;      <span class="keywordflow">return</span> &amp;nodes_random_id_;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    }</div>
+<div class="line"><a name="l00365"></a><span class="lineno"><a class="line" href="classall__distance__sketch_1_1GraphSketch.html#af9bbe3a02d29880b7218c52b53375e31">  365</a></span>&#160;    <a class="code" href="namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4">RandomId</a> <a class="code" href="classall__distance__sketch_1_1GraphSketch.html#af9bbe3a02d29880b7218c52b53375e31">GetNodeRandomId</a>(<span class="keyword">const</span> <span class="keywordtype">int</span>&amp; node_id) {</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;      <span class="keywordflow">if</span> ((<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>)node_id &gt; nodes_random_id_.size()) {</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;            <span class="keywordflow">return</span> 2;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        }</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="keywordflow">return</span> nodes_random_id_[node_id];</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    }</div>
+<div class="line"><a name="l00374"></a><span class="lineno"><a class="line" href="classall__distance__sketch_1_1GraphSketch.html#af57117f7a70b714dedc882d8f213207c">  374</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classall__distance__sketch_1_1GraphSketch.html#af57117f7a70b714dedc882d8f213207c">SetNodesDistribution</a>(<span class="keyword">const</span> std::vector&lt;RandomId&gt;* nodes_random_id) {</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;      nodes_random_id_.clear();</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;      nodes_random_id_.resize(nodes_random_id-&gt;size());</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;      std::copy(nodes_random_id-&gt;begin(), nodes_random_id-&gt;end(),</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                nodes_random_id_.begin());</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;      ExtractSortedVersionFromDist();</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;      SetDisributionToNodes();</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    }</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160; <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    <span class="keywordtype">void</span> SetDisributionToNodes() {</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i &lt; nodes_ads_.size(); i++) {</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;        nodes_ads_[i].SetDisribution(&amp;nodes_random_id_);</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;      }</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    }</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="keywordtype">void</span> ExtractSortedVersionFromDist() {</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;      nodes_random_id_sorted_increasing_.clear();</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; nodes_random_id_.size(); i++) {</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        NodeDistanceIdRandomIdData b(0, i, nodes_random_id_[i]);</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;        nodes_random_id_sorted_increasing_.push_back(b);</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        }</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        std::sort(nodes_random_id_sorted_increasing_.begin(),</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;                  nodes_random_id_sorted_increasing_.end(),</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;                  compare_node_randomid_decreasing());</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    }</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="keywordtype">bool</span> should_calc_z_value_;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> reserve_size_;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> K_;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    NodesSketch nodes_ads_;</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    std::vector&lt;PrunningThreshold&gt; prunning_thresholds_;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    std::vector&lt;RandomId&gt; nodes_random_id_;</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    std::vector&lt;NodeDistanceIdRandomIdData&gt; nodes_random_id_sorted_increasing_;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;};</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;}  <span class="comment">//  namespace all_distance_sketch</span></div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="preprocessor">#endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_SKETCH_GRAPH_SKETCH_H_</span></div>
 <div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html_a6d41436a73844dd633b6184a89ce83ff"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html#a6d41436a73844dd633b6184a89ce83ff">all_distance_sketch::GraphSketch::InitGraphSketch</a></div><div class="ttdeci">void InitGraphSketch(unsigned int K, int max_node_id, const std::vector&lt; int &gt; *nodes_id=NULL)</div><div class="ttdoc">Init the class. </div><div class="ttdef"><b>Definition:</b> graph_sketch.h:22</div></div>
 <div class="ttc" id="namespaceall__distance__sketch_html"><div class="ttname"><a href="namespaceall__distance__sketch.html">all_distance_sketch</a></div><div class="ttdef"><b>Definition:</b> common.h:52</div></div>
 <div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html_a8d5aaa1b4e94e0361ea0b1afdbfcf8bc"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html#a8d5aaa1b4e94e0361ea0b1afdbfcf8bc">all_distance_sketch::GraphSketch::set_should_calc_zvalues</a></div><div class="ttdeci">void set_should_calc_zvalues(bool should_calc)</div><div class="ttdoc">if true when calculating the sketch we will also calculate the insertion probabilities of each node...</div><div class="ttdef"><b>Definition:</b> graph_sketch.h:35</div></div>
-<div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html_af57117f7a70b714dedc882d8f213207c"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html#af57117f7a70b714dedc882d8f213207c">all_distance_sketch::GraphSketch::SetNodesDistribution</a></div><div class="ttdeci">void SetNodesDistribution(const std::vector&lt; RandomId &gt; *nodes_random_id)</div><div class="ttdoc">sets the random id for each node. The default distribution is unifrom [0,1] </div><div class="ttdef"><b>Definition:</b> graph_sketch.h:370</div></div>
-<div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html_af463db872f2cc5cc635dffe4aaf136e6"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html#af463db872f2cc5cc635dffe4aaf136e6">all_distance_sketch::GraphSketch::GetNodesDistributionLean</a></div><div class="ttdeci">const std::vector&lt; RandomId &gt; * GetNodesDistributionLean() const </div><div class="ttdoc">returns the random id that was given to each node </div><div class="ttdef"><b>Definition:</b> graph_sketch.h:356</div></div>
-<div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html_af9bbe3a02d29880b7218c52b53375e31"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html#af9bbe3a02d29880b7218c52b53375e31">all_distance_sketch::GraphSketch::GetNodeRandomId</a></div><div class="ttdeci">RandomId GetNodeRandomId(const int &amp;node_id)</div><div class="ttdoc">returns specific node random id </div><div class="ttdef"><b>Definition:</b> graph_sketch.h:361</div></div>
+<div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html_af57117f7a70b714dedc882d8f213207c"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html#af57117f7a70b714dedc882d8f213207c">all_distance_sketch::GraphSketch::SetNodesDistribution</a></div><div class="ttdeci">void SetNodesDistribution(const std::vector&lt; RandomId &gt; *nodes_random_id)</div><div class="ttdoc">sets the random id for each node. The default distribution is unifrom [0,1] </div><div class="ttdef"><b>Definition:</b> graph_sketch.h:374</div></div>
+<div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html_af463db872f2cc5cc635dffe4aaf136e6"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html#af463db872f2cc5cc635dffe4aaf136e6">all_distance_sketch::GraphSketch::GetNodesDistributionLean</a></div><div class="ttdeci">const std::vector&lt; RandomId &gt; * GetNodesDistributionLean() const </div><div class="ttdoc">returns the random id that was given to each node </div><div class="ttdef"><b>Definition:</b> graph_sketch.h:360</div></div>
+<div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html_af9bbe3a02d29880b7218c52b53375e31"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html#af9bbe3a02d29880b7218c52b53375e31">all_distance_sketch::GraphSketch::GetNodeRandomId</a></div><div class="ttdeci">RandomId GetNodeRandomId(const int &amp;node_id)</div><div class="ttdoc">returns specific node random id </div><div class="ttdef"><b>Definition:</b> graph_sketch.h:365</div></div>
 <div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html">all_distance_sketch::GraphSketch</a></div><div class="ttdoc">Data structure for the graph sketch. </div><div class="ttdef"><b>Definition:</b> graph_sketch.h:11</div></div>
 <div class="ttc" id="classall__distance__sketch_1_1GraphSketch_html_a9243b99edf30ba1f1c33d6e45fb1e152"><div class="ttname"><a href="classall__distance__sketch_1_1GraphSketch.html#a9243b99edf30ba1f1c33d6e45fb1e152">all_distance_sketch::GraphSketch::SaveGraphSketchToGpb</a></div><div class="ttdeci">void SaveGraphSketchToGpb(AllDistanceSketchGpb *all_distance_sketch)</div><div class="ttdoc">Save the graph sketch to a Gpb class. </div><div class="ttdef"><b>Definition:</b> graph_sketch.h:69</div></div>
 <div class="ttc" id="namespaceall__distance__sketch_html_a07dc7ca615a83c4e656f52297eda4bb4"><div class="ttname"><a href="namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4">all_distance_sketch::RandomId</a></div><div class="ttdeci">double RandomId</div><div class="ttdoc">Type for random ids. </div><div class="ttdef"><b>Definition:</b> node_sketch.h:14</div></div>
@@ -476,7 +485,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jan 16 2016 16:13:06 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 18:15:31 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

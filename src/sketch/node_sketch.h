@@ -610,8 +610,7 @@ class NodeSketch {
     void set_z_values(ZValues* z) {
       z_values_ = *z;
     }
-    /*! \endcond
-    */
+    
     void CalculateInsertProb(std::vector<NodeProb>* insert_prob) {
       // Easy case - All nodes insert thus the threshold is 1 for all
       insert_prob->clear();
@@ -686,11 +685,12 @@ class NodeSketch {
       }
       std::reverse(insert_prob->begin(), insert_prob->end());
     }
-
+    
     void SetDisribution(std::vector<RandomId>* node_distribution) {
       node_distribution_ = node_distribution;
     }
-
+    /*! \endcond
+    */
 private:
     friend class GraphSketch;
     bool was_init_;
