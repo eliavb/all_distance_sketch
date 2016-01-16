@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['finished',['Finished',['../classall__distance__sketch_1_1thread_1_1MessageChannel.html#a34d2d32709aa2c7ba7ff6270339e297e',1,'all_distance_sketch::thread::MessageChannel']]]
+  ['transpose',['Transpose',['../classall__distance__sketch_1_1graph_1_1Graph.html#a815e0dd181344a9834b65021f2973887',1,'all_distance_sketch::graph::Graph']]]
 ];

@@ -13,7 +13,7 @@ Examples on how to use Calculate\+Reverse\+Rank functions
 \textcolor{keywordtype}{void} calculate\_reverse\_rank(\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph<T>}* graph) \{
   \hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch} graph\_sketch;
   \textcolor{keywordtype}{int} k = 64;
-  graph\_sketch.InitGraphSketch(64, graph->GetMxNId());
+  graph\_sketch.\hyperlink{classall__distance__sketch_1_1GraphSketch_a6d41436a73844dd633b6184a89ce83ff}{InitGraphSketch}(64, graph->GetMxNId());
   CalculateGraphSketch<T>(graph, &graphAds);
   \textcolor{keywordtype}{int} node\_id = 3;
   std::vector<int> ranking;
@@ -93,7 +93,7 @@ Examples on how to use Calculate\+Reverse\+Rank functions
     graph.\hyperlink{classall__distance__sketch_1_1graph_1_1Graph_ad219191cafee53dfdd1fee987f256b18}{LoadGraphFromDir}(\textcolor{stringliteral}{"path to data"});
     \hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch} graph\_sketch;
     \textcolor{keywordtype}{int} k = 64;
-    graph\_sketch.InitGraphSketch(k, graph.GetMxNId());
+    graph\_sketch.\hyperlink{classall__distance__sketch_1_1GraphSketch_a6d41436a73844dd633b6184a89ce83ff}{InitGraphSketch}(k, graph.GetMxNId());
     CalculateGraphSketch<graph::TUnDirectedGraph>(&graph, &graph\_sketch);
     \textcolor{keywordtype}{int} node\_id = 3;
     std::vector<int> ranking;

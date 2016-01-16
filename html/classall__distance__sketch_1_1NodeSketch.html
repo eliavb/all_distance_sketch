@@ -106,64 +106,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae6f17ef2bbcc0ec070be6ad4c668e214"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae6f17ef2bbcc0ec070be6ad4c668e214"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InitNodeSketch</b> (int K, int node_id, RandomId random_id, std::vector&lt; PrunningThreshold &gt; *prunning_thresholds=NULL, unsigned int reserve_size=1, bool should_calc_z_value=false)</td></tr>
-<tr class="separator:ae6f17ef2bbcc0ec070be6ad4c668e214"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a125a3c3d42b4ee2a81087861568f7af4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a125a3c3d42b4ee2a81087861568f7af4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsInit</b> () const </td></tr>
-<tr class="separator:a125a3c3d42b4ee2a81087861568f7af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a5af0bc95c5d6dc2a309c390ab88323"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a5af0bc95c5d6dc2a309c390ab88323"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>AddToCandidates</b> (NodeDistanceIdRandomIdData node_details)</td></tr>
-<tr class="separator:a3a5af0bc95c5d6dc2a309c390ab88323"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81fccf7bada85317e4da936e56e804ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a81fccf7bada85317e4da936e56e804ce"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>InsertCandidatesNodes</b> ()</td></tr>
-<tr class="separator:a81fccf7bada85317e4da936e56e804ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a769e9f5b63b1b0d735b4caff2812f430"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a769e9f5b63b1b0d735b4caff2812f430"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (NodeDistanceIdRandomIdData node_details)</td></tr>
-<tr class="separator:a769e9f5b63b1b0d735b4caff2812f430"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a255ee09f6a495ff7f016e955bc67b5db"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a255ee09f6a495ff7f016e955bc67b5db"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShouldInsert</b> (NodeIdDistanceData node_details, bool *should_insert, bool *is_zvalue)</td></tr>
-<tr class="separator:a255ee09f6a495ff7f016e955bc67b5db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add89c73110e18a1bc4295ec666bc33cb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="add89c73110e18a1bc4295ec666bc33cb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (NodeIdDistanceData node_details)</td></tr>
-<tr class="separator:add89c73110e18a1bc4295ec666bc33cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaf41826d457225b832c8aace7af0167"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adaf41826d457225b832c8aace7af0167"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Get</b> (graph::EdgeWeight distance, NodeIdDistanceVector *nodes_id_distance_vector)</td></tr>
-<tr class="separator:adaf41826d457225b832c8aace7af0167"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada61bb576888d1624329386e5fd4f7f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ada61bb576888d1624329386e5fd4f7f7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>GetAllDistances</b> (NodeIdDistanceVector *nodes_id_distance_vector)</td></tr>
-<tr class="separator:ada61bb576888d1624329386e5fd4f7f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7a0937c7470108e2a62b00288c1f7de"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad7a0937c7470108e2a62b00288c1f7de"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetSketchSize</b> ()</td></tr>
 <tr class="separator:ad7a0937c7470108e2a62b00288c1f7de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33789e3a32ecc8c1db906bfb90f262ef"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33789e3a32ecc8c1db906bfb90f262ef"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>GetDistanceCoverNeighborhood</b> (int neighborhood_size)</td></tr>
-<tr class="separator:a33789e3a32ecc8c1db906bfb90f262ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa22236240ca50b02f673d6127240588d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa22236240ca50b02f673d6127240588d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNeighborhoodDistanceIndex</b> (graph::EdgeWeight distance)</td></tr>
-<tr class="separator:aa22236240ca50b02f673d6127240588d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ca7507cb573aa193761fd8d3b79bb7f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ca7507cb573aa193761fd8d3b79bb7f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>GetNeighborhoodDistanceByIndex</b> (int index)</td></tr>
-<tr class="separator:a2ca7507cb573aa193761fd8d3b79bb7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3224ffe5a9915427504d91234eba9f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad3224ffe5a9915427504d91234eba9f8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetSizeNeighborhoodUpToDistance</b> (graph::EdgeWeight distance, const std::vector&lt; RandomId &gt; *node_distribution)</td></tr>
-<tr class="separator:ad3224ffe5a9915427504d91234eba9f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23375a66d300aa5a2b12fe4d94827bfb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a23375a66d300aa5a2b12fe4d94827bfb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateAllDistanceNeighborhood</b> (const std::vector&lt; RandomId &gt; *node_distribution)</td></tr>
-<tr class="separator:a23375a66d300aa5a2b12fe4d94827bfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a309d1cd0d46cc59ef021f768f3b545c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a309d1cd0d46cc59ef021f768f3b545c3"></a>
-NeighbourhoodVector *&#160;</td><td class="memItemRight" valign="bottom"><b>UTGetNeighbourhoodVector</b> ()</td></tr>
-<tr class="separator:a309d1cd0d46cc59ef021f768f3b545c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd0a89894fa7d740ae5536f3b0185b2e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abd0a89894fa7d740ae5536f3b0185b2e"></a>
-NodeIdDistanceVector *&#160;</td><td class="memItemRight" valign="bottom"><b>UTGetNodeAdsVector</b> ()</td></tr>
-<tr class="separator:abd0a89894fa7d740ae5536f3b0185b2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa429b859c91df5cd50c3e4d6f41f5c2c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa429b859c91df5cd50c3e4d6f41f5c2c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPrunningThresholds</b> (std::vector&lt; PrunningThreshold &gt; *athresholds)</td></tr>
-<tr class="separator:aa429b859c91df5cd50c3e4d6f41f5c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d8633dbc488df5b512ab7c455085c9d"><td class="memTemplParams" colspan="2"><a class="anchor" id="a8d8633dbc488df5b512ab7c455085c9d"></a>
-template&lt;class Archive &gt; </td></tr>
-<tr class="memitem:a8d8633dbc488df5b512ab7c455085c9d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>serialize</b> (Archive &amp;ar, const unsigned int version)</td></tr>
-<tr class="separator:a8d8633dbc488df5b512ab7c455085c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2200cc2ae91ab7745d4b3151229bfe3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac2200cc2ae91ab7745d4b3151229bfe3"></a>
 const NodeIdDistanceVector *&#160;</td><td class="memItemRight" valign="bottom"><b>GetNodeAdsVector</b> () const </td></tr>
 <tr class="separator:ac2200cc2ae91ab7745d4b3151229bfe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,35 +119,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetK</b> () const </td
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNId</b> () const </td></tr>
 <tr class="separator:a15156f70b8b148d4706ce13c3db5ead7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75e3d722870d4ff73e6943484a4ab62e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a75e3d722870d4ff73e6943484a4ab62e"></a>
-RandomId&#160;</td><td class="memItemRight" valign="bottom"><b>GetRandomId</b> () const </td></tr>
+<a class="el" href="namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4">RandomId</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetRandomId</b> () const </td></tr>
 <tr class="separator:a75e3d722870d4ff73e6943484a4ab62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c05d7a8520827c11551b056f332ffc5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c05d7a8520827c11551b056f332ffc5"></a>
-const NeighbourhoodVector &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetNeighbourHoodVector</b> () const </td></tr>
-<tr class="separator:a7c05d7a8520827c11551b056f332ffc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab453f65996756b68a45d1773a401f3c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab453f65996756b68a45d1773a401f3c"></a>
-const std::vector&lt; NodeDistanceIdRandomIdData &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCandidates</b> () const </td></tr>
-<tr class="separator:aab453f65996756b68a45d1773a401f3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2e6e41daf345e722eb46aed1333e7d8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af2e6e41daf345e722eb46aed1333e7d8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classall__distance__sketch_1_1NodeSketch.html">NodeSketch</a> &amp;other) const </td></tr>
-<tr class="separator:af2e6e41daf345e722eb46aed1333e7d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2f6c35d3a99dbe26192a796ea783bfe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac2f6c35d3a99dbe26192a796ea783bfe"></a>
-const ZValues &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetZValues</b> ()</td></tr>
-<tr class="separator:ac2f6c35d3a99dbe26192a796ea783bfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ae23f00223064c83bad0f18d3f3f1bd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2ae23f00223064c83bad0f18d3f3f1bd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasZValue</b> (graph::EdgeWeight distance)</td></tr>
-<tr class="separator:a2ae23f00223064c83bad0f18d3f3f1bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e74a78e89d23486a7c4ba021b342ace"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e74a78e89d23486a7c4ba021b342ace"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_z_values</b> (ZValues *z)</td></tr>
-<tr class="separator:a7e74a78e89d23486a7c4ba021b342ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2596a7734b00e9807f1d4e1cbfe2dcaf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2596a7734b00e9807f1d4e1cbfe2dcaf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateInsertProb</b> (const std::vector&lt; RandomId &gt; *node_distribution, std::vector&lt; NodeProb &gt; *insert_prob)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateInsertProb</b> (const std::vector&lt; <a class="el" href="namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4">RandomId</a> &gt; *node_distribution, std::vector&lt; NodeProb &gt; *insert_prob)</td></tr>
 <tr class="separator:a2596a7734b00e9807f1d4e1cbfe2dcaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac98d07dd8f7b70e16ccb9a01abf56b9c"></a>
-class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization::access</b></td></tr>
-<tr class="separator:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8070bfbe7b00c7838a9a7605e361af2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af8070bfbe7b00c7838a9a7605e361af2"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>GraphSketch</b></td></tr>
 <tr class="separator:af8070bfbe7b00c7838a9a7605e361af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,7 +139,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>GraphSketch</b></td>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jan 16 2016 15:17:26 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 16:13:06 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

@@ -12,49 +12,67 @@ Data structure for the graph sketch.
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a6d41436a73844dd633b6184a89ce83ff}{}void {\bfseries Init\+Graph\+Sketch} (unsigned int K, int max\+\_\+node\+\_\+id, const std\+::vector$<$ int $>$ $\ast$nodes\+\_\+id=N\+U\+L\+L)\label{classall__distance__sketch_1_1GraphSketch_a6d41436a73844dd633b6184a89ce83ff}
-
-\item 
+void \hyperlink{classall__distance__sketch_1_1GraphSketch_a6d41436a73844dd633b6184a89ce83ff}{Init\+Graph\+Sketch} (unsigned int K, int max\+\_\+node\+\_\+id, const std\+::vector$<$ int $>$ $\ast$nodes\+\_\+id=N\+U\+L\+L)
+\begin{DoxyCompactList}\small\item\em Init the class. \end{DoxyCompactList}\item 
 \hypertarget{classall__distance__sketch_1_1GraphSketch_a32fef9d13b965dd7b5a776596d888a41}{}int {\bfseries Get\+K} () const \label{classall__distance__sketch_1_1GraphSketch_a32fef9d13b965dd7b5a776596d888a41}
 
 \item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a8d5aaa1b4e94e0361ea0b1afdbfcf8bc}{}void {\bfseries set\+\_\+should\+\_\+calc\+\_\+zvalues} (bool should\+\_\+calc)\label{classall__distance__sketch_1_1GraphSketch_a8d5aaa1b4e94e0361ea0b1afdbfcf8bc}
+\hypertarget{classall__distance__sketch_1_1GraphSketch_a8d5aaa1b4e94e0361ea0b1afdbfcf8bc}{}void \hyperlink{classall__distance__sketch_1_1GraphSketch_a8d5aaa1b4e94e0361ea0b1afdbfcf8bc}{set\+\_\+should\+\_\+calc\+\_\+zvalues} (bool should\+\_\+calc)\label{classall__distance__sketch_1_1GraphSketch_a8d5aaa1b4e94e0361ea0b1afdbfcf8bc}
 
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a1ec9f5d7a83387252d899833aef82855}{}bool {\bfseries Load\+Graph\+Sketch\+From\+Gpb} (const All\+Distance\+Sketch\+Gpb \&all\+\_\+distance\+\_\+sketch)\label{classall__distance__sketch_1_1GraphSketch_a1ec9f5d7a83387252d899833aef82855}
+\begin{DoxyCompactList}\small\item\em if true when calculating the sketch we will also calculate the insertion probabilities of each node. \end{DoxyCompactList}\item 
+\hypertarget{classall__distance__sketch_1_1GraphSketch_a1ec9f5d7a83387252d899833aef82855}{}bool \hyperlink{classall__distance__sketch_1_1GraphSketch_a1ec9f5d7a83387252d899833aef82855}{Load\+Graph\+Sketch\+From\+Gpb} (const All\+Distance\+Sketch\+Gpb \&all\+\_\+distance\+\_\+sketch)\label{classall__distance__sketch_1_1GraphSketch_a1ec9f5d7a83387252d899833aef82855}
 
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_a9243b99edf30ba1f1c33d6e45fb1e152}{}void {\bfseries Save\+Graph\+Sketch\+To\+Gpb} (All\+Distance\+Sketch\+Gpb $\ast$all\+\_\+distance\+\_\+sketch)\label{classall__distance__sketch_1_1GraphSketch_a9243b99edf30ba1f1c33d6e45fb1e152}
+\begin{DoxyCompactList}\small\item\em Load the graph sketch from a Gpb class. \end{DoxyCompactList}\item 
+\hypertarget{classall__distance__sketch_1_1GraphSketch_a9243b99edf30ba1f1c33d6e45fb1e152}{}void \hyperlink{classall__distance__sketch_1_1GraphSketch_a9243b99edf30ba1f1c33d6e45fb1e152}{Save\+Graph\+Sketch\+To\+Gpb} (All\+Distance\+Sketch\+Gpb $\ast$all\+\_\+distance\+\_\+sketch)\label{classall__distance__sketch_1_1GraphSketch_a9243b99edf30ba1f1c33d6e45fb1e152}
 
-\item 
+\begin{DoxyCompactList}\small\item\em Save the graph sketch to a Gpb class. \end{DoxyCompactList}\item 
 \hypertarget{classall__distance__sketch_1_1GraphSketch_ad0b0931712a19b47983a24ef73500316}{}\hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} $\ast$ {\bfseries Get\+Node\+Sketch} (const Node\+Id\+Random\+Id\+Data \&node\+\_\+details)\label{classall__distance__sketch_1_1GraphSketch_ad0b0931712a19b47983a24ef73500316}
 
 \item 
 \hypertarget{classall__distance__sketch_1_1GraphSketch_a696af8492f42fbbb60afbc2ff2a68a96}{}\hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} $\ast$ {\bfseries Get\+Node\+Sketch} (Node\+Distance\+Id\+Random\+Id\+Data node\+\_\+details)\label{classall__distance__sketch_1_1GraphSketch_a696af8492f42fbbb60afbc2ff2a68a96}
 
 \item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_ae31e8b23fc7063927b2368a06bc57adb}{}const std\+::vector$<$ Node\+Distance\+Id\+Random\+Id\+Data $>$ $\ast$ {\bfseries Get\+Nodes\+Distribution} () const \label{classall__distance__sketch_1_1GraphSketch_ae31e8b23fc7063927b2368a06bc57adb}
+\hypertarget{classall__distance__sketch_1_1GraphSketch_af463db872f2cc5cc635dffe4aaf136e6}{}const std\+::vector$<$ \hyperlink{namespaceall__distance__sketch_a07dc7ca615a83c4e656f52297eda4bb4}{Random\+Id} $>$ $\ast$ \hyperlink{classall__distance__sketch_1_1GraphSketch_af463db872f2cc5cc635dffe4aaf136e6}{Get\+Nodes\+Distribution\+Lean} () const \label{classall__distance__sketch_1_1GraphSketch_af463db872f2cc5cc635dffe4aaf136e6}
 
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_af463db872f2cc5cc635dffe4aaf136e6}{}const std\+::vector$<$ Random\+Id $>$ $\ast$ {\bfseries Get\+Nodes\+Distribution\+Lean} () const \label{classall__distance__sketch_1_1GraphSketch_af463db872f2cc5cc635dffe4aaf136e6}
+\begin{DoxyCompactList}\small\item\em returns the random id that was given to each node \end{DoxyCompactList}\item 
+\hypertarget{classall__distance__sketch_1_1GraphSketch_af9bbe3a02d29880b7218c52b53375e31}{}\hyperlink{namespaceall__distance__sketch_a07dc7ca615a83c4e656f52297eda4bb4}{Random\+Id} \hyperlink{classall__distance__sketch_1_1GraphSketch_af9bbe3a02d29880b7218c52b53375e31}{Get\+Node\+Random\+Id} (const int \&node\+\_\+id)\label{classall__distance__sketch_1_1GraphSketch_af9bbe3a02d29880b7218c52b53375e31}
 
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_af9bbe3a02d29880b7218c52b53375e31}{}Random\+Id {\bfseries Get\+Node\+Random\+Id} (const int \&node\+\_\+id)\label{classall__distance__sketch_1_1GraphSketch_af9bbe3a02d29880b7218c52b53375e31}
+\begin{DoxyCompactList}\small\item\em returns specific node random id \end{DoxyCompactList}\item 
+\hypertarget{classall__distance__sketch_1_1GraphSketch_af57117f7a70b714dedc882d8f213207c}{}void \hyperlink{classall__distance__sketch_1_1GraphSketch_af57117f7a70b714dedc882d8f213207c}{Set\+Nodes\+Distribution} (const std\+::vector$<$ \hyperlink{namespaceall__distance__sketch_a07dc7ca615a83c4e656f52297eda4bb4}{Random\+Id} $>$ $\ast$nodes\+\_\+random\+\_\+id)\label{classall__distance__sketch_1_1GraphSketch_af57117f7a70b714dedc882d8f213207c}
 
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_af57117f7a70b714dedc882d8f213207c}{}void {\bfseries Set\+Nodes\+Distribution} (const std\+::vector$<$ Random\+Id $>$ $\ast$nodes\+\_\+random\+\_\+id)\label{classall__distance__sketch_1_1GraphSketch_af57117f7a70b714dedc882d8f213207c}
-
-\end{DoxyCompactItemize}
-\subsection*{Friends}
-\begin{DoxyCompactItemize}
-\item 
-\hypertarget{classall__distance__sketch_1_1GraphSketch_ac98d07dd8f7b70e16ccb9a01abf56b9c}{}class {\bfseries boost\+::serialization\+::access}\label{classall__distance__sketch_1_1GraphSketch_ac98d07dd8f7b70e16ccb9a01abf56b9c}
-
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em sets the random id for each node. The default distribution is unifrom \mbox{[}0,1\mbox{]} \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Data structure for the graph sketch. \begin{Desc}
+\item[Examples\+: ]\par
+\hyperlink{examples_2reverse_rank_8cpp-example}{examples/reverse\+\_\+rank.\+cpp}, and \hyperlink{examples_2sketch_8cpp-example}{examples/sketch.\+cpp}.\end{Desc}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classall__distance__sketch_1_1GraphSketch_a6d41436a73844dd633b6184a89ce83ff}{}\index{all\+\_\+distance\+\_\+sketch\+::\+Graph\+Sketch@{all\+\_\+distance\+\_\+sketch\+::\+Graph\+Sketch}!Init\+Graph\+Sketch@{Init\+Graph\+Sketch}}
+\index{Init\+Graph\+Sketch@{Init\+Graph\+Sketch}!all\+\_\+distance\+\_\+sketch\+::\+Graph\+Sketch@{all\+\_\+distance\+\_\+sketch\+::\+Graph\+Sketch}}
+\subsubsection[{Init\+Graph\+Sketch}]{\setlength{\rightskip}{0pt plus 5cm}void all\+\_\+distance\+\_\+sketch\+::\+Graph\+Sketch\+::\+Init\+Graph\+Sketch (
+\begin{DoxyParamCaption}
+\item[{unsigned int}]{K, }
+\item[{int}]{max\+\_\+node\+\_\+id, }
+\item[{const std\+::vector$<$ int $>$ $\ast$}]{nodes\+\_\+id = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{classall__distance__sketch_1_1GraphSketch_a6d41436a73844dd633b6184a89ce83ff}
+
+
+Init the class. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em K} & -\/ Sets the accuracy of the estimation. If you want epsilon error you should set K= 1/epsilon$^\wedge$2, e..g if we want to have error up to 10\% we should set K = 100. \\
+\hline
+\mbox{\tt in}  & {\em max\+\_\+node\+\_\+id} & -\/ The max node id of a node in the graph. \\
+\hline
+\mbox{\tt in}  & {\em nodes\+\_\+id} & -\/ optional parameter used if we want to calculate the sketch only on parts of the nodes in the graph. example\+: if we want to calculate the sketch only on nodes 1, 10, 65 then nodes\+\_\+id = \{1, 10, 65\} \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
 \item[Examples\+: ]\par
 \hyperlink{examples_2reverse_rank_8cpp-example}{examples/reverse\+\_\+rank.\+cpp}, and \hyperlink{examples_2sketch_8cpp-example}{examples/sketch.\+cpp}.\end{Desc}
 

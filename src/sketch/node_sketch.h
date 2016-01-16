@@ -9,7 +9,8 @@
 #endif
 
 namespace all_distance_sketch {
-
+/*! \brief Type for random ids
+*/
 typedef double RandomId;
 
 #if PROTO_BUF
@@ -42,13 +43,6 @@ class NodeIdDistanceData {
       return os;
     }
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
-      ar& node_id_;
-      ar& distance_;
-    }
-
  private:
     int node_id_;
     graph::EdgeWeight distance_;
@@ -62,13 +56,6 @@ class NodeIdRandomIdData {
   inline int GetNodeId() const { return node_id_; }
 
   inline RandomId GetRandomId() const { return random_id_; }
-
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
-      ar& node_id_;
-      ar& random_id_;
-    }
 
  private:
     int node_id_;
@@ -106,13 +93,6 @@ class NodeDistanceIdRandomIdData {
              << " Distance=" << node_details.GetDistance()
              << " HashId=" << node_details.GetRandomId();
       return os;
-    }
-
-    friend class boost::serialization::access;
-    template <class Archive>
-    void serialize(Archive& ar, const unsigned int version) {
-      ar& details;
-      ar& distance_;
     }
 
  private:
@@ -155,12 +135,6 @@ class Neighbourhood {
            (GetDistance() == other.GetDistance());
     }
 
-    friend class boost::serialization::access;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
-      ar& distance_;
-      ar& size_;
-    }
 
  private:
     int distance_;
@@ -223,6 +197,8 @@ typedef std::vector<NodeDistanceIdRandomIdData>::iterator
 */
 class NodeSketch {
  public:
+  /*! \cond
+  */
   NodeSketch() { was_init_ = false; }
 
   void InitNodeSketch(
@@ -237,143 +213,143 @@ class NodeSketch {
     nodes_id_distance_.clear();
     prunning_thresholds_ = prunning_thresholds;
     should_calc_z_value_ = should_calc_z_value;
-    }
+  }
 
-    bool IsInit() const { return was_init_; }
+  bool IsInit() const { return was_init_; }
 
-    bool AddToCandidates(NodeDistanceIdRandomIdData node_details) {
-      candidate_nodes_.push_back(node_details);
-        return true;
-    }
+  bool AddToCandidates(NodeDistanceIdRandomIdData node_details) {
+    candidate_nodes_.push_back(node_details);
+      return true;
+  }
 
-    int InsertCandidatesNodes() {
-      compare_node_randomid_decreasing obj;
-      sort(candidate_nodes_.begin(), candidate_nodes_.end(), obj);
-        // Sort according to random ID.
-        for (unsigned int i = 0; i < candidate_nodes_.size(); i++) {
-          Add(candidate_nodes_[i]);
-        }
-        int numInserted = candidate_nodes_.size();
-        candidate_nodes_.clear();
-        return numInserted;
-    }
-
-    bool Add(NodeDistanceIdRandomIdData node_details) {
-      NodeIdDistanceData node_id_distance(node_details.GetNId(),
-                                          node_details.GetDistance());
-      return Add(node_id_distance);
-    }
-
-    void ShouldInsert(NodeIdDistanceData node_details, bool* should_insert,
-                      bool* is_zvalue) {
-      NodeIdDistanceVector::reverse_iterator it_k =
-          nodes_id_distance_.rbegin() + (K_ - 1);
-      
-      if (node_details.GetDistance() > it_k->GetDistance()) {
-        (*is_zvalue) = false;
-        (*should_insert) = false;
-            return;
+  int InsertCandidatesNodes() {
+    compare_node_randomid_decreasing obj;
+    sort(candidate_nodes_.begin(), candidate_nodes_.end(), obj);
+      // Sort according to random ID.
+      for (unsigned int i = 0; i < candidate_nodes_.size(); i++) {
+        Add(candidate_nodes_[i]);
       }
-      if (node_details.GetDistance() == it_k->GetDistance()) {
-        if (z_values_.find(node_details.GetDistance()) != z_values_.end()) {
-          (*should_insert) = false;
-          (*is_zvalue) = false;
-        } else {
-          (*should_insert) = false;
-          (*is_zvalue) = true;
-        }
-        return;
-      }
-      (*should_insert) = true;
+      int numInserted = candidate_nodes_.size();
+      candidate_nodes_.clear();
+      return numInserted;
+  }
+
+  bool Add(NodeDistanceIdRandomIdData node_details) {
+    NodeIdDistanceData node_id_distance(node_details.GetNId(),
+                                        node_details.GetDistance());
+    return Add(node_id_distance);
+  }
+
+  void ShouldInsert(NodeIdDistanceData node_details, bool* should_insert,
+                    bool* is_zvalue) {
+    NodeIdDistanceVector::reverse_iterator it_k =
+        nodes_id_distance_.rbegin() + (K_ - 1);
+    
+    if (node_details.GetDistance() > it_k->GetDistance()) {
       (*is_zvalue) = false;
+      (*should_insert) = false;
+          return;
+    }
+    if (node_details.GetDistance() == it_k->GetDistance()) {
+      if (z_values_.find(node_details.GetDistance()) != z_values_.end()) {
+        (*should_insert) = false;
+        (*is_zvalue) = false;
+      } else {
+        (*should_insert) = false;
+        (*is_zvalue) = true;
+      }
       return;
     }
+    (*should_insert) = true;
+    (*is_zvalue) = false;
+    return;
+  }
 
-    bool Add(NodeIdDistanceData node_details) {
-      //  If the NodeSketch size is smaller than K we will always add
+  bool Add(NodeIdDistanceData node_details) {
+    //  If the NodeSketch size is smaller than K we will always add
 
-      if (nodes_id_distance_.size() < K_) {
-        LOG_M(DEBUG4, " Adding to NodeSketch since size < k, "
-                          << " size=" << nodes_id_distance_.size()
-                          << " k=" << K_);
-        // nodes_id_distance_.push_back(node_details);
-            compare_node_distance_increasing obj;
-            NodeIdDistanceVectorItr up =
-                std::upper_bound(nodes_id_distance_.begin(),
-                                 nodes_id_distance_.end(), node_details, obj);
-            nodes_id_distance_.insert(up, node_details);
-            return true;
-        }
+    if (nodes_id_distance_.size() < K_) {
+      LOG_M(DEBUG4, " Adding to NodeSketch since size < k, "
+                        << " size=" << nodes_id_distance_.size()
+                        << " k=" << K_);
+      // nodes_id_distance_.push_back(node_details);
+          compare_node_distance_increasing obj;
+          NodeIdDistanceVectorItr up =
+              std::upper_bound(nodes_id_distance_.begin(),
+                               nodes_id_distance_.end(), node_details, obj);
+          nodes_id_distance_.insert(up, node_details);
+          return true;
+      }
 
-        // Are you Z value?
-        bool is_z_value;
-        bool should_insert;
-        ShouldInsert(node_details, &should_insert, &is_z_value);
+      // Are you Z value?
+      bool is_z_value;
+      bool should_insert;
+      ShouldInsert(node_details, &should_insert, &is_z_value);
 
-        if (is_z_value) {
-          z_values_.insert(
-              std::make_pair(node_details.GetDistance(), node_details));
-            return false;
-        }
+      if (is_z_value) {
+        z_values_.insert(
+            std::make_pair(node_details.GetDistance(), node_details));
+          return false;
+      }
 
-        if (!should_insert) {
-            return false;
-        }
+      if (!should_insert) {
+          return false;
+      }
 
-        // Size of the vector is bigger than K
-        // The vector is sorted according to distance
-        // Checking if distnace is inside the possible distance
-        compare_node_distance_decreasing obj;
+      // Size of the vector is bigger than K
+      // The vector is sorted according to distance
+      // Checking if distnace is inside the possible distance
+      compare_node_distance_decreasing obj;
 
-        NodeIdDistanceVector::reverse_iterator up = std::upper_bound(
-            nodes_id_distance_.rbegin(), nodes_id_distance_.rbegin() + K_,
-            node_details, obj);
-        unsigned int position_upper = up - nodes_id_distance_.rbegin();
+      NodeIdDistanceVector::reverse_iterator up = std::upper_bound(
+          nodes_id_distance_.rbegin(), nodes_id_distance_.rbegin() + K_,
+          node_details, obj);
+      unsigned int position_upper = up - nodes_id_distance_.rbegin();
 
-        LOG_M(DEBUG4, " Size of array "
-                          << nodes_id_distance_.size()
-                          << " upper position=" << position_upper
-                          << " up=" << *(up) << " First element "
-                          << nodes_id_distance_[0] << " Last element "
-                          << nodes_id_distance_[nodes_id_distance_.size() - 1]);
+      LOG_M(DEBUG4, " Size of array "
+                        << nodes_id_distance_.size()
+                        << " upper position=" << position_upper
+                        << " up=" << *(up) << " First element "
+                        << nodes_id_distance_[0] << " Last element "
+                        << nodes_id_distance_[nodes_id_distance_.size() - 1]);
 
-        /*
-        if (position_upper > K_) {
-            LOG_M(NOTICE," Distance of node=" << node_details.GetDistance() <<
-                         " K threshold=" << (nodes_id_distance_.rbegin() + (K_ -
-        1))->GetDistance());
-            return false;
-        }
-        */
+      /*
+      if (position_upper > K_) {
+          LOG_M(NOTICE," Distance of node=" << node_details.GetDistance() <<
+                       " K threshold=" << (nodes_id_distance_.rbegin() + (K_ -
+      1))->GetDistance());
+          return false;
+      }
+      */
 
-        LOG_M(DEBUG5, "Before inserting");
+      LOG_M(DEBUG5, "Before inserting");
 
-        if (position_upper <= K_) {
-          unsigned int position_relative_to_begin =
-              nodes_id_distance_.rend() - up;
-          NodeIdDistanceVectorItr it;
-          if (position_relative_to_begin == nodes_id_distance_.size()) {
-            it = nodes_id_distance_.end();
-            } else {
-              it = nodes_id_distance_.begin() + position_relative_to_begin;
-            }
-            nodes_id_distance_.insert(it, node_details);
-            LOG_M(DEBUG4, " Inserting to NodeSketch at location "
-                              << position_relative_to_begin);
-            if (prunning_thresholds_ != NULL) {
-              (*prunning_thresholds_)[node_id_].SetDistance(
-                  (nodes_id_distance_.rbegin() + (K_ - 1))->GetDistance());
-              if (nodes_id_distance_.size() >= K_) {
-                bool is_distance_equal_to_following_node_distance_in_ads =
-                    ((nodes_id_distance_.rbegin() + (K_ - 1))->GetDistance() ==
-                     (nodes_id_distance_.rbegin() + (K_))->GetDistance());
-                (*prunning_thresholds_)[node_id_].SetIsEqualToNext(
-                    is_distance_equal_to_following_node_distance_in_ads);
-                }
-            }
+      if (position_upper <= K_) {
+        unsigned int position_relative_to_begin =
+            nodes_id_distance_.rend() - up;
+        NodeIdDistanceVectorItr it;
+        if (position_relative_to_begin == nodes_id_distance_.size()) {
+          it = nodes_id_distance_.end();
+          } else {
+            it = nodes_id_distance_.begin() + position_relative_to_begin;
+          }
+          nodes_id_distance_.insert(it, node_details);
+          LOG_M(DEBUG4, " Inserting to NodeSketch at location "
+                            << position_relative_to_begin);
+          if (prunning_thresholds_ != NULL) {
+            (*prunning_thresholds_)[node_id_].SetDistance(
+                (nodes_id_distance_.rbegin() + (K_ - 1))->GetDistance());
+            if (nodes_id_distance_.size() >= K_) {
+              bool is_distance_equal_to_following_node_distance_in_ads =
+                  ((nodes_id_distance_.rbegin() + (K_ - 1))->GetDistance() ==
+                   (nodes_id_distance_.rbegin() + (K_))->GetDistance());
+              (*prunning_thresholds_)[node_id_].SetIsEqualToNext(
+                  is_distance_equal_to_following_node_distance_in_ads);
+              }
+          }
 
-            return true;
-        }
+          return true;
+      }
 
         return false;
     }
@@ -395,199 +371,193 @@ class NodeSketch {
       nodes_id_distance_vector->clear();
       *nodes_id_distance_vector = nodes_id_distance_;
     }
-
-    int GetSketchSize() { return nodes_id_distance_.size(); }
-    /*
-    * What is the distance such that all |nodes < distance| >= neighborhood_size
-    */
-    double GetDistanceCoverNeighborhood(int neighborhood_size) {
-      compare_neighbourhood_size obj;
-      Neighbourhood entry(0, neighborhood_size);
+  /*! \endcond
+  */
+  int GetSketchSize() { return nodes_id_distance_.size(); }
+  /*! \cond
+  */
+  /*
+  * What is the distance such that all |nodes < distance| >= neighborhood_size
+  */
+  double GetDistanceCoverNeighborhood(int neighborhood_size) {
+    compare_neighbourhood_size obj;
+    Neighbourhood entry(0, neighborhood_size);
+    NeighbourhoodVector::iterator up = std::upper_bound(
+        neighbourhoods_.begin(), neighbourhoods_.end(), entry, obj);
+    
+    if (neighbourhoods_.size() == 0) {
+      LOG_M(DEBUG3, "neighbourhoods vector is empty, returning 0");
+      return 0;
+    }
+    if (up == neighbourhoods_.begin()) {
+        LOG_M(DEBUG3, "Match first element");
+        if (up->GetSize() == neighbourhoods_.begin()->GetSize()) {
+            return up->GetDistance();
+        }
+        return 0;
+    }
+    if (up == neighbourhoods_.end()) {
+      LOG_M(DEBUG3, "Match last element");
+      return neighbourhoods_.back().GetDistance() + 1;
+    }
+    LOG_M(DEBUG3, " Distance= " << up->GetDistance() <<
+                  " Size=" << up->GetSize() <<
+                  " Wanted size=" << neighborhood_size);
+    return up->GetDistance();
+  }
+  /*
+   * Gets the first distance index such that the distance is <= distance
+   */
+  int GetNeighborhoodDistanceIndex(graph::EdgeWeight distance) {
+      compare_neighbourhood_distance obj;
+      Neighbourhood entry(distance, 0);
       NeighbourhoodVector::iterator up = std::upper_bound(
           neighbourhoods_.begin(), neighbourhoods_.end(), entry, obj);
-      
       if (neighbourhoods_.size() == 0) {
-        LOG_M(DEBUG3, "neighbourhoods vector is empty, returning 0");
-        return 0;
+        return -1;
       }
       if (up == neighbourhoods_.begin()) {
-          LOG_M(DEBUG3, "Match first element");
-          if (up->GetSize() == neighbourhoods_.begin()->GetSize()) {
-              return up->GetDistance();
+          if (up->GetDistance() == neighbourhoods_.begin()->GetDistance()) {
+              return 0;
           }
-          return 0;
+          // The distance is smaller than the smallest distance
+          return -1;
       }
       if (up == neighbourhoods_.end()) {
-        LOG_M(DEBUG3, "Match last element");
-        return neighbourhoods_.back().GetDistance() + 1;
+        return neighbourhoods_.size() - 1;
       }
-      LOG_M(DEBUG3, " Distance= " << up->GetDistance() <<
-                    " Size=" << up->GetSize() <<
-                    " Wanted size=" << neighborhood_size);
-      return up->GetDistance();
-    }
-    /*
-     * Gets the first distance index such that the distance is <= distance
-     */
-    int GetNeighborhoodDistanceIndex(graph::EdgeWeight distance) {
-        compare_neighbourhood_distance obj;
-        Neighbourhood entry(distance, 0);
-        NeighbourhoodVector::iterator up = std::upper_bound(
-            neighbourhoods_.begin(), neighbourhoods_.end(), entry, obj);
-        if (neighbourhoods_.size() == 0) {
-          return -1;
-        }
-        if (up == neighbourhoods_.begin()) {
-            if (up->GetDistance() == neighbourhoods_.begin()->GetDistance()) {
-                return 0;
-            }
-            // The distance is smaller than the smallest distance
-            return -1;
-        }
-        if (up == neighbourhoods_.end()) {
-          return neighbourhoods_.size() - 1;
-        }
-        if (up->GetDistance() > distance) {
-            up -= 1;
-        }
-        return up - neighbourhoods_.begin();
-    }
+      if (up->GetDistance() > distance) {
+          up -= 1;
+      }
+      return up - neighbourhoods_.begin();
+  }
 
-    // Case fail -1
-    double GetNeighborhoodDistanceByIndex(int index) {
-        if (index < 0) {
+  // Case fail -1
+  double GetNeighborhoodDistanceByIndex(int index) {
+      if (index < 0) {
+        return 0;
+      }
+      if (index >= neighbourhoods_.size()) {
+        return neighbourhoods_.back().GetSize();
+      }
+      return (neighbourhoods_.begin() + index)->GetSize();
+  }
+
+  /*
+   *  Return the size of the neighborhood <= distance
+   */
+  int GetSizeNeighborhoodUpToDistance(graph::EdgeWeight distance) {
+      compare_neighbourhood_distance obj;
+      Neighbourhood entry(distance, 0);
+      NeighbourhoodVector::iterator up = std::upper_bound(
+          neighbourhoods_.begin(), neighbourhoods_.end(), entry, obj);
+
+      if (up == neighbourhoods_.begin()) {
+          LOG_M(DEBUG3, "Distance is in the begin of the vector" <<
+                        " Distance= " << up->GetDistance() <<
+                        " Size=" << up->GetSize());
+          if (up->GetDistance() == neighbourhoods_.begin()->GetDistance()) {
+              return up->GetSize();
+          }
+          // The distance is smaller than the smallest distance
           return 0;
-        }
-        if (index >= neighbourhoods_.size()) {
-          return neighbourhoods_.back().GetSize();
-        }
-        return (neighbourhoods_.begin() + index)->GetSize();
-    }
+      }
 
-    /*
-     *  Return the size of the neighborhood <= distance
-     */
-    int GetSizeNeighborhoodUpToDistance(
-        graph::EdgeWeight distance,
-        const std::vector<RandomId>* node_distribution) {
-        compare_neighbourhood_distance obj;
-        Neighbourhood entry(distance, 0);
-        NeighbourhoodVector::iterator up = std::upper_bound(
-            neighbourhoods_.begin(), neighbourhoods_.end(), entry, obj);
+      if (up == neighbourhoods_.end()) {
+        LOG_M(DEBUG3, "Distance is in the end of the vector" <<
+                      " Size=" << neighbourhoods_.back().GetSize());
+        return neighbourhoods_.back().GetSize();
+      }
+      if (up->GetDistance() > distance) {
+          up -= 1;
+      }
+      LOG_M(DEBUG3, "Distance is in the midddle of the vector" <<
+                       " Distance= " << up->GetDistance() <<
+                       " Size=" << up->GetSize());
+      return up->GetSize();
+  }
+  /*
+   * Calculate for each distance the neighborhood size.
+   */
+  void CalculateAllDistanceNeighborhood() {
+      neighbourhoods_.clear();
+      if (nodes_id_distance_.size() == 0) {
+          return;
+      }
 
-        if (up == neighbourhoods_.begin()) {
-            LOG_M(DEBUG3, "Distance is in the begin of the vector" <<
-                          " Distance= " << up->GetDistance() <<
-                          " Size=" << up->GetSize());
-            if (up->GetDistance() == neighbourhoods_.begin()->GetDistance()) {
-                return up->GetSize();
-            }
-            // The distance is smaller than the smallest distance
-            return 0;
-        }
+      std::vector<NodeDistanceIdRandomIdData> neighborhoodVector;
+      NodeIdDistanceVector::reverse_iterator it;
+      neighbourhoods_.clear();
+      unsigned int currentDistance = 0;
+      compare_node_randomid_decreasing obj;
+      for (it = nodes_id_distance_.rbegin(); it != nodes_id_distance_.rend();
+           it++) {
+          LOG_M(DEBUG3, "Iterting " << *it << " Current distance=" << currentDistance);
+          if (it->GetDistance() != currentDistance) {
+              LOG_M(DEBUG3, " Changing distance to " << it->GetDistance());
+              // Calculate neighbour
+              int size = 0;
+              if (neighborhoodVector.size() < K_) {
+                  if (neighborhoodVector.size() == 0) {
+                      size = 0;
+                  } else {
+                      size = neighborhoodVector.size() - 1;
+                  }
+              } else {
+                RandomId omega = neighborhoodVector[K_ - 1].GetRandomId();
+                size = (K_ - 1) / omega;
+              }
+              LOG_M(DEBUG3, " Size of neighborhood " << size);
+              Neighbourhood entry(currentDistance, size);
+              neighbourhoods_.push_back(entry);
+              currentDistance = it->GetDistance();
+          }
 
-        if (up == neighbourhoods_.end()) {
-          LOG_M(DEBUG3, "Distance is in the end of the vector" <<
-                        " Size=" << neighbourhoods_.back().GetSize());
-          return neighbourhoods_.back().GetSize();
-        }
-        if (up->GetDistance() > distance) {
-            up -= 1;
-        }
-        LOG_M(DEBUG3, "Distance is in the midddle of the vector" <<
-                         " Distance= " << up->GetDistance() <<
-                         " Size=" << up->GetSize());
-        return up->GetSize();
-    }
-    /*
-     * Calculate for each distance the neighborhood size.
-     */
-    void CalculateAllDistanceNeighborhood(const std::vector<RandomId>* node_distribution) {
-        neighbourhoods_.clear();
-        if (nodes_id_distance_.size() == 0) {
-            return;
-        }
+          NodeDistanceIdRandomIdData t(it->GetDistance(), it->GetNId(),
+                                       (*node_distribution_)[it->GetNId()]);
+          std::vector<NodeDistanceIdRandomIdData>::iterator up =
+              std::upper_bound(neighborhoodVector.begin(),
+                               neighborhoodVector.end(), t, obj);
+          neighborhoodVector.insert(up, t);
+      }
 
-        std::vector<NodeDistanceIdRandomIdData> neighborhoodVector;
-        NodeIdDistanceVector::reverse_iterator it;
-        neighbourhoods_.clear();
-        unsigned int currentDistance = 0;
-        compare_node_randomid_decreasing obj;
-        for (it = nodes_id_distance_.rbegin(); it != nodes_id_distance_.rend();
-             it++) {
-            LOG_M(DEBUG3, "Iterting " << *it << " Current distance=" << currentDistance);
-            if (it->GetDistance() != currentDistance) {
-                LOG_M(DEBUG3, " Changing distance to " << it->GetDistance());
-                // Calculate neighbour
-                int size = 0;
-                if (neighborhoodVector.size() < K_) {
-                    if (neighborhoodVector.size() == 0) {
-                        size = 0;
-                    } else {
-                        size = neighborhoodVector.size() - 1;
-                    }
-                } else {
-                  RandomId omega = neighborhoodVector[K_ - 1].GetRandomId();
-                  size = (K_ - 1) / omega;
-                }
-                LOG_M(DEBUG3, " Size of neighborhood " << size);
-                Neighbourhood entry(currentDistance, size);
-                neighbourhoods_.push_back(entry);
-                currentDistance = it->GetDistance();
-            }
+      // Another iteration for the last element
+      int size;
+      if (neighborhoodVector.size() < K_) {
+          if (neighborhoodVector.size() == 0) {
+              size = 0;
+          } else {
+              size = neighborhoodVector.size() - 1;    
+          }
+          
+      } else {
+        RandomId omega = neighborhoodVector[K_ - 1].GetRandomId();
+        size = (K_ - 1) / omega;
+      }
+      Neighbourhood entry(nodes_id_distance_.begin()->GetDistance(), size);
+      neighbourhoods_.push_back(entry);
+  }
 
-            NodeDistanceIdRandomIdData t(it->GetDistance(), it->GetNId(),
-                                         (*node_distribution)[it->GetNId()]);
-            std::vector<NodeDistanceIdRandomIdData>::iterator up =
-                std::upper_bound(neighborhoodVector.begin(),
-                                 neighborhoodVector.end(), t, obj);
-            neighborhoodVector.insert(up, t);
-        }
+  NeighbourhoodVector* UTGetNeighbourhoodVector() { return &neighbourhoods_; }
 
-        // Another iteration for the last element
-        int size;
-        if (neighborhoodVector.size() < K_) {
-            if (neighborhoodVector.size() == 0) {
-                size = 0;
-            } else {
-                size = neighborhoodVector.size() - 1;    
-            }
-            
-        } else {
-          RandomId omega = neighborhoodVector[K_ - 1].GetRandomId();
-          size = (K_ - 1) / omega;
-        }
-        Neighbourhood entry(nodes_id_distance_.begin()->GetDistance(), size);
-        neighbourhoods_.push_back(entry);
-    }
+  NodeIdDistanceVector* UTGetNodeAdsVector() { return &nodes_id_distance_; }
+  void SetPrunningThresholds(std::vector<PrunningThreshold>* athresholds) {
+    prunning_thresholds_ = athresholds;
+  }
+  /*! \endcond
+  */
+  const NodeIdDistanceVector* GetNodeAdsVector() const {
+    return &nodes_id_distance_;
+  }
 
-    NeighbourhoodVector* UTGetNeighbourhoodVector() { return &neighbourhoods_; }
+  int GetK() const { return K_; }
 
-    NodeIdDistanceVector* UTGetNodeAdsVector() { return &nodes_id_distance_; }
-    void SetPrunningThresholds(std::vector<PrunningThreshold>* athresholds) {
-      prunning_thresholds_ = athresholds;
-    }
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
-      ar& was_init_;
-      ar& K_;
-      ar& node_id_;
-      ar& random_id_;
-      ar& nodes_id_distance_;
-      ar& candidate_nodes_;
-      ar& neighbourhoods_;
-    }
+  int GetNId() const { return node_id_; }
 
-    const NodeIdDistanceVector* GetNodeAdsVector() const {
-      return &nodes_id_distance_;
-    }
+  RandomId GetRandomId() const { return random_id_; }
 
-    int GetK() const { return K_; }
-
-    int GetNId() const { return node_id_; }
-
-    RandomId GetRandomId() const { return random_id_; }
-
+    /*! \cond
+    */
     const NeighbourhoodVector& GetNeighbourHoodVector() const {
       return neighbourhoods_;
     }
@@ -629,7 +599,8 @@ class NodeSketch {
         }
         return true;
     }
-
+    /*! \cond
+    */
     const ZValues& GetZValues() { return z_values_; }
 
     bool HasZValue(graph::EdgeWeight distance) {
@@ -639,9 +610,9 @@ class NodeSketch {
     void set_z_values(ZValues* z) {
       z_values_ = *z;
     }
-
-    void CalculateInsertProb(const std::vector<RandomId>* node_distribution,
-                             std::vector<NodeProb>* insert_prob) {
+    /*! \endcond
+    */
+    void CalculateInsertProb(std::vector<NodeProb>* insert_prob) {
       // Easy case - All nodes insert thus the threshold is 1 for all
       insert_prob->clear();
       if (nodes_id_distance_.size() < K_) {
@@ -662,7 +633,7 @@ class NodeSketch {
            r_it < nodes_id_distance_.rend(); r_it++) {
         LOG_M(DEBUG3,
               "id:" << r_it->GetNId() << " distane:" << r_it->GetDistance()
-                    << " random id: " << (*node_distribution)[r_it->GetNId()]);
+                    << " random id: " << (*node_distribution_)[r_it->GetNId()]);
 
           if (distance_covered != r_it->GetDistance()) {
             for (NodeIdDistanceVector::reverse_iterator runner_it = r_it;
@@ -671,7 +642,7 @@ class NodeSketch {
                  runner_it++) {
               NodeDistanceIdRandomIdData node_details(
                   runner_it->GetDistance(), runner_it->GetNId(),
-                  (*node_distribution)[runner_it->GetNId()]);
+                  (*node_distribution_)[runner_it->GetNId()]);
 
                   moving_threshold.insert(std::upper_bound(moving_threshold.begin(),
                                                            moving_threshold.end(),
@@ -684,7 +655,7 @@ class NodeSketch {
               if (z_it != z_values_.end()) {
                 NodeDistanceIdRandomIdData node_details(
                     z_it->second.GetDistance(), z_it->second.GetNId(),
-                    (*node_distribution)[z_it->second.GetNId()]);
+                    (*node_distribution_)[z_it->second.GetNId()]);
 
                 moving_threshold.insert(std::upper_bound(moving_threshold.begin(),
                                                        moving_threshold.end(),
@@ -716,13 +687,17 @@ class NodeSketch {
       std::reverse(insert_prob->begin(), insert_prob->end());
     }
 
- private:
-    friend class boost::serialization::access;
+    void SetDisribution(std::vector<RandomId>* node_distribution) {
+      node_distribution_ = node_distribution;
+    }
+
+private:
     friend class GraphSketch;
     bool was_init_;
     bool should_calc_z_value_;
     unsigned int K_;
     int node_id_;
+    std::vector<RandomId>* node_distribution_;
     RandomId random_id_;
     NodeIdDistanceVector nodes_id_distance_;
     std::vector<NodeDistanceIdRandomIdData> candidate_nodes_;

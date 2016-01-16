@@ -113,8 +113,7 @@ static int EstimateReverseRankUpperBound(graph::Graph<T> * graph,
     }
     NodeIdRandomIdData source_node_details(source, graph_sketch->GetNodeRandomId(source));
     NodeSketch * sourceNodeAds = graph_sketch->GetNodeSketch(source_node_details);
-    int reverse_rank = sourceNodeAds->GetSizeNeighborhoodUpToDistance(distance_from_source_to_targer,
-                                                                      graph_sketch->GetNodesDistributionLean());
+    int reverse_rank = sourceNodeAds->GetSizeNeighborhoodUpToDistance(distance_from_source_to_targer);
     LOG_M(DEBUG3, " Source=" << source <<
                   " node=" << target <<
                   " distance= " << distance_from_source_to_targer <<

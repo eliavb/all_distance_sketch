@@ -92,7 +92,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#friends">Friends</a> &#124;
 <a href="classall__distance__sketch_1_1GraphSketch-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">all_distance_sketch::GraphSketch Class Reference</div>  </div>
@@ -106,20 +105,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6d41436a73844dd633b6184a89ce83ff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d41436a73844dd633b6184a89ce83ff"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InitGraphSketch</b> (unsigned int K, int max_node_id, const std::vector&lt; int &gt; *nodes_id=NULL)</td></tr>
+<tr class="memitem:a6d41436a73844dd633b6184a89ce83ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1GraphSketch.html#a6d41436a73844dd633b6184a89ce83ff">InitGraphSketch</a> (unsigned int K, int max_node_id, const std::vector&lt; int &gt; *nodes_id=NULL)</td></tr>
+<tr class="memdesc:a6d41436a73844dd633b6184a89ce83ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init the class.  <a href="#a6d41436a73844dd633b6184a89ce83ff">More...</a><br /></td></tr>
 <tr class="separator:a6d41436a73844dd633b6184a89ce83ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32fef9d13b965dd7b5a776596d888a41"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32fef9d13b965dd7b5a776596d888a41"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetK</b> () const </td></tr>
 <tr class="separator:a32fef9d13b965dd7b5a776596d888a41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d5aaa1b4e94e0361ea0b1afdbfcf8bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d5aaa1b4e94e0361ea0b1afdbfcf8bc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_should_calc_zvalues</b> (bool should_calc)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1GraphSketch.html#a8d5aaa1b4e94e0361ea0b1afdbfcf8bc">set_should_calc_zvalues</a> (bool should_calc)</td></tr>
+<tr class="memdesc:a8d5aaa1b4e94e0361ea0b1afdbfcf8bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">if true when calculating the sketch we will also calculate the insertion probabilities of each node. <br /></td></tr>
 <tr class="separator:a8d5aaa1b4e94e0361ea0b1afdbfcf8bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ec9f5d7a83387252d899833aef82855"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1ec9f5d7a83387252d899833aef82855"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>LoadGraphSketchFromGpb</b> (const AllDistanceSketchGpb &amp;all_distance_sketch)</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1GraphSketch.html#a1ec9f5d7a83387252d899833aef82855">LoadGraphSketchFromGpb</a> (const AllDistanceSketchGpb &amp;all_distance_sketch)</td></tr>
+<tr class="memdesc:a1ec9f5d7a83387252d899833aef82855"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load the graph sketch from a Gpb class. <br /></td></tr>
 <tr class="separator:a1ec9f5d7a83387252d899833aef82855"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9243b99edf30ba1f1c33d6e45fb1e152"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9243b99edf30ba1f1c33d6e45fb1e152"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveGraphSketchToGpb</b> (AllDistanceSketchGpb *all_distance_sketch)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1GraphSketch.html#a9243b99edf30ba1f1c33d6e45fb1e152">SaveGraphSketchToGpb</a> (AllDistanceSketchGpb *all_distance_sketch)</td></tr>
+<tr class="memdesc:a9243b99edf30ba1f1c33d6e45fb1e152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save the graph sketch to a Gpb class. <br /></td></tr>
 <tr class="separator:a9243b99edf30ba1f1c33d6e45fb1e152"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0b0931712a19b47983a24ef73500316"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad0b0931712a19b47983a24ef73500316"></a>
 <a class="el" href="classall__distance__sketch_1_1NodeSketch.html">NodeSketch</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetNodeSketch</b> (const NodeIdRandomIdData &amp;node_details)</td></tr>
@@ -127,35 +129,81 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveGraphSketchToGpb<
 <tr class="memitem:a696af8492f42fbbb60afbc2ff2a68a96"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a696af8492f42fbbb60afbc2ff2a68a96"></a>
 <a class="el" href="classall__distance__sketch_1_1NodeSketch.html">NodeSketch</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>GetNodeSketch</b> (NodeDistanceIdRandomIdData node_details)</td></tr>
 <tr class="separator:a696af8492f42fbbb60afbc2ff2a68a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae31e8b23fc7063927b2368a06bc57adb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae31e8b23fc7063927b2368a06bc57adb"></a>
-const std::vector&lt; NodeDistanceIdRandomIdData &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>GetNodesDistribution</b> () const </td></tr>
-<tr class="separator:ae31e8b23fc7063927b2368a06bc57adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af463db872f2cc5cc635dffe4aaf136e6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af463db872f2cc5cc635dffe4aaf136e6"></a>
-const std::vector&lt; RandomId &gt; *&#160;</td><td class="memItemRight" valign="bottom"><b>GetNodesDistributionLean</b> () const </td></tr>
+const std::vector&lt; <a class="el" href="namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4">RandomId</a> &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1GraphSketch.html#af463db872f2cc5cc635dffe4aaf136e6">GetNodesDistributionLean</a> () const </td></tr>
+<tr class="memdesc:af463db872f2cc5cc635dffe4aaf136e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the random id that was given to each node <br /></td></tr>
 <tr class="separator:af463db872f2cc5cc635dffe4aaf136e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9bbe3a02d29880b7218c52b53375e31"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af9bbe3a02d29880b7218c52b53375e31"></a>
-RandomId&#160;</td><td class="memItemRight" valign="bottom"><b>GetNodeRandomId</b> (const int &amp;node_id)</td></tr>
+<a class="el" href="namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4">RandomId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1GraphSketch.html#af9bbe3a02d29880b7218c52b53375e31">GetNodeRandomId</a> (const int &amp;node_id)</td></tr>
+<tr class="memdesc:af9bbe3a02d29880b7218c52b53375e31"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns specific node random id <br /></td></tr>
 <tr class="separator:af9bbe3a02d29880b7218c52b53375e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af57117f7a70b714dedc882d8f213207c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af57117f7a70b714dedc882d8f213207c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetNodesDistribution</b> (const std::vector&lt; RandomId &gt; *nodes_random_id)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1GraphSketch.html#af57117f7a70b714dedc882d8f213207c">SetNodesDistribution</a> (const std::vector&lt; <a class="el" href="namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4">RandomId</a> &gt; *nodes_random_id)</td></tr>
+<tr class="memdesc:af57117f7a70b714dedc882d8f213207c"><td class="mdescLeft">&#160;</td><td class="mdescRight">sets the random id for each node. The default distribution is unifrom [0,1] <br /></td></tr>
 <tr class="separator:af57117f7a70b714dedc882d8f213207c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
-Friends</h2></td></tr>
-<tr class="memitem:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac98d07dd8f7b70e16ccb9a01abf56b9c"></a>
-class&#160;</td><td class="memItemRight" valign="bottom"><b>boost::serialization::access</b></td></tr>
-<tr class="separator:ac98d07dd8f7b70e16ccb9a01abf56b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Data structure for the graph sketch. </p>
 <dl><dt><b>Examples: </b></dt><dd><a class="el" href="examples_2reverse_rank_8cpp-example.html#_a1">examples/reverse_rank.cpp</a>, and <a class="el" href="examples_2sketch_8cpp-example.html#_a0">examples/sketch.cpp</a>.</dd>
-</dl></div><hr/>The documentation for this class was generated from the following file:<ul>
+</dl></div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a6d41436a73844dd633b6184a89ce83ff"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void all_distance_sketch::GraphSketch::InitGraphSketch </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>K</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>max_node_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; int &gt; *&#160;</td>
+          <td class="paramname"><em>nodes_id</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Init the class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">K</td><td>- Sets the accuracy of the estimation. If you want epsilon error you should set K= 1/epsilon^2, e..g if we want to have error up to 10% we should set K = 100. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">max_node_id</td><td>- The max node id of a node in the graph. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">nodes_id</td><td>- optional parameter used if we want to calculate the sketch only on parts of the nodes in the graph. example: if we want to calculate the sketch only on nodes 1, 10, 65 then nodes_id = {1, 10, 65} </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="examples_2reverse_rank_8cpp-example.html#a2">examples/reverse_rank.cpp</a>, and <a class="el" href="examples_2sketch_8cpp-example.html#a4">examples/sketch.cpp</a>.</dd>
+</dl>
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/sketch/<a class="el" href="graph__sketch_8h_source.html">graph_sketch.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jan 16 2016 15:17:26 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 16:13:06 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

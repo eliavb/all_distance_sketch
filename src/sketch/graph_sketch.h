@@ -10,6 +10,15 @@ typedef std::vector<NodeSketch> NodesSketch;
 */
 class GraphSketch {
  public:
+  /*! \brief Init the class
+      \param[in] K - Sets the accuracy of the estimation. If you want epsilon error you should set
+                     K= 1/epsilon^2, e..g if we want to have error up to 10% we should set K = 100.
+      \param[in] max_node_id - The max node id of a node in the graph.
+      \param[in] nodes_id - optional parameter used if we want to calculate the sketch
+                            only on parts of the nodes in the graph.
+                            example: if we want to calculate the sketch only on nodes 1, 10, 65 then
+                            nodes_id = {1, 10, 65}
+  */
   void InitGraphSketch(unsigned int K, int max_node_id,
                        const std::vector<int>* nodes_id = NULL) {
     K_ = K;
@@ -21,13 +30,15 @@ class GraphSketch {
   }
 
   int GetK() const { return K_; }
-
+  /*! \brief if true when calculating the sketch we will also calculate the insertion probabilities of each node.
+  */
   void set_should_calc_zvalues(bool should_calc) {
     should_calc_z_value_ = should_calc;
   }
 
 #if PROTO_BUF
-
+  /*! \brief Load the graph sketch from a Gpb class.
+  */
   bool LoadGraphSketchFromGpb(
       const AllDistanceSketchGpb& all_distance_sketch) {
       if (all_distance_sketch.has_k()) {
@@ -53,7 +64,8 @@ class GraphSketch {
       CalculateAllDistanceNeighborhood();
       return true;
   }
-
+  /*! \brief Save the graph sketch to a Gpb class.
+  */
   void SaveGraphSketchToGpb(AllDistanceSketchGpb* all_distance_sketch) {
       all_distance_sketch->set_k(K_);
       // Save the prunning_thresholds_ & random ids
@@ -154,7 +166,7 @@ class GraphSketch {
             }
             nodes_ads_[node_id].set_z_values(&z);
         }
-
+        SetDisributionToNodes();
         return true;
     }
 
@@ -209,7 +221,7 @@ class GraphSketch {
     }
 
     void CalculateInsertProb(int node_id, std::vector<NodeProb> * insert_prob) {
-      nodes_ads_[node_id].CalculateInsertProb(&nodes_random_id_, insert_prob);
+      nodes_ads_[node_id].CalculateInsertProb(insert_prob);
     }
 
     void SetPrunningThresholds() {
@@ -260,7 +272,7 @@ class GraphSketch {
 
     void CalculateAllDistanceNeighborhood() {
       for (unsigned int i = 0; i < nodes_ads_.size(); i++) {
-        nodes_ads_[i].CalculateAllDistanceNeighborhood(&nodes_random_id_);
+        nodes_ads_[i].CalculateAllDistanceNeighborhood();
         }
     }
 
@@ -298,16 +310,6 @@ class GraphSketch {
         }
         return true;
     }
-
-    template <class Archive>
-    void serialize(Archive& ar, const unsigned int version) {
-      ar& K_;
-      ar& nodes_ads_;
-      ar& prunning_thresholds_;
-      ar& nodes_random_id_;
-      ar& nodes_random_id_sorted_increasing_;
-      SetPrunningThresholds();
-    }
     
     void CreateNodesDistribution(unsigned int max_node_id,
                                  UniformRankCalculator* calculator = NULL,
@@ -329,47 +331,61 @@ class GraphSketch {
               calculator->CalculateNodeRank(node_id);  // uni();
         }
 
+        ExtractSortedVersionFromDist();
+        SetDisributionToNodes();
+        /*
         for (unsigned int i=0; i < num_nodes; i++) {
           int node_id = nodes_id == NULL ? i : (*nodes_id)[i];
           NodeDistanceIdRandomIdData b(0, node_id, nodes_random_id_[node_id]);
           nodes_random_id_sorted_increasing_.push_back(b);
         }
+
         std::sort(nodes_random_id_sorted_increasing_.begin(),
                   nodes_random_id_sorted_increasing_.end(),
-                  compare_node_randomid_decreasing());
+                  compare_node_randomid_decreasing());*/
     }    
-/*! \endcond
-*/
-    NodeSketch* GetNodeSketch(NodeDistanceIdRandomIdData node_details) {
-      return GetNodeSketch(node_details.GetDetails());
-    }
 
     const std::vector<NodeDistanceIdRandomIdData>* GetNodesDistribution()
         const {
       return &nodes_random_id_sorted_increasing_;
     }
+/*! \endcond
+*/     
+    NodeSketch* GetNodeSketch(NodeDistanceIdRandomIdData node_details) {
+      return GetNodeSketch(node_details.GetDetails());
+    }
 
+    /*! \brief returns the random id that was given to each node
+    */
     const std::vector<RandomId>* GetNodesDistributionLean() const {
       return &nodes_random_id_;
     }
-
+    /*! \brief returns specific node random id
+    */
     RandomId GetNodeRandomId(const int& node_id) {
       if ((unsigned int)node_id > nodes_random_id_.size()) {
             return 2;
         }
         return nodes_random_id_[node_id];
     }
-
+    /*! \brief sets the random id for each node.
+        The default distribution is unifrom [0,1]
+    */
     void SetNodesDistribution(const std::vector<RandomId>* nodes_random_id) {
       nodes_random_id_.clear();
       nodes_random_id_.resize(nodes_random_id->size());
       std::copy(nodes_random_id->begin(), nodes_random_id->end(),
                 nodes_random_id_.begin());
       ExtractSortedVersionFromDist();
+      SetDisributionToNodes();
     }
 
  private:
-
+    void SetDisributionToNodes() {
+      for (int i=0; i < nodes_ads_.size(); i++) {
+        nodes_ads_[i].SetDisribution(&nodes_random_id_);
+      }
+    }
     void ExtractSortedVersionFromDist() {
       nodes_random_id_sorted_increasing_.clear();
       for (unsigned int i = 0; i < nodes_random_id_.size(); i++) {
@@ -382,7 +398,6 @@ class GraphSketch {
                   compare_node_randomid_decreasing());
     }
 
-    friend class boost::serialization::access;
     bool should_calc_z_value_;
     unsigned int reserve_size_;
     unsigned int K_;

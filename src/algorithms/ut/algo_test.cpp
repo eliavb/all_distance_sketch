@@ -756,7 +756,7 @@ TEST_F(AlgoGraph, SketchCalculationFacebookGraphApproximation) {
         }
       }
 
-      int num_neighbors_approximate = nodeAds->GetSizeNeighborhoodUpToDistance(i, graphAds.GetNodesDistributionLean());
+      int num_neighbors_approximate = nodeAds->GetSizeNeighborhoodUpToDistance(i);
       if (num_neighbors == 0) {
         continue;
       }
@@ -951,7 +951,7 @@ TEST_F(AlgoGraph, ADSCalculationMultiFacebookGraphApproximation) {
         }
       }
 
-      int num_neighbors_approximate = nodeAds->GetSizeNeighborhoodUpToDistance(i, graphAds.GetNodesDistributionLean());
+      int num_neighbors_approximate = nodeAds->GetSizeNeighborhoodUpToDistance(i);
       if (num_neighbors == 0) {
         continue;
       }

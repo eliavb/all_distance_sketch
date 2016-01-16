@@ -149,12 +149,13 @@ TEST_F(BasicADS, ADSNeighboordhood1) {
   all_distance_sketch::NodeDistanceIdRandomIdData vTemp1(4, 3, 0.01);
   EXPECT_EQ(ads.Add(vTemp), true);
   EXPECT_EQ(ads.Add(vTemp1), true);
-  ads.CalculateAllDistanceNeighborhood(&v);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1, &v), 0);
+  ads.SetDisribution(&v);
+  ads.CalculateAllDistanceNeighborhood();
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1), 0);
   
   
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1, &v), 0);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(5, &v), 1);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1), 0);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(5), 1);
 }
 
 TEST_F(BasicADS, ADSNeighboordhood2) {
@@ -169,11 +170,12 @@ TEST_F(BasicADS, ADSNeighboordhood2) {
   EXPECT_EQ(ads.Add(vTemp1), true);
   all_distance_sketch::NodeDistanceIdRandomIdData vTemp2(1, 4, 0.2);
   EXPECT_EQ(ads.Add(vTemp2), true);
-  ads.CalculateAllDistanceNeighborhood(&v);
+  ads.SetDisribution(&v);
+  ads.CalculateAllDistanceNeighborhood();
   // Only one node is relevant
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1, &v), 0);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(4, &v), 5);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(10, &v), 100);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1), 0);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(4), 5);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(10), 100);
 }
 
 TEST_F(BasicADS, ADSNeighboordhood3) {
@@ -190,12 +192,13 @@ TEST_F(BasicADS, ADSNeighboordhood3) {
   EXPECT_EQ(ads.Add(vTemp1), true);
   all_distance_sketch::NodeDistanceIdRandomIdData vTemp2(1, 4, 0.2);
   EXPECT_EQ(ads.Add(vTemp2), true);
-  ads.CalculateAllDistanceNeighborhood(&v);
+  ads.SetDisribution(&v);
+  ads.CalculateAllDistanceNeighborhood();
   // Only one node is relevant
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1, &v), 0);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(4, &v), 5);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(10, &v), 100);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(11, &v), 1000);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1), 0);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(4), 5);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(10), 100);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(11), 1000);
 }
 
 
@@ -213,14 +216,15 @@ TEST_F(BasicADS, ADSNeighboordhood4) {
   EXPECT_EQ(ads.Add(vTemp1), true);
   all_distance_sketch::NodeDistanceIdRandomIdData vTemp2(1, 4, 0.2);
   EXPECT_EQ(ads.Add(vTemp2), true);
-  ads.CalculateAllDistanceNeighborhood(&v);
+  ads.SetDisribution(&v);
+  ads.CalculateAllDistanceNeighborhood();
   // Only one node is relevant
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1, &v), 0);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(4, &v), 1);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(10, &v), 2);
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(11, &v), 3);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(1), 0);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(4), 1);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(10), 2);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(11), 3);
 
-  ads.CalculateAllDistanceNeighborhood(&v);
+  ads.CalculateAllDistanceNeighborhood();
   // all_distance_sketch::NeighbourhoodVector * s = ads.UTGetNeighbourhoodVector();
   /*
   for (unsigned int i=0; i < s->size(); i++) {
@@ -239,9 +243,10 @@ TEST_F(BasicADS, ADSRankCheck) {
     all_distance_sketch::NodeDistanceIdRandomIdData vTemp(1, i, rank);
     EXPECT_EQ(ads.Add(vTemp), true);
   }
-  ads.CalculateAllDistanceNeighborhood(&v);
+  ads.SetDisribution(&v);
+  ads.CalculateAllDistanceNeighborhood();
   // Only one node is relevant
-  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(2, &v), 99);
+  EXPECT_EQ(ads.GetSizeNeighborhoodUpToDistance(2), 99);
 }
 
 TEST_F(BasicADS, NodeSketchNeighborhoodDistance) {
@@ -255,7 +260,8 @@ TEST_F(BasicADS, NodeSketchNeighborhoodDistance) {
     all_distance_sketch::NodeDistanceIdRandomIdData vTemp(i + 1, i, rank);
     EXPECT_EQ(node_sketch.Add(vTemp), true);
   }
-  node_sketch.CalculateAllDistanceNeighborhood(&v);
+  node_sketch.SetDisribution(&v);
+  node_sketch.CalculateAllDistanceNeighborhood();
   
   for (int i =0 ; i < 99; i++) {
     EXPECT_EQ(node_sketch.GetDistanceCoverNeighborhood(i), i+2);
