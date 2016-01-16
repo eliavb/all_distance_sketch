@@ -4,26 +4,6 @@ Examples on how to use Graph\+Sketch class.
 
 \begin{DoxyCodeInclude}
 \textcolor{keyword}{using namespace }\hyperlink{namespaceall__distance__sketch}{all\_distance\_sketch};
-\textcolor{comment}{/*}
-\textcolor{comment}{    Example how to save the graph Sketch to Gpb}
-\textcolor{comment}{*/}
-\textcolor{keywordtype}{void} save\_graph\_sketch\_to\_gpb(\hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch}* graph\_sketch) \{
-    AllDistanceSketchGpb all\_distance\_sketch\_gpb;
-    graph\_sketch->\hyperlink{classall__distance__sketch_1_1GraphSketch_a9243b99edf30ba1f1c33d6e45fb1e152}{SaveGraphSketchToGpb}(&all\_distance\_sketch\_gpb);
-\}
-\textcolor{comment}{/*}
-\textcolor{comment}{    Example how to load graph sketch from Gpb}
-\textcolor{comment}{*/}
-\textcolor{keywordtype}{void} load\_graph\_sketch\_from\_gpb(AllDistanceSketchGpb* all\_distance\_sketch\_gpb) \{
-    \hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch} graph\_sketch;
-    graph\_sketch.\hyperlink{classall__distance__sketch_1_1GraphSketch_a1ec9f5d7a83387252d899833aef82855}{LoadGraphSketchFromGpb}(*all\_distance\_sketch\_gpb);
-\}
-\end{DoxyCodeInclude}
-
-
-
-\begin{DoxyCodeInclude}
-\textcolor{keyword}{using namespace }\hyperlink{namespaceall__distance__sketch}{all\_distance\_sketch};
 
 \textcolor{comment}{/*}
 \textcolor{comment}{    Calculate an undirected graph sketch with K=64}
@@ -58,6 +38,39 @@ Examples on how to use Graph\+Sketch class.
     \textcolor{keywordtype}{int} k\_all\_distance\_sketch = 128;
     graph\_sketch.\hyperlink{classall__distance__sketch_1_1GraphSketch_a6d41436a73844dd633b6184a89ce83ff}{InitGraphSketch}(k\_all\_distance\_sketch, graph->GetMxNId());
     CalculateGraphSketchMultiCore< graph::TUnDirectedGraph >(graph, &graph\_sketch);
- \}
+\}
+\textcolor{comment}{/*}
+\textcolor{comment}{    Iteate the Graph Sketch data structure}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} iterate\_graph\_sketch(\hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch}* graph\_sketch) \{
+  \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} node\_sketch\_it = graph\_sketch->Begin();
+       node\_sketch\_it != graph\_sketch->End();
+       node\_sketch\_it++) \{
+    std::cout << \textcolor{stringliteral}{" node id="} << node\_sketch\_it->GetNId() <<
+                 \textcolor{stringliteral}{" random id="} << node\_sketch\_it->GetRandomId() << std::endl;
+    \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} sketch\_content\_it = node\_sketch\_it->Begin();
+         sketch\_content\_it != node\_sketch\_it->End();
+         sketch\_content\_it++)\{
+      std::cout << \textcolor{stringliteral}{" sketch node id="} << sketch\_content\_it->GetNId() <<
+                   \textcolor{stringliteral}{" distance="} << sketch\_content\_it->GetDistance();
+    \}  
+  \}
+\}
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    Save the graph Sketch to Gpb}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} save\_graph\_sketch\_to\_gpb(\hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch}* graph\_sketch) \{
+    AllDistanceSketchGpb all\_distance\_sketch\_gpb;
+    graph\_sketch->\hyperlink{classall__distance__sketch_1_1GraphSketch_a9243b99edf30ba1f1c33d6e45fb1e152}{SaveGraphSketchToGpb}(&all\_distance\_sketch\_gpb);
+\}
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    Load graph sketch from Gpb}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} load\_graph\_sketch\_from\_gpb(AllDistanceSketchGpb* all\_distance\_sketch\_gpb) \{
+    \hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch} graph\_sketch;
+    graph\_sketch.\hyperlink{classall__distance__sketch_1_1GraphSketch_a1ec9f5d7a83387252d899833aef82855}{LoadGraphSketchFromGpb}(*all\_distance\_sketch\_gpb);
+\}
 \end{DoxyCodeInclude}
  

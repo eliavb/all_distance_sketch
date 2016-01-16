@@ -21,6 +21,8 @@ typedef proto::SingleNodeSketchGpb::NodeSummaryDetailsGpb NodeSummaryDetailsGpb;
 typedef proto::SingleNodeSketchGpb::ZValuesGpb ZValuesGpb;
 #endif
 
+/*! \brief Container class to store node id and distance
+*/
 class NodeIdDistanceData {
  public:
     NodeIdDistanceData() {};
@@ -53,7 +55,7 @@ class NodeIdRandomIdData {
   NodeIdRandomIdData() {}
   NodeIdRandomIdData(int node_id, RandomId random_id)
       : node_id_(node_id), random_id_(random_id) {}
-  inline int GetNodeId() const { return node_id_; }
+  inline int GetNId() const { return node_id_; }
 
   inline RandomId GetRandomId() const { return random_id_; }
 
@@ -75,7 +77,7 @@ class NodeDistanceIdRandomIdData {
 
   inline graph::EdgeWeight GetDistance() const { return distance_; }
 
-  inline int GetNId() const { return details.GetNodeId(); }
+  inline int GetNId() const { return details.GetNId(); }
 
   inline RandomId GetRandomId() const { return details.GetRandomId(); }
 
@@ -186,7 +188,11 @@ typedef struct NodeProb_t {
 
 typedef std::vector<Neighbourhood> NeighbourhoodVector;
 typedef std::unordered_map<graph::EdgeWeight, NodeIdDistanceData> ZValues;
+/*! \brief Container for node id and distance
+*/
 typedef std::vector<NodeIdDistanceData> NodeIdDistanceVector;
+/*! Iterator for vector
+*/
 typedef std::vector<NodeIdDistanceData>::iterator NodeIdDistanceVectorItr;
 typedef std::vector<NodeDistanceIdRandomIdData>
     NodeDistanceIdRandomIdDataVector;
@@ -556,141 +562,149 @@ class NodeSketch {
 
   RandomId GetRandomId() const { return random_id_; }
 
-    /*! \cond
-    */
-    const NeighbourhoodVector& GetNeighbourHoodVector() const {
-      return neighbourhoods_;
-    }
+  /*! \cond
+  */
+  const NeighbourhoodVector& GetNeighbourHoodVector() const {
+    return neighbourhoods_;
+  }
 
-    const std::vector<NodeDistanceIdRandomIdData>& GetCandidates() const {
-      return candidate_nodes_;
-    }
+  const std::vector<NodeDistanceIdRandomIdData>& GetCandidates() const {
+    return candidate_nodes_;
+  }
 
-    bool operator==(const NodeSketch& other) const {
-        if (IsInit() == false && other.IsInit() == false) {
-            return true;
-        }
-        if (GetK() != other.GetK()) {
-            LOG_M(NOTICE, " K is not euqal!" <<
-                          " lhs K = " << GetK() <<
-                          " rhs K = " << other.GetK());
-            return false;
-        }
-
-        if (GetNId() != other.GetNId()) {
-            LOG_M(NOTICE, " Node id is not equal!");
-            return false;
-        }
-
-        if (GetRandomId() != other.GetRandomId()) {
-            LOG_M(NOTICE, " RandomId is not equal!");
-        }
-        if (*GetNodeAdsVector() != (*other.GetNodeAdsVector())) {
-            LOG_M(NOTICE, " Node Sketches are not equal!");
-            return false;
-        }
-        if (GetNeighbourHoodVector() != other.GetNeighbourHoodVector()) {
-            LOG_M(NOTICE, " NeighbourHood Vector are not equal!");
-            return false;
-        }
-        if (GetCandidates() != other.GetCandidates()) {
-            LOG_M(NOTICE, " Candidates Vector are not equal!");
-            return false;
-        }
-        return true;
-    }
-    /*! \cond
-    */
-    const ZValues& GetZValues() { return z_values_; }
-
-    bool HasZValue(graph::EdgeWeight distance) {
-      return z_values_.find(distance) != z_values_.end();
-    }
-
-    void set_z_values(ZValues* z) {
-      z_values_ = *z;
-    }
-    
-    void CalculateInsertProb(std::vector<NodeProb>* insert_prob) {
-      // Easy case - All nodes insert thus the threshold is 1 for all
-      insert_prob->clear();
-      if (nodes_id_distance_.size() < K_) {
-        for (int i = 0; i < nodes_id_distance_.size(); i++) {
-          NodeProb node_thresh_prob;
-          node_thresh_prob.prob = 1;
-          node_thresh_prob.node_id = nodes_id_distance_[i].GetNId();
-          insert_prob->push_back(node_thresh_prob);
-        }
-        return;
+  bool operator==(const NodeSketch& other) const {
+      if (IsInit() == false && other.IsInit() == false) {
+          return true;
       }
-      // Any node below this distance gets automatic entrence thus prob == 1
-      std::vector<NodeDistanceIdRandomIdData> moving_threshold;
-      graph::EdgeWeight distance_covered = -1;
-      compare_node_randomid_decreasing comparator;
-      for (NodeIdDistanceVector::reverse_iterator r_it =
-               nodes_id_distance_.rbegin();
-           r_it < nodes_id_distance_.rend(); r_it++) {
-        LOG_M(DEBUG3,
-              "id:" << r_it->GetNId() << " distane:" << r_it->GetDistance()
-                    << " random id: " << (*node_distribution_)[r_it->GetNId()]);
+      if (GetK() != other.GetK()) {
+          LOG_M(NOTICE, " K is not euqal!" <<
+                        " lhs K = " << GetK() <<
+                        " rhs K = " << other.GetK());
+          return false;
+      }
 
-          if (distance_covered != r_it->GetDistance()) {
-            for (NodeIdDistanceVector::reverse_iterator runner_it = r_it;
-                 (runner_it->GetDistance() == r_it->GetDistance()) &&
-                 runner_it != nodes_id_distance_.rend();
-                 runner_it++) {
-              NodeDistanceIdRandomIdData node_details(
-                  runner_it->GetDistance(), runner_it->GetNId(),
-                  (*node_distribution_)[runner_it->GetNId()]);
+      if (GetNId() != other.GetNId()) {
+          LOG_M(NOTICE, " Node id is not equal!");
+          return false;
+      }
 
-                  moving_threshold.insert(std::upper_bound(moving_threshold.begin(),
-                                                           moving_threshold.end(),
-                                                           node_details,
-                                                           comparator),
-                                          node_details);
-              }
-              // Is there Z value?
-              ZValues::iterator z_it = z_values_.find(r_it->GetDistance());
-              if (z_it != z_values_.end()) {
-                NodeDistanceIdRandomIdData node_details(
-                    z_it->second.GetDistance(), z_it->second.GetNId(),
-                    (*node_distribution_)[z_it->second.GetNId()]);
+      if (GetRandomId() != other.GetRandomId()) {
+          LOG_M(NOTICE, " RandomId is not equal!");
+      }
+      if (*GetNodeAdsVector() != (*other.GetNodeAdsVector())) {
+          LOG_M(NOTICE, " Node Sketches are not equal!");
+          return false;
+      }
+      if (GetNeighbourHoodVector() != other.GetNeighbourHoodVector()) {
+          LOG_M(NOTICE, " NeighbourHood Vector are not equal!");
+          return false;
+      }
+      if (GetCandidates() != other.GetCandidates()) {
+          LOG_M(NOTICE, " Candidates Vector are not equal!");
+          return false;
+      }
+      return true;
+  }
+  /*! \cond
+  */
+  const ZValues& GetZValues() { return z_values_; }
+
+  bool HasZValue(graph::EdgeWeight distance) {
+    return z_values_.find(distance) != z_values_.end();
+  }
+
+  void set_z_values(ZValues* z) {
+    z_values_ = *z;
+  }
+  
+  void CalculateInsertProb(std::vector<NodeProb>* insert_prob) {
+    // Easy case - All nodes insert thus the threshold is 1 for all
+    insert_prob->clear();
+    if (nodes_id_distance_.size() < K_) {
+      for (int i = 0; i < nodes_id_distance_.size(); i++) {
+        NodeProb node_thresh_prob;
+        node_thresh_prob.prob = 1;
+        node_thresh_prob.node_id = nodes_id_distance_[i].GetNId();
+        insert_prob->push_back(node_thresh_prob);
+      }
+      return;
+    }
+    // Any node below this distance gets automatic entrence thus prob == 1
+    std::vector<NodeDistanceIdRandomIdData> moving_threshold;
+    graph::EdgeWeight distance_covered = -1;
+    compare_node_randomid_decreasing comparator;
+    for (NodeIdDistanceVector::reverse_iterator r_it =
+             nodes_id_distance_.rbegin();
+         r_it < nodes_id_distance_.rend(); r_it++) {
+      LOG_M(DEBUG3,
+            "id:" << r_it->GetNId() << " distane:" << r_it->GetDistance()
+                  << " random id: " << (*node_distribution_)[r_it->GetNId()]);
+
+        if (distance_covered != r_it->GetDistance()) {
+          for (NodeIdDistanceVector::reverse_iterator runner_it = r_it;
+               (runner_it->GetDistance() == r_it->GetDistance()) &&
+               runner_it != nodes_id_distance_.rend();
+               runner_it++) {
+            NodeDistanceIdRandomIdData node_details(
+                runner_it->GetDistance(), runner_it->GetNId(),
+                (*node_distribution_)[runner_it->GetNId()]);
 
                 moving_threshold.insert(std::upper_bound(moving_threshold.begin(),
-                                                       moving_threshold.end(),
-                                                       node_details,
-                                                       comparator),
+                                                         moving_threshold.end(),
+                                                         node_details,
+                                                         comparator),
                                         node_details);
-              }
-
-              distance_covered = r_it->GetDistance();
-          }
-          NodeProb node_thresh_prob;
-          node_thresh_prob.node_id = r_it->GetNId();
-          if (moving_threshold.size() <= K_) {
-            LOG_M(DEBUG3, "node id:" << r_it->GetNId() << " prob: 1");
-            node_thresh_prob.prob = 1;
-          } else {
-            std::vector<NodeDistanceIdRandomIdData>::iterator it_k_plus_1 =
-                moving_threshold.begin() + K_;
-            if (node_thresh_prob.node_id == it_k_plus_1->GetNId()) {
-                // This is Z value! not one of the K smallest!
-                // We don't want to consider
-                LOG_M(DEBUG3, " node id:" << r_it->GetNId() << " Skip Z value");
-                continue;
             }
-            node_thresh_prob.prob = it_k_plus_1->GetRandomId();
+            // Is there Z value?
+            ZValues::iterator z_it = z_values_.find(r_it->GetDistance());
+            if (z_it != z_values_.end()) {
+              NodeDistanceIdRandomIdData node_details(
+                  z_it->second.GetDistance(), z_it->second.GetNId(),
+                  (*node_distribution_)[z_it->second.GetNId()]);
+
+              moving_threshold.insert(std::upper_bound(moving_threshold.begin(),
+                                                     moving_threshold.end(),
+                                                     node_details,
+                                                     comparator),
+                                      node_details);
+            }
+
+            distance_covered = r_it->GetDistance();
+        }
+        NodeProb node_thresh_prob;
+        node_thresh_prob.node_id = r_it->GetNId();
+        if (moving_threshold.size() <= K_) {
+          LOG_M(DEBUG3, "node id:" << r_it->GetNId() << " prob: 1");
+          node_thresh_prob.prob = 1;
+        } else {
+          std::vector<NodeDistanceIdRandomIdData>::iterator it_k_plus_1 =
+              moving_threshold.begin() + K_;
+          if (node_thresh_prob.node_id == it_k_plus_1->GetNId()) {
+              // This is Z value! not one of the K smallest!
+              // We don't want to consider
+              LOG_M(DEBUG3, " node id:" << r_it->GetNId() << " Skip Z value");
+              continue;
           }
-          insert_prob->push_back(node_thresh_prob);
-      }
-      std::reverse(insert_prob->begin(), insert_prob->end());
+          node_thresh_prob.prob = it_k_plus_1->GetRandomId();
+        }
+        insert_prob->push_back(node_thresh_prob);
     }
-    
-    void SetDisribution(std::vector<RandomId>* node_distribution) {
-      node_distribution_ = node_distribution;
-    }
-    /*! \endcond
-    */
+    std::reverse(insert_prob->begin(), insert_prob->end());
+  }
+
+  void SetDisribution(std::vector<RandomId>* node_distribution) {
+    node_distribution_ = node_distribution;
+  }
+  /*! \endcond
+  */
+  NodeIdDistanceVectorItr Begin() {
+    return nodes_id_distance_.begin();
+  }
+
+  NodeIdDistanceVectorItr End() {
+    return nodes_id_distance_.end();
+  }
+
 private:
     friend class GraphSketch;
     bool was_init_;

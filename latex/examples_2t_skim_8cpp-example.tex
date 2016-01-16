@@ -1,0 +1,32 @@
+\hypertarget{examples_2t_skim_8cpp-example}{}\section{examples/t\+\_\+skim.\+cpp}
+Examples on how to use T\+Skim
+
+
+\begin{DoxyCodeInclude}
+\textcolor{keyword}{using namespace }\hyperlink{namespaceall__distance__sketch}{all\_distance\_sketch};
+\textcolor{comment}{/*}
+\textcolor{comment}{    Calculate TSkim and iterate the result cover}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} calculate\_t\_skim\_cover(\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph< graph::TDirectedGraph >}* 
+      graph) \{
+  \hyperlink{classall__distance__sketch_1_1Cover}{Cover} cover;
+  \textcolor{comment}{// Drop line to help tagging}
+  \hyperlink{classall__distance__sketch_1_1TSkimForwardRank}{TSkimForwardRank}
+                < graph::TDirectedGraph > t\_skim\_algo;
+  \textcolor{keywordtype}{int} T = 100;
+  \textcolor{keywordtype}{int} K\_all\_distance\_sketch=128;
+  \textcolor{keywordtype}{int} min\_influence\_for\_seed=500;
+  t\_skim\_algo.\hyperlink{classall__distance__sketch_1_1TSkimForwardRank_aa360ffd108fa094c74b27637712caae9}{InitTSkim}(T, K\_all\_distance\_sketch, min\_influence\_for\_seed, &cover, graph);
+  t\_skim\_algo.Run();
+  \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} it = cover.Begin(); it != cover.End(); ++it) \{
+    std::cout << \textcolor{stringliteral}{" node id of seed="} << it->second.seed << 
+                 \textcolor{stringliteral}{" was selected at the "} << it->second.index << std::endl;
+    \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} i=0; i < it->second.covered\_nodes.size(); i++) \{
+      \textcolor{keywordtype}{int} node\_id = it->second.covered\_nodes[i];
+      std::cout << \textcolor{stringliteral}{" node id="} << node\_id <<
+                   \textcolor{stringliteral}{" is covered by="} << it->second.seed << std::endl;
+    \}
+  \}
+\}
+\end{DoxyCodeInclude}
+ 

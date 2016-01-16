@@ -5,7 +5,12 @@
 
 namespace all_distance_sketch {
 
+/*! Vector of NodeSketch objects
+*/
 typedef std::vector<NodeSketch> NodesSketch;
+/*! Itertor
+*/
+typedef NodesSketch::iterator NodesSketchItr;
 /*! \brief Data structure for the graph sketch
 */
 class GraphSketch {
@@ -234,15 +239,15 @@ class GraphSketch {
 /*! \endcond
 */
     NodeSketch* GetNodeSketch(const NodeIdRandomIdData& node_details) {
-      if (nodes_ads_.size() <= (unsigned int)node_details.GetNodeId()) {
+      if (nodes_ads_.size() <= (unsigned int)node_details.GetNId()) {
             return NULL;
         }
-        if (nodes_ads_[node_details.GetNodeId()].IsInit() == false) {
-          nodes_ads_[node_details.GetNodeId()].InitNodeSketch(
-              K_, node_details.GetNodeId(), node_details.GetRandomId(),
+        if (nodes_ads_[node_details.GetNId()].IsInit() == false) {
+          nodes_ads_[node_details.GetNId()].InitNodeSketch(
+              K_, node_details.GetNId(), node_details.GetRandomId(),
               &prunning_thresholds_, reserve_size_, should_calc_z_value_);
         }
-        return &nodes_ads_[node_details.GetNodeId()];
+        return &nodes_ads_[node_details.GetNId()];
     }
 /*! \cond
 */
@@ -380,6 +385,14 @@ class GraphSketch {
       SetDisributionToNodes();
     }
 
+    NodesSketchItr Begin() {
+      return nodes_ads_.begin();
+    }
+
+    NodesSketchItr End() {
+      return nodes_ads_.end();
+    }
+
  private:
     void SetDisributionToNodes() {
       for (int i=0; i < nodes_ads_.size(); i++) {
@@ -408,7 +421,6 @@ class GraphSketch {
 };
 /** Examples on how to use GraphSketch class.
  * \example examples/sketch.cpp
- * \include examples/save_load_sketch.cpp
  * 
  */
 }  //  namespace all_distance_sketch

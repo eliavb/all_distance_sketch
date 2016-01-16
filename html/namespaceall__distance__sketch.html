@@ -110,6 +110,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure for the graph sketch.  <a href="classall__distance__sketch_1_1GraphSketch.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1NodeIdDistanceData.html">NodeIdDistanceData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container class to store node id and distance.  <a href="classall__distance__sketch_1_1NodeIdDistanceData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1NodeSketch.html">NodeSketch</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single node sketch.  <a href="classall__distance__sketch_1_1NodeSketch.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,9 +128,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a2c159e46ed1a101b68cb2b23a58c4129"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structall__distance__sketch_1_1SeedCover__t.html">all_distance_sketch::SeedCover_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a2c159e46ed1a101b68cb2b23a58c4129">SeedCover</a></td></tr>
 <tr class="memdesc:a2c159e46ed1a101b68cb2b23a58c4129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single seed information.  <a href="#a2c159e46ed1a101b68cb2b23a58c4129">More...</a><br /></td></tr>
 <tr class="separator:a2c159e46ed1a101b68cb2b23a58c4129"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6fb9f0cba2c34476603e744606c5d6a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa6fb9f0cba2c34476603e744606c5d6a"></a>
-typedef std::vector&lt; <a class="el" href="classall__distance__sketch_1_1NodeSketch.html">NodeSketch</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NodesSketch</b></td></tr>
+<tr class="memitem:aa6fb9f0cba2c34476603e744606c5d6a"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classall__distance__sketch_1_1NodeSketch.html">NodeSketch</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#aa6fb9f0cba2c34476603e744606c5d6a">NodesSketch</a></td></tr>
 <tr class="separator:aa6fb9f0cba2c34476603e744606c5d6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb845b04fceda3cdfb3ee08ebf7c0103"><td class="memItemLeft" align="right" valign="top">typedef NodesSketch::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#aeb845b04fceda3cdfb3ee08ebf7c0103">NodesSketchItr</a></td></tr>
+<tr class="separator:aeb845b04fceda3cdfb3ee08ebf7c0103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07dc7ca615a83c4e656f52297eda4bb4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a07dc7ca615a83c4e656f52297eda4bb4"></a>
 typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4">RandomId</a></td></tr>
 <tr class="memdesc:a07dc7ca615a83c4e656f52297eda4bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type for random ids. <br /></td></tr>
@@ -154,13 +158,13 @@ typedef struct all_distance_sketch::NodeProb_t&#160;</td><td class="memItemRight
 typedef std::vector&lt; Neighbourhood &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NeighbourhoodVector</b></td></tr>
 <tr class="separator:a1b6c1bccb4c2618347ee06c820a5ab9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96b3e5630ae959843fca081c4accb419"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a96b3e5630ae959843fca081c4accb419"></a>
-typedef std::unordered_map&lt; graph::EdgeWeight, NodeIdDistanceData &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ZValues</b></td></tr>
+typedef std::unordered_map&lt; graph::EdgeWeight, <a class="el" href="classall__distance__sketch_1_1NodeIdDistanceData.html">NodeIdDistanceData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ZValues</b></td></tr>
 <tr class="separator:a96b3e5630ae959843fca081c4accb419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21b129900de9d9cfbb3406f7e0d1a75a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21b129900de9d9cfbb3406f7e0d1a75a"></a>
-typedef std::vector&lt; NodeIdDistanceData &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NodeIdDistanceVector</b></td></tr>
+typedef std::vector&lt; <a class="el" href="classall__distance__sketch_1_1NodeIdDistanceData.html">NodeIdDistanceData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a21b129900de9d9cfbb3406f7e0d1a75a">NodeIdDistanceVector</a></td></tr>
+<tr class="memdesc:a21b129900de9d9cfbb3406f7e0d1a75a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container for node id and distance. <br /></td></tr>
 <tr class="separator:a21b129900de9d9cfbb3406f7e0d1a75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb3aa8f88e2ff80d4625d227ad385dae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb3aa8f88e2ff80d4625d227ad385dae"></a>
-typedef std::vector&lt; NodeIdDistanceData &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>NodeIdDistanceVectorItr</b></td></tr>
+<tr class="memitem:aeb3aa8f88e2ff80d4625d227ad385dae"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; <a class="el" href="classall__distance__sketch_1_1NodeIdDistanceData.html">NodeIdDistanceData</a> &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#aeb3aa8f88e2ff80d4625d227ad385dae">NodeIdDistanceVectorItr</a></td></tr>
 <tr class="separator:aeb3aa8f88e2ff80d4625d227ad385dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba91dd69245d43d635e9aa605e31d85e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aba91dd69245d43d635e9aa605e31d85e"></a>
 typedef std::vector&lt; NodeDistanceIdRandomIdData &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>NodeDistanceIdRandomIdDataVector</b></td></tr>
@@ -194,6 +198,45 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>project namespace </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="aeb3aa8f88e2ff80d4625d227ad385dae"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="classall__distance__sketch_1_1NodeIdDistanceData.html">NodeIdDistanceData</a>&gt;::iterator <a class="el" href="namespaceall__distance__sketch.html#aeb3aa8f88e2ff80d4625d227ad385dae">all_distance_sketch::NodeIdDistanceVectorItr</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Iterator for vector </p>
+
+</div>
+</div>
+<a class="anchor" id="aa6fb9f0cba2c34476603e744606c5d6a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef std::vector&lt;<a class="el" href="classall__distance__sketch_1_1NodeSketch.html">NodeSketch</a>&gt; <a class="el" href="namespaceall__distance__sketch.html#aa6fb9f0cba2c34476603e744606c5d6a">all_distance_sketch::NodesSketch</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Vector of <a class="el" href="classall__distance__sketch_1_1NodeSketch.html" title="Single node sketch. ">NodeSketch</a> objects </p>
+
+</div>
+</div>
+<a class="anchor" id="aeb845b04fceda3cdfb3ee08ebf7c0103"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef NodesSketch::iterator <a class="el" href="namespaceall__distance__sketch.html#aeb845b04fceda3cdfb3ee08ebf7c0103">all_distance_sketch::NodesSketchItr</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Itertor </p>
+
+</div>
+</div>
 <a class="anchor" id="a2c159e46ed1a101b68cb2b23a58c4129"></a>
 <div class="memitem">
 <div class="memproto">
@@ -458,7 +501,7 @@ template&lt;class T , class CallBacks &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jan 16 2016 18:15:31 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 22:59:31 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

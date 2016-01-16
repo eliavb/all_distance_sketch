@@ -6,5 +6,6 @@ var searchData=
   ['cover',['Cover',['../classall__distance__sketch_1_1Cover.html',1,'all_distance_sketch']]],
   ['covered_5fnodes',['covered_nodes',['../structall__distance__sketch_1_1SeedCover__t.html#aec4575ff1b61bc5684301089db0acbe7',1,'all_distance_sketch::SeedCover_t']]],
   ['calculating_20graphsketch',['Calculating GraphSketch',['../GraphSketchTut.html',1,'']]],
-  ['calculating_20single_20node_20reverse_20rank',['Calculating single node reverse rank',['../ReverseRankTut.html',1,'']]]
+  ['calculating_20single_20node_20reverse_20rank',['Calculating single node reverse rank',['../ReverseRankTut.html',1,'']]],
+  ['calculating_20tskim_20influence_20maximization',['Calculating TSkim influence maximization',['../TSkimTut.html',1,'']]]
 ];

@@ -8,7 +8,10 @@
 #include "./reverse_rank.h"
 
 namespace all_distance_sketch {
-
+/*!
+  \example examples/t_skim.cpp
+  Examples on how to use TSkim
+*/
 /*! \brief Single seed information
 
 */

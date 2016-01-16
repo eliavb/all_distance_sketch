@@ -14,6 +14,8 @@ class \hyperlink{classall__distance__sketch_1_1Cover}{Cover}
 \begin{DoxyCompactList}\small\item\em \hyperlink{classall__distance__sketch_1_1Cover}{Cover} extracted by the influence maximization algorithms. \end{DoxyCompactList}\item 
 class \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch}
 \begin{DoxyCompactList}\small\item\em Data structure for the graph sketch. \end{DoxyCompactList}\item 
+class \hyperlink{classall__distance__sketch_1_1NodeIdDistanceData}{Node\+Id\+Distance\+Data}
+\begin{DoxyCompactList}\small\item\em Container class to store node id and distance. \end{DoxyCompactList}\item 
 class \hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch}
 \begin{DoxyCompactList}\small\item\em Single node sketch. \end{DoxyCompactList}\item 
 struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{Seed\+Cover\+\_\+t}
@@ -25,8 +27,9 @@ class \hyperlink{classall__distance__sketch_1_1TSkimForwardRank}{T\+Skim\+Forwar
 \item 
 typedef struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover\+\_\+t} \hyperlink{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}{Seed\+Cover}
 \begin{DoxyCompactList}\small\item\em Single seed information. \end{DoxyCompactList}\item 
-\hypertarget{namespaceall__distance__sketch_aa6fb9f0cba2c34476603e744606c5d6a}{}typedef std\+::vector$<$ \hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} $>$ {\bfseries Nodes\+Sketch}\label{namespaceall__distance__sketch_aa6fb9f0cba2c34476603e744606c5d6a}
-
+typedef std\+::vector$<$ \hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} $>$ \hyperlink{namespaceall__distance__sketch_aa6fb9f0cba2c34476603e744606c5d6a}{Nodes\+Sketch}
+\item 
+typedef Nodes\+Sketch\+::iterator \hyperlink{namespaceall__distance__sketch_aeb845b04fceda3cdfb3ee08ebf7c0103}{Nodes\+Sketch\+Itr}
 \item 
 \hypertarget{namespaceall__distance__sketch_a07dc7ca615a83c4e656f52297eda4bb4}{}typedef double \hyperlink{namespaceall__distance__sketch_a07dc7ca615a83c4e656f52297eda4bb4}{Random\+Id}\label{namespaceall__distance__sketch_a07dc7ca615a83c4e656f52297eda4bb4}
 
@@ -52,14 +55,13 @@ typedef struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+
 \hypertarget{namespaceall__distance__sketch_a1b6c1bccb4c2618347ee06c820a5ab9d}{}typedef std\+::vector$<$ Neighbourhood $>$ {\bfseries Neighbourhood\+Vector}\label{namespaceall__distance__sketch_a1b6c1bccb4c2618347ee06c820a5ab9d}
 
 \item 
-\hypertarget{namespaceall__distance__sketch_a96b3e5630ae959843fca081c4accb419}{}typedef std\+::unordered\+\_\+map$<$ graph\+::\+Edge\+Weight, Node\+Id\+Distance\+Data $>$ {\bfseries Z\+Values}\label{namespaceall__distance__sketch_a96b3e5630ae959843fca081c4accb419}
+\hypertarget{namespaceall__distance__sketch_a96b3e5630ae959843fca081c4accb419}{}typedef std\+::unordered\+\_\+map$<$ graph\+::\+Edge\+Weight, \hyperlink{classall__distance__sketch_1_1NodeIdDistanceData}{Node\+Id\+Distance\+Data} $>$ {\bfseries Z\+Values}\label{namespaceall__distance__sketch_a96b3e5630ae959843fca081c4accb419}
 
 \item 
-\hypertarget{namespaceall__distance__sketch_a21b129900de9d9cfbb3406f7e0d1a75a}{}typedef std\+::vector$<$ Node\+Id\+Distance\+Data $>$ {\bfseries Node\+Id\+Distance\+Vector}\label{namespaceall__distance__sketch_a21b129900de9d9cfbb3406f7e0d1a75a}
+\hypertarget{namespaceall__distance__sketch_a21b129900de9d9cfbb3406f7e0d1a75a}{}typedef std\+::vector$<$ \hyperlink{classall__distance__sketch_1_1NodeIdDistanceData}{Node\+Id\+Distance\+Data} $>$ \hyperlink{namespaceall__distance__sketch_a21b129900de9d9cfbb3406f7e0d1a75a}{Node\+Id\+Distance\+Vector}\label{namespaceall__distance__sketch_a21b129900de9d9cfbb3406f7e0d1a75a}
 
-\item 
-\hypertarget{namespaceall__distance__sketch_aeb3aa8f88e2ff80d4625d227ad385dae}{}typedef std\+::vector$<$ Node\+Id\+Distance\+Data $>$\+::iterator {\bfseries Node\+Id\+Distance\+Vector\+Itr}\label{namespaceall__distance__sketch_aeb3aa8f88e2ff80d4625d227ad385dae}
-
+\begin{DoxyCompactList}\small\item\em Container for node id and distance. \end{DoxyCompactList}\item 
+typedef std\+::vector$<$ \hyperlink{classall__distance__sketch_1_1NodeIdDistanceData}{Node\+Id\+Distance\+Data} $>$\+::iterator \hyperlink{namespaceall__distance__sketch_aeb3aa8f88e2ff80d4625d227ad385dae}{Node\+Id\+Distance\+Vector\+Itr}
 \item 
 \hypertarget{namespaceall__distance__sketch_aba91dd69245d43d635e9aa605e31d85e}{}typedef std\+::vector$<$ Node\+Distance\+Id\+Random\+Id\+Data $>$ {\bfseries Node\+Distance\+Id\+Random\+Id\+Data\+Vector}\label{namespaceall__distance__sketch_aba91dd69245d43d635e9aa605e31d85e}
 
@@ -87,7 +89,16 @@ typedef struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+
 project namespace 
 
 \subsection{Typedef Documentation}
-\hypertarget{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Seed\+Cover@{Seed\+Cover}}
+\hypertarget{namespaceall__distance__sketch_aeb3aa8f88e2ff80d4625d227ad385dae}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Node\+Id\+Distance\+Vector\+Itr@{Node\+Id\+Distance\+Vector\+Itr}}
+\index{Node\+Id\+Distance\+Vector\+Itr@{Node\+Id\+Distance\+Vector\+Itr}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
+\subsubsection[{Node\+Id\+Distance\+Vector\+Itr}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::vector$<${\bf Node\+Id\+Distance\+Data}$>$\+::iterator {\bf all\+\_\+distance\+\_\+sketch\+::\+Node\+Id\+Distance\+Vector\+Itr}}\label{namespaceall__distance__sketch_aeb3aa8f88e2ff80d4625d227ad385dae}
+Iterator for vector \hypertarget{namespaceall__distance__sketch_aa6fb9f0cba2c34476603e744606c5d6a}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Nodes\+Sketch@{Nodes\+Sketch}}
+\index{Nodes\+Sketch@{Nodes\+Sketch}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
+\subsubsection[{Nodes\+Sketch}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::vector$<${\bf Node\+Sketch}$>$ {\bf all\+\_\+distance\+\_\+sketch\+::\+Nodes\+Sketch}}\label{namespaceall__distance__sketch_aa6fb9f0cba2c34476603e744606c5d6a}
+Vector of \hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch} objects \hypertarget{namespaceall__distance__sketch_aeb845b04fceda3cdfb3ee08ebf7c0103}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Nodes\+Sketch\+Itr@{Nodes\+Sketch\+Itr}}
+\index{Nodes\+Sketch\+Itr@{Nodes\+Sketch\+Itr}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
+\subsubsection[{Nodes\+Sketch\+Itr}]{\setlength{\rightskip}{0pt plus 5cm}typedef Nodes\+Sketch\+::iterator {\bf all\+\_\+distance\+\_\+sketch\+::\+Nodes\+Sketch\+Itr}}\label{namespaceall__distance__sketch_aeb845b04fceda3cdfb3ee08ebf7c0103}
+Itertor \hypertarget{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}{}\index{all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}!Seed\+Cover@{Seed\+Cover}}
 \index{Seed\+Cover@{Seed\+Cover}!all\+\_\+distance\+\_\+sketch@{all\+\_\+distance\+\_\+sketch}}
 \subsubsection[{Seed\+Cover}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover\+\_\+t}  {\bf all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover}}\label{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}
 

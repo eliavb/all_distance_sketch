@@ -96,6 +96,8 @@
 
 	\section TSkim TSkim influence maximization
 
+	\ref all_distance_sketch::TSkimForwardRank
+
 */
 
 /*!
@@ -116,4 +118,8 @@
 	\page ReverseRankTut Calculating single node reverse rank
 	How to calculate a single node reverse rank.
 	\ref examples/reverse_rank.cpp
+
+	\page TSkimTut Calculating TSkim influence maximization
+	How to calculate TSkim influence maximization based on forward ranks.
+	\ref examples/t_skim.cpp
  */

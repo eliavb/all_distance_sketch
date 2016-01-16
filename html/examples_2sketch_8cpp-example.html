@@ -85,29 +85,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 <p>Examples on how to use GraphSketch class.</p>
 <div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code" href="namespaceall__distance__sketch.html">all_distance_sketch</a>;</div>
-<div class="line"><span class="comment">/*</span></div>
-<div class="line"><span class="comment">    Example how to save the graph Sketch to Gpb</span></div>
-<div class="line"><span class="comment">*/</span></div>
-<div class="line"><span class="keywordtype">void</span> save_graph_sketch_to_gpb(<a name="_a0"></a><a class="code" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a>* graph_sketch) {</div>
-<div class="line">    AllDistanceSketchGpb all_distance_sketch_gpb;</div>
-<div class="line">    graph_sketch-&gt;<a name="a1"></a><a class="code" href="classall__distance__sketch_1_1GraphSketch.html#a9243b99edf30ba1f1c33d6e45fb1e152">SaveGraphSketchToGpb</a>(&amp;all_distance_sketch_gpb);</div>
-<div class="line">}</div>
-<div class="line"><span class="comment">/*</span></div>
-<div class="line"><span class="comment">    Example how to load graph sketch from Gpb</span></div>
-<div class="line"><span class="comment">*/</span></div>
-<div class="line"><span class="keywordtype">void</span> load_graph_sketch_from_gpb(AllDistanceSketchGpb* all_distance_sketch_gpb) {</div>
-<div class="line">    <a class="code" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a> graph_sketch;</div>
-<div class="line">    graph_sketch.<a name="a2"></a><a class="code" href="classall__distance__sketch_1_1GraphSketch.html#a1ec9f5d7a83387252d899833aef82855">LoadGraphSketchFromGpb</a>(*all_distance_sketch_gpb);</div>
-<div class="line">}</div>
-</div><!-- fragment --><div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code" href="namespaceall__distance__sketch.html">all_distance_sketch</a>;</div>
 <div class="line"></div>
 <div class="line"><span class="comment">/*</span></div>
 <div class="line"><span class="comment">    Calculate an undirected graph sketch with K=64</span></div>
 <div class="line"><span class="comment">*/</span></div>
-<div class="line"><span class="keywordtype">void</span> calculate_graph_sketch(<a name="_a3"></a><a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">graph::Graph&lt; graph::TUnDirectedGraph &gt;</a>* graph) {</div>
-<div class="line">    <a class="code" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a> graph_sketch;</div>
+<div class="line"><span class="keywordtype">void</span> calculate_graph_sketch(<a name="_a0"></a><a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">graph::Graph&lt; graph::TUnDirectedGraph &gt;</a>* graph) {</div>
+<div class="line">    <a name="_a1"></a><a class="code" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a> graph_sketch;</div>
 <div class="line">    <span class="keywordtype">int</span> k_all_distance_sketch = 64;</div>
-<div class="line">    graph_sketch.<a name="a4"></a><a class="code" href="classall__distance__sketch_1_1GraphSketch.html#a6d41436a73844dd633b6184a89ce83ff">InitGraphSketch</a>(k_all_distance_sketch, graph-&gt;<a name="a5"></a>GetMxNId());  </div>
+<div class="line">    graph_sketch.<a name="a2"></a><a class="code" href="classall__distance__sketch_1_1GraphSketch.html#a6d41436a73844dd633b6184a89ce83ff">InitGraphSketch</a>(k_all_distance_sketch, graph-&gt;<a name="a3"></a>GetMxNId());  </div>
 <div class="line">    CalculateGraphSketch&lt; graph::TUnDirectedGraph &gt;(graph, &amp;graph_sketch);</div>
 <div class="line">}</div>
 <div class="line"></div>
@@ -118,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="keywordtype">void</span> calculate_graph_sketch(<a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">graph::Graph&lt; graph::TDirectedGraph &gt;</a>* graph) {</div>
 <div class="line">    <a class="code" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a> graph_sketch;</div>
 <div class="line">    <span class="keywordtype">int</span> k_all_distance_sketch = 64;</div>
-<div class="line">    graph_sketch.<a class="code" href="classall__distance__sketch_1_1GraphSketch.html#a6d41436a73844dd633b6184a89ce83ff">InitGraphSketch</a>(k_all_distance_sketch, graph-&gt;<a name="a6"></a>GetMxNId());  </div>
+<div class="line">    graph_sketch.<a class="code" href="classall__distance__sketch_1_1GraphSketch.html#a6d41436a73844dd633b6184a89ce83ff">InitGraphSketch</a>(k_all_distance_sketch, graph-&gt;<a name="a4"></a>GetMxNId());  </div>
 <div class="line">    CalculateGraphSketch&lt; graph::TDirectedGraph &gt;(graph, &amp;graph_sketch);</div>
 <div class="line">}</div>
 <div class="line"></div>
@@ -131,11 +116,44 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    <span class="keywordtype">int</span> k_all_distance_sketch = 128;</div>
 <div class="line">    graph_sketch.<a class="code" href="classall__distance__sketch_1_1GraphSketch.html#a6d41436a73844dd633b6184a89ce83ff">InitGraphSketch</a>(k_all_distance_sketch, graph-&gt;GetMxNId());</div>
 <div class="line">    CalculateGraphSketchMultiCore&lt; graph::TUnDirectedGraph &gt;(graph, &amp;graph_sketch);</div>
-<div class="line"> }</div>
+<div class="line">}</div>
+<div class="line"><span class="comment">/*</span></div>
+<div class="line"><span class="comment">    Iteate the Graph Sketch data structure</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"><span class="keywordtype">void</span> iterate_graph_sketch(<a class="code" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a>* graph_sketch) {</div>
+<div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span> node_sketch_it = graph_sketch-&gt;<a name="a5"></a>Begin();</div>
+<div class="line">       node_sketch_it != graph_sketch-&gt;<a name="a6"></a>End();</div>
+<div class="line">       node_sketch_it++) {</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot; node id=&quot;</span> &lt;&lt; node_sketch_it-&gt;GetNId() &lt;&lt;</div>
+<div class="line">                 <span class="stringliteral">&quot; random id=&quot;</span> &lt;&lt; node_sketch_it-&gt;GetRandomId() &lt;&lt; std::endl;</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> sketch_content_it = node_sketch_it-&gt;Begin();</div>
+<div class="line">         sketch_content_it != node_sketch_it-&gt;End();</div>
+<div class="line">         sketch_content_it++){</div>
+<div class="line">      std::cout &lt;&lt; <span class="stringliteral">&quot; sketch node id=&quot;</span> &lt;&lt; sketch_content_it-&gt;GetNId() &lt;&lt;</div>
+<div class="line">                   <span class="stringliteral">&quot; distance=&quot;</span> &lt;&lt; sketch_content_it-&gt;GetDistance();</div>
+<div class="line">    }  </div>
+<div class="line">  }</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*</span></div>
+<div class="line"><span class="comment">    Save the graph Sketch to Gpb</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"><span class="keywordtype">void</span> save_graph_sketch_to_gpb(<a class="code" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a>* graph_sketch) {</div>
+<div class="line">    AllDistanceSketchGpb all_distance_sketch_gpb;</div>
+<div class="line">    graph_sketch-&gt;<a name="a7"></a><a class="code" href="classall__distance__sketch_1_1GraphSketch.html#a9243b99edf30ba1f1c33d6e45fb1e152">SaveGraphSketchToGpb</a>(&amp;all_distance_sketch_gpb);</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="comment">/*</span></div>
+<div class="line"><span class="comment">    Load graph sketch from Gpb</span></div>
+<div class="line"><span class="comment">*/</span></div>
+<div class="line"><span class="keywordtype">void</span> load_graph_sketch_from_gpb(AllDistanceSketchGpb* all_distance_sketch_gpb) {</div>
+<div class="line">    <a class="code" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a> graph_sketch;</div>
+<div class="line">    graph_sketch.<a name="a8"></a><a class="code" href="classall__distance__sketch_1_1GraphSketch.html#a1ec9f5d7a83387252d899833aef82855">LoadGraphSketchFromGpb</a>(*all_distance_sketch_gpb);</div>
+<div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jan 16 2016 18:15:31 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jan 16 2016 22:59:30 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>
