@@ -85,7 +85,7 @@ TEST_F(SerialGraph, ReverseRankCalculation) {
   EXPECT_EQ(ranking[12], 3);
 }
 
-TEST_F(SerialGraph, TSkimCalculation) {
+TEST_F(SerialGraph, ZValuesCalculation) {
   graph::Graph< graph::TDirectedGraph > graph;
   GraphSketch graph_sketch_before;
   int k = 2;
@@ -158,10 +158,55 @@ TEST_F(SerialGraph, TSkimCalculation) {
   }
 }
 
-TEST_F(SerialGraph, ZValuesCalculation) {
-  
-}
-
 TEST_F(SerialGraph, EqualityCheckCalculation) {
-  
+  graph::Graph< graph::TDirectedGraph > graph;
+  // Random Id - Node Ids
+  // 0.06 - 0, 0.12 - 1, 0.23 - 2
+  // 0.32 - 3, 0.33 - 4, 0.34 - 5
+  // 0.37 - 6, 0.45 - 7, 0.69 - 8
+  // 0.77 - 9, 0.85 - 10, 0.93 - 11, 0.95 - 12
+  std::vector<double> dist = {0.06, 0.12, 0.23,
+                              0.32, 0.33, 0.34,
+                              0.37, 0.45, 0.69,
+                              0.77, 0.85, 0.93, 0.95};
+  for (int i=0; i < dist.size(); i++) {
+   graph.AddNode(i);
+  }
+  // 0.06 -> 0.95, 0.06 -> 0.32, 0.06 -> 0.85
+  graph.AddEdge(0, 12); graph.AddEdge(0, 3); graph.AddEdge(0, 10);
+  // 0.12 -> 0.34, 0.12 -> 0.77, 0.12 -> 0.93
+  graph.AddEdge(1, 5); graph.AddEdge(1, 9); graph.AddEdge(1, 11);
+  // 0.23 -> 0.45, 0.23 -> 0.37
+  graph.AddEdge(2, 7); graph.AddEdge(2, 6);
+  // 0.32 -> 0.69
+  graph.AddEdge(3, 8);
+  // 0.33 -> 0.77, 0.33 -> 0.93
+  graph.AddEdge(4, 9); graph.AddEdge(4, 11);
+  // 0.34 -> 0.12, 0.34 -> 0.85, 0.34 -> 0.93
+  graph.AddEdge(5, 1); graph.AddEdge(5, 10); graph.AddEdge(5, 11);
+  // 0.37 -> 0.45, 0.37 -> 0.85
+  graph.AddEdge(6, 7); graph.AddEdge(6, 10);
+  // 0.45 -> 0.85
+  graph.AddEdge(7, 10);
+  // 0.69 -> 0.06, 0.69 -> 0.45, 0.06 -> 0.77
+  graph.AddEdge(8, 0); graph.AddEdge(8 ,7);graph.AddEdge(8 ,9);
+  // 0.77 -> 0.93, 0.77 -> 0.34, 0.77 -> 0.45
+  graph.AddEdge(9 ,11); graph.AddEdge(9 ,5); graph.AddEdge(9 ,7);
+  // 0.85 -> 0.23
+  graph.AddEdge(10 ,2);
+  // 0.95 -> 0.32, 0.95 -> 0.69
+  graph.AddEdge(12 ,3); graph.AddEdge(12 ,8);
+
+  GraphSketch graph_sketch_before;
+  int k=64;
+  graph_sketch_before.InitGraphSketch(k, graph.GetMxNId());
+  graph_sketch_before.SetNodesDistribution(&dist);
+  graph_sketch_before.set_should_calc_zvalues(true);
+  CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graph_sketch_before);
+  GraphSketch graph_sketch_after_load;
+  AllDistanceSketchGpb all_distance_sketch_gpb;
+  graph_sketch_before.SaveGraphSketchToGpb(&all_distance_sketch_gpb);
+  graph_sketch_after_load.LoadGraphSketchFromGpb(all_distance_sketch_gpb);
+  EXPECT_TRUE(graph_sketch_after_load == graph_sketch_before);
+
 }

@@ -1,0 +1,60 @@
+\hypertarget{examples_2sketch1_8cpp-example}{}\section{examples/sketch1.\+cpp}
+
+\begin{DoxyCodeInclude}
+\textcolor{comment}{/*}
+\textcolor{comment}{    Example how to save the graph Sketch to Gpb}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} save\_graph\_sketch\_to\_gpb(GraphSketch* graph\_sketch) \{
+    AllDistanceSketchGpb all\_distance\_sketch\_gpb;
+    graph\_sketch->SaveGraphSketchToGpb(&all\_distance\_sketch\_gpb);
+\}
+\textcolor{comment}{/*}
+\textcolor{comment}{    Example how to load graph sketch}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} load\_graph\_sketch\_from\_gpb(AllDistanceSketchGpb* all\_distance\_sketch\_gpb) \{
+    GraphSketch graph\_sketch;
+    graph\_sketch.LoadGraphSketchFromGpb(*all\_distance\_sketch\_gpb);
+\}
+\end{DoxyCodeInclude}
+ Examples on how to use Graph\+Sketch class.
+
+
+\begin{DoxyCodeInclude}
+\textcolor{keyword}{using namespace }\hyperlink{namespaceall__distance__sketch}{all\_distance\_sketch};
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    Calculate an undirected graph sketch with K=64}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} calculate\_graph\_sketch(\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph< graph::TUnDirectedGraph >}*
+       graph) \{
+    \hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch} graph\_sketch;
+    \textcolor{keywordtype}{int} k\_all\_distance\_sketch = 64;
+    graph\_sketch.InitGraphSketch(k\_all\_distance\_sketch, graph->GetMxNId());  
+    CalculateGraphSketch< graph::TUnDirectedGraph >(graph, &graph\_sketch);
+\}
+
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    Calculate a directed graph sketch with K=64}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} calculate\_graph\_sketch(\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph< graph::TDirectedGraph >}* 
+      graph) \{
+    \hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch} graph\_sketch;
+    \textcolor{keywordtype}{int} k\_all\_distance\_sketch = 64;
+    graph\_sketch.InitGraphSketch(k\_all\_distance\_sketch, graph->GetMxNId());  
+    CalculateGraphSketch< graph::TDirectedGraph >(graph, &graph\_sketch);
+\}
+
+
+\textcolor{comment}{/*}
+\textcolor{comment}{    Calculate graph sketch with 8 threads}
+\textcolor{comment}{*/}
+\textcolor{keywordtype}{void} calculate\_graph\_sketch\_multi(\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph< graph::TUnDirectedGraph >}
+      * graph) \{
+    \hyperlink{classall__distance__sketch_1_1GraphSketch}{GraphSketch} graph\_sketch;
+    \textcolor{keywordtype}{int} k\_all\_distance\_sketch = 128;
+    graph\_sketch.InitGraphSketch(k\_all\_distance\_sketch, graph->GetMxNId());
+    CalculateGraphSketchMultiCore< graph::TUnDirectedGraph >(graph, &graph\_sketch);
+ \}
+\end{DoxyCodeInclude}
+ 

@@ -391,8 +391,10 @@ class GraphSketch {
     std::vector<RandomId> nodes_random_id_;
     std::vector<NodeDistanceIdRandomIdData> nodes_random_id_sorted_increasing_;
 };
-/** \example examples/sketch.cpp
- * Examples on how to use GraphSketch class.
+/** Examples on how to use GraphSketch class.
+ * \example examples/sketch.cpp
+ * \include examples/save_load_sketch.cpp
+ * 
  */
 }  //  namespace all_distance_sketch
 
