@@ -25,9 +25,45 @@ class GraphSketch {
   void set_should_calc_zvalues(bool should_calc) {
     should_calc_z_value_ = should_calc;
   }
+
+#if PROTO_BUF
+
+  bool LoadGraphSketchFromGpb(
+      const AllDistanceSketchGpb& all_distance_sketch) {
+      if (all_distance_sketch.has_k()) {
+        K_ = all_distance_sketch.k();
+      }
+      if (all_distance_sketch.has_should_calc_z_values()) {
+        should_calc_z_value_ = all_distance_sketch.should_calc_z_values();
+      }
+      // Load the thresholds
+      int num_nodes = all_distance_sketch.node_thresholds_size();
+      prunning_thresholds_.resize(num_nodes);
+      nodes_random_id_.resize(num_nodes);
+      if (LoadThresholdsAndRandomId(all_distance_sketch) == false) {
+        LOG_M(NOTICE, "Unable to load threshold and random ID");
+        return false;
+      }
+      reserve_size_ = K_ * log2(prunning_thresholds_.size());
+      if (LoadNodesSketch(all_distance_sketch) == false) {
+        LOG_M(NOTICE, "Unable to load nodes NodeSketch");
+          return false;   
+      }
+
+      CalculateAllDistanceNeighborhood();
+      return true;
+  }
+
+  void SaveGraphSketchToGpb(AllDistanceSketchGpb* all_distance_sketch) {
+      all_distance_sketch->set_k(K_);
+      // Save the prunning_thresholds_ & random ids
+        SaveThresholdAndRandomId(all_distance_sketch);
+        // Save each node NodeSketch
+        SaveNodesSketch(all_distance_sketch);
+  }
+
 /*! \cond
 */
-#if PROTO_BUF
     bool LoadThresholdsAndRandomId(const AllDistanceSketchGpb& all_distance_sketch) {
         int num_nodes = all_distance_sketch.node_thresholds_size();
         prunning_thresholds_.resize(num_nodes);
@@ -106,30 +142,19 @@ class GraphSketch {
                 nodes_ads_[node_id].nodes_id_distance_.push_back(
                     node_in_sketch_details);
             }
-        }
-        return true;
-    }
-
-    bool LoadGraphSketchFromGpb(
-        const AllDistanceSketchGpb& all_distance_sketch) {
-        if (all_distance_sketch.has_k()) {
-          K_ = all_distance_sketch.k();
-        }
-        // Load the thresholds
-        int num_nodes = all_distance_sketch.node_thresholds_size();
-        prunning_thresholds_.resize(num_nodes);
-        nodes_random_id_.resize(num_nodes);
-        if (LoadThresholdsAndRandomId(all_distance_sketch) == false) {
-          LOG_M(NOTICE, "Unable to load threshold and random ID");
-          return false;
-        }
-        reserve_size_ = K_ * log2(prunning_thresholds_.size());
-        if (LoadNodesSketch(all_distance_sketch) == false) {
-          LOG_M(NOTICE, "Unable to load nodes NodeSketch");
-            return false;   
+            ZValues z;
+            for (int j=0; 
+                 j < all_distance_sketch.nodes_sketches(i).z_value_size(); ++j) {
+              const ZValuesGpb& z_value_in_sketch = \
+                      all_distance_sketch.nodes_sketches(i).z_value(j);
+              graph::EdgeWeight distance = z_value_in_sketch.distance();
+              int node_id = z_value_in_sketch.node_id();
+              NodeIdDistanceData d(node_id, distance);
+              z[distance] = d;
+            }
+            nodes_ads_[node_id].set_z_values(&z);
         }
 
-        CalculateAllDistanceNeighborhood();
         return true;
     }
 
@@ -148,7 +173,7 @@ class GraphSketch {
 
     void SaveNodesSketch(AllDistanceSketchGpb* all_distance_sketch) {
       for (int i = 0; i < nodes_random_id_.size(); i++) {
-        if (nodes_ads_[i].IsInit() == false) {
+          if (nodes_ads_[i].IsInit() == false) {
             continue;
           }
           // Setting up the node details
@@ -163,16 +188,14 @@ class GraphSketch {
             node_details->set_node_id((*nodes_in_sketch)[j].GetNId());
             node_details->set_distance((*nodes_in_sketch)[j].GetDistance());
           }
+          for (const auto zvalue : nodes_ads_[i].GetZValues() ) {
+             ZValuesGpb* z_value = single_node_sketch->add_z_value();
+             z_value->set_distance(zvalue.first);
+             z_value->set_node_id(zvalue.second.GetNId());
+          }
         }
     }
 
-    void SaveGraphSketchToGpb(AllDistanceSketchGpb* all_distance_sketch) {
-      all_distance_sketch->set_k(K_);
-      // Save the prunning_thresholds_ & random ids
-        SaveThresholdAndRandomId(all_distance_sketch);
-        // Save each node NodeSketch
-        SaveNodesSketch(all_distance_sketch);
-    }
 #endif
     bool ShouldPrune(graph::EdgeWeight distance, int node_id) {
       if (distance > prunning_thresholds_[node_id].GetDistance()) {

@@ -17,6 +17,7 @@ typedef proto::AllDistanceSketchGpb AllDistanceSketchGpb;
 typedef proto::AllDistanceSketchGpb::NodeThresholdGpb NodeThresholdGpb;
 typedef proto::SingleNodeSketchGpb SingleNodeSketchGpb;
 typedef proto::SingleNodeSketchGpb::NodeSummaryDetailsGpb NodeSummaryDetailsGpb;
+typedef proto::SingleNodeSketchGpb::ZValuesGpb ZValuesGpb;
 #endif
 
 class NodeIdDistanceData {
@@ -210,7 +211,7 @@ typedef struct NodeProb_t {
 } NodeProb;
 
 typedef std::vector<Neighbourhood> NeighbourhoodVector;
-typedef std::unordered_map<int, NodeIdDistanceData> ZValues;
+typedef std::unordered_map<graph::EdgeWeight, NodeIdDistanceData> ZValues;
 typedef std::vector<NodeIdDistanceData> NodeIdDistanceVector;
 typedef std::vector<NodeIdDistanceData>::iterator NodeIdDistanceVectorItr;
 typedef std::vector<NodeDistanceIdRandomIdData>
@@ -633,6 +634,10 @@ class NodeSketch {
 
     bool HasZValue(graph::EdgeWeight distance) {
       return z_values_.find(distance) != z_values_.end();
+    }
+
+    void set_z_values(ZValues* z) {
+      z_values_ = *z;
     }
 
     void CalculateInsertProb(const std::vector<RandomId>* node_distribution,

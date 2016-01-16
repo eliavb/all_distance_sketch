@@ -668,6 +668,7 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  /work/eng/eliavb/include/Snap-2.3/snap-core/ghash.h \
  /work/eng/eliavb/include/Snap-2.3/snap-core/statplot.h \
  graph/ut/../../algorithms/ut/../../graph/graph.h \
+ graph/ut/../../algorithms/ut/serialization_test.cpp \
  graph/ut/../../algorithms/ut/t_skim_test.cpp \
  graph/ut/../../algorithms/ut/../t_skim.h \
  graph/ut/../../algorithms/ut/../sketch_calculation.h \
@@ -2221,6 +2222,8 @@ graph/ut/../../algorithms/ut/../../graph/snap_graph_adaptor.h:
 /work/eng/eliavb/include/Snap-2.3/snap-core/statplot.h:
 
 graph/ut/../../algorithms/ut/../../graph/graph.h:
+
+graph/ut/../../algorithms/ut/serialization_test.cpp:
 
 graph/ut/../../algorithms/ut/t_skim_test.cpp:
 

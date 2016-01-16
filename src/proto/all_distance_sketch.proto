@@ -34,9 +34,15 @@ message SingleNodeSketchGpb {
       optional double distance = 2;
   }
 
+  message ZValuesGpb {
+    optional uint64 node_id = 1;
+    optional double distance = 2;
+  }
+
   optional uint64 node_id = 1;
   optional double node_random_id = 2;
   repeated NodeSummaryDetailsGpb node_in_sketch = 3;
+  repeated ZValuesGpb z_value = 4;
 }
 
 
@@ -54,7 +60,9 @@ message AllDistanceSketchGpb {
       optional double random_id=3;
   }
 
+
   optional uint64 k = 1;
-  repeated SingleNodeSketchGpb nodes_sketches = 2;
-  repeated NodeThresholdGpb node_thresholds = 3;
+  optional bool should_calc_z_values = 2;
+  repeated SingleNodeSketchGpb nodes_sketches = 3;
+  repeated NodeThresholdGpb node_thresholds = 4;
 }
