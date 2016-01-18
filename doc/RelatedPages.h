@@ -117,13 +117,28 @@
 	run --help to see the options that each such app can take.
 	The application that calculates the all distance sketch:
 
-		>./bin/sketch_app --helpUsage: options_description [options]
+		>./bin/sketch_app --help
+		Usage: options_description [options]
 		Allowed options:
 		  --help                 produce help message
 		  --K arg                K = 1/epsilon^2 sets the precision
 		  --num_threads arg (=1) num_threads to use
 		  --directed arg         is the graph directed
 		  --graph_dir arg        Directory with the graph to calculate the sketch on
+		  --output_file arg      output file path, here the sketch Gpb will be saved 
+		                         (Gpb defined in src/proto/all_distance_sketch.proto)
+
+	App for calculating the reverse ranks of a single node.
+
+		>bin/reverse_rank_app --help
+			Allowed options:
+		  --help                 produce help message
+		  --source_id arg        id of source node
+		  --K arg                K = 1/epsilon^2 sets the precision
+		  --num_threads arg (=1) num_threads to use
+		  --directed arg         is the graph directed
+		  --graph_dir arg        Directory with the graph to calculate the sketch on
+		  --sketch_file arg      File with the calculated sketch
 		  --output_file arg      output file path, here the sketch Gpb will be saved 
 		                         (Gpb defined in src/proto/all_distance_sketch.proto)
 */

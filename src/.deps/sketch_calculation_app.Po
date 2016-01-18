@@ -916,7 +916,8 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/unknown_field_set.h \
  app/../algorithms/../sketch/graph_sketch.h \
  app/../algorithms/../sketch/node_sketch.h \
- app/../algorithms/reverse_rank.h app/../algorithms/sketch_calculation.h \
+ app/../algorithms/reverse_rank.h app/../algorithms/../proto/ranking.pb.h \
+ app/../algorithms/sketch_calculation.h \
  app/../algorithms/../graph/graph.h \
  app/../algorithms/dijkstra_shortest_paths.h app/../algorithms/t_skim.h \
  app/../algorithms/sketch_calculation.h \
@@ -3014,6 +3015,8 @@ app/../algorithms/../sketch/graph_sketch.h:
 app/../algorithms/../sketch/node_sketch.h:
 
 app/../algorithms/reverse_rank.h:
+
+app/../algorithms/../proto/ranking.pb.h:
 
 app/../algorithms/sketch_calculation.h:
 

@@ -585,6 +585,7 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../algorithms/ut/../../common.h \
  graph/ut/../../algorithms/ut/../../sketch/graph_sketch.h \
  graph/ut/../../algorithms/ut/../../sketch/node_sketch.h \
+ graph/ut/../../algorithms/ut/../../proto/ranking.pb.h \
  graph/ut/../../algorithms/ut/../sketch_calculation.h \
  graph/ut/../../algorithms/ut/../../graph/graph.h \
  graph/ut/../../algorithms/ut/../../utils/thread_utils.h \
@@ -2028,6 +2029,8 @@ graph/ut/../../algorithms/ut/../../common.h:
 graph/ut/../../algorithms/ut/../../sketch/graph_sketch.h:
 
 graph/ut/../../algorithms/ut/../../sketch/node_sketch.h:
+
+graph/ut/../../algorithms/ut/../../proto/ranking.pb.h:
 
 graph/ut/../../algorithms/ut/../sketch_calculation.h:
 

@@ -125,6 +125,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ac0f1ce9ded596e0541b2aa2271df4622"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac0f1ce9ded596e0541b2aa2271df4622"></a>
+typedef proto::NodeRanksGpb&#160;</td><td class="memItemRight" valign="bottom"><b>NodeRanksGpb</b></td></tr>
+<tr class="separator:ac0f1ce9ded596e0541b2aa2271df4622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8c53b9bf63c29e404def8714ddab289"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8c53b9bf63c29e404def8714ddab289"></a>
+typedef proto::NodeRankGpb&#160;</td><td class="memItemRight" valign="bottom"><b>NodeRankGpb</b></td></tr>
+<tr class="separator:aa8c53b9bf63c29e404def8714ddab289"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c159e46ed1a101b68cb2b23a58c4129"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structall__distance__sketch_1_1SeedCover__t.html">all_distance_sketch::SeedCover_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a2c159e46ed1a101b68cb2b23a58c4129">SeedCover</a></td></tr>
 <tr class="memdesc:a2c159e46ed1a101b68cb2b23a58c4129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single seed information.  <a href="#a2c159e46ed1a101b68cb2b23a58c4129">More...</a><br /></td></tr>
 <tr class="separator:a2c159e46ed1a101b68cb2b23a58c4129"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,6 +192,13 @@ Functions</h2></td></tr>
 <tr class="memitem:acd397719d04e49914cac475154a15735"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#acd397719d04e49914cac475154a15735">CalculateReverseRank</a> (int source, <a class="el" href="classall__distance__sketch_1_1graph_1_1Graph.html">graph::Graph</a>&lt; T &gt; *graph, <a class="el" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a> *graph_sketch, std::vector&lt; int &gt; *ranking, CallBacks *call_backs)</td></tr>
 <tr class="memdesc:acd397719d04e49914cac475154a15735"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the reverse ranks of a single node.  <a href="#acd397719d04e49914cac475154a15735">More...</a><br /></td></tr>
 <tr class="separator:acd397719d04e49914cac475154a15735"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d0d2d80289713f668cdf53e48421114"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d0d2d80289713f668cdf53e48421114"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a8d0d2d80289713f668cdf53e48421114">SaveRankingToGpb</a> (int source_node_id, const std::vector&lt; int &gt; &amp;ranking, NodeRanksGpb *node_ranks)</td></tr>
+<tr class="memdesc:a8d0d2d80289713f668cdf53e48421114"><td class="mdescLeft">&#160;</td><td class="mdescRight">saves the ranking to Gpb <br /></td></tr>
+<tr class="separator:a8d0d2d80289713f668cdf53e48421114"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a770d6cb037c174320a48bbb1ef5b56"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6a770d6cb037c174320a48bbb1ef5b56"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadRankingFromGpb</b> (std::vector&lt; int &gt; *ranking, const NodeRanksGpb &amp;node_ranks)</td></tr>
+<tr class="separator:a6a770d6cb037c174320a48bbb1ef5b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fea917111c3851d7c909e896fbad571"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a7fea917111c3851d7c909e896fbad571"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a7fea917111c3851d7c909e896fbad571">CalculateGraphSketchMultiCore</a> (<a class="el" href="classall__distance__sketch_1_1graph_1_1Graph.html">graph::Graph</a>&lt; T &gt; *graph, <a class="el" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a> *graph_sketch, unsigned int num_threads=5, double increase_factor=1.1)</td></tr>
 <tr class="memdesc:a7fea917111c3851d7c909e896fbad571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the bottom K graph sketch in parallel This implementation is faster than the single threaded implementation but the cost is in memory.  <a href="#a7fea917111c3851d7c909e896fbad571">More...</a><br /></td></tr>
@@ -501,7 +514,7 @@ template&lt;class T , class CallBacks &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 18 2016 13:36:03 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 18 2016 16:31:15 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

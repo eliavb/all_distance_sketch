@@ -9,19 +9,22 @@ AM_LDFLAGS = -lboost_system$(BOOST_LIB_SUFFIX) -lboost_program_options -lprotobu
 # the previous manual Makefile
 HDRS = $(wildcard ./*/*.h) $(wildcard ./*.h)
 TEST_SRC = $(wildcard ./*/ut/*.cpp)
-bin_PROGRAMS = test_all sketch_app
-#estimate_SOURCES = experiments/results/estimate.cpp $(HDRS)
-#benchmark_SOURCES = experiments/results/benchmark.cpp $(HDRS)
-test_all_SOURCES = graph/ut/run_all.cpp $(HDRS) $(TEST_SRC) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
-sketch_app_SOURCES = app/sketch_calculation_app.cpp $(HDRS) $(TEST_SRC) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
+bin_PROGRAMS = test_all sketch_app reverse_rank_app
+PROTOS_TO_BUILD = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h $(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc
+ALL = $(HDRS) $(TEST_SRC) $(PROTOS_TO_BUILD)
+test_all_SOURCES = graph/ut/run_all.cpp $(ALL)
+sketch_app_SOURCES = app/sketch_calculation_app.cpp $(ALL)
+reverse_rank_app_SOURCES = app/reverse_rank_app.cpp $(ALL)
 lib_LIBRARIES = liball_distance_sketch.a
-liball_distance_sketch_a_SOURCES = $(HDRS) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
+liball_distance_sketch_a_SOURCES = $(HDRS) $(PROTOS_TO_BUILD)
 include_HEADERS = ./all_distance_sketch.h
-BUILT_SOURCES = $(builddir)/proto/all_distance_sketch.pb.h $(builddir)/proto/all_distance_sketch.pb.cc
+BUILT_SOURCES = $(PROTOS_TO_BUILD)
 
 # Build proto files first
 $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h: $(srcdir)/proto/all_distance_sketch.proto
 	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/all_distance_sketch.proto
+$(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc: $(srcdir)/proto/ranking.proto
+	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/ranking.proto
 
 dist_noinst_DATA = $(wildcard ./proto/*)
-MOSTLYCLEANFILES = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
+MOSTLYCLEANFILES = $(PROTOS_TO_BUILD)

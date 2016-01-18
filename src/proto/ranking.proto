@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+package all_distance_sketch.proto;
+
+
+message NodeRankGpb {
+  optional uint64 node_id = 1;
+  optional uint64 node_rank = 2;
+}
+
+
+message NodeRanksGpb {
+  optional uint64 source_node_id = 1;
+  optional uint64 max_node_id = 2;
+  repeated NodeRankGpb node_ranks = 3;
+}

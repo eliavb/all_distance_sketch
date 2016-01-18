@@ -7,10 +7,20 @@ Contains all reverse rank algorithms.
 
 {\ttfamily \#include \char`\"{}../common.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}../sketch/graph\+\_\+sketch.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../proto/ranking.\+pb.\+h\char`\"{}}\\*
 \subsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
  \hyperlink{namespaceall__distance__sketch}{all\+\_\+distance\+\_\+sketch}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{namespaceall__distance__sketch_ac0f1ce9ded596e0541b2aa2271df4622}{}typedef proto\+::\+Node\+Ranks\+Gpb {\bfseries all\+\_\+distance\+\_\+sketch\+::\+Node\+Ranks\+Gpb}\label{namespaceall__distance__sketch_ac0f1ce9ded596e0541b2aa2271df4622}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_aa8c53b9bf63c29e404def8714ddab289}{}typedef proto\+::\+Node\+Rank\+Gpb {\bfseries all\+\_\+distance\+\_\+sketch\+::\+Node\+Rank\+Gpb}\label{namespaceall__distance__sketch_aa8c53b9bf63c29e404def8714ddab289}
+
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -18,7 +28,13 @@ Contains all reverse rank algorithms.
 {\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a025f777de5a9df1594dd306f9037f385}{all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Reverse\+Rank} (int source, graph\+::\+Graph$<$ T $>$ $\ast$graph, Graph\+Sketch $\ast$graph\+\_\+sketch, std\+::vector$<$ int $>$ $\ast$ranking)
 \begin{DoxyCompactList}\small\item\em Calculates the reverse ranks of a single node. \end{DoxyCompactList}\item 
 {\footnotesize template$<$class T , class Call\+Backs $>$ }\\static void \hyperlink{namespaceall__distance__sketch_acd397719d04e49914cac475154a15735}{all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Reverse\+Rank} (int source, graph\+::\+Graph$<$ T $>$ $\ast$graph, Graph\+Sketch $\ast$graph\+\_\+sketch, std\+::vector$<$ int $>$ $\ast$ranking, Call\+Backs $\ast$call\+\_\+backs)
-\begin{DoxyCompactList}\small\item\em Calculates the reverse ranks of a single node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Calculates the reverse ranks of a single node. \end{DoxyCompactList}\item 
+\hypertarget{namespaceall__distance__sketch_a8d0d2d80289713f668cdf53e48421114}{}static void \hyperlink{namespaceall__distance__sketch_a8d0d2d80289713f668cdf53e48421114}{all\+\_\+distance\+\_\+sketch\+::\+Save\+Ranking\+To\+Gpb} (int source\+\_\+node\+\_\+id, const std\+::vector$<$ int $>$ \&ranking, Node\+Ranks\+Gpb $\ast$node\+\_\+ranks)\label{namespaceall__distance__sketch_a8d0d2d80289713f668cdf53e48421114}
+
+\begin{DoxyCompactList}\small\item\em saves the ranking to Gpb \end{DoxyCompactList}\item 
+\hypertarget{namespaceall__distance__sketch_a6a770d6cb037c174320a48bbb1ef5b56}{}static void {\bfseries all\+\_\+distance\+\_\+sketch\+::\+Load\+Ranking\+From\+Gpb} (std\+::vector$<$ int $>$ $\ast$ranking, const Node\+Ranks\+Gpb \&node\+\_\+ranks)\label{namespaceall__distance__sketch_a6a770d6cb037c174320a48bbb1ef5b56}
+
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}

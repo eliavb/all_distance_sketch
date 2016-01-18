@@ -1,6 +1,7 @@
 var searchData=
 [
   ['savegraphsketchtogpb',['SaveGraphSketchToGpb',['../classall__distance__sketch_1_1GraphSketch.html#a9243b99edf30ba1f1c33d6e45fb1e152',1,'all_distance_sketch::GraphSketch']]],
+  ['saverankingtogpb',['SaveRankingToGpb',['../namespaceall__distance__sketch.html#a8d0d2d80289713f668cdf53e48421114',1,'all_distance_sketch']]],
   ['seed',['seed',['../structall__distance__sketch_1_1SeedCover__t.html#af8100e6ff9b3830e0b40e395cbaeff4b',1,'all_distance_sketch::SeedCover_t']]],
   ['seedcover',['SeedCover',['../namespaceall__distance__sketch.html#a2c159e46ed1a101b68cb2b23a58c4129',1,'all_distance_sketch']]],
   ['seedcover_5ft',['SeedCover_t',['../structall__distance__sketch_1_1SeedCover__t.html',1,'all_distance_sketch']]],

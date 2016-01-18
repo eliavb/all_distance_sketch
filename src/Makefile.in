@@ -79,7 +79,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = test_all$(EXEEXT) sketch_app$(EXEEXT)
+bin_PROGRAMS = test_all$(EXEEXT) sketch_app$(EXEEXT) \
+	reverse_rank_app$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(dist_noinst_DATA) $(include_HEADERS)
@@ -130,18 +131,22 @@ am__v_AR_1 =
 liball_distance_sketch_a_AR = $(AR) $(ARFLAGS)
 liball_distance_sketch_a_LIBADD =
 am__objects_1 =
+am__objects_2 = all_distance_sketch.pb.$(OBJEXT) ranking.pb.$(OBJEXT)
 am_liball_distance_sketch_a_OBJECTS = $(am__objects_1) \
-	all_distance_sketch.pb.$(OBJEXT)
+	$(am__objects_2)
 liball_distance_sketch_a_OBJECTS =  \
 	$(am_liball_distance_sketch_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
+am__objects_3 = $(am__objects_1) $(am__objects_1) $(am__objects_2)
+am_reverse_rank_app_OBJECTS = reverse_rank_app.$(OBJEXT) \
+	$(am__objects_3)
+reverse_rank_app_OBJECTS = $(am_reverse_rank_app_OBJECTS)
+reverse_rank_app_LDADD = $(LDADD)
 am_sketch_app_OBJECTS = sketch_calculation_app.$(OBJEXT) \
-	$(am__objects_1) $(am__objects_1) \
-	all_distance_sketch.pb.$(OBJEXT)
+	$(am__objects_3)
 sketch_app_OBJECTS = $(am_sketch_app_OBJECTS)
 sketch_app_LDADD = $(LDADD)
-am_test_all_OBJECTS = run_all.$(OBJEXT) $(am__objects_1) \
-	$(am__objects_1) all_distance_sketch.pb.$(OBJEXT)
+am_test_all_OBJECTS = run_all.$(OBJEXT) $(am__objects_3)
 test_all_OBJECTS = $(am_test_all_OBJECTS)
 test_all_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -189,10 +194,12 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(liball_distance_sketch_a_SOURCES) $(sketch_app_SOURCES) \
+SOURCES = $(liball_distance_sketch_a_SOURCES) \
+	$(reverse_rank_app_SOURCES) $(sketch_app_SOURCES) \
 	$(test_all_SOURCES)
 DIST_SOURCES = $(liball_distance_sketch_a_SOURCES) \
-	$(sketch_app_SOURCES) $(test_all_SOURCES)
+	$(reverse_rank_app_SOURCES) $(sketch_app_SOURCES) \
+	$(test_all_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -330,16 +337,17 @@ AM_LDFLAGS = -lboost_system$(BOOST_LIB_SUFFIX) -lboost_program_options -lprotobu
 # the previous manual Makefile
 HDRS = $(wildcard ./*/*.h) $(wildcard ./*.h)
 TEST_SRC = $(wildcard ./*/ut/*.cpp)
-#estimate_SOURCES = experiments/results/estimate.cpp $(HDRS)
-#benchmark_SOURCES = experiments/results/benchmark.cpp $(HDRS)
-test_all_SOURCES = graph/ut/run_all.cpp $(HDRS) $(TEST_SRC) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
-sketch_app_SOURCES = app/sketch_calculation_app.cpp $(HDRS) $(TEST_SRC) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
+PROTOS_TO_BUILD = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h $(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc
+ALL = $(HDRS) $(TEST_SRC) $(PROTOS_TO_BUILD)
+test_all_SOURCES = graph/ut/run_all.cpp $(ALL)
+sketch_app_SOURCES = app/sketch_calculation_app.cpp $(ALL)
+reverse_rank_app_SOURCES = app/reverse_rank_app.cpp $(ALL)
 lib_LIBRARIES = liball_distance_sketch.a
-liball_distance_sketch_a_SOURCES = $(HDRS) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
+liball_distance_sketch_a_SOURCES = $(HDRS) $(PROTOS_TO_BUILD)
 include_HEADERS = ./all_distance_sketch.h
-BUILT_SOURCES = $(builddir)/proto/all_distance_sketch.pb.h $(builddir)/proto/all_distance_sketch.pb.cc
+BUILT_SOURCES = $(PROTOS_TO_BUILD)
 dist_noinst_DATA = $(wildcard ./proto/*)
-MOSTLYCLEANFILES = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
+MOSTLYCLEANFILES = $(PROTOS_TO_BUILD)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -454,6 +462,10 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
+reverse_rank_app$(EXEEXT): $(reverse_rank_app_OBJECTS) $(reverse_rank_app_DEPENDENCIES) $(EXTRA_reverse_rank_app_DEPENDENCIES) 
+	@rm -f reverse_rank_app$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(reverse_rank_app_OBJECTS) $(reverse_rank_app_LDADD) $(LIBS)
+
 sketch_app$(EXEEXT): $(sketch_app_OBJECTS) $(sketch_app_DEPENDENCIES) $(EXTRA_sketch_app_DEPENDENCIES) 
 	@rm -f sketch_app$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(sketch_app_OBJECTS) $(sketch_app_LDADD) $(LIBS)
@@ -469,6 +481,8 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all_distance_sketch.pb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ranking.pb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/reverse_rank_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/run_all.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sketch_calculation_app.Po@am__quote@
 
@@ -499,6 +513,34 @@ all_distance_sketch.pb.obj: $(builddir)/proto/all_distance_sketch.pb.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$(builddir)/proto/all_distance_sketch.pb.cc' object='all_distance_sketch.pb.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all_distance_sketch.pb.obj `if test -f '$(builddir)/proto/all_distance_sketch.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/all_distance_sketch.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/all_distance_sketch.pb.cc'; fi`
+
+ranking.pb.o: $(builddir)/proto/ranking.pb.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ranking.pb.o -MD -MP -MF $(DEPDIR)/ranking.pb.Tpo -c -o ranking.pb.o `test -f '$(builddir)/proto/ranking.pb.cc' || echo '$(srcdir)/'`$(builddir)/proto/ranking.pb.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ranking.pb.Tpo $(DEPDIR)/ranking.pb.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$(builddir)/proto/ranking.pb.cc' object='ranking.pb.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ranking.pb.o `test -f '$(builddir)/proto/ranking.pb.cc' || echo '$(srcdir)/'`$(builddir)/proto/ranking.pb.cc
+
+ranking.pb.obj: $(builddir)/proto/ranking.pb.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ranking.pb.obj -MD -MP -MF $(DEPDIR)/ranking.pb.Tpo -c -o ranking.pb.obj `if test -f '$(builddir)/proto/ranking.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/ranking.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/ranking.pb.cc'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ranking.pb.Tpo $(DEPDIR)/ranking.pb.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$(builddir)/proto/ranking.pb.cc' object='ranking.pb.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ranking.pb.obj `if test -f '$(builddir)/proto/ranking.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/ranking.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/ranking.pb.cc'; fi`
+
+reverse_rank_app.o: app/reverse_rank_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reverse_rank_app.o -MD -MP -MF $(DEPDIR)/reverse_rank_app.Tpo -c -o reverse_rank_app.o `test -f 'app/reverse_rank_app.cpp' || echo '$(srcdir)/'`app/reverse_rank_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reverse_rank_app.Tpo $(DEPDIR)/reverse_rank_app.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/reverse_rank_app.cpp' object='reverse_rank_app.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o reverse_rank_app.o `test -f 'app/reverse_rank_app.cpp' || echo '$(srcdir)/'`app/reverse_rank_app.cpp
+
+reverse_rank_app.obj: app/reverse_rank_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reverse_rank_app.obj -MD -MP -MF $(DEPDIR)/reverse_rank_app.Tpo -c -o reverse_rank_app.obj `if test -f 'app/reverse_rank_app.cpp'; then $(CYGPATH_W) 'app/reverse_rank_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/reverse_rank_app.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reverse_rank_app.Tpo $(DEPDIR)/reverse_rank_app.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/reverse_rank_app.cpp' object='reverse_rank_app.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o reverse_rank_app.obj `if test -f 'app/reverse_rank_app.cpp'; then $(CYGPATH_W) 'app/reverse_rank_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/reverse_rank_app.cpp'; fi`
 
 sketch_calculation_app.o: app/sketch_calculation_app.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sketch_calculation_app.o -MD -MP -MF $(DEPDIR)/sketch_calculation_app.Tpo -c -o sketch_calculation_app.o `test -f 'app/sketch_calculation_app.cpp' || echo '$(srcdir)/'`app/sketch_calculation_app.cpp
@@ -779,6 +821,8 @@ uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS \
 # Build proto files first
 $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h: $(srcdir)/proto/all_distance_sketch.proto
 	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/all_distance_sketch.proto
+$(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc: $(srcdir)/proto/ranking.proto
+	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/ranking.proto
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

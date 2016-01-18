@@ -3,6 +3,7 @@
 
 #include "../common.h"
 #include "../sketch/graph_sketch.h"
+#include "../proto/ranking.pb.h"
 
 /*! \file reverse_rank.h
     \brief Contains all reverse rank algorithms
@@ -10,6 +11,9 @@
 
 /*! project namespace */
 namespace all_distance_sketch {
+
+typedef proto::NodeRanksGpb NodeRanksGpb;
+typedef proto::NodeRankGpb NodeRankGpb;
 
 /*! \brief Calculates the reverse ranks of a single node
   \fn CalculateReverseRank(int source,
@@ -59,6 +63,36 @@ static void CalculateReverseRank(int source,
                        GraphSketch * graph_sketch,
                        std::vector<int> * ranking,
                        CallBacks* call_backs);
+
+/*! \brief saves the ranking to Gpb
+*/
+static void SaveRankingToGpb(int source_node_id,
+                             const std::vector<int>& ranking,
+                             NodeRanksGpb* node_ranks) {
+  node_ranks->set_source_node_id(source_node_id);
+  node_ranks->set_max_node_id(ranking.size());
+  for (int node_id=0; node_id < ranking.size(); node_id++) {
+    if (ranking[node_id] == constants::UNREACHABLE) {
+      continue;
+    }
+    NodeRankGpb* node_rank = node_ranks->add_node_ranks();
+    node_rank->set_node_id(node_id);
+    node_rank->set_node_rank(ranking[node_id]);
+  }
+}
+
+static void LoadRankingFromGpb(std::vector<int>* ranking,
+                             const NodeRanksGpb& node_ranks) {
+  ranking->clear();
+  ranking->resize(node_ranks.max_node_id());
+  for (int i=0; i < node_ranks.node_ranks_size(); i++) {
+    int node_id = node_ranks.node_ranks(i).node_id();
+    int node_ranking = node_ranks.node_ranks(i).node_rank();
+    (*ranking)[node_id] = node_ranking;
+  }
+  int source_node_id = node_ranks.source_node_id();
+  (*ranking)[source_node_id] = 0;
+}
 
 /*! \cond
 */
