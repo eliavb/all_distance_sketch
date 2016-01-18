@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>My Project: src/algorithms/sketch_calculation.h File Reference</title>
+<title>All Distance Sketch: src/algorithms/sketch_calculation.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,8 +23,10 @@
  <tbody>
  <tr style="height: 56px;">
   <td style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">All Distance Sketch
+   &#160;<span id="projectnumber">0.1</span>
    </div>
+   <div id="projectbrief">All distance sketch based algorithms</div>
   </td>
  </tr>
  </tbody>
@@ -38,9 +40,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -62,7 +66,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -86,15 +89,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">sketch_calculation.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="common_8h_source.html">../common.h</a>&quot;</code><br />
+
+<p>Sketch calculation algorithms.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &quot;../common.h&quot;</code><br />
 <code>#include &quot;../sketch/graph_sketch.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="graph_8h_source.html">../graph/graph.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="thread__utils_8h_source.html">../utils/thread_utils.h</a>&quot;</code><br />
+<code>#include &quot;../utils/thread_utils.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="dijkstra__shortest__paths_8h_source.html">dijkstra_shortest_paths.h</a>&quot;</code><br />
 </div>
 <p><a href="sketch__calculation_8h_source.html">Go to the source code of this file.</a></p>
@@ -103,11 +110,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceall__distance__sketch"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html">all_distance_sketch</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a7fea917111c3851d7c909e896fbad571"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a7fea917111c3851d7c909e896fbad571"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a7fea917111c3851d7c909e896fbad571">all_distance_sketch::CalculateGraphSketchMultiCore</a> (graph::Graph&lt; T &gt; *graph, GraphSketch *graph_sketch, unsigned int num_threads=5, double increase_factor=1.1)</td></tr>
+<tr class="memdesc:a7fea917111c3851d7c909e896fbad571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the bottom K graph sketch in parallel This implementation is faster than the single threaded implementation but the cost is in memory.  <a href="#a7fea917111c3851d7c909e896fbad571">More...</a><br /></td></tr>
+<tr class="separator:a7fea917111c3851d7c909e896fbad571"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e07f2d9df73bee36e926822ce0bb2ea"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a1e07f2d9df73bee36e926822ce0bb2ea"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a1e07f2d9df73bee36e926822ce0bb2ea">all_distance_sketch::CalculateGraphSketch</a> (graph::Graph&lt; T &gt; *graph, GraphSketch *graph_sketch)</td></tr>
+<tr class="memdesc:a1e07f2d9df73bee36e926822ce0bb2ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the bottom K single threaded.  <a href="#a1e07f2d9df73bee36e926822ce0bb2ea">More...</a><br /></td></tr>
+<tr class="separator:a1e07f2d9df73bee36e926822ce0bb2ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Sketch calculation algorithms. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jan 11 2016 11:25:29 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 18 2016 13:36:03 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

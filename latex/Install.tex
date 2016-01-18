@@ -12,18 +12,34 @@ These are the base requirements to build and use the package (as described below
 \item Gtest (\href{https://github.com/google/googletest}{\tt https\+://github.\+com/google/googletest})
 \item Protobuf compiler (\href{https://developers.google.com/protocol-buffers/docs/downloads}{\tt https\+://developers.\+google.\+com/protocol-\/buffers/docs/downloads} version $>$= 2.\+6.\+0)
 \end{DoxyEnumerate}\hypertarget{Install_install_sec}{}\section{Installation}\label{Install_install_sec}
+The following documentation is correct to the day it was written. case you have problems with my instruction see the packages website for additional information.
+
 \subsubsection*{Build Instructions for root users}
 
-After installing all the other packages as root. \begin{DoxyVerb}>./configure
+All packages expect S\+N\+A\+P can be installed by running the following command from the directory you downloaded and unpacked the package \begin{DoxyVerb}>./configure
 >make
 >make install
 >make check
 \end{DoxyVerb}
 
 
+To install S\+N\+A\+P just run the following command from the unpacked directory\+: \begin{DoxyVerb}>make all
+\end{DoxyVerb}
+
+
+Since S\+N\+A\+P build is local you need to indicate its location for this package build. You do it using the config.\+site file. See non root users and only place the details that are relevant to S\+N\+A\+P.
+
 \subsubsection*{Build Instructions for non root users}
 
-After you installed Gtest (in \$\{G\+T\+E\+S\+T\+\_\+\+D\+I\+R\}), S\+N\+A\+P (in \$\{S\+N\+A\+P\+\_\+\+D\+I\+R\}) and P\+R\+O\+T\+O\+B\+U\+F (in \$\{P\+R\+O\+T\+O\+\_\+\+D\+E\+S\+T\}) create a file named config.\+site (I ommit Boost but if you need to install it just do the same as the others).
+The standard way to install packages when you don\textquotesingle{}t have root privileges it to use the --prefix option when running the ./configure \begin{DoxyVerb}>./configure --prefix=<path>
+\end{DoxyVerb}
+
+
+The above command will cause the package to be installed in the path given in the --prefix option. S\+N\+A\+P doesn\textquotesingle{}t require any additional option and just type \begin{DoxyVerb}>make all 
+\end{DoxyVerb}
+
+
+From the directory you unpacked the source. Since you installed the packages in you desired location you need to list them in a file that will allow the package to find them and link with them and this is where config.\+site comes into play. After you installed Gtest (in \$\{G\+T\+E\+S\+T\+\_\+\+D\+I\+R\}), S\+N\+A\+P (in \$\{S\+N\+A\+P\+\_\+\+D\+I\+R\}) and P\+R\+O\+T\+O\+B\+U\+F (in \$\{P\+R\+O\+T\+O\+\_\+\+D\+E\+S\+T\}) create a file named config.\+site (I ommit Boost but if you need to install it just do the same as the others).
 
 The file should contain the location of S\+N\+A\+P and Gtest\+:
 
@@ -44,7 +60,7 @@ After the file was created we need to set an env variable named C\+O\+N\+F\+I\+G
 \end{DoxyVerb}
 
 
-\paragraph*{B\+U\+I\+L\+D!}
+\paragraph*{B\+U\+I\+L\+D! non root users}
 
 Suppose you placed the package in \$\{A\+D\+S\+\_\+\+D\+I\+R\} and want to install it in \$\{A\+D\+S\+\_\+\+D\+E\+S\+T\}.
 
@@ -56,8 +72,21 @@ Enter to the \$\{A\+D\+S\+\_\+\+D\+I\+R\} and run\+:
 \end{DoxyVerb}
 
 
-\subsubsection*{Checking the install was a success}
+\subsubsection*{Checking the install was a success non root users}
 
 Since this is not a root install we need to add the location of the proto lib \begin{DoxyVerb}>export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PROTO_DEST}/lib
+>make check
+\end{DoxyVerb}
+
+
+\paragraph*{B\+U\+I\+L\+D! root users}
+
+Suppose you placed the package in \$\{A\+D\+S\+\_\+\+D\+I\+R\}.
+
+Enter to the \$\{A\+D\+S\+\_\+\+D\+I\+R\} and run\+:
+
+\begin{DoxyVerb}>./configure
+>make
+>make install
 >make check\end{DoxyVerb}
  

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dijkstra_5fshortest_5fpaths_2eh',['dijkstra_shortest_paths.h',['../dijkstra__shortest__paths_8h.html',1,'']]]
+  ['reverse_5frank_2eh',['reverse_rank.h',['../reverse__rank_8h.html',1,'']]]
 ];

@@ -97,13 +97,18 @@ Prerequisites</h1>
 </ol>
 <h1><a class="anchor" id="install_sec"></a>
 Installation</h1>
+<p>The following documentation is correct to the day it was written. case you have problems with my instruction see the packages website for additional information.</p>
 <h3>Build Instructions for root users</h3>
-<p>After installing all the other packages as root. </p><pre class="fragment">&gt;./configure
+<p>All packages expect SNAP can be installed by running the following command from the directory you downloaded and unpacked the package </p><pre class="fragment">&gt;./configure
 &gt;make
 &gt;make install
 &gt;make check
-</pre><h3>Build Instructions for non root users</h3>
-<p>After you installed Gtest (in ${GTEST_DIR}), SNAP (in ${SNAP_DIR}) and PROTOBUF (in ${PROTO_DEST}) create a file named config.site (I ommit Boost but if you need to install it just do the same as the others).</p>
+</pre><p>To install SNAP just run the following command from the unpacked directory: </p><pre class="fragment">&gt;make all
+</pre><p>Since SNAP build is local you need to indicate its location for this package build. You do it using the config.site file. See non root users and only place the details that are relevant to SNAP.</p>
+<h3>Build Instructions for non root users</h3>
+<p>The standard way to install packages when you don't have root privileges it to use the &ndash;prefix option when running the ./configure </p><pre class="fragment">&gt;./configure --prefix=&lt;path&gt;
+</pre><p>The above command will cause the package to be installed in the path given in the &ndash;prefix option. SNAP doesn't require any additional option and just type </p><pre class="fragment">&gt;make all 
+</pre><p>From the directory you unpacked the source. Since you installed the packages in you desired location you need to list them in a file that will allow the package to find them and link with them and this is where config.site comes into play. After you installed Gtest (in ${GTEST_DIR}), SNAP (in ${SNAP_DIR}) and PROTOBUF (in ${PROTO_DEST}) create a file named config.site (I ommit Boost but if you need to install it just do the same as the others).</p>
 <p>The file should contain the location of SNAP and Gtest:</p>
 <h4>config.site content</h4>
 <pre class="fragment">CPPFLAGS="${CPPFLAGS} -I${GTEST_DIR}/include/ -I{SNAP_DIR}/snap-adv/ \
@@ -114,18 +119,25 @@ PROTOC="${PROTO_DEST}/bin/protoc"
 PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/" 
 </pre><h4>CONFIG_SITE</h4>
 <p>After the file was created we need to set an env variable named CONFIG_SITE to point to the config.site: </p><pre class="fragment">&gt;export CONFIG_SITE=$CONFIG_SITE:&lt;path&gt;/config.site
-</pre><h4>BUILD!</h4>
+</pre><h4>BUILD! non root users</h4>
 <p>Suppose you placed the package in ${ADS_DIR} and want to install it in ${ADS_DEST}.</p>
 <p>Enter to the ${ADS_DIR} and run:</p>
 <pre class="fragment">&gt;./configure --prefix=${ADS_DEST}
 &gt;make
 &gt;make install
-</pre><h3>Checking the install was a success</h3>
+</pre><h3>Checking the install was a success non root users</h3>
 <p>Since this is not a root install we need to add the location of the proto lib </p><pre class="fragment">&gt;export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${PROTO_DEST}/lib
+&gt;make check
+</pre><h4>BUILD! root users</h4>
+<p>Suppose you placed the package in ${ADS_DIR}.</p>
+<p>Enter to the ${ADS_DIR} and run:</p>
+<pre class="fragment">&gt;./configure
+&gt;make
+&gt;make install
 &gt;make check</pre> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jan 16 2016 22:59:31 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 18 2016 13:36:03 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

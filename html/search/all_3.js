@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['index',['index',['../structall__distance__sketch_1_1SeedCover__t.html#ac11aa27c1be296bb17310c16790f88f5',1,'all_distance_sketch::SeedCover_t']]],
-  ['initgraphsketch',['InitGraphSketch',['../classall__distance__sketch_1_1GraphSketch.html#a6d41436a73844dd633b6184a89ce83ff',1,'all_distance_sketch::GraphSketch']]],
-  ['inittskim',['InitTSkim',['../classall__distance__sketch_1_1TSkimForwardRank.html#aa360ffd108fa094c74b27637712caae9',1,'all_distance_sketch::TSkimForwardRank']]],
-  ['installation',['Installation',['../Install.html',1,'']]]
+  ['getnoderandomid',['GetNodeRandomId',['../classall__distance__sketch_1_1GraphSketch.html#af9bbe3a02d29880b7218c52b53375e31',1,'all_distance_sketch::GraphSketch']]],
+  ['getnodesdistributionlean',['GetNodesDistributionLean',['../classall__distance__sketch_1_1GraphSketch.html#af463db872f2cc5cc635dffe4aaf136e6',1,'all_distance_sketch::GraphSketch']]],
+  ['graph',['Graph',['../classall__distance__sketch_1_1graph_1_1Graph.html',1,'all_distance_sketch::graph']]],
+  ['graph_2eh',['graph.h',['../graph_8h.html',1,'']]],
+  ['graph_3c_20z_20_3e',['Graph&lt; Z &gt;',['../classall__distance__sketch_1_1graph_1_1Graph.html',1,'all_distance_sketch::graph']]],
+  ['graphsketch',['GraphSketch',['../classall__distance__sketch_1_1GraphSketch.html',1,'all_distance_sketch']]]
 ];

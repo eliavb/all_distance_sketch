@@ -79,7 +79,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = test_all$(EXEEXT)
+bin_PROGRAMS = test_all$(EXEEXT) sketch_app$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(dist_noinst_DATA) $(include_HEADERS)
@@ -135,6 +135,11 @@ am_liball_distance_sketch_a_OBJECTS = $(am__objects_1) \
 liball_distance_sketch_a_OBJECTS =  \
 	$(am_liball_distance_sketch_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
+am_sketch_app_OBJECTS = sketch_calculation_app.$(OBJEXT) \
+	$(am__objects_1) $(am__objects_1) \
+	all_distance_sketch.pb.$(OBJEXT)
+sketch_app_OBJECTS = $(am_sketch_app_OBJECTS)
+sketch_app_LDADD = $(LDADD)
 am_test_all_OBJECTS = run_all.$(OBJEXT) $(am__objects_1) \
 	$(am__objects_1) all_distance_sketch.pb.$(OBJEXT)
 test_all_OBJECTS = $(am_test_all_OBJECTS)
@@ -184,8 +189,10 @@ AM_V_CCLD = $(am__v_CCLD_$(V))
 am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(liball_distance_sketch_a_SOURCES) $(test_all_SOURCES)
-DIST_SOURCES = $(liball_distance_sketch_a_SOURCES) $(test_all_SOURCES)
+SOURCES = $(liball_distance_sketch_a_SOURCES) $(sketch_app_SOURCES) \
+	$(test_all_SOURCES)
+DIST_SOURCES = $(liball_distance_sketch_a_SOURCES) \
+	$(sketch_app_SOURCES) $(test_all_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -316,7 +323,7 @@ top_srcdir = ..
 AM_CPPFLAGS = -std=c++0x -Wall -O3 -DNDEBUG -Wno-deprecated \
 	-Wno-strict-overflow -Wno-sign-compare -fPIC -ggdb -pthread \
 	-I$(builddir)
-AM_LDFLAGS = -lboost_system$(BOOST_LIB_SUFFIX) -lprotobuf
+AM_LDFLAGS = -lboost_system$(BOOST_LIB_SUFFIX) -lboost_program_options -lprotobuf
 # AM_CPPFLAGS = -I./include/gtest
 
 # this lists the binaries to produce, the (non-PHONY, binary) targets in
@@ -326,6 +333,7 @@ TEST_SRC = $(wildcard ./*/ut/*.cpp)
 #estimate_SOURCES = experiments/results/estimate.cpp $(HDRS)
 #benchmark_SOURCES = experiments/results/benchmark.cpp $(HDRS)
 test_all_SOURCES = graph/ut/run_all.cpp $(HDRS) $(TEST_SRC) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
+sketch_app_SOURCES = app/sketch_calculation_app.cpp $(HDRS) $(TEST_SRC) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
 lib_LIBRARIES = liball_distance_sketch.a
 liball_distance_sketch_a_SOURCES = $(HDRS) $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h
 include_HEADERS = ./all_distance_sketch.h
@@ -446,6 +454,10 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
+sketch_app$(EXEEXT): $(sketch_app_OBJECTS) $(sketch_app_DEPENDENCIES) $(EXTRA_sketch_app_DEPENDENCIES) 
+	@rm -f sketch_app$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(sketch_app_OBJECTS) $(sketch_app_LDADD) $(LIBS)
+
 test_all$(EXEEXT): $(test_all_OBJECTS) $(test_all_DEPENDENCIES) $(EXTRA_test_all_DEPENDENCIES) 
 	@rm -f test_all$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(test_all_OBJECTS) $(test_all_LDADD) $(LIBS)
@@ -458,6 +470,7 @@ distclean-compile:
 
 include ./$(DEPDIR)/all_distance_sketch.pb.Po
 include ./$(DEPDIR)/run_all.Po
+include ./$(DEPDIR)/sketch_calculation_app.Po
 
 .cc.o:
 	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -486,6 +499,20 @@ all_distance_sketch.pb.obj: $(builddir)/proto/all_distance_sketch.pb.cc
 #	$(AM_V_CXX)source='$(builddir)/proto/all_distance_sketch.pb.cc' object='all_distance_sketch.pb.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o all_distance_sketch.pb.obj `if test -f '$(builddir)/proto/all_distance_sketch.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/all_distance_sketch.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/all_distance_sketch.pb.cc'; fi`
+
+sketch_calculation_app.o: app/sketch_calculation_app.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sketch_calculation_app.o -MD -MP -MF $(DEPDIR)/sketch_calculation_app.Tpo -c -o sketch_calculation_app.o `test -f 'app/sketch_calculation_app.cpp' || echo '$(srcdir)/'`app/sketch_calculation_app.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/sketch_calculation_app.Tpo $(DEPDIR)/sketch_calculation_app.Po
+#	$(AM_V_CXX)source='app/sketch_calculation_app.cpp' object='sketch_calculation_app.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sketch_calculation_app.o `test -f 'app/sketch_calculation_app.cpp' || echo '$(srcdir)/'`app/sketch_calculation_app.cpp
+
+sketch_calculation_app.obj: app/sketch_calculation_app.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sketch_calculation_app.obj -MD -MP -MF $(DEPDIR)/sketch_calculation_app.Tpo -c -o sketch_calculation_app.obj `if test -f 'app/sketch_calculation_app.cpp'; then $(CYGPATH_W) 'app/sketch_calculation_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/sketch_calculation_app.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/sketch_calculation_app.Tpo $(DEPDIR)/sketch_calculation_app.Po
+#	$(AM_V_CXX)source='app/sketch_calculation_app.cpp' object='sketch_calculation_app.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sketch_calculation_app.obj `if test -f 'app/sketch_calculation_app.cpp'; then $(CYGPATH_W) 'app/sketch_calculation_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/sketch_calculation_app.cpp'; fi`
 
 run_all.o: graph/ut/run_all.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT run_all.o -MD -MP -MF $(DEPDIR)/run_all.Tpo -c -o run_all.o `test -f 'graph/ut/run_all.cpp' || echo '$(srcdir)/'`graph/ut/run_all.cpp

@@ -4,6 +4,10 @@
 #include "../common.h"
 #include "../utils/utils.h"
 
+/*! \file graph.h
+    \brief Graph class
+*/
+
 namespace all_distance_sketch {
 namespace graph {
 

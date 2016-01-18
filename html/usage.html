@@ -88,11 +88,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Compiling your_code.cpp:</p>
 <pre class="fragment">&gt;g++ --std=c++11  your_code.cpp -I${SNAP_DEST}/snap-adv/ -I${SNAP_DEST}/snap-core/ -I${SNAP_DEST}/snap-exp/ -I${SNAP_DEST}/glib-core/  ${ADS_DEST}/lib/liball_distance_sketch.a ${SNAP_DEST}/snap-core/Snap.o  -o your_code
 </pre><h2>Using as command line app</h2>
-<p>TODO </p>
-</div></div><!-- contents -->
+<p>You can run the algorithms as apps. When building the pakcage the apps will be located in the ${ADS_DEST}/bin. run &ndash;help to see the options that each such app can take. The application that calculates the all distance sketch: </p><pre class="fragment">&gt;./bin/sketch_app --helpUsage: options_description [options]
+Allowed options:
+  --help                 produce help message
+  --K arg                K = 1/epsilon^2 sets the precision
+  --num_threads arg (=1) num_threads to use
+  --directed arg         is the graph directed
+  --graph_dir arg        Directory with the graph to calculate the sketch on
+  --output_file arg      output file path, here the sketch Gpb will be saved 
+                         (Gpb defined in src/proto/all_distance_sketch.proto)</pre> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jan 16 2016 22:59:31 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 18 2016 13:36:03 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

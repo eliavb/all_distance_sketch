@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['randomid',['RandomId',['../namespaceall__distance__sketch.html#a07dc7ca615a83c4e656f52297eda4bb4',1,'all_distance_sketch']]],
-  ['reverse_5frank_2eh',['reverse_rank.h',['../reverse__rank_8h.html',1,'']]]
+  ['overview_20over_20the_20algorithms',['Overview over the algorithms',['../Overview.html',1,'']]]
 ];

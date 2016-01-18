@@ -6,6 +6,10 @@
 #include "../sketch/node_sketch.h"
 #include "../sketch/graph_sketch.h"
 
+/*! \file dijkstra_shortest_paths.h
+    \brief Optimized version of Dijkstra algorithm for the sketch calculation algorithm
+*/
+
 namespace all_distance_sketch {
 
 /*! \cond

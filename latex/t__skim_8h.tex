@@ -1,5 +1,10 @@
 \hypertarget{t__skim_8h}{}\section{src/algorithms/t\+\_\+skim.h File Reference}
 \label{t__skim_8h}\index{src/algorithms/t\+\_\+skim.\+h@{src/algorithms/t\+\_\+skim.\+h}}
+
+
+Contains all T\+Skim influence maximization algorithms.  
+
+
 {\ttfamily \#include \char`\"{}sketch\+\_\+calculation.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}../sketch/graph\+\_\+sketch.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}../graph/graph.\+h\char`\"{}}\\*
@@ -8,27 +13,11 @@
 \begin{DoxyCompactItemize}
 \item 
 struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover\+\_\+t}
-\item 
+\begin{DoxyCompactList}\small\item\em Single seed information. \end{DoxyCompactList}\item 
 class \hyperlink{classall__distance__sketch_1_1Cover}{all\+\_\+distance\+\_\+sketch\+::\+Cover}
-\item 
-class \hyperlink{classall__distance__sketch_1_1TSkimReverseRankCallBacks}{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Reverse\+Rank\+Call\+Backs$<$ Z $>$}
-\item 
-class \hyperlink{classall__distance__sketch_1_1TSkimDijkstraCallBacks}{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Dijkstra\+Call\+Backs$<$ Z $>$}
-\item 
-class \hyperlink{classall__distance__sketch_1_1TSkimDijkstraCallBacksDistancePrune}{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Dijkstra\+Call\+Backs\+Distance\+Prune$<$ Z $>$}
-\item 
-struct \hyperlink{structall__distance__sketch_1_1cmp__pair}{all\+\_\+distance\+\_\+sketch\+::cmp\+\_\+pair}
-\item 
-class \hyperlink{classall__distance__sketch_1_1TSkimBase}{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Base$<$ Z $>$}
-\item 
+\begin{DoxyCompactList}\small\item\em \hyperlink{classall__distance__sketch_1_1Cover}{Cover} extracted by the influence maximization algorithms. \end{DoxyCompactList}\item 
 class \hyperlink{classall__distance__sketch_1_1TSkimForwardRank}{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank$<$ Z $>$}
-\item 
-class \hyperlink{classall__distance__sketch_1_1TSkimApproxSeedExactCover}{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Approx\+Seed\+Exact\+Cover$<$ Z $>$}
-\item 
-class \hyperlink{classall__distance__sketch_1_1TSkimExactComputationBased}{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Exact\+Computation\+Based$<$ Z $>$}
-\item 
-class \hyperlink{classall__distance__sketch_1_1TSkimApproxVsExact}{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Approx\+Vs\+Exact$<$ Z $>$}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Infuelnce maximization based on forward ranks. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -38,13 +27,9 @@ class \hyperlink{classall__distance__sketch_1_1TSkimApproxVsExact}{all\+\_\+dist
 \begin{DoxyCompactItemize}
 \item 
 typedef struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover\+\_\+t} \hyperlink{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}{all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover}
-\end{DoxyCompactItemize}
-\subsection*{Functions}
-\begin{DoxyCompactItemize}
-\item 
-int \hyperlink{namespaceall__distance__sketch_ac3afb94bba0e0305875629946729d1f7}{all\+\_\+distance\+\_\+sketch\+::random\+\_\+gen\+\_\+func} (int i)
-\item 
-bool \hyperlink{namespaceall__distance__sketch_a608d793c40489324eab25253cf430561}{all\+\_\+distance\+\_\+sketch\+::cmp} (const std\+::pair$<$ int, int $>$ \&p1, const std\+::pair$<$ int, int $>$ \&p2)
-\item 
-{\footnotesize template$<$class Z $>$ }\\void \hyperlink{namespaceall__distance__sketch_a2212f4d81a72c4e71adee04a49ce7ba9}{all\+\_\+distance\+\_\+sketch\+::\+Exact\+Cover\+Greedy} (graph\+::\+Graph$<$ Z $>$ $\ast$graph, int T, std\+::vector$<$ std\+::vector$<$ Node\+Id\+Distance\+Data $>$ $>$ $\ast$reachable\+\_\+nodes)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Single seed information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains all T\+Skim influence maximization algorithms. 
+

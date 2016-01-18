@@ -10,4 +10,13 @@ Compiling your\+\_\+code.\+cpp\+:
 
 \subsection*{Using as command line app}
 
-T\+O\+D\+O 
+You can run the algorithms as apps. When building the pakcage the apps will be located in the \$\{A\+D\+S\+\_\+\+D\+E\+S\+T\}/bin. run --help to see the options that each such app can take. The application that calculates the all distance sketch\+: \begin{DoxyVerb}>./bin/sketch_app --helpUsage: options_description [options]
+Allowed options:
+  --help                 produce help message
+  --K arg                K = 1/epsilon^2 sets the precision
+  --num_threads arg (=1) num_threads to use
+  --directed arg         is the graph directed
+  --graph_dir arg        Directory with the graph to calculate the sketch on
+  --output_file arg      output file path, here the sketch Gpb will be saved 
+                         (Gpb defined in src/proto/all_distance_sketch.proto)\end{DoxyVerb}
+ 

@@ -7,6 +7,10 @@
 #include "../graph/graph.h"
 #include "./reverse_rank.h"
 
+/*! \file t_skim.h
+    \brief Contains all TSkim influence maximization algorithms
+*/
+
 namespace all_distance_sketch {
 /*!
   \example examples/t_skim.cpp

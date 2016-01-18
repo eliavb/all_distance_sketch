@@ -8,6 +8,9 @@
 
 #include "dijkstra_shortest_paths.h"
 
+/*! \file sketch_calculation.h
+    \brief Sketch calculation algorithms
+*/
 
 namespace all_distance_sketch {
 

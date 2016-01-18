@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['nodeiddistancedata',['NodeIdDistanceData',['../classall__distance__sketch_1_1NodeIdDistanceData.html',1,'all_distance_sketch']]],
-  ['nodeiddistancevector',['NodeIdDistanceVector',['../namespaceall__distance__sketch.html#a21b129900de9d9cfbb3406f7e0d1a75a',1,'all_distance_sketch']]],
-  ['nodeiddistancevectoritr',['NodeIdDistanceVectorItr',['../namespaceall__distance__sketch.html#aeb3aa8f88e2ff80d4625d227ad385dae',1,'all_distance_sketch']]],
-  ['nodesketch',['NodeSketch',['../classall__distance__sketch_1_1NodeSketch.html',1,'all_distance_sketch']]],
-  ['nodessketch',['NodesSketch',['../namespaceall__distance__sketch.html#aa6fb9f0cba2c34476603e744606c5d6a',1,'all_distance_sketch']]],
-  ['nodessketchitr',['NodesSketchItr',['../namespaceall__distance__sketch.html#aeb845b04fceda3cdfb3ee08ebf7c0103',1,'all_distance_sketch']]]
+  ['loading_20your_20graph',['Loading your graph',['../GraphTut.html',1,'']]],
+  ['loadgraphfromdir',['LoadGraphFromDir',['../classall__distance__sketch_1_1graph_1_1Graph.html#ad219191cafee53dfdd1fee987f256b18',1,'all_distance_sketch::graph::Graph']]],
+  ['loadgraphsketchfromgpb',['LoadGraphSketchFromGpb',['../classall__distance__sketch_1_1GraphSketch.html#a1ec9f5d7a83387252d899833aef82855',1,'all_distance_sketch::GraphSketch']]]
 ];

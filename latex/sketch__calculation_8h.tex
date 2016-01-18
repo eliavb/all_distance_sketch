@@ -1,5 +1,10 @@
 \hypertarget{sketch__calculation_8h}{}\section{src/algorithms/sketch\+\_\+calculation.h File Reference}
 \label{sketch__calculation_8h}\index{src/algorithms/sketch\+\_\+calculation.\+h@{src/algorithms/sketch\+\_\+calculation.\+h}}
+
+
+Sketch calculation algorithms.  
+
+
 {\ttfamily \#include \char`\"{}../common.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}../sketch/graph\+\_\+sketch.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}../graph/graph.\+h\char`\"{}}\\*
@@ -10,3 +15,15 @@
 \item 
  \hyperlink{namespaceall__distance__sketch}{all\+\_\+distance\+\_\+sketch}
 \end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a7fea917111c3851d7c909e896fbad571}{all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Graph\+Sketch\+Multi\+Core} (graph\+::\+Graph$<$ T $>$ $\ast$graph, Graph\+Sketch $\ast$graph\+\_\+sketch, unsigned int num\+\_\+threads=5, double increase\+\_\+factor=1.\+1)
+\begin{DoxyCompactList}\small\item\em Calculate the bottom K graph sketch in parallel This implementation is faster than the single threaded implementation but the cost is in memory. \end{DoxyCompactList}\item 
+{\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a1e07f2d9df73bee36e926822ce0bb2ea}{all\+\_\+distance\+\_\+sketch\+::\+Calculate\+Graph\+Sketch} (graph\+::\+Graph$<$ T $>$ $\ast$graph, Graph\+Sketch $\ast$graph\+\_\+sketch)
+\begin{DoxyCompactList}\small\item\em Calculate the bottom K single threaded. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Sketch calculation algorithms. 
+
