@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dijkstra_5fshortest_5fpaths_2eh',['dijkstra_shortest_paths.h',['../dijkstra__shortest__paths_8h.html',1,'']]]
+  ['all_5fdistance_5fsketch_2eproto',['all_distance_sketch.proto',['../all__distance__sketch_8proto.html',1,'']]]
 ];

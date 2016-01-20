@@ -1,5 +1,9 @@
 syntax = "proto2";
 
+/*! \file all_distance_sketch.proto
+    \brief Format to save the GraphSketch
+*/
+
 package all_distance_sketch.proto;
 
 

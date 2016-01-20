@@ -1,3 +1,6 @@
+/*! \file ranking.proto
+    \brief Format to save the ranking
+*/
 syntax = "proto2";
 
 package all_distance_sketch.proto;

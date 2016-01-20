@@ -1,0 +1,81 @@
+\hypertarget{all__distance__sketch_8proto}{}\section{src/proto/all\+\_\+distance\+\_\+sketch.proto File Reference}
+\label{all__distance__sketch_8proto}\index{src/proto/all\+\_\+distance\+\_\+sketch.\+proto@{src/proto/all\+\_\+distance\+\_\+sketch.\+proto}}
+
+
+Format to save the Graph\+Sketch.  
+
+
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{all__distance__sketch_8proto_adbedb258e13546cc707a6ebb073a3d8a}{}{\bfseries syntax} = \char`\"{}proto2\char`\"{}\label{all__distance__sketch_8proto_adbedb258e13546cc707a6ebb073a3d8a}
+
+\item 
+\hypertarget{all__distance__sketch_8proto_a0c41dcc24abdb230ee669507323945ae}{}package all\+\_\+distance\+\_\+sketch {\bfseries proto}\label{all__distance__sketch_8proto_a0c41dcc24abdb230ee669507323945ae}
+
+\item 
+message {\bfseries Single\+Node\+Sketch\+Gpb}
+\item 
+\hypertarget{all__distance__sketch_8proto_a231dd4f63581ac1949ea45cc0b5db5db}{}optional double {\bfseries node\+\_\+random\+\_\+id} = 2\label{all__distance__sketch_8proto_a231dd4f63581ac1949ea45cc0b5db5db}
+
+\item 
+\hypertarget{all__distance__sketch_8proto_af8c7e6fa3bca8fe537ed8a6e6e3825fd}{}repeated Node\+Summary\+Details\+Gpb {\bfseries node\+\_\+in\+\_\+sketch} = 3\label{all__distance__sketch_8proto_af8c7e6fa3bca8fe537ed8a6e6e3825fd}
+
+\item 
+\hypertarget{all__distance__sketch_8proto_ae5088bdd003d5e97dde2c5fbcddde34e}{}repeated Z\+Values\+Gpb {\bfseries z\+\_\+value} = 4\label{all__distance__sketch_8proto_ae5088bdd003d5e97dde2c5fbcddde34e}
+
+\item 
+message {\bfseries All\+Distance\+Sketch\+Gpb}
+\item 
+\hypertarget{all__distance__sketch_8proto_a32963866b255f89d4a856253fd8b9c92}{}optional bool {\bfseries should\+\_\+calc\+\_\+z\+\_\+values} = 2\label{all__distance__sketch_8proto_a32963866b255f89d4a856253fd8b9c92}
+
+\item 
+\hypertarget{all__distance__sketch_8proto_a765881cd2a0b68feb5c22546efca3c0d}{}repeated Single\+Node\+Sketch\+Gpb {\bfseries nodes\+\_\+sketches} = 3\label{all__distance__sketch_8proto_a765881cd2a0b68feb5c22546efca3c0d}
+
+\item 
+\hypertarget{all__distance__sketch_8proto_aed58d88cd21da325983b8812c64a1556}{}repeated Node\+Threshold\+Gpb {\bfseries node\+\_\+thresholds} = 4\label{all__distance__sketch_8proto_aed58d88cd21da325983b8812c64a1556}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Format to save the Graph\+Sketch. 
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{all__distance__sketch_8proto_a1c725f8168567dbd3aa867b4bebba2a0}{}\index{all\+\_\+distance\+\_\+sketch.\+proto@{all\+\_\+distance\+\_\+sketch.\+proto}!All\+Distance\+Sketch\+Gpb@{All\+Distance\+Sketch\+Gpb}}
+\index{All\+Distance\+Sketch\+Gpb@{All\+Distance\+Sketch\+Gpb}!all\+\_\+distance\+\_\+sketch.\+proto@{all\+\_\+distance\+\_\+sketch.\+proto}}
+\subsubsection[{All\+Distance\+Sketch\+Gpb}]{\setlength{\rightskip}{0pt plus 5cm}message All\+Distance\+Sketch\+Gpb}\label{all__distance__sketch_8proto_a1c725f8168567dbd3aa867b4bebba2a0}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+  
+  message NodeThresholdGpb \{
+      optional uint64 node\_id = 1;
+      optional \textcolor{keywordtype}{double} threshold = 2;
+      optional \textcolor{keywordtype}{double} random\_id=3;
+  \}
+
+
+  optional uint64 k = 1
+\end{DoxyCode}
+\hypertarget{all__distance__sketch_8proto_a439dc8f2c6166ba58d497513ebc92723}{}\index{all\+\_\+distance\+\_\+sketch.\+proto@{all\+\_\+distance\+\_\+sketch.\+proto}!Single\+Node\+Sketch\+Gpb@{Single\+Node\+Sketch\+Gpb}}
+\index{Single\+Node\+Sketch\+Gpb@{Single\+Node\+Sketch\+Gpb}!all\+\_\+distance\+\_\+sketch.\+proto@{all\+\_\+distance\+\_\+sketch.\+proto}}
+\subsubsection[{Single\+Node\+Sketch\+Gpb}]{\setlength{\rightskip}{0pt plus 5cm}message Single\+Node\+Sketch\+Gpb}\label{all__distance__sketch_8proto_a439dc8f2c6166ba58d497513ebc92723}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+  
+  message NodeSummaryDetailsGpb \{
+      optional uint64 node\_id = 1;
+      optional \textcolor{keywordtype}{double} distance = 2;
+  \}
+
+  message ZValuesGpb \{
+    optional uint64 node\_id = 1;
+    optional \textcolor{keywordtype}{double} distance = 2;
+  \}
+
+  optional uint64 node\_id = 1
+\end{DoxyCode}

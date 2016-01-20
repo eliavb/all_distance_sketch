@@ -1,0 +1,53 @@
+\hypertarget{ranking_8proto}{}\section{src/proto/ranking.proto File Reference}
+\label{ranking_8proto}\index{src/proto/ranking.\+proto@{src/proto/ranking.\+proto}}
+
+
+Format to save the ranking.  
+
+
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{ranking_8proto_adbedb258e13546cc707a6ebb073a3d8a}{}{\bfseries syntax} = \char`\"{}proto2\char`\"{}\label{ranking_8proto_adbedb258e13546cc707a6ebb073a3d8a}
+
+\item 
+\hypertarget{ranking_8proto_a0c41dcc24abdb230ee669507323945ae}{}package all\+\_\+distance\+\_\+sketch {\bfseries proto}\label{ranking_8proto_a0c41dcc24abdb230ee669507323945ae}
+
+\item 
+message {\bfseries Node\+Rank\+Gpb}
+\item 
+\hypertarget{ranking_8proto_ac9f2ee4d0b287dcc70f6d199e37d5c52}{}optional uint64 {\bfseries node\+\_\+rank} = 2\label{ranking_8proto_ac9f2ee4d0b287dcc70f6d199e37d5c52}
+
+\item 
+message {\bfseries Node\+Ranks\+Gpb}
+\item 
+\hypertarget{ranking_8proto_ac3aeef3c04f1e94269646b50a81aa9f1}{}optional uint64 {\bfseries max\+\_\+node\+\_\+id} = 2\label{ranking_8proto_ac3aeef3c04f1e94269646b50a81aa9f1}
+
+\item 
+\hypertarget{ranking_8proto_a45eecc3f83c30649c709bd7e7b537e20}{}repeated Node\+Rank\+Gpb {\bfseries node\+\_\+ranks} = 3\label{ranking_8proto_a45eecc3f83c30649c709bd7e7b537e20}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Format to save the ranking. 
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{ranking_8proto_ab1af16dd5bbf86f7aebf63324b196f08}{}\index{ranking.\+proto@{ranking.\+proto}!Node\+Rank\+Gpb@{Node\+Rank\+Gpb}}
+\index{Node\+Rank\+Gpb@{Node\+Rank\+Gpb}!ranking.\+proto@{ranking.\+proto}}
+\subsubsection[{Node\+Rank\+Gpb}]{\setlength{\rightskip}{0pt plus 5cm}message Node\+Rank\+Gpb}\label{ranking_8proto_ab1af16dd5bbf86f7aebf63324b196f08}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+  optional uint64 node\_id = 1
+\end{DoxyCode}
+\hypertarget{ranking_8proto_adc2bbd7d7b97fce2a4134830bd20892f}{}\index{ranking.\+proto@{ranking.\+proto}!Node\+Ranks\+Gpb@{Node\+Ranks\+Gpb}}
+\index{Node\+Ranks\+Gpb@{Node\+Ranks\+Gpb}!ranking.\+proto@{ranking.\+proto}}
+\subsubsection[{Node\+Ranks\+Gpb}]{\setlength{\rightskip}{0pt plus 5cm}message Node\+Ranks\+Gpb}\label{ranking_8proto_adc2bbd7d7b97fce2a4134830bd20892f}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+  optional uint64 source\_node\_id = 1
+\end{DoxyCode}

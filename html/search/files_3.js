@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['sketch_5fcalculation_2eh',['sketch_calculation.h',['../sketch__calculation_8h.html',1,'']]]
+  ['ranking_2eproto',['ranking.proto',['../ranking_8proto.html',1,'']]],
+  ['reverse_5frank_2eh',['reverse_rank.h',['../reverse__rank_8h.html',1,'']]]
 ];
