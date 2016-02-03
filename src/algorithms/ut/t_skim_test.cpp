@@ -54,7 +54,7 @@ TEST_F(TSkimTest, TSkimLongChain) {
   }
   
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(101, 101, 101, &cover, &graph);
   t_skim_algo.Run();
 
@@ -173,7 +173,7 @@ TEST_F(TSkimTest, CheckBasicStarTSkim) {
   graph.AddEdge(4, 0);
   graph.AddEdge(5, 0);
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(10, 64, 2, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 1);
@@ -241,7 +241,7 @@ TEST_F(TSkimTest, CheckBasicStarTSkim2) {
   graph.AddEdge(8, 6);
   graph.AddEdge(9, 6);
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(10, 64, 2, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 3);
@@ -285,7 +285,7 @@ TEST_F(TSkimTest, TSkimHighMinInfluenceValue) {
   graph.AddEdge(8, 6);
   graph.AddEdge(9, 6);
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(10, 64, 100, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 3);
@@ -343,7 +343,7 @@ TEST_F(TSkimTest, TSkimGreedyHighMinInfluenceValue2) {
   graph.AddEdge(8, 6);
   graph.AddEdge(9, 6);
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(100, 100, 100, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
@@ -398,7 +398,7 @@ TEST_F(TSkimTest, TSkimHighMinInfluenceValue2) {
   graph.AddEdge(8, 6);
   graph.AddEdge(9, 6);
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(10, 64, 100, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
@@ -453,7 +453,7 @@ TEST_F(TSkimTest, TSkimHighMinInfluenceValue3) {
   graph.AddEdge(8, 6);
   graph.AddEdge(9, 6);
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(10, 64, 2, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
@@ -487,7 +487,7 @@ TEST_F(TSkimTest, TSkimClusters) {
   graph.AddEdge(4, 5); graph.AddEdge(5, 4);
 
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(10, 64, 3, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
@@ -521,7 +521,7 @@ TEST_F(TSkimTest, TSkimGreedyClusters) {
   graph.AddEdge(4, 5); graph.AddEdge(5, 4);
 
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(3, 100, 100, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 2);
@@ -541,7 +541,7 @@ TEST_F(TSkimTest, TSkimSize1Clusters) {
   graph.AddNode(5);
 
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(10, 64, 3, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 6);
@@ -557,7 +557,7 @@ TEST_F(TSkimTest, TSkimGreedySize1Clusters) {
   graph.AddNode(5);
 
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(3, 100, 100, &cover, &graph);
   t_skim_algo.Run();
   EXPECT_EQ(cover.Size(), 6);
@@ -574,7 +574,7 @@ TEST_F(TSkimTest, TSkimSelective) {
 
   Cover cover;
   std::vector<int> wanted = {1};
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(10, 64, 3, &cover, &graph);
   t_skim_algo.set_rankers_nodes(wanted);
   t_skim_algo.Run();
@@ -602,7 +602,7 @@ TEST_F(TSkimTest, TSkimSelective2) {
   graph.AddEdge(5, 0);
   Cover cover;
   std::vector<int> wanted = {0 , 1, 5};
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(10, 64, 3, &cover, &graph);
   t_skim_algo.set_wanted_cover_nodes(wanted);
   t_skim_algo.Run();
@@ -623,7 +623,7 @@ TEST_F(TSkimTest, TSkimLongChainGreedy) {
     graph.AddEdge(i, i+1);
   }
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(101, 100, 100, &cover, &graph);
   t_skim_algo.Run();
 
@@ -652,7 +652,7 @@ TEST_F(TSkimTest, TSkimLongChain2) {
     }
   }
 
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(101, 101, 101, &cover, &graph);
   t_skim_algo.set_rankees_nodes(visited);
   t_skim_algo.set_wanted_cover_nodes(visited);
@@ -680,7 +680,7 @@ TEST_F(TSkimTest, TSkimLongChainGreedy2) {
     }
   }
 
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(101, 100, 100, &cover, &graph);
   t_skim_algo.set_rankees_nodes(visited);
   t_skim_algo.set_wanted_cover_nodes(visited);
@@ -711,7 +711,7 @@ TEST_F(TSkimTest, TSkimGreedyRankCheck) {
   graph.AddEdge(4, 0);
   graph.AddEdge(5, 0);
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > tskim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > tskim_algo;
   tskim_algo.InitTSkim(2, 100, 100, &cover, &graph);
   tskim_algo.Run();
   std::vector<int> covered = {0 , 1, 2, 3, 4, 5};
@@ -738,10 +738,10 @@ TEST_F(TSkimTest, TSkimReverseRankCheck) {
   graph.AddEdge(4, 0);
   graph.AddEdge(5, 0);
   Cover cover;
-  TSkimForwardRank< graph::TDirectedGraph > tskim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > tskim_algo;
   tskim_algo.InitTSkim(2, 64, 3, &cover, &graph);
   tskim_algo.Run();
-  // TSkimForwardRank< graph::TDirectedGraph >(2, 64, 3, &cover, &graph);
+  // TSkimReverseRank< graph::TDirectedGraph >(2, 64, 3, &cover, &graph);
   std::vector<int> covered = {0 , 1, 2, 3, 4, 5};
   EXPECT_TRUE( is_permutation(covered.begin(), covered.end(), cover.GetSeedCover(0).covered_nodes.begin()));
 }
@@ -758,7 +758,7 @@ TEST_F(TSkimTest, TSkimFacebook) {
       }
     }
   }
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(101, 64, 101, &cover, &graph);
   t_skim_algo.set_rankees_nodes(visited);
   t_skim_algo.set_wanted_cover_nodes(visited);
@@ -786,7 +786,7 @@ TEST_F(TSkimTest, TSkimGreedyFacebook) {
       }
     }
   }
-  TSkimForwardRank< graph::TDirectedGraph > t_skim_algo;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo;
   t_skim_algo.InitTSkim(101, 100, 100, &cover, &graph);
   t_skim_algo.set_rankees_nodes(visited);
   t_skim_algo.set_wanted_cover_nodes(visited);

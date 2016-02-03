@@ -94,10 +94,10 @@ class TSkimReverseRankCallBacks {
 /*! \endcond
 */
 
-/*! \brief Infuelnce maximization based on forward ranks
+/*! \brief Infuelnce maximization based on reverse ranks
 */
 template <class Z>
-class TSkimForwardRank : public TSkimBase<Z> {
+class TSkimReverseRank : public TSkimBase<Z> {
 public:
   /*! \brief Initialize the class.
       \param[in] T -  The influence of each node, e.g. if T=100 then each nodes 

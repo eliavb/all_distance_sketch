@@ -11,9 +11,9 @@ using namespace all_distance_sketch;
 namespace po = boost::program_options;
 
 
-bool parse_command_line_args(int ac, char* av[], int* T,
+bool parse_command_line_args(int ac, char* av[], int* source_id,
                                                  int* K,
-                                                 int* min_influence_for_seed_set,
+                                                 int* num_threads,
                                                  bool* directed,
                                                  std::string* graph_dir,
                                                  std::string* sketch_file,
@@ -22,12 +22,12 @@ bool parse_command_line_args(int ac, char* av[], int* T,
         po::options_description desc("Allowed options");
         desc.add_options()
             ("help", "produce help message")
-            ("T", po::value<int>(T)->required(), 
-                  "Defines the influence of a node. If pi_{us} < T then s coveres u")
+            ("source_id", po::value<int>(source_id)->required(), 
+                  "id of source node")
             ("K", po::value<int>(K)->required(), 
                   "K = 1/epsilon^2 sets the precision")
-            ("min_influence_for_seed_set", po::value<int>(min_influence_for_seed_set)->default_value(1), 
-                  "min influence to enter to the seed set")
+            ("num_threads", po::value<int>(num_threads)->default_value(1), 
+                  "num_threads to use")
             ("directed", po::value<bool>(directed), 
                   "is the graph directed")
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
@@ -49,13 +49,13 @@ bool parse_command_line_args(int ac, char* av[], int* T,
             return true;
         }
         po::notify(vm);
-        cout << "T=" << *T << endl;
+        cout << "source node id=" << *source_id << endl;
         cout << "sketch_file=" << *sketch_file << endl;
         cout << "output_file=" << *output_file << endl;
         cout << "graph_dir=" << *graph_dir << endl;
         cout << "directed=" << *directed << endl;
         cout << "K=" << *K << endl;
-        cout << "min_influence_for_seed_set=" << *min_influence_for_seed_set << endl;
+        cout << "#threads=" << *num_threads << endl;
     }
     catch(std::exception& e)
     {
@@ -67,11 +67,11 @@ bool parse_command_line_args(int ac, char* av[], int* T,
 
 
 int main(int ac, char* av[]) {
-    int K, min_influence_for_seed_set, T;
+    int K, num_threads, node_id;
     bool directed;
     std::string output_file, graph_dir, sketch_file;
     sketch_file="";
-    if (parse_command_line_args(ac, av, &T, &K, &min_influence_for_seed_set, 
+    if (parse_command_line_args(ac, av, &node_id, &K, &num_threads, 
                                         &directed, &graph_dir,
                                         &sketch_file, &output_file)) {
         return 1;
@@ -81,29 +81,39 @@ int main(int ac, char* av[]) {
     graph::Graph< graph::TUnDirectedGraph> un_directed_graph;
     load_graph(directed, graph_dir, &directed_graph, &un_directed_graph);
     if (sketch_file == "") {
-        calc_graph_sketch(K, 1, directed, &graph_sketch,
+        calc_graph_sketch(K, num_threads, directed, &graph_sketch,
                           graph_dir, &directed_graph, &un_directed_graph);
     } else {
         load_sketch(&graph_sketch, sketch_file);
     }
 
-    TSkimReverseRank< graph::TDirectedGraph > t_skim_algo_directed;
-    TSkimReverseRank< graph::TUnDirectedGraph > t_skim_algo_un_directed;
-    Cover cover;
-    /*
-    InitTSkim(int T,
-            int k_all_distance_sketch,
-            int K,
-            Cover * cover,
-            graph::Graph<Z>* graph)
-    */
+    graph::Graph< graph::TDirectedGraph> directed_graph_transpose;
+    graph::Graph< graph::TUnDirectedGraph> un_directed_graph_transpose;
     if (directed) {
-        t_skim_algo_directed.InitTSkim(T, K, 2, &cover, &directed_graph);
-        t_skim_algo_directed.Run();
+        directed_graph.Transpose(&directed_graph_transpose);
     } else {
-        t_skim_algo_un_directed.InitTSkim(T, K, 2, &cover, &un_directed_graph);
-        t_skim_algo_un_directed.Run();
+        un_directed_graph_transpose.Transpose(&un_directed_graph_transpose);
     }
-    
+    std::vector<int> ranking;
+    if (directed)
+        CalculateReverseRank<graph::TDirectedGraph> (node_id,
+                                                     &directed_graph_transpose,
+                                                     &graph_sketch,
+                                                     &ranking);
+    else {
+        CalculateReverseRank<graph::TUnDirectedGraph> (node_id,
+                                                     &un_directed_graph_transpose,
+                                                     &graph_sketch,
+                                                     &ranking);
+    }
+    NodeRanksGpb node_ranks;
+    SaveRankingToGpb(node_id, ranking, &node_ranks);
+    {
+        fstream output(output_file, ios::out | ios::trunc | ios::binary);
+        if (!node_ranks.SerializeToOstream(&output)) {
+            cerr << "Failed to write node_ranks to file=" << output_file << endl;
+            return 1;
+        }
+    }
     return 0;
 }
