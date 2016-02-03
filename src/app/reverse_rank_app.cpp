@@ -87,15 +87,22 @@ int main(int ac, char* av[]) {
         load_sketch(&graph_sketch, sketch_file);
     }
 
+    graph::Graph< graph::TDirectedGraph> directed_graph_transpose;
+    graph::Graph< graph::TUnDirectedGraph> un_directed_graph_transpose;
+    if (directed) {
+        directed_graph.Transpose(&directed_graph_transpose);
+    } else {
+        un_directed_graph_transpose.Transpose(&un_directed_graph_transpose);
+    }
     std::vector<int> ranking;
     if (directed)
         CalculateReverseRank<graph::TDirectedGraph> (node_id,
-                                                     &directed_graph ,
+                                                     &directed_graph_transpose,
                                                      &graph_sketch,
                                                      &ranking);
     else {
         CalculateReverseRank<graph::TUnDirectedGraph> (node_id,
-                                                     &un_directed_graph ,
+                                                     &un_directed_graph_transpose,
                                                      &graph_sketch,
                                                      &ranking);
     }

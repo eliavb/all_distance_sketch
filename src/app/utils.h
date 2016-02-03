@@ -29,11 +29,12 @@ int load_sketch(GraphSketch* graph_sketch,
 void load_graph(bool directed,
 				std::string graph_dir,
                 graph::Graph< graph::TDirectedGraph>* directed_graph,
-                graph::Graph< graph::TUnDirectedGraph>* un_directed_graph) {
+                graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
+                bool load_transpose = false) {
 	if (directed) {
-        directed_graph->LoadGraphFromDir(graph_dir);
+        directed_graph->LoadGraphFromDir(graph_dir, load_transpose);
     } else {
-        un_directed_graph->LoadGraphFromDir(graph_dir);
+        un_directed_graph->LoadGraphFromDir(graph_dir, load_transpose);
     }
 }
 
