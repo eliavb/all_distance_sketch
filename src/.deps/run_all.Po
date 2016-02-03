@@ -674,7 +674,9 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../algorithms/ut/../t_skim.h \
  graph/ut/../../algorithms/ut/../sketch_calculation.h \
  graph/ut/../../algorithms/ut/.././reverse_rank.h \
- graph/ut/basic_graph.cpp graph/ut/../snap_graph_adaptor.h
+ graph/ut/../../algorithms/ut/../t_skim_reverse_rank.h \
+ graph/ut/../../algorithms/ut/../t_skim.h graph/ut/basic_graph.cpp \
+ graph/ut/../snap_graph_adaptor.h
 
 /usr/include/stdc-predef.h:
 
@@ -2235,6 +2237,10 @@ graph/ut/../../algorithms/ut/../t_skim.h:
 graph/ut/../../algorithms/ut/../sketch_calculation.h:
 
 graph/ut/../../algorithms/ut/.././reverse_rank.h:
+
+graph/ut/../../algorithms/ut/../t_skim_reverse_rank.h:
+
+graph/ut/../../algorithms/ut/../t_skim.h:
 
 graph/ut/basic_graph.cpp:
 

@@ -1,4 +1,5 @@
 #include "../t_skim.h"
+#include "../t_skim_reverse_rank.h"
 #include "../../graph/snap_graph_adaptor.h"
 #include <algorithm>
 namespace all_distance_sketch {
