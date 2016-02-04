@@ -6,12 +6,16 @@
 #include "../sketch/graph_sketch.h"
 #include "../graph/graph.h"
 #include "./reverse_rank.h"
-
+#include "../proto/cover.pb.h"
 /*! \file t_skim.h
     \brief Contains all TSkim influence maximization algorithms
 */
 
 namespace all_distance_sketch {
+typedef proto::SeedInfoGpb SeedInfoGpb;
+typedef proto::CoverGpb CoverGpb;
+
+
 /*!
   \example examples/t_skim.cpp
   Examples on how to use TSkim
@@ -38,6 +42,27 @@ class Cover {
     inline void Clear() {
       cover.clear();
       is_covered.clear();
+    }
+    void LoadCoverFromGpb(const CoverGpb cover) {
+      for (int i=0; i < cover.seeds_size(); i++) {
+        int seed_id = cover.seeds(i).seed_node_id();
+        AddSeed(seed_id);
+        for (int j=0; j < cover.seeds(i).node_ids_size(); j++) {
+          int covered_node_id = cover.seeds(i).node_ids(j);
+          AddNodeToSeed(seed_id, covered_node_id);
+        }
+      }
+    }
+    void SaveGraphSketchToGpb(CoverGpb* cover) {
+      for (Iterator it=Begin(); it != End(); it++) {
+        SeedInfoGpb* seed = cover->add_seeds();
+        int seed_id = it->second.seed;
+        seed->set_seed_node_id(seed_id);
+        for (int i=0; i < it->second.covered_nodes.size(); i++) {
+          int node_id = it->second.covered_nodes[i];
+          seed->add_node_ids(node_id);
+        }
+      }
     }
     inline void AddSeed(int seed) {
       is_covered[seed] = true;

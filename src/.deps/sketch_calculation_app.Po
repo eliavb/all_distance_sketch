@@ -921,7 +921,7 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  app/../algorithms/../graph/graph.h \
  app/../algorithms/dijkstra_shortest_paths.h app/../algorithms/t_skim.h \
  app/../algorithms/sketch_calculation.h \
- app/../algorithms/./reverse_rank.h \
+ app/../algorithms/./reverse_rank.h app/../algorithms/../proto/cover.pb.h \
  app/../algorithms/t_skim_reverse_rank.h app/../algorithms/t_skim.h \
  app/../algorithms/t_skim_dijkstra.h app/../sketch/node_sketch.h \
  app/../sketch/graph_sketch.h app/utils.h
@@ -3031,6 +3031,8 @@ app/../algorithms/t_skim.h:
 app/../algorithms/sketch_calculation.h:
 
 app/../algorithms/./reverse_rank.h:
+
+app/../algorithms/../proto/cover.pb.h:
 
 app/../algorithms/t_skim_reverse_rank.h:
 
