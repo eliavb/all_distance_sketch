@@ -9,15 +9,14 @@ Contains all T\+Skim influence maximization algorithms.
 {\ttfamily \#include \char`\"{}../sketch/graph\+\_\+sketch.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}../graph/graph.\+h\char`\"{}}\\*
 {\ttfamily \#include \char`\"{}./reverse\+\_\+rank.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}../proto/cover.\+pb.\+h\char`\"{}}\\*
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover\+\_\+t}
 \begin{DoxyCompactList}\small\item\em Single seed information. \end{DoxyCompactList}\item 
 class \hyperlink{classall__distance__sketch_1_1Cover}{all\+\_\+distance\+\_\+sketch\+::\+Cover}
-\begin{DoxyCompactList}\small\item\em \hyperlink{classall__distance__sketch_1_1Cover}{Cover} extracted by the influence maximization algorithms. \end{DoxyCompactList}\item 
-class \hyperlink{classall__distance__sketch_1_1TSkimForwardRank}{all\+\_\+distance\+\_\+sketch\+::\+T\+Skim\+Forward\+Rank$<$ Z $>$}
-\begin{DoxyCompactList}\small\item\em Infuelnce maximization based on forward ranks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classall__distance__sketch_1_1Cover}{Cover} extracted by the influence maximization algorithms. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -26,8 +25,23 @@ class \hyperlink{classall__distance__sketch_1_1TSkimForwardRank}{all\+\_\+distan
 \subsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
+\hypertarget{namespaceall__distance__sketch_aec73a0920772f1a8413d068a6719891a}{}typedef proto\+::\+Seed\+Info\+Gpb {\bfseries all\+\_\+distance\+\_\+sketch\+::\+Seed\+Info\+Gpb}\label{namespaceall__distance__sketch_aec73a0920772f1a8413d068a6719891a}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_af96a1ca9b03281f81f03584343183488}{}typedef proto\+::\+Cover\+Gpb {\bfseries all\+\_\+distance\+\_\+sketch\+::\+Cover\+Gpb}\label{namespaceall__distance__sketch_af96a1ca9b03281f81f03584343183488}
+
+\item 
 typedef struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover\+\_\+t} \hyperlink{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}{all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover}
 \begin{DoxyCompactList}\small\item\em Single seed information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{namespaceall__distance__sketch_ac3afb94bba0e0305875629946729d1f7}{}int {\bfseries all\+\_\+distance\+\_\+sketch\+::random\+\_\+gen\+\_\+func} (int i)\label{namespaceall__distance__sketch_ac3afb94bba0e0305875629946729d1f7}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_a608d793c40489324eab25253cf430561}{}bool {\bfseries all\+\_\+distance\+\_\+sketch\+::cmp} (const std\+::pair$<$ int, int $>$ \&p1, const std\+::pair$<$ int, int $>$ \&p2)\label{namespaceall__distance__sketch_a608d793c40489324eab25253cf430561}
+
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}

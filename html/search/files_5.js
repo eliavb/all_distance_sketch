@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['t_5fskim_2eh',['t_skim.h',['../t__skim_8h.html',1,'']]]
+  ['sketch_5fcalculation_2eh',['sketch_calculation.h',['../sketch__calculation_8h.html',1,'']]]
 ];

@@ -1,0 +1,47 @@
+\hypertarget{cover_8proto}{}\section{src/proto/cover.proto File Reference}
+\label{cover_8proto}\index{src/proto/cover.\+proto@{src/proto/cover.\+proto}}
+
+
+Format to save the cover.  
+
+
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{cover_8proto_adbedb258e13546cc707a6ebb073a3d8a}{}{\bfseries syntax} = \char`\"{}proto2\char`\"{}\label{cover_8proto_adbedb258e13546cc707a6ebb073a3d8a}
+
+\item 
+\hypertarget{cover_8proto_a0c41dcc24abdb230ee669507323945ae}{}package all\+\_\+distance\+\_\+sketch {\bfseries proto}\label{cover_8proto_a0c41dcc24abdb230ee669507323945ae}
+
+\item 
+message {\bfseries Seed\+Info\+Gpb}
+\item 
+\hypertarget{cover_8proto_ae2d95f729a2bdf39ca6bc12018ec7b1a}{}repeated uint64 {\bfseries node\+\_\+ids} = 2\label{cover_8proto_ae2d95f729a2bdf39ca6bc12018ec7b1a}
+
+\item 
+message {\bfseries Cover\+Gpb}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Format to save the cover. 
+
+
+
+\subsection{Variable Documentation}
+\hypertarget{cover_8proto_af42b0188a43fe496a8edc48ab95b741a}{}\index{cover.\+proto@{cover.\+proto}!Cover\+Gpb@{Cover\+Gpb}}
+\index{Cover\+Gpb@{Cover\+Gpb}!cover.\+proto@{cover.\+proto}}
+\subsubsection[{Cover\+Gpb}]{\setlength{\rightskip}{0pt plus 5cm}message Cover\+Gpb}\label{cover_8proto_af42b0188a43fe496a8edc48ab95b741a}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+  repeated SeedInfoGpb seeds = 1
+\end{DoxyCode}
+\hypertarget{cover_8proto_a8daceb38bc294918fb46071b582b9039}{}\index{cover.\+proto@{cover.\+proto}!Seed\+Info\+Gpb@{Seed\+Info\+Gpb}}
+\index{Seed\+Info\+Gpb@{Seed\+Info\+Gpb}!cover.\+proto@{cover.\+proto}}
+\subsubsection[{Seed\+Info\+Gpb}]{\setlength{\rightskip}{0pt plus 5cm}message Seed\+Info\+Gpb}\label{cover_8proto_a8daceb38bc294918fb46071b582b9039}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+  optional uint64 seed\_node\_id = 1
+\end{DoxyCode}

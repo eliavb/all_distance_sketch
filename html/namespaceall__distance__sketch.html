@@ -119,8 +119,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structall__distance__sketch_1_1SeedCover__t.html">SeedCover_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single seed information.  <a href="structall__distance__sketch_1_1SeedCover__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1TSkimForwardRank.html">TSkimForwardRank</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Infuelnce maximization based on forward ranks.  <a href="classall__distance__sketch_1_1TSkimForwardRank.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classall__distance__sketch_1_1TSkimReverseRank.html">TSkimReverseRank</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Infuelnce maximization based on reverse ranks.  <a href="classall__distance__sketch_1_1TSkimReverseRank.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -131,6 +131,12 @@ typedef proto::NodeRanksGpb&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memitem:aa8c53b9bf63c29e404def8714ddab289"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa8c53b9bf63c29e404def8714ddab289"></a>
 typedef proto::NodeRankGpb&#160;</td><td class="memItemRight" valign="bottom"><b>NodeRankGpb</b></td></tr>
 <tr class="separator:aa8c53b9bf63c29e404def8714ddab289"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec73a0920772f1a8413d068a6719891a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec73a0920772f1a8413d068a6719891a"></a>
+typedef proto::SeedInfoGpb&#160;</td><td class="memItemRight" valign="bottom"><b>SeedInfoGpb</b></td></tr>
+<tr class="separator:aec73a0920772f1a8413d068a6719891a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af96a1ca9b03281f81f03584343183488"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af96a1ca9b03281f81f03584343183488"></a>
+typedef proto::CoverGpb&#160;</td><td class="memItemRight" valign="bottom"><b>CoverGpb</b></td></tr>
+<tr class="separator:af96a1ca9b03281f81f03584343183488"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c159e46ed1a101b68cb2b23a58c4129"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structall__distance__sketch_1_1SeedCover__t.html">all_distance_sketch::SeedCover_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a2c159e46ed1a101b68cb2b23a58c4129">SeedCover</a></td></tr>
 <tr class="memdesc:a2c159e46ed1a101b68cb2b23a58c4129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single seed information.  <a href="#a2c159e46ed1a101b68cb2b23a58c4129">More...</a><br /></td></tr>
 <tr class="separator:a2c159e46ed1a101b68cb2b23a58c4129"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,6 +213,12 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadRankingFro
 <tr class="memitem:a1e07f2d9df73bee36e926822ce0bb2ea"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceall__distance__sketch.html#a1e07f2d9df73bee36e926822ce0bb2ea">CalculateGraphSketch</a> (<a class="el" href="classall__distance__sketch_1_1graph_1_1Graph.html">graph::Graph</a>&lt; T &gt; *graph, <a class="el" href="classall__distance__sketch_1_1GraphSketch.html">GraphSketch</a> *graph_sketch)</td></tr>
 <tr class="memdesc:a1e07f2d9df73bee36e926822ce0bb2ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the bottom K single threaded.  <a href="#a1e07f2d9df73bee36e926822ce0bb2ea">More...</a><br /></td></tr>
 <tr class="separator:a1e07f2d9df73bee36e926822ce0bb2ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3afb94bba0e0305875629946729d1f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac3afb94bba0e0305875629946729d1f7"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>random_gen_func</b> (int i)</td></tr>
+<tr class="separator:ac3afb94bba0e0305875629946729d1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a608d793c40489324eab25253cf430561"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a608d793c40489324eab25253cf430561"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>cmp</b> (const std::pair&lt; int, int &gt; &amp;p1, const std::pair&lt; int, int &gt; &amp;p2)</td></tr>
+<tr class="separator:a608d793c40489324eab25253cf430561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>project namespace </p>
@@ -514,7 +526,7 @@ template&lt;class T , class CallBacks &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 20 2016 18:50:05 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 4 2016 17:02:30 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

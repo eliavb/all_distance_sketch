@@ -91,14 +91,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><span class="keywordtype">void</span> calculate_t_skim_cover(<a name="_a0"></a><a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">graph::Graph&lt; graph::TDirectedGraph &gt;</a>* graph) {</div>
 <div class="line">  <a name="_a1"></a><a class="code" href="classall__distance__sketch_1_1Cover.html">Cover</a> cover;</div>
 <div class="line">  <span class="comment">// Drop line to help tagging</span></div>
-<div class="line">  <a name="_a2"></a><a class="code" href="classall__distance__sketch_1_1TSkimForwardRank.html">TSkimForwardRank</a></div>
+<div class="line">  TSkimForwardRank</div>
 <div class="line">                &lt; graph::TDirectedGraph &gt; t_skim_algo;</div>
 <div class="line">  <span class="keywordtype">int</span> T = 100;</div>
 <div class="line">  <span class="keywordtype">int</span> K_all_distance_sketch=128;</div>
 <div class="line">  <span class="keywordtype">int</span> min_influence_for_seed=500;</div>
-<div class="line">  t_skim_algo.<a name="a3"></a><a class="code" href="classall__distance__sketch_1_1TSkimForwardRank.html#aa360ffd108fa094c74b27637712caae9">InitTSkim</a>(T, K_all_distance_sketch, min_influence_for_seed, &amp;cover, graph);</div>
+<div class="line">  t_skim_algo.InitTSkim(T, K_all_distance_sketch, min_influence_for_seed, &amp;cover, graph);</div>
 <div class="line">  t_skim_algo.Run();</div>
-<div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = cover.<a name="a4"></a>Begin(); it != cover.<a name="a5"></a>End(); ++it) {</div>
+<div class="line">  <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = cover.<a name="a2"></a>Begin(); it != cover.<a name="a3"></a>End(); ++it) {</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot; node id of seed=&quot;</span> &lt;&lt; it-&gt;second.seed &lt;&lt; </div>
 <div class="line">                 <span class="stringliteral">&quot; was selected at the &quot;</span> &lt;&lt; it-&gt;second.index &lt;&lt; std::endl;</div>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i &lt; it-&gt;second.covered_nodes.size(); i++) {</div>
@@ -111,7 +111,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --> </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 20 2016 18:50:05 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 4 2016 17:02:30 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

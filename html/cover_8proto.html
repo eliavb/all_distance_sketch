@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9"/>
-<title>All Distance Sketch: src/proto Directory Reference</title>
+<title>All Distance Sketch: src/proto/cover.proto File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -43,7 +43,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -61,6 +61,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
           </span>
         </div>
       </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>File&#160;List</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -83,27 +88,67 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
-<div class="title">proto Directory Reference</div>  </div>
+<div class="title">cover.proto File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Format to save the cover.  
+<a href="#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:all__distance__sketch_8proto"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="all__distance__sketch_8proto.html">all_distance_sketch.proto</a></td></tr>
-<tr class="memdesc:all__distance__sketch_8proto"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format to save the GraphSketch. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:cover_8proto"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cover_8proto.html">cover.proto</a></td></tr>
-<tr class="memdesc:cover_8proto"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format to save the cover. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ranking_8proto"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ranking_8proto.html">ranking.proto</a></td></tr>
-<tr class="memdesc:ranking_8proto"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format to save the ranking. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:adbedb258e13546cc707a6ebb073a3d8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adbedb258e13546cc707a6ebb073a3d8a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>syntax</b> = &quot;proto2&quot;</td></tr>
+<tr class="separator:adbedb258e13546cc707a6ebb073a3d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c41dcc24abdb230ee669507323945ae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0c41dcc24abdb230ee669507323945ae"></a>
+package all_distance_sketch&#160;</td><td class="memItemRight" valign="bottom"><b>proto</b></td></tr>
+<tr class="separator:a0c41dcc24abdb230ee669507323945ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8daceb38bc294918fb46071b582b9039"><td class="memItemLeft" align="right" valign="top">message&#160;</td><td class="memItemRight" valign="bottom"><b>SeedInfoGpb</b></td></tr>
+<tr class="separator:a8daceb38bc294918fb46071b582b9039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2d95f729a2bdf39ca6bc12018ec7b1a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2d95f729a2bdf39ca6bc12018ec7b1a"></a>
+repeated uint64&#160;</td><td class="memItemRight" valign="bottom"><b>node_ids</b> = 2</td></tr>
+<tr class="separator:ae2d95f729a2bdf39ca6bc12018ec7b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af42b0188a43fe496a8edc48ab95b741a"><td class="memItemLeft" align="right" valign="top">message&#160;</td><td class="memItemRight" valign="bottom"><b>CoverGpb</b></td></tr>
+<tr class="separator:af42b0188a43fe496a8edc48ab95b741a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Format to save the cover. </p>
+</div><h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="af42b0188a43fe496a8edc48ab95b741a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">message CoverGpb</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">  repeated SeedInfoGpb seeds = 1</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a8daceb38bc294918fb46071b582b9039"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">message SeedInfoGpb</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">{</div>
+<div class="line">  optional uint64 seed_node_id = 1</div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 4 2016 17:02:31 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 4 2016 17:02:30 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

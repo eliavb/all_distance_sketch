@@ -20,8 +20,8 @@ class \hyperlink{classall__distance__sketch_1_1NodeSketch}{Node\+Sketch}
 \begin{DoxyCompactList}\small\item\em Single node sketch. \end{DoxyCompactList}\item 
 struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{Seed\+Cover\+\_\+t}
 \begin{DoxyCompactList}\small\item\em Single seed information. \end{DoxyCompactList}\item 
-class \hyperlink{classall__distance__sketch_1_1TSkimForwardRank}{T\+Skim\+Forward\+Rank}
-\begin{DoxyCompactList}\small\item\em Infuelnce maximization based on forward ranks. \end{DoxyCompactList}\end{DoxyCompactItemize}
+class \hyperlink{classall__distance__sketch_1_1TSkimReverseRank}{T\+Skim\+Reverse\+Rank}
+\begin{DoxyCompactList}\small\item\em Infuelnce maximization based on reverse ranks. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
@@ -29,6 +29,12 @@ class \hyperlink{classall__distance__sketch_1_1TSkimForwardRank}{T\+Skim\+Forwar
 
 \item 
 \hypertarget{namespaceall__distance__sketch_aa8c53b9bf63c29e404def8714ddab289}{}typedef proto\+::\+Node\+Rank\+Gpb {\bfseries Node\+Rank\+Gpb}\label{namespaceall__distance__sketch_aa8c53b9bf63c29e404def8714ddab289}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_aec73a0920772f1a8413d068a6719891a}{}typedef proto\+::\+Seed\+Info\+Gpb {\bfseries Seed\+Info\+Gpb}\label{namespaceall__distance__sketch_aec73a0920772f1a8413d068a6719891a}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_af96a1ca9b03281f81f03584343183488}{}typedef proto\+::\+Cover\+Gpb {\bfseries Cover\+Gpb}\label{namespaceall__distance__sketch_af96a1ca9b03281f81f03584343183488}
 
 \item 
 typedef struct \hyperlink{structall__distance__sketch_1_1SeedCover__t}{all\+\_\+distance\+\_\+sketch\+::\+Seed\+Cover\+\_\+t} \hyperlink{namespaceall__distance__sketch_a2c159e46ed1a101b68cb2b23a58c4129}{Seed\+Cover}
@@ -94,7 +100,13 @@ typedef std\+::vector$<$ \hyperlink{classall__distance__sketch_1_1NodeIdDistance
 {\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a7fea917111c3851d7c909e896fbad571}{Calculate\+Graph\+Sketch\+Multi\+Core} (\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch, unsigned int num\+\_\+threads=5, double increase\+\_\+factor=1.\+1)
 \begin{DoxyCompactList}\small\item\em Calculate the bottom K graph sketch in parallel This implementation is faster than the single threaded implementation but the cost is in memory. \end{DoxyCompactList}\item 
 {\footnotesize template$<$class T $>$ }\\static void \hyperlink{namespaceall__distance__sketch_a1e07f2d9df73bee36e926822ce0bb2ea}{Calculate\+Graph\+Sketch} (\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph\+::\+Graph}$<$ T $>$ $\ast$graph, \hyperlink{classall__distance__sketch_1_1GraphSketch}{Graph\+Sketch} $\ast$graph\+\_\+sketch)
-\begin{DoxyCompactList}\small\item\em Calculate the bottom K single threaded. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Calculate the bottom K single threaded. \end{DoxyCompactList}\item 
+\hypertarget{namespaceall__distance__sketch_ac3afb94bba0e0305875629946729d1f7}{}int {\bfseries random\+\_\+gen\+\_\+func} (int i)\label{namespaceall__distance__sketch_ac3afb94bba0e0305875629946729d1f7}
+
+\item 
+\hypertarget{namespaceall__distance__sketch_a608d793c40489324eab25253cf430561}{}bool {\bfseries cmp} (const std\+::pair$<$ int, int $>$ \&p1, const std\+::pair$<$ int, int $>$ \&p2)\label{namespaceall__distance__sketch_a608d793c40489324eab25253cf430561}
+
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}

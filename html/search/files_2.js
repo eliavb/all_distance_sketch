@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['graph_2eh',['graph.h',['../graph_8h.html',1,'']]]
+  ['dijkstra_5fshortest_5fpaths_2eh',['dijkstra_shortest_paths.h',['../dijkstra__shortest__paths_8h.html',1,'']]]
 ];
