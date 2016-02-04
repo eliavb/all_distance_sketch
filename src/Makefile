@@ -80,7 +80,7 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = test_all$(EXEEXT) sketch_app$(EXEEXT) \
-	reverse_rank_app$(EXEEXT)
+	reverse_rank_app$(EXEEXT) t_skim_reverse_rank_app$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(dist_noinst_DATA) $(include_HEADERS)
@@ -131,7 +131,8 @@ am__v_AR_1 =
 liball_distance_sketch_a_AR = $(AR) $(ARFLAGS)
 liball_distance_sketch_a_LIBADD =
 am__objects_1 =
-am__objects_2 = all_distance_sketch.pb.$(OBJEXT) ranking.pb.$(OBJEXT)
+am__objects_2 = all_distance_sketch.pb.$(OBJEXT) ranking.pb.$(OBJEXT) \
+	cover.pb.$(OBJEXT)
 am_liball_distance_sketch_a_OBJECTS = $(am__objects_1) \
 	$(am__objects_2)
 liball_distance_sketch_a_OBJECTS =  \
@@ -146,6 +147,11 @@ am_sketch_app_OBJECTS = sketch_calculation_app.$(OBJEXT) \
 	$(am__objects_3)
 sketch_app_OBJECTS = $(am_sketch_app_OBJECTS)
 sketch_app_LDADD = $(LDADD)
+am_t_skim_reverse_rank_app_OBJECTS = t_skim_reverse_rank.$(OBJEXT) \
+	$(am__objects_3)
+t_skim_reverse_rank_app_OBJECTS =  \
+	$(am_t_skim_reverse_rank_app_OBJECTS)
+t_skim_reverse_rank_app_LDADD = $(LDADD)
 am_test_all_OBJECTS = run_all.$(OBJEXT) $(am__objects_3)
 test_all_OBJECTS = $(am_test_all_OBJECTS)
 test_all_LDADD = $(LDADD)
@@ -196,10 +202,10 @@ am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(liball_distance_sketch_a_SOURCES) \
 	$(reverse_rank_app_SOURCES) $(sketch_app_SOURCES) \
-	$(test_all_SOURCES)
+	$(t_skim_reverse_rank_app_SOURCES) $(test_all_SOURCES)
 DIST_SOURCES = $(liball_distance_sketch_a_SOURCES) \
 	$(reverse_rank_app_SOURCES) $(sketch_app_SOURCES) \
-	$(test_all_SOURCES)
+	$(t_skim_reverse_rank_app_SOURCES) $(test_all_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -337,11 +343,12 @@ AM_LDFLAGS = -lboost_system$(BOOST_LIB_SUFFIX) -lboost_program_options -lprotobu
 # the previous manual Makefile
 HDRS = $(wildcard ./*/*.h) $(wildcard ./*.h)
 TEST_SRC = $(wildcard ./*/ut/*.cpp)
-PROTOS_TO_BUILD = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h $(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc
+PROTOS_TO_BUILD = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h $(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc $(builddir)/proto/cover.pb.h $(builddir)/proto/cover.pb.cc 
 ALL = $(HDRS) $(TEST_SRC) $(PROTOS_TO_BUILD)
 test_all_SOURCES = graph/ut/run_all.cpp $(ALL)
 sketch_app_SOURCES = app/sketch_calculation_app.cpp $(ALL)
 reverse_rank_app_SOURCES = app/reverse_rank_app.cpp $(ALL)
+t_skim_reverse_rank_app_SOURCES = app/t_skim_reverse_rank.cpp $(ALL)
 lib_LIBRARIES = liball_distance_sketch.a
 liball_distance_sketch_a_SOURCES = $(HDRS) $(PROTOS_TO_BUILD)
 include_HEADERS = ./all_distance_sketch.h
@@ -470,6 +477,10 @@ sketch_app$(EXEEXT): $(sketch_app_OBJECTS) $(sketch_app_DEPENDENCIES) $(EXTRA_sk
 	@rm -f sketch_app$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(sketch_app_OBJECTS) $(sketch_app_LDADD) $(LIBS)
 
+t_skim_reverse_rank_app$(EXEEXT): $(t_skim_reverse_rank_app_OBJECTS) $(t_skim_reverse_rank_app_DEPENDENCIES) $(EXTRA_t_skim_reverse_rank_app_DEPENDENCIES) 
+	@rm -f t_skim_reverse_rank_app$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(t_skim_reverse_rank_app_OBJECTS) $(t_skim_reverse_rank_app_LDADD) $(LIBS)
+
 test_all$(EXEEXT): $(test_all_OBJECTS) $(test_all_DEPENDENCIES) $(EXTRA_test_all_DEPENDENCIES) 
 	@rm -f test_all$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(test_all_OBJECTS) $(test_all_LDADD) $(LIBS)
@@ -481,10 +492,12 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include ./$(DEPDIR)/all_distance_sketch.pb.Po
+include ./$(DEPDIR)/cover.pb.Po
 include ./$(DEPDIR)/ranking.pb.Po
 include ./$(DEPDIR)/reverse_rank_app.Po
 include ./$(DEPDIR)/run_all.Po
 include ./$(DEPDIR)/sketch_calculation_app.Po
+include ./$(DEPDIR)/t_skim_reverse_rank.Po
 
 .cc.o:
 	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -528,6 +541,20 @@ ranking.pb.obj: $(builddir)/proto/ranking.pb.cc
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ranking.pb.obj `if test -f '$(builddir)/proto/ranking.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/ranking.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/ranking.pb.cc'; fi`
 
+cover.pb.o: $(builddir)/proto/cover.pb.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT cover.pb.o -MD -MP -MF $(DEPDIR)/cover.pb.Tpo -c -o cover.pb.o `test -f '$(builddir)/proto/cover.pb.cc' || echo '$(srcdir)/'`$(builddir)/proto/cover.pb.cc
+	$(AM_V_at)$(am__mv) $(DEPDIR)/cover.pb.Tpo $(DEPDIR)/cover.pb.Po
+#	$(AM_V_CXX)source='$(builddir)/proto/cover.pb.cc' object='cover.pb.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o cover.pb.o `test -f '$(builddir)/proto/cover.pb.cc' || echo '$(srcdir)/'`$(builddir)/proto/cover.pb.cc
+
+cover.pb.obj: $(builddir)/proto/cover.pb.cc
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT cover.pb.obj -MD -MP -MF $(DEPDIR)/cover.pb.Tpo -c -o cover.pb.obj `if test -f '$(builddir)/proto/cover.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/cover.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/cover.pb.cc'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/cover.pb.Tpo $(DEPDIR)/cover.pb.Po
+#	$(AM_V_CXX)source='$(builddir)/proto/cover.pb.cc' object='cover.pb.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o cover.pb.obj `if test -f '$(builddir)/proto/cover.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/cover.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/cover.pb.cc'; fi`
+
 reverse_rank_app.o: app/reverse_rank_app.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reverse_rank_app.o -MD -MP -MF $(DEPDIR)/reverse_rank_app.Tpo -c -o reverse_rank_app.o `test -f 'app/reverse_rank_app.cpp' || echo '$(srcdir)/'`app/reverse_rank_app.cpp
 	$(AM_V_at)$(am__mv) $(DEPDIR)/reverse_rank_app.Tpo $(DEPDIR)/reverse_rank_app.Po
@@ -555,6 +582,20 @@ sketch_calculation_app.obj: app/sketch_calculation_app.cpp
 #	$(AM_V_CXX)source='app/sketch_calculation_app.cpp' object='sketch_calculation_app.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sketch_calculation_app.obj `if test -f 'app/sketch_calculation_app.cpp'; then $(CYGPATH_W) 'app/sketch_calculation_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/sketch_calculation_app.cpp'; fi`
+
+t_skim_reverse_rank.o: app/t_skim_reverse_rank.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT t_skim_reverse_rank.o -MD -MP -MF $(DEPDIR)/t_skim_reverse_rank.Tpo -c -o t_skim_reverse_rank.o `test -f 'app/t_skim_reverse_rank.cpp' || echo '$(srcdir)/'`app/t_skim_reverse_rank.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/t_skim_reverse_rank.Tpo $(DEPDIR)/t_skim_reverse_rank.Po
+#	$(AM_V_CXX)source='app/t_skim_reverse_rank.cpp' object='t_skim_reverse_rank.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o t_skim_reverse_rank.o `test -f 'app/t_skim_reverse_rank.cpp' || echo '$(srcdir)/'`app/t_skim_reverse_rank.cpp
+
+t_skim_reverse_rank.obj: app/t_skim_reverse_rank.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT t_skim_reverse_rank.obj -MD -MP -MF $(DEPDIR)/t_skim_reverse_rank.Tpo -c -o t_skim_reverse_rank.obj `if test -f 'app/t_skim_reverse_rank.cpp'; then $(CYGPATH_W) 'app/t_skim_reverse_rank.cpp'; else $(CYGPATH_W) '$(srcdir)/app/t_skim_reverse_rank.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/t_skim_reverse_rank.Tpo $(DEPDIR)/t_skim_reverse_rank.Po
+#	$(AM_V_CXX)source='app/t_skim_reverse_rank.cpp' object='t_skim_reverse_rank.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o t_skim_reverse_rank.obj `if test -f 'app/t_skim_reverse_rank.cpp'; then $(CYGPATH_W) 'app/t_skim_reverse_rank.cpp'; else $(CYGPATH_W) '$(srcdir)/app/t_skim_reverse_rank.cpp'; fi`
 
 run_all.o: graph/ut/run_all.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT run_all.o -MD -MP -MF $(DEPDIR)/run_all.Tpo -c -o run_all.o `test -f 'graph/ut/run_all.cpp' || echo '$(srcdir)/'`graph/ut/run_all.cpp
@@ -823,6 +864,8 @@ $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketc
 	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/all_distance_sketch.proto
 $(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc: $(srcdir)/proto/ranking.proto
 	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/ranking.proto
+$(builddir)/proto/cover.pb.cc $(builddir)/proto/cover.pb.h: $(srcdir)/proto/cover.proto
+	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/cover.proto
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

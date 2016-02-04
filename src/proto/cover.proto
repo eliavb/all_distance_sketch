@@ -1,0 +1,16 @@
+/*! \file cover.proto
+    \brief Format to save the cover
+*/
+syntax = "proto2";
+
+package all_distance_sketch.proto;
+
+
+message SeedInfoGpb {
+  optional uint64 seed_node_id = 1;
+  repeated uint64 node_id = 2;
+}
+
+message CoverGpb {
+  repeated SeedInfoGpb seeds = 1;
+}
