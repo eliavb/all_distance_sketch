@@ -1,5 +1,6 @@
 sketch_calculation_app.o: app/sketch_calculation_app.cpp \
- /usr/include/stdc-predef.h /usr/include/c++/4.8.2/iostream \
+ /usr/include/stdc-predef.h app/sketch_calculation_app.h \
+ /usr/include/c++/4.8.2/iostream \
  /usr/include/c++/4.8.2/x86_64-redhat-linux/bits/c++config.h \
  /usr/include/bits/wordsize.h \
  /usr/include/c++/4.8.2/x86_64-redhat-linux/bits/os_defines.h \
@@ -927,6 +928,8 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  app/../sketch/graph_sketch.h app/utils.h
 
 /usr/include/stdc-predef.h:
+
+app/sketch_calculation_app.h:
 
 /usr/include/c++/4.8.2/iostream:
 

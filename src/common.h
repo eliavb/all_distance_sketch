@@ -9,6 +9,7 @@
 #include <thread>
 #include <cstring>
 #include <cstdlib>
+#include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <list>

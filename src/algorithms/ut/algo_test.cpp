@@ -3,6 +3,7 @@
 #include "../reverse_rank.h"
 #include "../sketch_calculation.h"
 #include "../../graph/snap_graph_adaptor.h"
+#include "../../app/sketch_calculation_app.h"
 
 using namespace all_distance_sketch;
 
@@ -1289,4 +1290,59 @@ TEST_F(AlgoGraph, CheckRankUpTo100) {
     EXPECT_TRUE(node_rank.second <= 100);
     std::cout << "node id=" << node_rank.first << " rank=" << node_rank.second << std::endl;
   }
+}
+
+TEST_F(AlgoGraph, AppTestUndirected) {
+  std::string graph_dir_arg = "--graph_dir=";
+  graph_dir_arg += GetSampleData();
+  char * writable = new char[graph_dir_arg.size() + 1];
+  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
+  writable[graph_dir_arg.size()] = '\0';
+  char *arguments[] = { "app", 
+                        "--K=64", 
+                        writable, 
+                        "--output_file=temp_file_app_test"};
+  EXPECT_EQ(app_main(4, arguments), 0);
+
+  graph::Graph< graph::TUnDirectedGraph> graph;
+  graph.LoadGraphFromDir(GetSampleData());
+  GraphSketch graph_sketch;
+  int k = 64;
+  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
+  CalculateGraphSketch<graph::TUnDirectedGraph>(&graph, &graph_sketch);
+
+  GraphSketch graph_sketch_from_app;
+  std::string file_name = "temp_file_app_test";
+  load_sketch(&graph_sketch_from_app, file_name);
+  EXPECT_EQ(graph_sketch_from_app, graph_sketch);
+
+  std::remove("temp_file_app_test");
+}
+
+TEST_F(AlgoGraph, AppTestDirected) {
+  std::string graph_dir_arg = "--graph_dir=";
+  graph_dir_arg += GetSampleData();
+  char * writable = new char[graph_dir_arg.size() + 1];
+  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
+  writable[graph_dir_arg.size()] = '\0';
+  char *arguments[] = { "app", 
+                        "--K=64", 
+                        writable, 
+                        "--output_file=temp_file_app_test_directed",
+                        "--directed=true"};
+  EXPECT_EQ(app_main(5, arguments), 0);
+
+  graph::Graph< graph::TDirectedGraph> graph;
+  graph.LoadGraphFromDir(GetSampleData());
+  GraphSketch graph_sketch;
+  int k = 64;
+  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
+  CalculateGraphSketch<graph::TDirectedGraph>(&graph, &graph_sketch);
+
+  GraphSketch graph_sketch_from_app;
+  std::string file_name = "temp_file_app_test_directed";
+  load_sketch(&graph_sketch_from_app, file_name);
+  EXPECT_EQ(graph_sketch_from_app, graph_sketch);
+
+  std::remove("temp_file_app_test_directed");
 }

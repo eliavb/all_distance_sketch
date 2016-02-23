@@ -1,5 +1,6 @@
 t_skim_reverse_rank.o: app/t_skim_reverse_rank.cpp \
- /usr/include/stdc-predef.h /usr/include/c++/4.8.2/iostream \
+ /usr/include/stdc-predef.h app/t_skim_reverse_rank.h \
+ /usr/include/c++/4.8.2/iostream \
  /usr/include/c++/4.8.2/x86_64-redhat-linux/bits/c++config.h \
  /usr/include/bits/wordsize.h \
  /usr/include/c++/4.8.2/x86_64-redhat-linux/bits/os_defines.h \
@@ -927,6 +928,8 @@ t_skim_reverse_rank.o: app/t_skim_reverse_rank.cpp \
  app/../sketch/graph_sketch.h app/utils.h
 
 /usr/include/stdc-predef.h:
+
+app/t_skim_reverse_rank.h:
 
 /usr/include/c++/4.8.2/iostream:
 

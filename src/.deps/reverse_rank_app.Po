@@ -1,5 +1,5 @@
 reverse_rank_app.o: app/reverse_rank_app.cpp /usr/include/stdc-predef.h \
- /usr/include/c++/4.8.2/iostream \
+ app/reverse_rank_app.h /usr/include/c++/4.8.2/iostream \
  /usr/include/c++/4.8.2/x86_64-redhat-linux/bits/c++config.h \
  /usr/include/bits/wordsize.h \
  /usr/include/c++/4.8.2/x86_64-redhat-linux/bits/os_defines.h \
@@ -927,6 +927,8 @@ reverse_rank_app.o: app/reverse_rank_app.cpp /usr/include/stdc-predef.h \
  app/../sketch/graph_sketch.h app/utils.h
 
 /usr/include/stdc-predef.h:
+
+app/reverse_rank_app.h:
 
 /usr/include/c++/4.8.2/iostream:
 
