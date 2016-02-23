@@ -4,6 +4,7 @@
 #include "../sketch_calculation.h"
 #include "../../graph/snap_graph_adaptor.h"
 #include "../../app/sketch_calculation_app.h"
+#include "../../app/reverse_rank_app.h"
 
 using namespace all_distance_sketch;
 
@@ -1288,11 +1289,10 @@ TEST_F(AlgoGraph, CheckRankUpTo100) {
                           &stop_after_100);
   for (auto node_rank : stop_after_100.get_ranks()) {
     EXPECT_TRUE(node_rank.second <= 100);
-    std::cout << "node id=" << node_rank.first << " rank=" << node_rank.second << std::endl;
   }
 }
 
-TEST_F(AlgoGraph, AppTestUndirected) {
+TEST_F(AlgoGraph, SketchAppTestUndirected) {
   std::string graph_dir_arg = "--graph_dir=";
   graph_dir_arg += GetSampleData();
   char * writable = new char[graph_dir_arg.size() + 1];
@@ -1302,7 +1302,7 @@ TEST_F(AlgoGraph, AppTestUndirected) {
                         "--K=64", 
                         writable, 
                         "--output_file=temp_file_app_test"};
-  EXPECT_EQ(app_main(4, arguments), 0);
+  EXPECT_EQ(sketch_app_main(4, arguments), 0);
 
   graph::Graph< graph::TUnDirectedGraph> graph;
   graph.LoadGraphFromDir(GetSampleData());
@@ -1319,7 +1319,7 @@ TEST_F(AlgoGraph, AppTestUndirected) {
   std::remove("temp_file_app_test");
 }
 
-TEST_F(AlgoGraph, AppTestDirected) {
+TEST_F(AlgoGraph, SketchAppTestDirected) {
   std::string graph_dir_arg = "--graph_dir=";
   graph_dir_arg += GetSampleData();
   char * writable = new char[graph_dir_arg.size() + 1];
@@ -1330,7 +1330,7 @@ TEST_F(AlgoGraph, AppTestDirected) {
                         writable, 
                         "--output_file=temp_file_app_test_directed",
                         "--directed=true"};
-  EXPECT_EQ(app_main(5, arguments), 0);
+  EXPECT_EQ(sketch_app_main(5, arguments), 0);
 
   graph::Graph< graph::TDirectedGraph> graph;
   graph.LoadGraphFromDir(GetSampleData());
@@ -1345,4 +1345,106 @@ TEST_F(AlgoGraph, AppTestDirected) {
   EXPECT_EQ(graph_sketch_from_app, graph_sketch);
 
   std::remove("temp_file_app_test_directed");
+}
+
+TEST_F(AlgoGraph, ReverseRankAppTestUndirected) {
+  /*
+  --source_id arg        id of source node
+  --K arg                K = 1/epsilon^2 sets the precision
+  --num_threads arg (=1) num_threads to use
+  --directed arg         is the graph directed
+  --graph_dir arg        Directory with the graph to calculate the sketch on
+  --sketch_file arg      File with the calculated sketch
+  --output_file arg
+  */
+  std::string graph_dir_arg = "--graph_dir=";
+  graph_dir_arg += GetSampleData();
+  char * writable = new char[graph_dir_arg.size() + 1];
+  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
+  writable[graph_dir_arg.size()] = '\0';
+  char *arguments[] = { "app",
+                        "--source_id=0", 
+                        "--K=64",
+                        writable, 
+                        "--output_file=temp_file_reverse_rank_app_test"};
+  EXPECT_EQ(reverse_rank_app_main(5, arguments), 0);
+
+  graph::Graph< graph::TUnDirectedGraph> graph;
+  graph.LoadGraphFromDir(GetSampleData());
+  std::cout << "Max node id=" << graph.GetMxNId() << std::endl;
+  GraphSketch graph_sketch;
+  int k = 64;
+  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
+  CalculateGraphSketch<graph::TUnDirectedGraph>(&graph, &graph_sketch);
+  int node_id = 0;
+  std::vector<int> ranking;
+  CalculateReverseRank<graph::TUnDirectedGraph> (node_id,
+                                                 &graph,
+                                                 &graph_sketch,
+                                                 &ranking);
+
+  std::fstream input("temp_file_reverse_rank_app_test", std::ios::in | std::ios::binary);
+  NodeRanksGpb node_ranks;
+  EXPECT_TRUE(node_ranks.ParseFromIstream(&input));
+  for (int i=0; i < node_ranks.node_ranks_size(); i++) {
+    const NodeRankGpb& rank = node_ranks.node_ranks(i);
+    int node_id = rank.node_id();
+    int node_rank = rank.node_rank();
+    EXPECT_EQ(node_rank, ranking[node_id]);
+  }
+  std::remove("temp_file_reverse_rank_app_test");
+}
+
+TEST_F(AlgoGraph, ReverseRankAppTestDirected) {
+  /*
+  --source_id arg        id of source node
+  --K arg                K = 1/epsilon^2 sets the precision
+  --num_threads arg (=1) num_threads to use
+  --directed arg         is the graph directed
+  --graph_dir arg        Directory with the graph to calculate the sketch on
+  --sketch_file arg      File with the calculated sketch
+  --output_file arg
+  */
+  graph::Graph< graph::TDirectedGraph> graph;
+  graph.LoadGraphFromDir(GetSampleData());
+
+  std::string graph_dir_arg = "--graph_dir=";
+  graph_dir_arg += GetSampleData();
+  char * writable = new char[graph_dir_arg.size() + 1];
+  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
+  writable[graph_dir_arg.size()] = '\0';
+  char *arguments[] = { "app",
+                        "--source_id=0", 
+                        "--K=64",
+                        writable, 
+                        "--output_file=temp_file_reverse_rank_app_test",
+                        "--directed=true"};
+  EXPECT_EQ(reverse_rank_app_main(6, arguments), 0);
+
+  
+  GraphSketch graph_sketch;
+  int k = 64;
+  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
+  CalculateGraphSketch<graph::TDirectedGraph>(&graph, &graph_sketch);
+  graph::Graph<graph::TDirectedGraph> graph_transpose;
+  graph.Transpose(&graph_transpose);
+  int node_id = 0;
+  std::vector<int> ranking;
+  CalculateReverseRank<graph::TDirectedGraph> (node_id,
+                                               &graph_transpose,
+                                               &graph_sketch,
+                                               &ranking);
+
+  std::fstream input("temp_file_reverse_rank_app_test", std::ios::in | std::ios::binary);
+  NodeRanksGpb node_ranks;
+  EXPECT_TRUE(node_ranks.ParseFromIstream(&input));
+  std::cout << "size=" << node_ranks.node_ranks_size() << " ranking=" << ranking.size() << std::endl;
+  for (int i=0; i < node_ranks.node_ranks_size(); i++) {
+    const NodeRankGpb& rank = node_ranks.node_ranks(i);
+    int node_id = rank.node_id();
+    int node_rank = rank.node_rank();
+    std::cout << node_rank << std::endl;
+    EXPECT_EQ(node_rank, ranking[node_id]);
+  }
+  std::remove("temp_file_reverse_rank_app_test");
 }

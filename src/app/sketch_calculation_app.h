@@ -62,7 +62,7 @@ bool parse_command_line_args(int ac, char* av[], int* K,
     return false;
 }
 
-int app_main(int ac, char*av[]) {
+int sketch_app_main(int ac, char*av[]) {
     int K, num_threads;
     bool directed;
     std::string output_file, graph_dir;

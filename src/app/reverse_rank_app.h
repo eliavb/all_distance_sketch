@@ -38,7 +38,7 @@ bool parse_command_line_args(int ac, char* av[], int* source_id,
             ("sketch_file", po::value< std::string >(sketch_file),
                   "File with the calculated sketch")
             ("output_file", po::value< std::string > (output_file)->required(), 
-                  "output file path, here the sketch Gpb will be saved (Gpb defined in src/proto/all_distance_sketch.proto)")
+                  "output file path, here the sketch Gpb will be saved")
         ;
 
         po::positional_options_description p;
@@ -68,7 +68,7 @@ bool parse_command_line_args(int ac, char* av[], int* source_id,
     return false;
 }
 
-int main_app(int ac, char* av[]) {
+int reverse_rank_app_main(int ac, char* av[]) {
     int K, num_threads, node_id;
     bool directed;
     std::string output_file, graph_dir, sketch_file;
@@ -94,7 +94,7 @@ int main_app(int ac, char* av[]) {
     if (directed) {
         directed_graph.Transpose(&directed_graph_transpose);
     } else {
-        un_directed_graph_transpose.Transpose(&un_directed_graph_transpose);
+        un_directed_graph.Transpose(&un_directed_graph_transpose);
     }
     std::vector<int> ranking;
     if (directed)
