@@ -22,3 +22,25 @@ void calculate_t_skim_cover(graph::Graph< graph::TDirectedGraph >* graph) {
     }
   }
 }
+
+void save_t_skim_to_gpb(graph::Graph<graph::TDirectedGraph>* graph, std::string output_file) {
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo_directed;
+  Cover cover;
+  t_skim_algo_directed.InitTSkim(T, K, min_influence_for_seed_set, &cover, graph);
+  t_skim_algo_directed.Run();
+
+  CoverGpb coverGpb;
+  cover.SaveGraphSketchToGpb(&coverGpb);
+  {
+      fstream output(output_file, ios::out | ios::trunc | ios::binary);
+      if (!coverGpb.SerializeToOstream(&output)) {
+          cerr << "Failed to write node_ranks to file=" << output_file << endl;
+          return 1;
+      }
+  }
+}
+
+void load_t_skim_from_gpb(const CoverGpb& coverGpb) {
+  Cover cover;
+  cover.LoadCoverFromGpb(coverGpb);
+}

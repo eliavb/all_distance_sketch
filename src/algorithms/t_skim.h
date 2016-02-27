@@ -44,7 +44,7 @@ class Cover {
       is_covered.clear();
     }
 
-    void LoadCoverFromGpb(const CoverGpb cover) {
+    void LoadCoverFromGpb(const CoverGpb& cover) {
       for (int i=0; i < cover.seeds_size(); i++) {
         int seed_id = cover.seeds(i).seed_node_id();
         AddSeed(seed_id);

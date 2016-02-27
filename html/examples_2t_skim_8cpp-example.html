@@ -108,10 +108,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line">    }</div>
 <div class="line">  }</div>
 <div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> save_t_skim_to_gpb(<a class="code" href="classall__distance__sketch_1_1graph_1_1Graph.html">graph::Graph&lt;graph::TDirectedGraph&gt;</a>* graph, std::string output_file) {</div>
+<div class="line">  <a name="_a4"></a><a class="code" href="classall__distance__sketch_1_1TSkimReverseRank.html">TSkimReverseRank&lt; graph::TDirectedGraph &gt;</a> t_skim_algo_directed;</div>
+<div class="line">  <a class="code" href="classall__distance__sketch_1_1Cover.html">Cover</a> cover;</div>
+<div class="line">  t_skim_algo_directed.<a name="a5"></a><a class="code" href="classall__distance__sketch_1_1TSkimReverseRank.html#ad1c20be2016c93f41094fb93afc8068a">InitTSkim</a>(T, K, min_influence_for_seed_set, &amp;cover, graph);</div>
+<div class="line">  t_skim_algo_directed.<a name="a6"></a>Run();</div>
+<div class="line"></div>
+<div class="line">  CoverGpb coverGpb;</div>
+<div class="line">  cover.<a name="a7"></a>SaveGraphSketchToGpb(&amp;coverGpb);</div>
+<div class="line">  {</div>
+<div class="line">      fstream output(output_file, ios::out | ios::trunc | ios::binary);</div>
+<div class="line">      <span class="keywordflow">if</span> (!coverGpb.SerializeToOstream(&amp;output)) {</div>
+<div class="line">          cerr &lt;&lt; <span class="stringliteral">&quot;Failed to write node_ranks to file=&quot;</span> &lt;&lt; output_file &lt;&lt; endl;</div>
+<div class="line">          <span class="keywordflow">return</span> 1;</div>
+<div class="line">      }</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+<div class="line"></div>
+<div class="line"><span class="keywordtype">void</span> load_t_skim_from_gpb(<span class="keyword">const</span> CoverGpb&amp; coverGpb) {</div>
+<div class="line">  <a class="code" href="classall__distance__sketch_1_1Cover.html">Cover</a> cover;</div>
+<div class="line">  cover.<a name="a8"></a>LoadCoverFromGpb(coverGpb);</div>
+<div class="line">}</div>
 </div><!-- fragment --> </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Feb 4 2016 17:02:30 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Feb 27 2016 16:18:39 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

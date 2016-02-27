@@ -28,5 +28,28 @@ Examples on how to use T\+Skim
     \}
   \}
 \}
+
+\textcolor{keywordtype}{void} save\_t\_skim\_to\_gpb(\hyperlink{classall__distance__sketch_1_1graph_1_1Graph}{graph::Graph<graph::TDirectedGraph>}* graph, 
+      std::string output\_file) \{
+  \hyperlink{classall__distance__sketch_1_1TSkimReverseRank}{TSkimReverseRank< graph::TDirectedGraph >} t\_skim\_algo\_directed;
+  \hyperlink{classall__distance__sketch_1_1Cover}{Cover} cover;
+  t\_skim\_algo\_directed.\hyperlink{classall__distance__sketch_1_1TSkimReverseRank_ad1c20be2016c93f41094fb93afc8068a}{InitTSkim}(T, K, min\_influence\_for\_seed\_set, &cover, graph);
+  t\_skim\_algo\_directed.Run();
+
+  CoverGpb coverGpb;
+  cover.SaveGraphSketchToGpb(&coverGpb);
+  \{
+      fstream output(output\_file, ios::out | ios::trunc | ios::binary);
+      \textcolor{keywordflow}{if} (!coverGpb.SerializeToOstream(&output)) \{
+          cerr << \textcolor{stringliteral}{"Failed to write node\_ranks to file="} << output\_file << endl;
+          \textcolor{keywordflow}{return} 1;
+      \}
+  \}
+\}
+
+\textcolor{keywordtype}{void} load\_t\_skim\_from\_gpb(\textcolor{keyword}{const} CoverGpb& coverGpb) \{
+  \hyperlink{classall__distance__sketch_1_1Cover}{Cover} cover;
+  cover.LoadCoverFromGpb(coverGpb);
+\}
 \end{DoxyCodeInclude}
  
