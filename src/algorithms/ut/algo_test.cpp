@@ -5,6 +5,7 @@
 #include "../../graph/snap_graph_adaptor.h"
 #include "../../app/sketch_calculation_app.h"
 #include "../../app/reverse_rank_app.h"
+#include "../../app/t_skim_reverse_rank_app.h"
 
 using namespace all_distance_sketch;
 
@@ -1448,3 +1449,34 @@ TEST_F(AlgoGraph, ReverseRankAppTestDirected) {
   }
   std::remove("temp_file_reverse_rank_app_test");
 }
+
+
+TEST_F(AlgoGraph, TSkimAppTestUndirected) {
+  std::string graph_dir_arg = "--graph_dir=";
+  graph_dir_arg += GetSampleData();
+  char * writable = new char[graph_dir_arg.size() + 1];
+  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
+  writable[graph_dir_arg.size()] = '\0';
+  char *arguments[] = { "app", 
+                        "--K=64", 
+                        "--T=10",
+                        "--min_influence_for_seed_set=10",
+                        writable, 
+                        "--output_file=temp_file_t_skim_app_test"};
+  EXPECT_EQ(t_skim_app_main(6, arguments), 0);
+  /*
+  graph::Graph< graph::TUnDirectedGraph> graph;
+  graph.LoadGraphFromDir(GetSampleData());
+  GraphSketch graph_sketch;
+  int k = 64;
+  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
+  CalculateGraphSketch<graph::TUnDirectedGraph>(&graph, &graph_sketch);
+
+  GraphSketch graph_sketch_from_app;
+  std::string file_name = "temp_file_t_skim_app_test";
+  load_sketch(&graph_sketch_from_app, file_name);
+  EXPECT_EQ(graph_sketch_from_app, graph_sketch);
+  */
+  std::remove("temp_file_t_skim_app_test");
+}
+

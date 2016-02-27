@@ -147,8 +147,8 @@ am_sketch_app_OBJECTS = sketch_calculation_app.$(OBJEXT) \
 	$(am__objects_3)
 sketch_app_OBJECTS = $(am_sketch_app_OBJECTS)
 sketch_app_LDADD = $(LDADD)
-am_t_skim_reverse_rank_app_OBJECTS = t_skim_reverse_rank.$(OBJEXT) \
-	$(am__objects_3)
+am_t_skim_reverse_rank_app_OBJECTS =  \
+	t_skim_reverse_rank_app.$(OBJEXT) $(am__objects_3)
 t_skim_reverse_rank_app_OBJECTS =  \
 	$(am_t_skim_reverse_rank_app_OBJECTS)
 t_skim_reverse_rank_app_LDADD = $(LDADD)
@@ -348,7 +348,7 @@ ALL = $(HDRS) $(TEST_SRC) $(PROTOS_TO_BUILD)
 test_all_SOURCES = graph/ut/run_all.cpp $(ALL)
 sketch_app_SOURCES = app/sketch_calculation_app.cpp $(ALL)
 reverse_rank_app_SOURCES = app/reverse_rank_app.cpp $(ALL)
-t_skim_reverse_rank_app_SOURCES = app/t_skim_reverse_rank.cpp $(ALL)
+t_skim_reverse_rank_app_SOURCES = app/t_skim_reverse_rank_app.cpp $(ALL)
 lib_LIBRARIES = liball_distance_sketch.a
 liball_distance_sketch_a_SOURCES = $(HDRS) $(PROTOS_TO_BUILD)
 include_HEADERS = ./all_distance_sketch.h
@@ -497,7 +497,7 @@ include ./$(DEPDIR)/ranking.pb.Po
 include ./$(DEPDIR)/reverse_rank_app.Po
 include ./$(DEPDIR)/run_all.Po
 include ./$(DEPDIR)/sketch_calculation_app.Po
-include ./$(DEPDIR)/t_skim_reverse_rank.Po
+include ./$(DEPDIR)/t_skim_reverse_rank_app.Po
 
 .cc.o:
 	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -583,19 +583,19 @@ sketch_calculation_app.obj: app/sketch_calculation_app.cpp
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sketch_calculation_app.obj `if test -f 'app/sketch_calculation_app.cpp'; then $(CYGPATH_W) 'app/sketch_calculation_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/sketch_calculation_app.cpp'; fi`
 
-t_skim_reverse_rank.o: app/t_skim_reverse_rank.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT t_skim_reverse_rank.o -MD -MP -MF $(DEPDIR)/t_skim_reverse_rank.Tpo -c -o t_skim_reverse_rank.o `test -f 'app/t_skim_reverse_rank.cpp' || echo '$(srcdir)/'`app/t_skim_reverse_rank.cpp
-	$(AM_V_at)$(am__mv) $(DEPDIR)/t_skim_reverse_rank.Tpo $(DEPDIR)/t_skim_reverse_rank.Po
-#	$(AM_V_CXX)source='app/t_skim_reverse_rank.cpp' object='t_skim_reverse_rank.o' libtool=no \
+t_skim_reverse_rank_app.o: app/t_skim_reverse_rank_app.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT t_skim_reverse_rank_app.o -MD -MP -MF $(DEPDIR)/t_skim_reverse_rank_app.Tpo -c -o t_skim_reverse_rank_app.o `test -f 'app/t_skim_reverse_rank_app.cpp' || echo '$(srcdir)/'`app/t_skim_reverse_rank_app.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/t_skim_reverse_rank_app.Tpo $(DEPDIR)/t_skim_reverse_rank_app.Po
+#	$(AM_V_CXX)source='app/t_skim_reverse_rank_app.cpp' object='t_skim_reverse_rank_app.o' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o t_skim_reverse_rank.o `test -f 'app/t_skim_reverse_rank.cpp' || echo '$(srcdir)/'`app/t_skim_reverse_rank.cpp
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o t_skim_reverse_rank_app.o `test -f 'app/t_skim_reverse_rank_app.cpp' || echo '$(srcdir)/'`app/t_skim_reverse_rank_app.cpp
 
-t_skim_reverse_rank.obj: app/t_skim_reverse_rank.cpp
-	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT t_skim_reverse_rank.obj -MD -MP -MF $(DEPDIR)/t_skim_reverse_rank.Tpo -c -o t_skim_reverse_rank.obj `if test -f 'app/t_skim_reverse_rank.cpp'; then $(CYGPATH_W) 'app/t_skim_reverse_rank.cpp'; else $(CYGPATH_W) '$(srcdir)/app/t_skim_reverse_rank.cpp'; fi`
-	$(AM_V_at)$(am__mv) $(DEPDIR)/t_skim_reverse_rank.Tpo $(DEPDIR)/t_skim_reverse_rank.Po
-#	$(AM_V_CXX)source='app/t_skim_reverse_rank.cpp' object='t_skim_reverse_rank.obj' libtool=no \
+t_skim_reverse_rank_app.obj: app/t_skim_reverse_rank_app.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT t_skim_reverse_rank_app.obj -MD -MP -MF $(DEPDIR)/t_skim_reverse_rank_app.Tpo -c -o t_skim_reverse_rank_app.obj `if test -f 'app/t_skim_reverse_rank_app.cpp'; then $(CYGPATH_W) 'app/t_skim_reverse_rank_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/t_skim_reverse_rank_app.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/t_skim_reverse_rank_app.Tpo $(DEPDIR)/t_skim_reverse_rank_app.Po
+#	$(AM_V_CXX)source='app/t_skim_reverse_rank_app.cpp' object='t_skim_reverse_rank_app.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
-#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o t_skim_reverse_rank.obj `if test -f 'app/t_skim_reverse_rank.cpp'; then $(CYGPATH_W) 'app/t_skim_reverse_rank.cpp'; else $(CYGPATH_W) '$(srcdir)/app/t_skim_reverse_rank.cpp'; fi`
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o t_skim_reverse_rank_app.obj `if test -f 'app/t_skim_reverse_rank_app.cpp'; then $(CYGPATH_W) 'app/t_skim_reverse_rank_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/t_skim_reverse_rank_app.cpp'; fi`
 
 run_all.o: graph/ut/run_all.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT run_all.o -MD -MP -MF $(DEPDIR)/run_all.Tpo -c -o run_all.o `test -f 'graph/ut/run_all.cpp' || echo '$(srcdir)/'`graph/ut/run_all.cpp

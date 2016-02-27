@@ -965,6 +965,7 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../algorithms/ut/../../app/../sketch/graph_sketch.h \
  graph/ut/../../algorithms/ut/../../app/utils.h \
  graph/ut/../../algorithms/ut/../../app/reverse_rank_app.h \
+ graph/ut/../../algorithms/ut/../../app/t_skim_reverse_rank_app.h \
  graph/ut/../../algorithms/ut/serialization_test.cpp \
  graph/ut/../../algorithms/ut/t_skim_test.cpp \
  graph/ut/../../algorithms/ut/../t_skim.h \
@@ -3154,6 +3155,8 @@ graph/ut/../../algorithms/ut/../../app/../sketch/graph_sketch.h:
 graph/ut/../../algorithms/ut/../../app/utils.h:
 
 graph/ut/../../algorithms/ut/../../app/reverse_rank_app.h:
+
+graph/ut/../../algorithms/ut/../../app/t_skim_reverse_rank_app.h:
 
 graph/ut/../../algorithms/ut/serialization_test.cpp:
 
