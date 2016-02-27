@@ -43,6 +43,7 @@ class Cover {
       cover.clear();
       is_covered.clear();
     }
+
     void LoadCoverFromGpb(const CoverGpb cover) {
       for (int i=0; i < cover.seeds_size(); i++) {
         int seed_id = cover.seeds(i).seed_node_id();
@@ -69,6 +70,8 @@ class Cover {
       cover[seed] = SeedCover();
       cover[seed].index = cover.size();
       cover[seed].covered_nodes.push_back(seed);
+      LOG_M(DEBUG5, "seed=" << seed);
+      cover[seed].seed = seed;
     }
     inline void SetSeedEstimate(int seed, double estimate_cover_size) {
       estimated_cover[seed] = estimate_cover_size;
@@ -77,10 +80,10 @@ class Cover {
       return estimated_cover[seed];
     }
     inline void AddNodeToSeed(int seed, int node_id) {
+      LOG_M(DEBUG5, "seed=" << seed << " node_id=" << node_id);
       is_covered[node_id] = true;
       if (cover.count(seed) == 0) {
-        cover[seed] = SeedCover();
-        cover[seed].index = cover.size();
+        AddSeed(seed);
       }
       cover[seed].covered_nodes.push_back(node_id);
     }

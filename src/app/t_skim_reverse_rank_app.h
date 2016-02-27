@@ -110,7 +110,16 @@ int t_skim_app_main(int ac, char* av[]) {
         t_skim_algo_un_directed.InitTSkim(T, K, min_influence_for_seed_set, &cover, &un_directed_graph);
         t_skim_algo_un_directed.Run();
     }
-    
+
+    CoverGpb coverGpb;
+    cover.SaveGraphSketchToGpb(&coverGpb);
+    {
+        fstream output(output_file, ios::out | ios::trunc | ios::binary);
+        if (!coverGpb.SerializeToOstream(&output)) {
+            cerr << "Failed to write node_ranks to file=" << output_file << endl;
+            return 1;
+        }
+    }
     return 0;
 }
 

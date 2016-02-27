@@ -1464,19 +1464,92 @@ TEST_F(AlgoGraph, TSkimAppTestUndirected) {
                         writable, 
                         "--output_file=temp_file_t_skim_app_test"};
   EXPECT_EQ(t_skim_app_main(6, arguments), 0);
-  /*
+  
   graph::Graph< graph::TUnDirectedGraph> graph;
   graph.LoadGraphFromDir(GetSampleData());
-  GraphSketch graph_sketch;
   int k = 64;
-  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
-  CalculateGraphSketch<graph::TUnDirectedGraph>(&graph, &graph_sketch);
-
-  GraphSketch graph_sketch_from_app;
+  int T=10;
+  int min_influence_for_seed_set=10;
   std::string file_name = "temp_file_t_skim_app_test";
-  load_sketch(&graph_sketch_from_app, file_name);
-  EXPECT_EQ(graph_sketch_from_app, graph_sketch);
-  */
+  Cover cover;
+  TSkimReverseRank< graph::TUnDirectedGraph > t_skim_algo_un_directed;
+  t_skim_algo_un_directed.InitTSkim(T, k, min_influence_for_seed_set, &cover, &graph);
+  t_skim_algo_un_directed.Run();
+
+  
+  std::fstream input("temp_file_t_skim_app_test", std::ios::in | std::ios::binary);
+  CoverGpb coverGpb;
+  EXPECT_TRUE(coverGpb.ParseFromIstream(&input));
+
+  for (int i=0; i < coverGpb.seeds_size(); i++) {
+    const SeedInfoGpb& seed_info = coverGpb.seeds(i);
+    int seed_node_id = seed_info.seed_node_id();
+    for (int j=0; j < seed_info.node_ids_size(); j++) {
+      int node_id = seed_info.node_ids(j);
+      auto seed_cover = cover.GetSeedCover(seed_node_id);
+      EXPECT_EQ(seed_cover.seed, seed_node_id);
+      bool found = false;
+      EXPECT_TRUE(seed_cover.covered_nodes.size() != 0);
+      for (int k=0; k < seed_cover.covered_nodes.size(); k++) {
+        if (seed_cover.covered_nodes[k] == node_id) {
+          found = true;
+          break;
+        }
+      }
+      EXPECT_TRUE(found);
+    }
+  }
   std::remove("temp_file_t_skim_app_test");
 }
 
+TEST_F(AlgoGraph, TSkimAppTestDirected) {
+  std::string graph_dir_arg = "--graph_dir=";
+  graph_dir_arg += GetSampleData();
+  char * writable = new char[graph_dir_arg.size() + 1];
+  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
+  writable[graph_dir_arg.size()] = '\0';
+  char *arguments[] = { "app", 
+                        "--K=64", 
+                        "--T=10",
+                        "--min_influence_for_seed_set=10",
+                        writable, 
+                        "--output_file=temp_file_t_skim_directed_app_test",
+                        "--directed=true"};
+  EXPECT_EQ(t_skim_app_main(7, arguments), 0);
+  
+  graph::Graph< graph::TDirectedGraph> graph;
+  graph.LoadGraphFromDir(GetSampleData());
+  int k = 64;
+  int T=10;
+  int min_influence_for_seed_set=10;
+  std::string file_name = "temp_file_t_skim_directed_app_test";
+  Cover cover;
+  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo_directed;
+  t_skim_algo_directed.InitTSkim(T, k, min_influence_for_seed_set, &cover, &graph);
+  t_skim_algo_directed.Run();
+
+  
+  std::fstream input("temp_file_t_skim_directed_app_test", std::ios::in | std::ios::binary);
+  CoverGpb coverGpb;
+  EXPECT_TRUE(coverGpb.ParseFromIstream(&input));
+
+  for (int i=0; i < coverGpb.seeds_size(); i++) {
+    const SeedInfoGpb& seed_info = coverGpb.seeds(i);
+    int seed_node_id = seed_info.seed_node_id();
+    for (int j=0; j < seed_info.node_ids_size(); j++) {
+      int node_id = seed_info.node_ids(j);
+      auto seed_cover = cover.GetSeedCover(seed_node_id);
+      EXPECT_EQ(seed_cover.seed, seed_node_id);
+      bool found = false;
+      EXPECT_TRUE(seed_cover.covered_nodes.size() != 0);
+      for (int k=0; k < seed_cover.covered_nodes.size(); k++) {
+        if (seed_cover.covered_nodes[k] == node_id) {
+          found = true;
+          break;
+        }
+      }
+      EXPECT_TRUE(found);
+    }
+  }
+  std::remove("temp_file_t_skim_directed_app_test");
+}
