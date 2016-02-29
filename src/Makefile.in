@@ -80,7 +80,8 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = test_all$(EXEEXT) sketch_app$(EXEEXT) \
-	reverse_rank_app$(EXEEXT) t_skim_reverse_rank_app$(EXEEXT)
+	reverse_rank_app$(EXEEXT) t_skim_reverse_rank_app$(EXEEXT) \
+	dijkstra_app$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(dist_noinst_DATA) $(include_HEADERS)
@@ -139,6 +140,9 @@ liball_distance_sketch_a_OBJECTS =  \
 	$(am_liball_distance_sketch_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
 am__objects_3 = $(am__objects_1) $(am__objects_1) $(am__objects_2)
+am_dijkstra_app_OBJECTS = dijkstra_app.$(OBJEXT) $(am__objects_3)
+dijkstra_app_OBJECTS = $(am_dijkstra_app_OBJECTS)
+dijkstra_app_LDADD = $(LDADD)
 am_reverse_rank_app_OBJECTS = reverse_rank_app.$(OBJEXT) \
 	$(am__objects_3)
 reverse_rank_app_OBJECTS = $(am_reverse_rank_app_OBJECTS)
@@ -200,12 +204,13 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(liball_distance_sketch_a_SOURCES) \
+SOURCES = $(liball_distance_sketch_a_SOURCES) $(dijkstra_app_SOURCES) \
 	$(reverse_rank_app_SOURCES) $(sketch_app_SOURCES) \
 	$(t_skim_reverse_rank_app_SOURCES) $(test_all_SOURCES)
 DIST_SOURCES = $(liball_distance_sketch_a_SOURCES) \
-	$(reverse_rank_app_SOURCES) $(sketch_app_SOURCES) \
-	$(t_skim_reverse_rank_app_SOURCES) $(test_all_SOURCES)
+	$(dijkstra_app_SOURCES) $(reverse_rank_app_SOURCES) \
+	$(sketch_app_SOURCES) $(t_skim_reverse_rank_app_SOURCES) \
+	$(test_all_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -349,6 +354,7 @@ test_all_SOURCES = graph/ut/run_all.cpp $(ALL)
 sketch_app_SOURCES = app/sketch_calculation_app.cpp $(ALL)
 reverse_rank_app_SOURCES = app/reverse_rank_app.cpp $(ALL)
 t_skim_reverse_rank_app_SOURCES = app/t_skim_reverse_rank_app.cpp $(ALL)
+dijkstra_app_SOURCES = app/dijkstra_app.cpp $(ALL)
 lib_LIBRARIES = liball_distance_sketch.a
 liball_distance_sketch_a_SOURCES = $(HDRS) $(PROTOS_TO_BUILD)
 include_HEADERS = ./all_distance_sketch.h
@@ -469,6 +475,10 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
+dijkstra_app$(EXEEXT): $(dijkstra_app_OBJECTS) $(dijkstra_app_DEPENDENCIES) $(EXTRA_dijkstra_app_DEPENDENCIES) 
+	@rm -f dijkstra_app$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(dijkstra_app_OBJECTS) $(dijkstra_app_LDADD) $(LIBS)
+
 reverse_rank_app$(EXEEXT): $(reverse_rank_app_OBJECTS) $(reverse_rank_app_DEPENDENCIES) $(EXTRA_reverse_rank_app_DEPENDENCIES) 
 	@rm -f reverse_rank_app$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(reverse_rank_app_OBJECTS) $(reverse_rank_app_LDADD) $(LIBS)
@@ -493,6 +503,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all_distance_sketch.pb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cover.pb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dijkstra_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ranking.pb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/reverse_rank_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/run_all.Po@am__quote@
@@ -554,6 +565,20 @@ cover.pb.obj: $(builddir)/proto/cover.pb.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$(builddir)/proto/cover.pb.cc' object='cover.pb.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o cover.pb.obj `if test -f '$(builddir)/proto/cover.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/cover.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/cover.pb.cc'; fi`
+
+dijkstra_app.o: app/dijkstra_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dijkstra_app.o -MD -MP -MF $(DEPDIR)/dijkstra_app.Tpo -c -o dijkstra_app.o `test -f 'app/dijkstra_app.cpp' || echo '$(srcdir)/'`app/dijkstra_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/dijkstra_app.Tpo $(DEPDIR)/dijkstra_app.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/dijkstra_app.cpp' object='dijkstra_app.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dijkstra_app.o `test -f 'app/dijkstra_app.cpp' || echo '$(srcdir)/'`app/dijkstra_app.cpp
+
+dijkstra_app.obj: app/dijkstra_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dijkstra_app.obj -MD -MP -MF $(DEPDIR)/dijkstra_app.Tpo -c -o dijkstra_app.obj `if test -f 'app/dijkstra_app.cpp'; then $(CYGPATH_W) 'app/dijkstra_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/dijkstra_app.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/dijkstra_app.Tpo $(DEPDIR)/dijkstra_app.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/dijkstra_app.cpp' object='dijkstra_app.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dijkstra_app.obj `if test -f 'app/dijkstra_app.cpp'; then $(CYGPATH_W) 'app/dijkstra_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/dijkstra_app.cpp'; fi`
 
 reverse_rank_app.o: app/reverse_rank_app.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reverse_rank_app.o -MD -MP -MF $(DEPDIR)/reverse_rank_app.Tpo -c -o reverse_rank_app.o `test -f 'app/reverse_rank_app.cpp' || echo '$(srcdir)/'`app/reverse_rank_app.cpp

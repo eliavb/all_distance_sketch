@@ -54,6 +54,19 @@ PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/"
 \end{DoxyVerb}
 
 
+Case you enounter\+: \begin{DoxyVerb}configure: error: Package requirements (protobuf >= 2.6.0) were not met:
+
+No package 'protobuf' found
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+\end{DoxyVerb}
+
+
+Try changing the package config env variable using the following command\+: \begin{DoxyVerb}export PKG_CONFIG_PATH='${PROTO_DEST}/lib/pkgconfig/'   
+\end{DoxyVerb}
+
+
 \paragraph*{C\+O\+N\+F\+I\+G\+\_\+\+S\+I\+T\+E}
 
 After the file was created we need to set an env variable named C\+O\+N\+F\+I\+G\+\_\+\+S\+I\+T\+E to point to the config.\+site\+: \begin{DoxyVerb}>export CONFIG_SITE=$CONFIG_SITE:<path>/config.site

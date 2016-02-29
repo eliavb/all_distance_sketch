@@ -66,6 +66,20 @@
   		LDFLAGS="${LDFLAGS} -L${PROTO_DEST}/lib"
 		PROTOC="${PROTO_DEST}/bin/protoc"
 		PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/" 
+	
+	
+	Case you enounter:
+
+		configure: error: Package requirements (protobuf >= 2.6.0) were not met:
+
+		No package 'protobuf' found
+
+		Consider adjusting the PKG_CONFIG_PATH environment variable if you
+		installed software in a non-standard prefix.
+	
+	Try changing the package config env variable using the following command:
+
+		export PKG_CONFIG_PATH='${PROTO_DEST}/lib/pkgconfig/'	
 
 	#### CONFIG_SITE ####
 	After the file was created we need to set an env variable named 

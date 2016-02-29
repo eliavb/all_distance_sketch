@@ -39,7 +39,6 @@ PATH: /usr/bin
 PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /users/eng/eliavb/bin
-PATH: /work/eng/eliavb/cppcheck-1.72
 
 
 ## ----------- ##
@@ -961,7 +960,7 @@ ac_cv_env_LIBS_value=
 ac_cv_env_PKG_CONFIG_LIBDIR_set=
 ac_cv_env_PKG_CONFIG_LIBDIR_value=
 ac_cv_env_PKG_CONFIG_PATH_set=set
-ac_cv_env_PKG_CONFIG_PATH_value=
+ac_cv_env_PKG_CONFIG_PATH_value=/work/eng/eliavb/protobuf_install/lib/pkgconfig/
 ac_cv_env_PKG_CONFIG_set=
 ac_cv_env_PKG_CONFIG_value=
 ac_cv_env_PROTOBUF_CFLAGS_set=

@@ -117,6 +117,13 @@ LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread"
 LDFLAGS="${LDFLAGS} -L${PROTO_DEST}/lib"
 PROTOC="${PROTO_DEST}/bin/protoc"
 PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/" 
+</pre><p>Case you enounter: </p><pre class="fragment">configure: error: Package requirements (protobuf &gt;= 2.6.0) were not met:
+
+No package 'protobuf' found
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+</pre><p>Try changing the package config env variable using the following command: </p><pre class="fragment">export PKG_CONFIG_PATH='${PROTO_DEST}/lib/pkgconfig/'   
 </pre><h4>CONFIG_SITE</h4>
 <p>After the file was created we need to set an env variable named CONFIG_SITE to point to the config.site: </p><pre class="fragment">&gt;export CONFIG_SITE=$CONFIG_SITE:&lt;path&gt;/config.site
 </pre><h4>BUILD! non root users</h4>
@@ -137,7 +144,7 @@ PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/"
 &gt;make check</pre> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 29 2016 15:39:00 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 29 2016 18:25:21 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

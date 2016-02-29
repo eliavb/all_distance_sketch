@@ -8,3 +8,5 @@ src/proto/*.pb.cc
 src/proto/*.pb.h
 src/*.o
 src/*.a
+result.json
+benchmark_threads.py
