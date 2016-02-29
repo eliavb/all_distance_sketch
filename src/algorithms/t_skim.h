@@ -1,8 +1,8 @@
-#ifndef THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_
-#define THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_
+#ifndef SRC_ALGORITHMS_T_SKIM_H_
+#define SRC_ALGORITHMS_T_SKIM_H_
 
 
-#include "sketch_calculation.h"
+#include "./sketch_calculation.h"
 #include "../sketch/graph_sketch.h"
 #include "../graph/graph.h"
 #include "./reverse_rank.h"
@@ -32,7 +32,7 @@ typedef struct SeedCover_t {
 /*! \brief Cover extracted by the influence maximization algorithms
 */
 class Cover {
-  public:
+ public:
     typedef std::unordered_map< int, SeedCover >::iterator Iterator;
 
     Cover() {
@@ -105,7 +105,8 @@ class Cover {
     inline Iterator End() {
       return cover.end();
     }
-  private:
+ 
+ private:
     SeedCover empty_cover;
     std::unordered_map< int, SeedCover > cover;
     std::unordered_map< int, bool > is_covered;
@@ -116,7 +117,7 @@ class Cover {
 */
 template<class Z>
 class TSkimDijkstraCallBacksDistancePrune {
-public:
+ public:
   void InitTSkimDijkstraCallBacksDistancePrune(double distance_stop) {
     num_nodes_visited_ = 0;
     visited_nodes_including_self_.clear();
@@ -137,7 +138,7 @@ public:
     if (wanted_nodes_.size() != 0 && wanted_nodes_.count(poped_node_id) == 0) {
       return;
     }
-    LOG_M(DEBUG3, " poped node=" << poped_node_id << 
+    LOG_M(DEBUG3, " poped node=" << poped_node_id <<
                   " Distance=" << heap_value.GetDistance() << 
                   " Distance to stop=" << distance_stop_);
     if (heap_value.GetDistance() < distance_stop_) {
@@ -168,7 +169,7 @@ public:
 
 template<class Z>
 class TSkimDijkstraCallBacks {
-public:
+ public:
   void InitTSkimDijkstraCallBacks(int T) {
     T_ = T;
     num_nodes_visited_ = 0;
@@ -241,7 +242,7 @@ struct cmp_pair {
 
 template <class Z>
 class TSkimBase {
-public:
+ public:
   virtual ~TSkimBase() {};
 
   void InitTSkimBase(int T,
@@ -487,4 +488,4 @@ protected:
 };
 
 }  //  all_distance_sketch
-#endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_
+#endif  //  SRC_ALGORITHMS_T_SKIM_H_

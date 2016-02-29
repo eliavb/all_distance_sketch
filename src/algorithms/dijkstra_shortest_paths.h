@@ -16,7 +16,9 @@ namespace all_distance_sketch {
 */
 
 struct PrunningAlgoStatistics {
-  PrunningAlgoStatistics() : num_visited_nodes(0), num_pruned_nodes(0), num_relaxed_edges(0) {}
+  PrunningAlgoStatistics() : num_visited_nodes(0),
+                             num_pruned_nodes(0),
+                             num_relaxed_edges(0) {}
   unsigned int num_visited_nodes;
   unsigned int num_pruned_nodes;
   unsigned int num_relaxed_edges;
@@ -27,7 +29,8 @@ struct PrunningAlgoStatistics {
     num_relaxed_edges = 0;
   }
 
-  friend std::ostream& operator<<(std::ostream& os, const PrunningAlgoStatistics& algo_statistics) {
+  friend std::ostream& operator<<(std::ostream& os,
+                                  const PrunningAlgoStatistics& algo_statistics) {
     os << " num Nodes Visited=" << algo_statistics.num_visited_nodes <<
           " num Pruned Nodes=" << algo_statistics.num_pruned_nodes <<
           " num Relaxed Edges=" << algo_statistics.num_relaxed_edges;
@@ -36,39 +39,43 @@ struct PrunningAlgoStatistics {
 };
 
 struct compareNodeDistanceAndId {
- inline bool operator()(const NodeIdDistanceData& n1, const NodeIdDistanceData& n2) const {
-   if (n1.GetDistance() < n2.GetDistance()) {
-     return true;
-   }
-   if (n1.GetDistance() > n2.GetDistance()) {
-     return false;
-   }
-   if (n1.GetNId() < n2.GetNId()) {
-     return true;
-   }
-   if (n1.GetNId() > n2.GetNId()) {
-     return false;
-   }
-   return false;
- }
+  inline bool operator()(const NodeIdDistanceData& n1,
+                        const NodeIdDistanceData& n2) const {
+    if (n1.GetDistance() < n2.GetDistance()) {
+      return true;
+    }
+    if (n1.GetDistance() > n2.GetDistance()) {
+      return false;
+    }
+    if (n1.GetNId() < n2.GetNId()) {
+      return true;
+    }
+    if (n1.GetNId() > n2.GetNId()) {
+      return false;
+    }
+    return false;
+  }
 };
 
- struct DijkstraParams {
-   std::set< NodeIdDistanceData, compareNodeDistanceAndId > heap;
-   std::vector<graph::EdgeWeight> min_distance;
-   TBitSet poped;
-   TBitSet touched;
+struct DijkstraParams {
+  std::set< NodeIdDistanceData, compareNodeDistanceAndId > heap;
+  std::vector<graph::EdgeWeight> min_distance;
+  TBitSet poped;
+  TBitSet touched;
 };
 
 template<class T>
 class DefaultDijkstraCallBacks {
-public:
-
+ public:
   inline void Started(int source_node_id, graph::Graph<T>* graph) { return; }
 
-  inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) { return; }
+  inline void NodePopedFromHeap(int poped_node_id,
+                                const NodeIdDistanceData& heap_value)
+                                { return; }
 
-  inline bool ShouldPrune(int visited_node_id, graph::EdgeWeight distance_from_source_to_visited_node) { return false; }
+  inline bool ShouldPrune(int visited_node_id,
+                          graph::EdgeWeight distance_from_source_to_visited_node)
+                          { return false; }
 
   inline bool ShouldStop() { return false; }
 
@@ -77,7 +84,7 @@ public:
 
 template<class Z>
 class CollectorNodesUpToTRank {
-public:
+ public:
   void InitCollectorNodesUpToTRank(int T) {
     T_ = T;
   }
@@ -93,7 +100,8 @@ public:
     ++algo_statistics_.num_visited_nodes;
   }
 
-  inline bool ShouldPrune(int visited_node_id, graph::EdgeWeight distance_from_source_to_visited_node) {
+  inline bool ShouldPrune(int visited_node_id,
+                          graph::EdgeWeight distance_from_source_to_visited_node) {
     return algo_statistics_.num_visited_nodes >= T_;
   }
 
@@ -104,7 +112,7 @@ public:
   const std::vector<NodeIdDistanceData>& get_nodes_found() {
     return nodes_found_;
   }
-private:
+ private:
   PrunningAlgoStatistics algo_statistics_;
   std::vector<NodeIdDistanceData> nodes_found_;
   int T_;
@@ -112,8 +120,7 @@ private:
 
 template<class T>
 class DijkstraRankCallBack {
-public:
-
+ public:
   inline void Started(int source_node_id, graph::Graph<T>* graph) {
     dijkstra_rank_.clear();
     dijkstra_rank_.resize(graph->GetMxNId(), constants::UNREACHABLE);
@@ -135,14 +142,15 @@ public:
   const std::vector<int>& get_dijkstra_rank() {
     return dijkstra_rank_;
   }
-private:
+
+ private:
   PrunningAlgoStatistics algo_statistics_;
   std::vector<int> dijkstra_rank_;
 };
 
 template<class T>
 class SketchDijkstraCallBacks {
-public:
+ public:
   void InitSketchDijkstraCallBacks(GraphSketch* graph_sketch) { 
     graph_sketch_ = graph_sketch;
     is_multi_threaded_ = false;
@@ -189,7 +197,8 @@ public:
     }
     
     // Get Node NodeSketch
-    NodeDistanceIdRandomIdData visitingNode( distance_from_source_to_visited_node, visited_node_id, graph_sketch_->GetNodeRandomId(visited_node_id));
+    NodeDistanceIdRandomIdData visitingNode(distance_from_source_to_visited_node,
+                                            visited_node_id, graph_sketch_->GetNodeRandomId(visited_node_id));
     visited_noted_sketch = graph_sketch_->GetNodeSketch(visitingNode);
     // Distance from source to visiting node
     NodeDistanceIdRandomIdData sourceNodeDetails(distance_from_source_to_visited_node, source_node_id_, source_node_random_id_);

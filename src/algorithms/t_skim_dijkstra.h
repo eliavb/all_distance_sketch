@@ -1,7 +1,7 @@
-#ifndef ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_DIJKSTRA_H_
-#define ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_DIJKSTRA_H_
+#ifndef SRC_ALGORITHMS_T_SKIM_DIJKSTRA_H_
+#define SRC_ALGORITHMS_T_SKIM_DIJKSTRA_H_
 
-#include "t_skim.h"
+#include "./t_skim.h"
 
 namespace all_distance_sketch {
 
@@ -9,7 +9,7 @@ namespace all_distance_sketch {
 */
 template <class Z>
 class TSkimApproxSeedExactCover : public TSkimBase<Z> {
-public:
+ public:
   void InitTSkim(int T,
             int K_all_distance_sketch,
             int min_influence_for_seed,
@@ -60,7 +60,7 @@ public:
     return TSkimBase<Z>::Run(false);
   }
 
-private:
+ private:
   int K_all_distance_sketch_;
   graph::Graph<Z> graph_transpose_;
   GraphSketch* graph_sketch_;
@@ -72,7 +72,7 @@ private:
 
 template <class Z>
 class TSkimExactComputationBased : public TSkimBase<Z> {
-public:
+ public:
   void InitTSkim(int T,
                  Cover * cover,
                  std::vector<std::vector<int> >* reachable_nodes,
@@ -92,7 +92,7 @@ public:
       return (*reachable_nodes_)[source_node_id];
   }
 
-private:
+ private:
   std::vector<std::vector<int> >* reachable_nodes_;
   std::vector<std::vector<int> >* reverse_refernce_;
 };
@@ -100,7 +100,7 @@ private:
 
 template <class Z>
 class TSkimApproxVsExact : public TSkimBase<Z> {
-public:
+ public:
   void InitTSkim(int T,
             int K_all_distance_sketch,
             int min_influence_for_seed,
@@ -115,7 +115,6 @@ public:
   int AddSeed(int seed, std::unordered_map<int, int>* influence_change) {
     LOG_M(DEBUG3, "seed node = " << seed);
     std::vector<int> ranking;
-    
     return TSkimBase<Z>::UpdateCover(seed, influence_change, reverse_rank_call_backs_.get_visited_nodes());
   }
 
@@ -137,9 +136,7 @@ public:
     TSkimBase<Z>::PreRunInit();
     GraphSketch local_graph_sketch_approx;
     graph_sketch_approx = &local_graph_sketch_approx;
-
     graph_sketch_approx->GetNodesDistributionLean();
-    
     this->graph_->Transpose(&graph_transpose_);
     CalculateGraphSketch<Z>(&graph_transpose_, graph_sketch_approx);
     reverse_rank_call_backs_.InitTSkimReverseRankCallBacks(this->T_);
@@ -148,7 +145,7 @@ public:
     return TSkimBase<Z>::Run(false);
   }
 
-private:
+ private:
   int K_all_distance_sketch_;
   graph::Graph<Z> graph_transpose_;
   GraphSketch* graph_sketch_approx;
@@ -167,7 +164,7 @@ void ExactCoverGreedy(graph::Graph<Z>* graph,
                       std::vector<std::vector<NodeIdDistanceData> >* reachable_nodes) {
   reachable_nodes->resize(graph->GetMxNId());
   CollectorNodesUpToTRank<Z> collect_nodes_call_backs;
-  int j=0;
+  int j = 0;
   for (auto it = graph->BegNI(); it != graph->EndNI(); it++) {
     j++;
     if (j % 1000 == 0) {
@@ -177,11 +174,10 @@ void ExactCoverGreedy(graph::Graph<Z>* graph,
     DijkstraParams params;
     typename Z::TNode source(node_id);
     collect_nodes_call_backs.InitCollectorNodesUpToTRank(T+1);
-    PrunedDijkstra<Z, CollectorNodesUpToTRank<Z> > (source, 
+    PrunedDijkstra<Z, CollectorNodesUpToTRank<Z> > (source,
                                                     graph,
                                                     &collect_nodes_call_backs,
                                                     &params);
-    
     (*reachable_nodes)[node_id] = collect_nodes_call_backs.get_nodes_found();
   }
 }
@@ -189,6 +185,6 @@ void ExactCoverGreedy(graph::Graph<Z>* graph,
 /*! \endcond
 */
 
-} // namespace all_distance_sketch
+}  //  namespace all_distance_sketch
 
-#endif // ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_DIJKSTRA_H_
+#endif  //  SRC_ALGORITHMS_T_SKIM_DIJKSTRA_H_

@@ -1,12 +1,12 @@
-#ifndef ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_SKETCH_CALCULATION_H_
-#define ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_SKETCH_CALCULATION_H_
+#ifndef SRC_ALGORITHMS_SKETCH_CALCULATION_H_
+#define SRC_ALGORITHMS_SKETCH_CALCULATION_H_
 
 #include "../common.h"
 #include "../sketch/graph_sketch.h"
 #include "../graph/graph.h"
 #include "../utils/thread_utils.h"
 
-#include "dijkstra_shortest_paths.h"
+#include "./dijkstra_shortest_paths.h"
 
 /*! \file sketch_calculation.h
     \brief Sketch calculation algorithms
@@ -87,7 +87,6 @@ static void CalculateNodeSketch(typename T::TNode source,
                                  graph::Graph<T> *graph,
                                  SketchDijkstraCallBacks<T>* call_backs,
                                  DijkstraParams * param) {
-    
     PrunedDijkstra<T, SketchDijkstraCallBacks<T> >(source,
                                                   graph,
                                                   call_backs,
@@ -130,14 +129,14 @@ static void ThreadLoop(thread::MessageChannel * communication_channel,
         thread::Message message;
         if (communication_channel->GetMessage(&message, id)) {
             if (message.insert_to_candidate_list) {
-                LOG_M(DEBUG2, "has work start_index " << message.start_index << " end_index " << message.end_index );
+                LOG_M(DEBUG2, "has work start_index " << message.start_index << " end_index " << message.end_index);
                 CalculateSketchBatch<T>(graph, call_backs, dijkstra_param, graph_sketch->GetNodesDistribution(), message.start_index, message.end_index);
             }
             if (message.clear_candidate_list) {
                 graph_sketch->InsertCandidatesNodes(message.start_index, message.end_index);
             }
             communication_channel->Finished(id);
-            LOG_M(DEBUG2, "Finished work start_index " << message.start_index << " end_index " << message.end_index );
+            LOG_M(DEBUG2, "Finished work start_index " << message.start_index << " end_index " << message.end_index);
         }
     }
     LOG_M(DEBUG2, "  Exiting Finished ");
@@ -237,4 +236,4 @@ static void CalculateSketchBatch(graph::Graph<T> *graph,
 */
 
 }  //  namespace all_distance_sketch
-#endif  //  ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_SKETCH_CALCULATION_H_
+#endif  //  SRC_ALGORITHMS_SKETCH_CALCULATION_H_

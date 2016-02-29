@@ -1,5 +1,5 @@
-#ifndef ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_SKETCH_NODE_SKETCH_H_
-#define ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_SKETCH_NODE_SKETCH_H_
+#ifndef SRC_SKETCH_NODE_SKETCH_H_
+#define SRC_SKETCH_NODE_SKETCH_H_
 
 #include <math.h>
 #include "../common.h"
@@ -723,4 +723,4 @@ private:
 
 }  // namespace all_distance_sketch
 
-#endif  // ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_SKETCH_NODE_SKETCH_H_
+#endif  // SRC_SKETCH_NODE_SKETCH_H_

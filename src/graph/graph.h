@@ -1,5 +1,5 @@
-#ifndef ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_GRAPH_GRAPH_H_
-#define ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_GRAPH_GRAPH_H_
+#ifndef SRC_GRAPH_GRAPH_H_
+#define SRC_GRAPH_GRAPH_H_
 
 #include "../common.h"
 #include "../utils/utils.h"
@@ -244,4 +244,4 @@ class Graph {
  */
 }  // namespace all_distance_sketch
 
-#endif // ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_GRAPH_GRAPH_H_
+#endif  //  SRC_GRAPH_GRAPH_H_

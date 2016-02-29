@@ -1,5 +1,5 @@
-#ifndef THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_REVERSE_RANK_H_
-#define THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_REVERSE_RANK_H_
+#ifndef SRC_ALGORITHMS_REVERSE_RANK_H_
+#define SRC_ALGORITHMS_REVERSE_RANK_H_
 
 #include "../common.h"
 #include "../sketch/graph_sketch.h"
@@ -189,8 +189,7 @@ static double EstimateReverseRankAverage(graph::Graph<T> * graph,
 
 template<class T>
 class DefaultReverseRankCallBacks {
-public:
-
+ public:
   inline void Started(int source_node_id, graph::Graph<T>* graph) { return; }
 
   inline void NodePopedFromHeap(int poped_node_id, const RankData& heap_value) { return; }
@@ -200,7 +199,6 @@ public:
   inline bool ShouldStop() { return false; }
 
   inline void RelaxedPath(int node_id) { }
-
 };
 
 
@@ -267,7 +265,7 @@ static void CalculateReverseRank(int source_node_id,
                 continue;
             }
             std::pair<bool, graph::EdgeWeight> edge_u_v = graph->GetEdgeWeight(visited_node_id, id_of_neighbor_of_visited_node);
-            graph::EdgeWeight distance_through_u = distance_from_source_to_visited_node + edge_u_v.second; // (*nodeWeights)[i].weight;
+            graph::EdgeWeight distance_through_u = distance_from_source_to_visited_node + edge_u_v.second;  //  (*nodeWeights)[i].weight;
             LOG_M(DEBUG3, "edge weight between " <<
                           " visited_node_id = " << visited_node_id <<
                           " id_of_neighbor_of_visited_node = " << id_of_neighbor_of_visited_node <<
@@ -310,4 +308,4 @@ static void CalculateReverseRank(int source_node_id,
   Examples on how to use CalculateReverseRank functions
 */
 };  //  namespace all_distance_sketch
-#endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_REVERSE_RANK_H_
+#endif  // SRC_ALGORITHMS_REVERSE_RANK_H_

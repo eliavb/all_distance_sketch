@@ -1,5 +1,5 @@
-#ifndef ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_
-#define ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_
+#ifndef SRC_ALGORITHMS_T_SKIM_REVERSE_RANK_H_
+#define SRC_ALGORITHMS_T_SKIM_REVERSE_RANK_H_
 
 #include "t_skim.h"
 
@@ -183,4 +183,4 @@ private:
 
 } // namespace all_distance_sketch
 
-#endif  // ALL_DISTANCE_SKETCH_ALGORITHMS_T_SKIM_H_
+#endif  //  SRC_ALGORITHMS_T_SKIM_REVERSE_RANK_H_
