@@ -11,12 +11,12 @@ Examples on how to use T\+Skim
       graph) \{
   \hyperlink{classall__distance__sketch_1_1Cover}{Cover} cover;
   \textcolor{comment}{// Drop line to help tagging}
-  TSkimForwardRank
+  \hyperlink{classall__distance__sketch_1_1TSkimReverseRank}{TSkimReverseRank}
                 < graph::TDirectedGraph > t\_skim\_algo;
   \textcolor{keywordtype}{int} T = 100;
   \textcolor{keywordtype}{int} K\_all\_distance\_sketch=128;
   \textcolor{keywordtype}{int} min\_influence\_for\_seed=500;
-  t\_skim\_algo.InitTSkim(T, K\_all\_distance\_sketch, min\_influence\_for\_seed, &cover, graph);
+  t\_skim\_algo.\hyperlink{classall__distance__sketch_1_1TSkimReverseRank_ad1c20be2016c93f41094fb93afc8068a}{InitTSkim}(T, K\_all\_distance\_sketch, min\_influence\_for\_seed, &cover, graph);
   t\_skim\_algo.Run();
   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} it = cover.Begin(); it != cover.End(); ++it) \{
     std::cout << \textcolor{stringliteral}{" node id of seed="} << it->second.seed << 

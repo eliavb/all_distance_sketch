@@ -5,7 +5,7 @@ using namespace all_distance_sketch;
 void calculate_t_skim_cover(graph::Graph< graph::TDirectedGraph >* graph) {
   Cover cover;
   // Drop line to help tagging
-  TSkimForwardRank
+  TSkimReverseRank
   				< graph::TDirectedGraph > t_skim_algo;
   int T = 100;
   int K_all_distance_sketch=128;

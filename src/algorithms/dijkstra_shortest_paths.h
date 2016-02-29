@@ -1,5 +1,5 @@
-#ifndef THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_DIJKSTRA_SHORTEST_PATHS_H_
-#define THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_DIJKSTRA_SHORTEST_PATHS_H_
+#ifndef SRC_ALGORITHMS_DIJKSTRA_SHORTEST_PATHS_H_
+#define SRC_ALGORITHMS_DIJKSTRA_SHORTEST_PATHS_H_
 
 #include "../common.h"
 #include "../utils/thread_utils.h"
@@ -35,23 +35,23 @@ struct PrunningAlgoStatistics {
   }
 };
 
- struct compareNodeDistanceAndId {
-   inline bool operator()(const NodeIdDistanceData& n1, const NodeIdDistanceData& n2) const {
-     if (n1.GetDistance() < n2.GetDistance()) {
-       return true;
-     }
-     if (n1.GetDistance() > n2.GetDistance()) {
-       return false;
-     }
-     if (n1.GetNId() < n2.GetNId()) {
-       return true;
-     }
-     if (n1.GetNId() > n2.GetNId()) {
-       return false;
-     }
+struct compareNodeDistanceAndId {
+ inline bool operator()(const NodeIdDistanceData& n1, const NodeIdDistanceData& n2) const {
+   if (n1.GetDistance() < n2.GetDistance()) {
+     return true;
+   }
+   if (n1.GetDistance() > n2.GetDistance()) {
      return false;
    }
- };
+   if (n1.GetNId() < n2.GetNId()) {
+     return true;
+   }
+   if (n1.GetNId() > n2.GetNId()) {
+     return false;
+   }
+   return false;
+ }
+};
 
  struct DijkstraParams {
    std::set< NodeIdDistanceData, compareNodeDistanceAndId > heap;
@@ -331,4 +331,4 @@ static void PrunedDijkstra(typename T::TNode source,
 */
 
 }  //  namespace all_distance_sketch
-#endif  // THIRD_PARTY_ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_ALGORITHMS_DIJKSTRA_SHORTEST_PATHS_H_
+#endif  // SRC_ALGORITHMS_DIJKSTRA_SHORTEST_PATHS_H_

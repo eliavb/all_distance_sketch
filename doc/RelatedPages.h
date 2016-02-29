@@ -156,7 +156,7 @@
 
 	\section TSkim TSkim influence maximization
 
-	\ref all_distance_sketch::TSkimForwardRank
+	\ref all_distance_sketch::TSkimReverseRank
 
 */
 

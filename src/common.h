@@ -1,5 +1,5 @@
-#ifndef ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_GRAPH_H_
-#define ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_GRAPH_H_
+#ifndef SRC_COMMON_H_
+#define SRC_COMMON_H_
 
 //  C headers
 #include <limits.h>
@@ -69,4 +69,4 @@ namespace graph {
 
 }  // namespace all_distance_sketch
 
-#endif  //  ALL_DISTANCE_SKETCH_ALL_DISTANCE_SKETCH_GRAPH_H_
+#endif  //  SRC_COMMON_H_
