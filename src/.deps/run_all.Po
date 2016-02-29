@@ -590,8 +590,11 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../algorithms/ut/../../graph/graph.h \
  graph/ut/../../algorithms/ut/../../utils/thread_utils.h \
  graph/ut/../../algorithms/ut/../../utils/../common.h \
- graph/ut/../../algorithms/ut/../dijkstra_shortest_paths.h \
- graph/ut/../../algorithms/ut/../../sketch/node_sketch.h \
+ graph/ut/../../algorithms/ut/.././dijkstra_shortest_paths.h \
+ graph/ut/../../algorithms/ut/.././../common.h \
+ graph/ut/../../algorithms/ut/.././../utils/thread_utils.h \
+ graph/ut/../../algorithms/ut/.././../sketch/node_sketch.h \
+ graph/ut/../../algorithms/ut/.././../sketch/graph_sketch.h \
  graph/ut/../../algorithms/ut/../../graph/snap_graph_adaptor.h \
  /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.h \
  /work/eng/eliavb/include/Snap-2.3/glib-core/base.h /usr/include/fcntl.h \
@@ -953,7 +956,7 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../algorithms/ut/../../app/../algorithms/reverse_rank.h \
  graph/ut/../../algorithms/ut/../../app/../algorithms/sketch_calculation.h \
  graph/ut/../../algorithms/ut/../../app/../algorithms/t_skim.h \
- graph/ut/../../algorithms/ut/../../app/../algorithms/sketch_calculation.h \
+ graph/ut/../../algorithms/ut/../../app/../algorithms/./sketch_calculation.h \
  graph/ut/../../algorithms/ut/../../app/../algorithms/../sketch/graph_sketch.h \
  graph/ut/../../algorithms/ut/../../app/../algorithms/../graph/graph.h \
  graph/ut/../../algorithms/ut/../../app/../algorithms/./reverse_rank.h \
@@ -961,6 +964,7 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../algorithms/ut/../../app/../algorithms/t_skim_reverse_rank.h \
  graph/ut/../../algorithms/ut/../../app/../algorithms/t_skim.h \
  graph/ut/../../algorithms/ut/../../app/../algorithms/t_skim_dijkstra.h \
+ graph/ut/../../algorithms/ut/../../app/../algorithms/./t_skim.h \
  graph/ut/../../algorithms/ut/../../app/../sketch/node_sketch.h \
  graph/ut/../../algorithms/ut/../../app/../sketch/graph_sketch.h \
  graph/ut/../../algorithms/ut/../../app/utils.h \
@@ -2336,9 +2340,15 @@ graph/ut/../../algorithms/ut/../../utils/thread_utils.h:
 
 graph/ut/../../algorithms/ut/../../utils/../common.h:
 
-graph/ut/../../algorithms/ut/../dijkstra_shortest_paths.h:
+graph/ut/../../algorithms/ut/.././dijkstra_shortest_paths.h:
 
-graph/ut/../../algorithms/ut/../../sketch/node_sketch.h:
+graph/ut/../../algorithms/ut/.././../common.h:
+
+graph/ut/../../algorithms/ut/.././../utils/thread_utils.h:
+
+graph/ut/../../algorithms/ut/.././../sketch/node_sketch.h:
+
+graph/ut/../../algorithms/ut/.././../sketch/graph_sketch.h:
 
 graph/ut/../../algorithms/ut/../../graph/snap_graph_adaptor.h:
 
@@ -3132,7 +3142,7 @@ graph/ut/../../algorithms/ut/../../app/../algorithms/sketch_calculation.h:
 
 graph/ut/../../algorithms/ut/../../app/../algorithms/t_skim.h:
 
-graph/ut/../../algorithms/ut/../../app/../algorithms/sketch_calculation.h:
+graph/ut/../../algorithms/ut/../../app/../algorithms/./sketch_calculation.h:
 
 graph/ut/../../algorithms/ut/../../app/../algorithms/../sketch/graph_sketch.h:
 
@@ -3147,6 +3157,8 @@ graph/ut/../../algorithms/ut/../../app/../algorithms/t_skim_reverse_rank.h:
 graph/ut/../../algorithms/ut/../../app/../algorithms/t_skim.h:
 
 graph/ut/../../algorithms/ut/../../app/../algorithms/t_skim_dijkstra.h:
+
+graph/ut/../../algorithms/ut/../../app/../algorithms/./t_skim.h:
 
 graph/ut/../../algorithms/ut/../../app/../sketch/node_sketch.h:
 

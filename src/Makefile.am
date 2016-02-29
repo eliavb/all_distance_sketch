@@ -1,5 +1,5 @@
 # what flags you want to pass to the C compiler & linker
-AM_CPPFLAGS = -std=c++0x -Wall -O3 -DNDEBUG -Wno-deprecated -Wno-strict-overflow -Wno-sign-compare -fPIC -ggdb -pthread
+AM_CPPFLAGS = -std=c++0x -Wall -O3 -DNDEBUG -Wno-deprecated -Wno-strict-overflow -Wno-sign-compare -Wno-write-strings -fPIC -ggdb -pthread
 AM_CPPFLAGS += -I$(builddir)
 
 AM_LDFLAGS = -lboost_system$(BOOST_LIB_SUFFIX) -lboost_program_options -lprotobuf

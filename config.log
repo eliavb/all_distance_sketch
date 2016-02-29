@@ -39,6 +39,7 @@ PATH: /usr/bin
 PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /users/eng/eliavb/bin
+PATH: /work/eng/eliavb/cppcheck-1.72
 
 
 ## ----------- ##

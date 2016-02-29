@@ -6,3 +6,5 @@ all_distance_sketch.sublime-workspace
 src/all_distance_sketch.pb.o
 src/proto/*.pb.cc
 src/proto/*.pb.h
+src/*.o
+src/*.a
