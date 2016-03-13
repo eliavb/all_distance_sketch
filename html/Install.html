@@ -124,6 +124,8 @@ No package 'protobuf' found
 Consider adjusting the PKG_CONFIG_PATH environment variable if you
 installed software in a non-standard prefix.
 </pre><p>Try changing the package config env variable using the following command: </p><pre class="fragment">export PKG_CONFIG_PATH='${PROTO_DEST}/lib/pkgconfig/'   
+</pre><p>Case you encounter: </p><pre class="fragment">error while loading shared libraries: libprotobuf.so.9: cannot open shared object file: No such file or directory
+</pre><p>Try: </p><pre class="fragment">export LD_LIBRARY_PATH="$LD_LIBRAY_PATH:${PROTO_DEST}/lib/" 
 </pre><h4>CONFIG_SITE</h4>
 <p>After the file was created we need to set an env variable named CONFIG_SITE to point to the config.site: </p><pre class="fragment">&gt;export CONFIG_SITE=$CONFIG_SITE:&lt;path&gt;/config.site
 </pre><h4>BUILD! non root users</h4>
@@ -144,7 +146,7 @@ installed software in a non-standard prefix.
 &gt;make check</pre> </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Feb 29 2016 18:25:21 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Feb 29 2016 19:26:11 for All Distance Sketch by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9
 </small></address>

@@ -46,11 +46,11 @@ class GraphSketch {
   */
   bool LoadGraphSketchFromGpb(
       const AllDistanceSketchGpb& all_distance_sketch) {
-      if (all_distance_sketch.has_k()) {
-        K_ = all_distance_sketch.k();
+      if (all_distance_sketch.has_configuration()) {
+        K_ = all_distance_sketch.configuration().k();
       }
-      if (all_distance_sketch.has_should_calc_z_values()) {
-        should_calc_z_value_ = all_distance_sketch.should_calc_z_values();
+      if (all_distance_sketch.has_configuration()) {
+        should_calc_z_value_ = all_distance_sketch.configuration().should_calc_z_values();
       }
       // Load the thresholds
       int num_nodes = all_distance_sketch.node_thresholds_size();
@@ -72,11 +72,11 @@ class GraphSketch {
   /*! \brief Save the graph sketch to a Gpb class.
   */
   void SaveGraphSketchToGpb(AllDistanceSketchGpb* all_distance_sketch) {
-      all_distance_sketch->set_k(K_);
+      all_distance_sketch->mutable_configuration()->set_k(K_);
       // Save the prunning_thresholds_ & random ids
-        SaveThresholdAndRandomId(all_distance_sketch);
-        // Save each node NodeSketch
-        SaveNodesSketch(all_distance_sketch);
+      SaveThresholdAndRandomId(all_distance_sketch);
+      // Save each node NodeSketch
+      SaveNodesSketch(all_distance_sketch);
   }
 
 /*! \cond

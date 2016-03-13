@@ -64,9 +64,12 @@ message AllDistanceSketchGpb {
       optional double random_id=3;
   }
 
-
+message ConfigurationGpb {
   optional uint64 k = 1;
   optional bool should_calc_z_values = 2;
-  repeated SingleNodeSketchGpb nodes_sketches = 3;
-  repeated NodeThresholdGpb node_thresholds = 4;
+}
+
+  optional ConfigurationGpb configuration = 1;
+  repeated SingleNodeSketchGpb nodes_sketches = 2;
+  repeated NodeThresholdGpb node_thresholds = 3;
 }

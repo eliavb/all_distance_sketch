@@ -67,6 +67,14 @@ Try changing the package config env variable using the following command\+: \beg
 \end{DoxyVerb}
 
 
+Case you encounter\+: \begin{DoxyVerb}error while loading shared libraries: libprotobuf.so.9: cannot open shared object file: No such file or directory
+\end{DoxyVerb}
+
+
+Try\+: \begin{DoxyVerb}export LD_LIBRARY_PATH="$LD_LIBRAY_PATH:${PROTO_DEST}/lib/" 
+\end{DoxyVerb}
+
+
 \paragraph*{C\+O\+N\+F\+I\+G\+\_\+\+S\+I\+T\+E}
 
 After the file was created we need to set an env variable named C\+O\+N\+F\+I\+G\+\_\+\+S\+I\+T\+E to point to the config.\+site\+: \begin{DoxyVerb}>export CONFIG_SITE=$CONFIG_SITE:<path>/config.site

@@ -95,8 +95,8 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /usr/include/c++/4.8.2/bits/codecvt.h \
  /usr/include/c++/4.8.2/x86_64-redhat-linux/bits/basic_file.h \
  /usr/include/c++/4.8.2/x86_64-redhat-linux/bits/c++io.h \
- /usr/include/c++/4.8.2/bits/fstream.tcc \
- /usr/include/boost/program_options.hpp \
+ /usr/include/c++/4.8.2/bits/fstream.tcc /usr/include/sys/stat.h \
+ /usr/include/bits/stat.h /usr/include/boost/program_options.hpp \
  /usr/include/boost/program_options/options_description.hpp \
  /usr/include/boost/program_options/config.hpp \
  /usr/include/boost/config.hpp /usr/include/boost/config/user.hpp \
@@ -689,8 +689,34 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /usr/include/boost/program_options/detail/convert.hpp \
  /usr/include/boost/program_options/variables_map.hpp \
  /usr/include/boost/program_options/version.hpp \
- app/../all_distance_sketch.h app/../graph/graph.h \
- app/../graph/../common.h /usr/include/dirent.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h \
+ /usr/include/sys/param.h /usr/include/signal.h \
+ /usr/include/bits/signum.h /usr/include/bits/siginfo.h \
+ /usr/include/bits/sigaction.h /usr/include/bits/sigcontext.h \
+ /usr/include/bits/sigstack.h /usr/include/sys/ucontext.h \
+ /usr/include/bits/sigthread.h /usr/include/bits/param.h \
+ /usr/include/linux/param.h /usr/include/asm/param.h \
+ /usr/include/asm-generic/param.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/common.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h \
+ /usr/include/c++/4.8.2/regex /usr/include/c++/4.8.2/bitset \
+ /usr/include/c++/4.8.2/stack /usr/include/c++/4.8.2/deque \
+ /usr/include/c++/4.8.2/bits/stl_deque.h \
+ /usr/include/c++/4.8.2/bits/deque.tcc \
+ /usr/include/c++/4.8.2/bits/stl_stack.h \
+ /usr/include/c++/4.8.2/bits/regex_constants.h \
+ /usr/include/c++/4.8.2/bits/regex_error.h \
+ /usr/include/c++/4.8.2/bits/regex_cursor.h \
+ /usr/include/c++/4.8.2/bits/regex_nfa.h \
+ /usr/include/c++/4.8.2/bits/regex_nfa.tcc \
+ /usr/include/c++/4.8.2/bits/regex_compiler.h \
+ /usr/include/c++/4.8.2/bits/regex_grep_matcher.h \
+ /usr/include/c++/4.8.2/bits/regex_grep_matcher.tcc \
+ /usr/include/c++/4.8.2/bits/regex.h app/../all_distance_sketch.h \
+ app/../graph/graph.h app/../graph/../common.h /usr/include/dirent.h \
  /usr/include/bits/dirent.h /usr/include/c++/4.8.2/mutex \
  /usr/include/c++/4.8.2/chrono /usr/include/c++/4.8.2/ratio \
  /usr/include/c++/4.8.2/system_error \
@@ -816,19 +842,15 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.h \
  /work/eng/eliavb/include/Snap-2.3/glib-core/base.h /usr/include/fcntl.h \
  /usr/include/bits/fcntl.h /usr/include/bits/fcntl-linux.h \
- /usr/include/bits/uio.h /usr/include/bits/stat.h /usr/include/signal.h \
- /usr/include/bits/signum.h /usr/include/bits/siginfo.h \
- /usr/include/bits/sigaction.h /usr/include/bits/sigcontext.h \
- /usr/include/bits/sigstack.h /usr/include/sys/ucontext.h \
- /usr/include/bits/sigthread.h /usr/include/sys/poll.h \
- /usr/include/bits/poll.h /usr/include/sys/socket.h \
- /usr/include/sys/uio.h /usr/include/bits/socket.h \
- /usr/include/bits/socket_type.h /usr/include/bits/sockaddr.h \
- /usr/include/asm/socket.h /usr/include/asm-generic/socket.h \
- /usr/include/asm/sockios.h /usr/include/asm-generic/sockios.h \
- /usr/include/sys/stat.h /usr/include/sys/time.h /usr/include/sys/wait.h \
- /usr/include/sys/resource.h /usr/include/bits/resource.h \
- /usr/include/netdb.h /usr/include/netinet/in.h /usr/include/bits/in.h \
+ /usr/include/bits/uio.h /usr/include/sys/poll.h /usr/include/bits/poll.h \
+ /usr/include/sys/socket.h /usr/include/sys/uio.h \
+ /usr/include/bits/socket.h /usr/include/bits/socket_type.h \
+ /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
+ /usr/include/asm-generic/socket.h /usr/include/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h /usr/include/sys/time.h \
+ /usr/include/sys/wait.h /usr/include/sys/resource.h \
+ /usr/include/bits/resource.h /usr/include/netdb.h \
+ /usr/include/netinet/in.h /usr/include/bits/in.h \
  /usr/include/rpc/netdb.h /usr/include/bits/netdb.h \
  /usr/include/arpa/inet.h /usr/include/sys/epoll.h \
  /usr/include/bits/epoll.h \
@@ -901,7 +923,6 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  app/../algorithms/../sketch/rank_calculator.h \
  app/../algorithms/../sketch/../graph/graph.h \
  app/../algorithms/../sketch/../proto/all_distance_sketch.pb.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/common.h \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/generated_message_util.h \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/once.h \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/atomicops.h \
@@ -1192,6 +1213,10 @@ app/sketch_calculation_app.h:
 /usr/include/c++/4.8.2/x86_64-redhat-linux/bits/c++io.h:
 
 /usr/include/c++/4.8.2/bits/fstream.tcc:
+
+/usr/include/sys/stat.h:
+
+/usr/include/bits/stat.h:
 
 /usr/include/boost/program_options.hpp:
 
@@ -2503,6 +2528,76 @@ app/sketch_calculation_app.h:
 
 /usr/include/boost/program_options/version.hpp:
 
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h:
+
+/usr/include/sys/param.h:
+
+/usr/include/signal.h:
+
+/usr/include/bits/signum.h:
+
+/usr/include/bits/siginfo.h:
+
+/usr/include/bits/sigaction.h:
+
+/usr/include/bits/sigcontext.h:
+
+/usr/include/bits/sigstack.h:
+
+/usr/include/sys/ucontext.h:
+
+/usr/include/bits/sigthread.h:
+
+/usr/include/bits/param.h:
+
+/usr/include/linux/param.h:
+
+/usr/include/asm/param.h:
+
+/usr/include/asm-generic/param.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/common.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h:
+
+/usr/include/c++/4.8.2/regex:
+
+/usr/include/c++/4.8.2/bitset:
+
+/usr/include/c++/4.8.2/stack:
+
+/usr/include/c++/4.8.2/deque:
+
+/usr/include/c++/4.8.2/bits/stl_deque.h:
+
+/usr/include/c++/4.8.2/bits/deque.tcc:
+
+/usr/include/c++/4.8.2/bits/stl_stack.h:
+
+/usr/include/c++/4.8.2/bits/regex_constants.h:
+
+/usr/include/c++/4.8.2/bits/regex_error.h:
+
+/usr/include/c++/4.8.2/bits/regex_cursor.h:
+
+/usr/include/c++/4.8.2/bits/regex_nfa.h:
+
+/usr/include/c++/4.8.2/bits/regex_nfa.tcc:
+
+/usr/include/c++/4.8.2/bits/regex_compiler.h:
+
+/usr/include/c++/4.8.2/bits/regex_grep_matcher.h:
+
+/usr/include/c++/4.8.2/bits/regex_grep_matcher.tcc:
+
+/usr/include/c++/4.8.2/bits/regex.h:
+
 app/../all_distance_sketch.h:
 
 app/../graph/graph.h:
@@ -2779,24 +2874,6 @@ app/../graph/snap_graph_adaptor.h:
 
 /usr/include/bits/uio.h:
 
-/usr/include/bits/stat.h:
-
-/usr/include/signal.h:
-
-/usr/include/bits/signum.h:
-
-/usr/include/bits/siginfo.h:
-
-/usr/include/bits/sigaction.h:
-
-/usr/include/bits/sigcontext.h:
-
-/usr/include/bits/sigstack.h:
-
-/usr/include/sys/ucontext.h:
-
-/usr/include/bits/sigthread.h:
-
 /usr/include/sys/poll.h:
 
 /usr/include/bits/poll.h:
@@ -2818,8 +2895,6 @@ app/../graph/snap_graph_adaptor.h:
 /usr/include/asm/sockios.h:
 
 /usr/include/asm-generic/sockios.h:
-
-/usr/include/sys/stat.h:
 
 /usr/include/sys/time.h:
 
@@ -2986,8 +3061,6 @@ app/../algorithms/../sketch/rank_calculator.h:
 app/../algorithms/../sketch/../graph/graph.h:
 
 app/../algorithms/../sketch/../proto/all_distance_sketch.pb.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/common.h:
 
 /work/eng/eliavb/protobuf_install/include/google/protobuf/generated_message_util.h:
 

@@ -24,11 +24,11 @@ BUILT_SOURCES = $(PROTOS_TO_BUILD)
 
 # Build proto files first
 $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h: $(srcdir)/proto/all_distance_sketch.proto
-	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/all_distance_sketch.proto
+	@$(PROTOC) --cpp_out=$(builddir) --python_out=$(builddir) $(srcdir)/proto/all_distance_sketch.proto
 $(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc: $(srcdir)/proto/ranking.proto
-	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/ranking.proto
+	@$(PROTOC) --cpp_out=$(builddir) --python_out=$(builddir) $(srcdir)/proto/ranking.proto
 $(builddir)/proto/cover.pb.cc $(builddir)/proto/cover.pb.h: $(srcdir)/proto/cover.proto
-	@$(PROTOC) --cpp_out=$(builddir) $(srcdir)/proto/cover.proto
+	@$(PROTOC) --cpp_out=$(builddir) --python_out=$(builddir) $(srcdir)/proto/cover.proto
 
 dist_noinst_DATA = $(wildcard ./proto/*)
 MOSTLYCLEANFILES = $(PROTOS_TO_BUILD)

@@ -2,22 +2,32 @@
 #define ALL_DISTANCE_SKETCH_SRC_APP_UTILS_H_
 #include <iostream>
 #include <fstream>
+#include <google/protobuf/io/coded_stream.h>
+#include <google/protobuf/io/zero_copy_stream_impl.h>
 
 #include "../all_distance_sketch.h"
 
 using namespace all_distance_sketch;
+using namespace google::protobuf::io;
+
+static const int kMessageSizeLimit = 1000000000;
 
 int load_sketch(GraphSketch* graph_sketch,
 				std::string sketch_file) {
+
 	AllDistanceSketchGpb all_distance_sketch;
     {
         // Read the existing address book.
-        std::fstream input(sketch_file, std::ios::in | std::ios::binary);
-        if (!input) {
+        // std::fstream input(sketch_file, std::ios::in | std::ios::binary);
+        int fd = open(sketch_file.c_str(), O_RDONLY);
+        ZeroCopyInputStream* raw_input = new FileInputStream(fd);
+        CodedInputStream* coded_input = new CodedInputStream(raw_input);
+        coded_input->SetTotalBytesLimit(kMessageSizeLimit, kMessageSizeLimit);
+        if (!coded_input) {
           std::cout << sketch_file << ": File not found." << std::endl;
           return 1;
         }
-        if (!all_distance_sketch.ParseFromIstream(&input)) {
+        if (!all_distance_sketch.ParseFromCodedStream(coded_input)) {
           std::cout << "Failed to parse all_distance_sketch." << std::endl;
           return 1;
         }

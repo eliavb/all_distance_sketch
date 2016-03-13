@@ -80,6 +80,14 @@
 	Try changing the package config env variable using the following command:
 
 		export PKG_CONFIG_PATH='${PROTO_DEST}/lib/pkgconfig/'	
+	
+	Case you encounter:
+
+		error while loading shared libraries: libprotobuf.so.9: cannot open shared object file: No such file or directory
+
+	Try:
+	
+		export LD_LIBRARY_PATH="$LD_LIBRAY_PATH:${PROTO_DEST}/lib/"	
 
 	#### CONFIG_SITE ####
 	After the file was created we need to set an env variable named 

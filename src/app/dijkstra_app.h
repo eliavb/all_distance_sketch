@@ -15,7 +15,6 @@ namespace po = boost::program_options;
 
 
 bool parse_command_line_args(int ac, char* av[], int* source_id,
-                                                 int* K,
                                                  bool* directed,
                                                  std::string* graph_dir,
                                                  std::string* output_file) {
@@ -25,8 +24,6 @@ bool parse_command_line_args(int ac, char* av[], int* source_id,
             ("help", "produce help message")
             ("source_id", po::value<int>(source_id)->required(), 
                   "id of source node")
-            ("K", po::value<int>(K)->required(), 
-                  "K = 1/epsilon^2 sets the precision")
             ("directed", po::value<bool>(directed), 
                   "is the graph directed")
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
@@ -50,7 +47,6 @@ bool parse_command_line_args(int ac, char* av[], int* source_id,
         cout << "output_file=" << *output_file << endl;
         cout << "graph_dir=" << *graph_dir << endl;
         cout << "directed=" << *directed << endl;
-        cout << "K=" << *K << endl;
     }
     catch(std::exception& e)
     {
@@ -61,12 +57,12 @@ bool parse_command_line_args(int ac, char* av[], int* source_id,
 }
 
 int dijkstra_app_main(int ac, char* av[]) {
-    int K, node_id;
+    int node_id;
     bool directed;
     std::string output_file, graph_dir;
-    if (parse_command_line_args(ac, av, &node_id, &K, 
-                                        &directed, &graph_dir,
-                                        &output_file)) {
+    if (parse_command_line_args(ac, av, &node_id,
+                                &directed, &graph_dir,
+                                &output_file)) {
         return 1;
     }
     GraphSketch graph_sketch;
@@ -95,7 +91,7 @@ int dijkstra_app_main(int ac, char* av[]) {
     
     NodeRanksGpb node_ranks;
     std::vector<int> dest(param.min_distance.begin(), param.min_distance.end());
-    SaveRankingToGpb(node_id, dest , &node_ranks);
+    SaveRankingToGpb(node_id, dest, &node_ranks);
     {
         fstream output(output_file, ios::out | ios::trunc | ios::binary);
         if (!node_ranks.SerializeToOstream(&output)) {
