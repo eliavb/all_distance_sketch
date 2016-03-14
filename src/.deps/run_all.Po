@@ -585,6 +585,18 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../algorithms/ut/../../common.h \
  graph/ut/../../algorithms/ut/../../sketch/graph_sketch.h \
  graph/ut/../../algorithms/ut/../../sketch/node_sketch.h \
+ graph/ut/../../algorithms/ut/../../sketch/utils.h /usr/include/fcntl.h \
+ /usr/include/bits/fcntl.h /usr/include/bits/fcntl-linux.h \
+ /usr/include/bits/uio.h /usr/include/glob.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h \
+ /usr/include/sys/param.h /usr/include/bits/param.h \
+ /usr/include/linux/param.h /usr/include/asm/param.h \
+ /usr/include/asm-generic/param.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h \
+ graph/ut/../../algorithms/ut/../../sketch/../common.h \
  graph/ut/../../algorithms/ut/../../proto/ranking.pb.h \
  graph/ut/../../algorithms/ut/../sketch_calculation.h \
  graph/ut/../../algorithms/ut/../../graph/graph.h \
@@ -597,9 +609,8 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../algorithms/ut/.././../sketch/graph_sketch.h \
  graph/ut/../../algorithms/ut/../../graph/snap_graph_adaptor.h \
  /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/base.h /usr/include/fcntl.h \
- /usr/include/bits/fcntl.h /usr/include/bits/fcntl-linux.h \
- /usr/include/bits/uio.h /usr/include/sys/poll.h /usr/include/bits/poll.h \
+ /work/eng/eliavb/include/Snap-2.3/glib-core/base.h \
+ /usr/include/sys/poll.h /usr/include/bits/poll.h \
  /usr/include/sys/socket.h /usr/include/sys/uio.h \
  /usr/include/bits/socket.h /usr/include/bits/socket_type.h \
  /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
@@ -949,15 +960,6 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  /usr/include/boost/program_options/detail/convert.hpp \
  /usr/include/boost/program_options/variables_map.hpp \
  /usr/include/boost/program_options/version.hpp \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h \
- /usr/include/sys/param.h /usr/include/bits/param.h \
- /usr/include/linux/param.h /usr/include/asm/param.h \
- /usr/include/asm-generic/param.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h \
- /usr/include/glob.h \
  graph/ut/../../algorithms/ut/../../app/../all_distance_sketch.h \
  graph/ut/../../algorithms/ut/../../app/../graph/graph.h \
  graph/ut/../../algorithms/ut/../../app/../graph/snap_graph_adaptor.h \
@@ -2339,6 +2341,40 @@ graph/ut/../../algorithms/ut/../../sketch/graph_sketch.h:
 
 graph/ut/../../algorithms/ut/../../sketch/node_sketch.h:
 
+graph/ut/../../algorithms/ut/../../sketch/utils.h:
+
+/usr/include/fcntl.h:
+
+/usr/include/bits/fcntl.h:
+
+/usr/include/bits/fcntl-linux.h:
+
+/usr/include/bits/uio.h:
+
+/usr/include/glob.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h:
+
+/usr/include/sys/param.h:
+
+/usr/include/bits/param.h:
+
+/usr/include/linux/param.h:
+
+/usr/include/asm/param.h:
+
+/usr/include/asm-generic/param.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h:
+
+graph/ut/../../algorithms/ut/../../sketch/../common.h:
+
 graph/ut/../../algorithms/ut/../../proto/ranking.pb.h:
 
 graph/ut/../../algorithms/ut/../sketch_calculation.h:
@@ -2364,14 +2400,6 @@ graph/ut/../../algorithms/ut/../../graph/snap_graph_adaptor.h:
 /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.h:
 
 /work/eng/eliavb/include/Snap-2.3/glib-core/base.h:
-
-/usr/include/fcntl.h:
-
-/usr/include/bits/fcntl.h:
-
-/usr/include/bits/fcntl-linux.h:
-
-/usr/include/bits/uio.h:
 
 /usr/include/sys/poll.h:
 
@@ -3136,28 +3164,6 @@ graph/ut/../../algorithms/ut/../../app/sketch_calculation_app.h:
 /usr/include/boost/program_options/variables_map.hpp:
 
 /usr/include/boost/program_options/version.hpp:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h:
-
-/usr/include/sys/param.h:
-
-/usr/include/bits/param.h:
-
-/usr/include/linux/param.h:
-
-/usr/include/asm/param.h:
-
-/usr/include/asm-generic/param.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h:
-
-/usr/include/glob.h:
 
 graph/ut/../../algorithms/ut/../../app/../all_distance_sketch.h:
 

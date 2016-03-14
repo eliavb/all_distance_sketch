@@ -689,20 +689,7 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /usr/include/boost/program_options/detail/convert.hpp \
  /usr/include/boost/program_options/variables_map.hpp \
  /usr/include/boost/program_options/version.hpp \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h \
- /usr/include/sys/param.h /usr/include/signal.h \
- /usr/include/bits/signum.h /usr/include/bits/siginfo.h \
- /usr/include/bits/sigaction.h /usr/include/bits/sigcontext.h \
- /usr/include/bits/sigstack.h /usr/include/sys/ucontext.h \
- /usr/include/bits/sigthread.h /usr/include/bits/param.h \
- /usr/include/linux/param.h /usr/include/asm/param.h \
- /usr/include/asm-generic/param.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/common.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h \
- /usr/include/glob.h app/../all_distance_sketch.h app/../graph/graph.h \
+ app/../all_distance_sketch.h app/../graph/graph.h \
  app/../graph/../common.h /usr/include/dirent.h \
  /usr/include/bits/dirent.h /usr/include/c++/4.8.2/mutex \
  /usr/include/c++/4.8.2/chrono /usr/include/c++/4.8.2/ratio \
@@ -829,7 +816,11 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.h \
  /work/eng/eliavb/include/Snap-2.3/glib-core/base.h /usr/include/fcntl.h \
  /usr/include/bits/fcntl.h /usr/include/bits/fcntl-linux.h \
- /usr/include/bits/uio.h /usr/include/sys/poll.h /usr/include/bits/poll.h \
+ /usr/include/bits/uio.h /usr/include/signal.h /usr/include/bits/signum.h \
+ /usr/include/bits/siginfo.h /usr/include/bits/sigaction.h \
+ /usr/include/bits/sigcontext.h /usr/include/bits/sigstack.h \
+ /usr/include/sys/ucontext.h /usr/include/bits/sigthread.h \
+ /usr/include/sys/poll.h /usr/include/bits/poll.h \
  /usr/include/sys/socket.h /usr/include/sys/uio.h \
  /usr/include/bits/socket.h /usr/include/bits/socket_type.h \
  /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
@@ -910,6 +901,7 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  app/../algorithms/../sketch/rank_calculator.h \
  app/../algorithms/../sketch/../graph/graph.h \
  app/../algorithms/../sketch/../proto/all_distance_sketch.pb.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/common.h \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/generated_message_util.h \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/once.h \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/atomicops.h \
@@ -925,6 +917,15 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/unknown_field_set.h \
  app/../algorithms/../sketch/graph_sketch.h \
  app/../algorithms/../sketch/node_sketch.h \
+ app/../algorithms/../sketch/utils.h /usr/include/glob.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h \
+ /usr/include/sys/param.h /usr/include/bits/param.h \
+ /usr/include/linux/param.h /usr/include/asm/param.h \
+ /usr/include/asm-generic/param.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h \
  app/../algorithms/reverse_rank.h app/../algorithms/../proto/ranking.pb.h \
  app/../algorithms/sketch_calculation.h \
  app/../algorithms/../graph/graph.h \
@@ -2515,46 +2516,6 @@ app/sketch_calculation_app.h:
 
 /usr/include/boost/program_options/version.hpp:
 
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h:
-
-/usr/include/sys/param.h:
-
-/usr/include/signal.h:
-
-/usr/include/bits/signum.h:
-
-/usr/include/bits/siginfo.h:
-
-/usr/include/bits/sigaction.h:
-
-/usr/include/bits/sigcontext.h:
-
-/usr/include/bits/sigstack.h:
-
-/usr/include/sys/ucontext.h:
-
-/usr/include/bits/sigthread.h:
-
-/usr/include/bits/param.h:
-
-/usr/include/linux/param.h:
-
-/usr/include/asm/param.h:
-
-/usr/include/asm-generic/param.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/common.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h:
-
-/usr/include/glob.h:
-
 app/../all_distance_sketch.h:
 
 app/../graph/graph.h:
@@ -2831,6 +2792,22 @@ app/../graph/snap_graph_adaptor.h:
 
 /usr/include/bits/uio.h:
 
+/usr/include/signal.h:
+
+/usr/include/bits/signum.h:
+
+/usr/include/bits/siginfo.h:
+
+/usr/include/bits/sigaction.h:
+
+/usr/include/bits/sigcontext.h:
+
+/usr/include/bits/sigstack.h:
+
+/usr/include/sys/ucontext.h:
+
+/usr/include/bits/sigthread.h:
+
 /usr/include/sys/poll.h:
 
 /usr/include/bits/poll.h:
@@ -3019,6 +2996,8 @@ app/../algorithms/../sketch/../graph/graph.h:
 
 app/../algorithms/../sketch/../proto/all_distance_sketch.pb.h:
 
+/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/common.h:
+
 /work/eng/eliavb/protobuf_install/include/google/protobuf/generated_message_util.h:
 
 /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/once.h:
@@ -3048,6 +3027,30 @@ app/../algorithms/../sketch/../proto/all_distance_sketch.pb.h:
 app/../algorithms/../sketch/graph_sketch.h:
 
 app/../algorithms/../sketch/node_sketch.h:
+
+app/../algorithms/../sketch/utils.h:
+
+/usr/include/glob.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h:
+
+/usr/include/sys/param.h:
+
+/usr/include/bits/param.h:
+
+/usr/include/linux/param.h:
+
+/usr/include/asm/param.h:
+
+/usr/include/asm-generic/param.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h:
 
 app/../algorithms/reverse_rank.h:
 

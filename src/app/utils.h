@@ -16,24 +16,9 @@ int load_sketch(GraphSketch* graph_sketch,
 				std::string sketch_file) {
 
 	AllDistanceSketchGpb all_distance_sketch;
-    {
-        // Read the existing address book.
-        // std::fstream input(sketch_file, std::ios::in | std::ios::binary);
-        int fd = open(sketch_file.c_str(), O_RDONLY);
-        ZeroCopyInputStream* raw_input = new FileInputStream(fd);
-        CodedInputStream* coded_input = new CodedInputStream(raw_input);
-        coded_input->SetTotalBytesLimit(kMessageSizeLimit, kMessageSizeLimit);
-        if (!coded_input) {
-          std::cout << sketch_file << ": File not found." << std::endl;
-          return 1;
-        }
-        if (!all_distance_sketch.ParseFromCodedStream(coded_input)) {
-          std::cout << "Failed to parse all_distance_sketch." << std::endl;
-          return 1;
-        }
-    }
-    graph_sketch->LoadGraphSketchFromGpb(all_distance_sketch);
-    return 0;
+  LoadGraphSketchFromFiles(&all_distance_sketch, sketch_file);
+  graph_sketch->LoadGraphSketchFromGpb(all_distance_sketch);
+  return 0;
 }
 
 void load_graph(bool directed,

@@ -2,6 +2,7 @@
 #define SRC_SKETCH_GRAPH_SKETCH_H_
 
 #include "node_sketch.h"
+#include "utils.h"
 
 namespace all_distance_sketch {
 

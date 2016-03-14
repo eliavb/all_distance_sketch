@@ -916,6 +916,15 @@ dijkstra_app.o: app/dijkstra_app.cpp /usr/include/stdc-predef.h \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/unknown_field_set.h \
  app/../algorithms/../sketch/graph_sketch.h \
  app/../algorithms/../sketch/node_sketch.h \
+ app/../algorithms/../sketch/utils.h /usr/include/glob.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h \
+ /usr/include/sys/param.h /usr/include/bits/param.h \
+ /usr/include/linux/param.h /usr/include/asm/param.h \
+ /usr/include/asm-generic/param.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
+ /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h \
  app/../algorithms/reverse_rank.h app/../algorithms/../proto/ranking.pb.h \
  app/../algorithms/sketch_calculation.h \
  app/../algorithms/../graph/graph.h \
@@ -924,15 +933,7 @@ dijkstra_app.o: app/dijkstra_app.cpp /usr/include/stdc-predef.h \
  app/../algorithms/./reverse_rank.h app/../algorithms/../proto/cover.pb.h \
  app/../algorithms/t_skim_reverse_rank.h app/../algorithms/t_skim.h \
  app/../algorithms/t_skim_dijkstra.h app/../algorithms/./t_skim.h \
- app/../sketch/node_sketch.h app/../sketch/graph_sketch.h app/utils.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h \
- /usr/include/sys/param.h /usr/include/bits/param.h \
- /usr/include/linux/param.h /usr/include/asm/param.h \
- /usr/include/asm-generic/param.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
- /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h
+ app/../sketch/node_sketch.h app/../sketch/graph_sketch.h app/utils.h
 
 /usr/include/stdc-predef.h:
 
@@ -3026,6 +3027,30 @@ app/../algorithms/../sketch/graph_sketch.h:
 
 app/../algorithms/../sketch/node_sketch.h:
 
+app/../algorithms/../sketch/utils.h:
+
+/usr/include/glob.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h:
+
+/usr/include/sys/param.h:
+
+/usr/include/bits/param.h:
+
+/usr/include/linux/param.h:
+
+/usr/include/asm/param.h:
+
+/usr/include/asm-generic/param.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h:
+
+/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h:
+
 app/../algorithms/reverse_rank.h:
 
 app/../algorithms/../proto/ranking.pb.h:
@@ -3057,23 +3082,3 @@ app/../sketch/node_sketch.h:
 app/../sketch/graph_sketch.h:
 
 app/utils.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/coded_stream.h:
-
-/usr/include/sys/param.h:
-
-/usr/include/bits/param.h:
-
-/usr/include/linux/param.h:
-
-/usr/include/asm/param.h:
-
-/usr/include/asm-generic/param.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h:
-
-/work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h:

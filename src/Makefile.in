@@ -80,8 +80,8 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = test_all$(EXEEXT) sketch_app$(EXEEXT) \
-	reverse_rank_app$(EXEEXT) t_skim_reverse_rank_app$(EXEEXT) \
-	dijkstra_app$(EXEEXT)
+	reverse_rank_batch_app$(EXEEXT) reverse_rank_app$(EXEEXT) \
+	t_skim_reverse_rank_app$(EXEEXT) dijkstra_app$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(dist_noinst_DATA) $(include_HEADERS)
@@ -147,6 +147,10 @@ am_reverse_rank_app_OBJECTS = reverse_rank_app.$(OBJEXT) \
 	$(am__objects_3)
 reverse_rank_app_OBJECTS = $(am_reverse_rank_app_OBJECTS)
 reverse_rank_app_LDADD = $(LDADD)
+am_reverse_rank_batch_app_OBJECTS = reverse_rank_batch_app.$(OBJEXT) \
+	$(am__objects_3)
+reverse_rank_batch_app_OBJECTS = $(am_reverse_rank_batch_app_OBJECTS)
+reverse_rank_batch_app_LDADD = $(LDADD)
 am_sketch_app_OBJECTS = sketch_calculation_app.$(OBJEXT) \
 	$(am__objects_3)
 sketch_app_OBJECTS = $(am_sketch_app_OBJECTS)
@@ -205,12 +209,13 @@ am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(liball_distance_sketch_a_SOURCES) $(dijkstra_app_SOURCES) \
-	$(reverse_rank_app_SOURCES) $(sketch_app_SOURCES) \
-	$(t_skim_reverse_rank_app_SOURCES) $(test_all_SOURCES)
-DIST_SOURCES = $(liball_distance_sketch_a_SOURCES) \
-	$(dijkstra_app_SOURCES) $(reverse_rank_app_SOURCES) \
+	$(reverse_rank_app_SOURCES) $(reverse_rank_batch_app_SOURCES) \
 	$(sketch_app_SOURCES) $(t_skim_reverse_rank_app_SOURCES) \
 	$(test_all_SOURCES)
+DIST_SOURCES = $(liball_distance_sketch_a_SOURCES) \
+	$(dijkstra_app_SOURCES) $(reverse_rank_app_SOURCES) \
+	$(reverse_rank_batch_app_SOURCES) $(sketch_app_SOURCES) \
+	$(t_skim_reverse_rank_app_SOURCES) $(test_all_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -352,6 +357,7 @@ PROTOS_TO_BUILD = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/
 ALL = $(HDRS) $(TEST_SRC) $(PROTOS_TO_BUILD)
 test_all_SOURCES = graph/ut/run_all.cpp $(ALL)
 sketch_app_SOURCES = app/sketch_calculation_app.cpp $(ALL)
+reverse_rank_batch_app_SOURCES = app/reverse_rank_batch_app.cpp $(ALL)
 reverse_rank_app_SOURCES = app/reverse_rank_app.cpp $(ALL)
 t_skim_reverse_rank_app_SOURCES = app/t_skim_reverse_rank_app.cpp $(ALL)
 dijkstra_app_SOURCES = app/dijkstra_app.cpp $(ALL)
@@ -483,6 +489,10 @@ reverse_rank_app$(EXEEXT): $(reverse_rank_app_OBJECTS) $(reverse_rank_app_DEPEND
 	@rm -f reverse_rank_app$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(reverse_rank_app_OBJECTS) $(reverse_rank_app_LDADD) $(LIBS)
 
+reverse_rank_batch_app$(EXEEXT): $(reverse_rank_batch_app_OBJECTS) $(reverse_rank_batch_app_DEPENDENCIES) $(EXTRA_reverse_rank_batch_app_DEPENDENCIES) 
+	@rm -f reverse_rank_batch_app$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(reverse_rank_batch_app_OBJECTS) $(reverse_rank_batch_app_LDADD) $(LIBS)
+
 sketch_app$(EXEEXT): $(sketch_app_OBJECTS) $(sketch_app_DEPENDENCIES) $(EXTRA_sketch_app_DEPENDENCIES) 
 	@rm -f sketch_app$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(sketch_app_OBJECTS) $(sketch_app_LDADD) $(LIBS)
@@ -506,6 +516,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dijkstra_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ranking.pb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/reverse_rank_app.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/reverse_rank_batch_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/run_all.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sketch_calculation_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/t_skim_reverse_rank_app.Po@am__quote@
@@ -593,6 +604,20 @@ reverse_rank_app.obj: app/reverse_rank_app.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/reverse_rank_app.cpp' object='reverse_rank_app.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o reverse_rank_app.obj `if test -f 'app/reverse_rank_app.cpp'; then $(CYGPATH_W) 'app/reverse_rank_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/reverse_rank_app.cpp'; fi`
+
+reverse_rank_batch_app.o: app/reverse_rank_batch_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reverse_rank_batch_app.o -MD -MP -MF $(DEPDIR)/reverse_rank_batch_app.Tpo -c -o reverse_rank_batch_app.o `test -f 'app/reverse_rank_batch_app.cpp' || echo '$(srcdir)/'`app/reverse_rank_batch_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reverse_rank_batch_app.Tpo $(DEPDIR)/reverse_rank_batch_app.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/reverse_rank_batch_app.cpp' object='reverse_rank_batch_app.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o reverse_rank_batch_app.o `test -f 'app/reverse_rank_batch_app.cpp' || echo '$(srcdir)/'`app/reverse_rank_batch_app.cpp
+
+reverse_rank_batch_app.obj: app/reverse_rank_batch_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reverse_rank_batch_app.obj -MD -MP -MF $(DEPDIR)/reverse_rank_batch_app.Tpo -c -o reverse_rank_batch_app.obj `if test -f 'app/reverse_rank_batch_app.cpp'; then $(CYGPATH_W) 'app/reverse_rank_batch_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/reverse_rank_batch_app.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reverse_rank_batch_app.Tpo $(DEPDIR)/reverse_rank_batch_app.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/reverse_rank_batch_app.cpp' object='reverse_rank_batch_app.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o reverse_rank_batch_app.obj `if test -f 'app/reverse_rank_batch_app.cpp'; then $(CYGPATH_W) 'app/reverse_rank_batch_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/reverse_rank_batch_app.cpp'; fi`
 
 sketch_calculation_app.o: app/sketch_calculation_app.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT sketch_calculation_app.o -MD -MP -MF $(DEPDIR)/sketch_calculation_app.Tpo -c -o sketch_calculation_app.o `test -f 'app/sketch_calculation_app.cpp' || echo '$(srcdir)/'`app/sketch_calculation_app.cpp
