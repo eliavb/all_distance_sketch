@@ -108,6 +108,7 @@ int reverse_rank_app_main(int ac, char* av[]) {
                                                      &graph_sketch,
                                                      &ranking);
     }
+
     NodeRanksGpb node_ranks;
     SaveRankingToGpb(node_id, ranking, &node_ranks);
     {
