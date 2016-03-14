@@ -9,7 +9,7 @@
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 
-#include <regex>
+#include <glob.h>
 
 #include "../all_distance_sketch.h"
 #include "utils.h"
@@ -20,6 +20,18 @@ namespace po = boost::program_options;
 
 
 static const int kMaxFileSize = 256000000;
+
+inline std::vector<std::string> glob(const std::string& pat){
+    using namespace std;
+    glob_t glob_result;
+    glob(pat.c_str(),GLOB_TILDE,NULL,&glob_result);
+    vector<string> ret;
+    for(unsigned int i=0;i<glob_result.gl_pathc;++i){
+        ret.push_back(string(glob_result.gl_pathv[i]));
+    }
+    globfree(&glob_result);
+    return ret;
+}
 
 bool WriteMessage(const google::protobuf::MessageLite& message,
                   CodedOutputStream* coded_output,
@@ -117,11 +129,9 @@ void DumpGraphSketchToFile(const AllDistanceSketchGpb& graph_sketch,
     CloseFile(&fd, raw_output, coded_output);
 }
 
-void LoadGraphSketchFromFile(AllDistanceSketchGpb* graph_sketch,
-                            std::string output_file,
-                            int num_files) {
-    for (int i=0; i < num_files; i++) {
-        std::string file_name = output_file + "_" + std::to_string(i);
+void LoadGraphSketchFromFiles(AllDistanceSketchGpb* graph_sketch,
+                             std::vector<std::string> files) {
+    for (const auto file_name : files) {
         std::cout << file_name << std::endl;
         int fd = open(file_name.c_str(), O_RDONLY);
         ZeroCopyInputStream* raw_input = new FileInputStream(fd);
@@ -208,6 +218,7 @@ int sketch_app_main(int ac, char*av[]) {
     }
 
     GraphSketch graph_sketch;
+#if 1
     graph::Graph< graph::TDirectedGraph> directed_graph;
     graph::Graph< graph::TUnDirectedGraph> un_directed_graph;
     load_graph(directed, graph_dir, &directed_graph, &un_directed_graph);
@@ -218,12 +229,17 @@ int sketch_app_main(int ac, char*av[]) {
     graph_sketch.SaveGraphSketchToGpb(&all_distance_sketch);
     std::cout << "max threshold proto=" << all_distance_sketch.node_thresholds_size() << std::endl;
     std::cout << "max sketch size proto=" << all_distance_sketch.nodes_sketches_size() << std::endl;
-#if 1
+
     DumpGraphSketchToFile(all_distance_sketch, output_file);
 #endif    
     AllDistanceSketchGpb all_distance_sketch2;
     {
-        LoadGraphSketchFromFile(&all_distance_sketch2, output_file, 30);
+        std::string pattern = output_file + "_*";
+        auto files = glob(pattern);
+        for (const auto file: files) {
+            std::cout << file << std::endl;
+        }
+        LoadGraphSketchFromFiles(&all_distance_sketch2, files);
     }
     
 #if 1

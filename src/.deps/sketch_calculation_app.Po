@@ -702,21 +702,8 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream.h \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
  /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h \
- /usr/include/c++/4.8.2/regex /usr/include/c++/4.8.2/bitset \
- /usr/include/c++/4.8.2/stack /usr/include/c++/4.8.2/deque \
- /usr/include/c++/4.8.2/bits/stl_deque.h \
- /usr/include/c++/4.8.2/bits/deque.tcc \
- /usr/include/c++/4.8.2/bits/stl_stack.h \
- /usr/include/c++/4.8.2/bits/regex_constants.h \
- /usr/include/c++/4.8.2/bits/regex_error.h \
- /usr/include/c++/4.8.2/bits/regex_cursor.h \
- /usr/include/c++/4.8.2/bits/regex_nfa.h \
- /usr/include/c++/4.8.2/bits/regex_nfa.tcc \
- /usr/include/c++/4.8.2/bits/regex_compiler.h \
- /usr/include/c++/4.8.2/bits/regex_grep_matcher.h \
- /usr/include/c++/4.8.2/bits/regex_grep_matcher.tcc \
- /usr/include/c++/4.8.2/bits/regex.h app/../all_distance_sketch.h \
- app/../graph/graph.h app/../graph/../common.h /usr/include/dirent.h \
+ /usr/include/glob.h app/../all_distance_sketch.h app/../graph/graph.h \
+ app/../graph/../common.h /usr/include/dirent.h \
  /usr/include/bits/dirent.h /usr/include/c++/4.8.2/mutex \
  /usr/include/c++/4.8.2/chrono /usr/include/c++/4.8.2/ratio \
  /usr/include/c++/4.8.2/system_error \
@@ -2566,37 +2553,7 @@ app/sketch_calculation_app.h:
 
 /work/eng/eliavb/protobuf_install/include/google/protobuf/stubs/stl_util.h:
 
-/usr/include/c++/4.8.2/regex:
-
-/usr/include/c++/4.8.2/bitset:
-
-/usr/include/c++/4.8.2/stack:
-
-/usr/include/c++/4.8.2/deque:
-
-/usr/include/c++/4.8.2/bits/stl_deque.h:
-
-/usr/include/c++/4.8.2/bits/deque.tcc:
-
-/usr/include/c++/4.8.2/bits/stl_stack.h:
-
-/usr/include/c++/4.8.2/bits/regex_constants.h:
-
-/usr/include/c++/4.8.2/bits/regex_error.h:
-
-/usr/include/c++/4.8.2/bits/regex_cursor.h:
-
-/usr/include/c++/4.8.2/bits/regex_nfa.h:
-
-/usr/include/c++/4.8.2/bits/regex_nfa.tcc:
-
-/usr/include/c++/4.8.2/bits/regex_compiler.h:
-
-/usr/include/c++/4.8.2/bits/regex_grep_matcher.h:
-
-/usr/include/c++/4.8.2/bits/regex_grep_matcher.tcc:
-
-/usr/include/c++/4.8.2/bits/regex.h:
+/usr/include/glob.h:
 
 app/../all_distance_sketch.h:
 
