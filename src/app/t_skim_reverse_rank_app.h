@@ -19,6 +19,7 @@ bool parse_command_line_args(int ac, char* av[], int* T,
                                                  int* min_influence_for_seed_set,
                                                  int* num_threads,
                                                  bool* directed,
+                                                 std::string* algorithm,
                                                  std::string* graph_dir,
                                                  std::string* sketch_file,
                                                  std::string* output_file) {
@@ -40,8 +41,10 @@ bool parse_command_line_args(int ac, char* av[], int* T,
                   "Directory with the graph to calculate the sketch on")
             ("sketch_file", po::value< std::string >(sketch_file),
                   "File with the calculated sketch")
+            ("algorithm", po::value< std::string > (algorithm)->default_value("approx"), 
+                  "algorithm to run. options=[approx, exact]")
             ("output_file", po::value< std::string > (output_file)->required(), 
-                  "output file path, here the cover will be saved in Gpb format (Gpb defined in src/proto/cover.proto)")
+                  "output file path, here the cover will be saved in Gpb format (Gpb defined in src/proto/cover.proto)") 
         ;
 
         po::positional_options_description p;
@@ -72,14 +75,32 @@ bool parse_command_line_args(int ac, char* av[], int* T,
     return false;
 }
 
+void t_skim_approx(Cover* cover, bool directed, int T, int K, int min_influence_for_seed_set, 
+                   graph::Graph< graph::TDirectedGraph>* directed_graph,
+                   graph::Graph< graph::TUnDirectedGraph>* un_directed_graph) {
+    TSkimReverseRank< graph::TDirectedGraph > t_skim_algo_directed;
+    TSkimReverseRank< graph::TUnDirectedGraph > t_skim_algo_un_directed;
+    if (directed) {
+        t_skim_algo_directed.InitTSkim(T, K, min_influence_for_seed_set, cover, directed_graph);
+        t_skim_algo_directed.Run();
+    } else {
+        t_skim_algo_un_directed.InitTSkim(T, K, min_influence_for_seed_set, cover, un_directed_graph);
+        t_skim_algo_un_directed.Run();
+    }
+}
+
 int t_skim_app_main(int ac, char* av[]) {
     int K, min_influence_for_seed_set, T, num_threads;
     bool directed;
-    std::string output_file, graph_dir, sketch_file;
+    std::string output_file, graph_dir, sketch_file, algorithm;
     sketch_file="";
     if (parse_command_line_args(ac, av, &T, &K, &min_influence_for_seed_set,
-                                        &num_threads, &directed, &graph_dir,
+                                        &num_threads, &directed, &algorithm, &graph_dir,
                                         &sketch_file, &output_file)) {
+        return 1;
+    }
+    if (algorithm != "apprx" && algorithm != "exact") {
+        std::cout << "unkown algorithm type, options=[approx|exact]" << std::endl;
         return 1;
     }
     GraphSketch graph_sketch;
@@ -93,24 +114,11 @@ int t_skim_app_main(int ac, char* av[]) {
         load_sketch(&graph_sketch, sketch_file);
     }
 
-    TSkimReverseRank< graph::TDirectedGraph > t_skim_algo_directed;
-    TSkimReverseRank< graph::TUnDirectedGraph > t_skim_algo_un_directed;
-    Cover cover;
-    /*
-    InitTSkim(int T,
-            int k_all_distance_sketch,
-            int K,
-            Cover * cover,
-            graph::Graph<Z>* graph)
-    */
-    if (directed) {
-        t_skim_algo_directed.InitTSkim(T, K, min_influence_for_seed_set, &cover, &directed_graph);
-        t_skim_algo_directed.Run();
-    } else {
-        t_skim_algo_un_directed.InitTSkim(T, K, min_influence_for_seed_set, &cover, &un_directed_graph);
-        t_skim_algo_un_directed.Run();
-    }
 
+    Cover cover;
+    if (algorithm == "approx") {
+        t_skim_approx(&cover, directed, T, K, min_influence_for_seed_set, &directed_graph, &un_directed_graph);
+    }
     CoverGpb coverGpb;
     cover.SaveGraphSketchToGpb(&coverGpb);
     {
