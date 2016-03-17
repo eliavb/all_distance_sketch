@@ -150,7 +150,7 @@ class CollectorNodesUpToUpperBoundRankRank {
     return num_nodes_ranked >= T_;
   }
 
-  inline bool ShouldStop() { return algo_statistics_.num_visited_nodes >= T_; }
+  inline bool ShouldStop() { return false; }
 
   inline void RelaxedPath(int node_id) { }
 

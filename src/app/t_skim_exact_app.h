@@ -66,7 +66,7 @@ void calculate_exact_data_structures(graph::Graph<Z>* graph,
     for (auto node_it = graph->BegNI(); node_it != graph->EndNI(); node_it++ ) {
         int source_node_id = node_it.GetId();
         CollectorNodesUpToUpperBoundRankRank<Z> collector;
-        collector.InitCollectorNodesUpToUpperBoundRankRank(T+1);
+        collector.InitCollectorNodesUpToUpperBoundRankRank(T);
         DijkstraParams param;
         typename Z::TNode source(source_node_id);
         PrunedDijkstra< Z, CollectorNodesUpToUpperBoundRankRank< Z > > (source,
@@ -78,6 +78,17 @@ void calculate_exact_data_structures(graph::Graph<Z>* graph,
             const auto reachable_node_id = node_details.GetNId();
             (*reachable_nodes)[source_node_id].push_back(reachable_node_id);
             (*reverse_refernce)[reachable_node_id].push_back(source_node_id);
+        }
+    }
+    for (int node_id =0; node_id < reachable_nodes->size(); node_id++) {
+        int num_reachable = (*reachable_nodes)[node_id].size();
+        int nodes_reverse = 0;
+        for (int j=0; j < reverse_refernce->size(); j++) {
+            for (auto node : (*reverse_refernce)[j]) {
+                if (node == node_id) {
+                    nodes_reverse += 1;
+                }
+            }
         }
     }
 }
