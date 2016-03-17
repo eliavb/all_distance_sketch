@@ -48,13 +48,11 @@ bool parse_command_line_args(int ac, char* av[], int* K,
             return true;
         }
         po::notify(vm);
-        /*
         cout << "output_file=" << *output_file << endl;
         cout << "graph_dir=" << *graph_dir << endl;
         cout << "directed=" << *directed << endl;
         cout << "K=" << *K << endl;
         cout << "#threads=" << *num_threads << endl;
-        */
     }
     catch(std::exception& e)
     {

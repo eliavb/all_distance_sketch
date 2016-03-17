@@ -1299,11 +1299,12 @@ TEST_F(AlgoGraph, SketchAppTestUndirected) {
   char * writable = new char[graph_dir_arg.size() + 1];
   std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
   writable[graph_dir_arg.size()] = '\0';
-  char *arguments[] = { "app", 
+  char *arguments[] = { "sketch_app", 
                         "--K=64", 
-                        writable, 
+                        writable,
+                        "--directed=false",
                         "--output_file=temp_file_app_test"};
-  EXPECT_EQ(sketch_app_main(4, arguments), 0);
+  EXPECT_EQ(sketch_app_main(5, arguments), 0);
 
   graph::Graph< graph::TUnDirectedGraph> graph;
   graph.LoadGraphFromDir(GetSampleData());
@@ -1317,7 +1318,6 @@ TEST_F(AlgoGraph, SketchAppTestUndirected) {
   load_sketch(&graph_sketch_from_app, file_name);
   EXPECT_EQ(graph_sketch_from_app, graph_sketch);
 
-  std::remove("temp_file_app_test");
 }
 
 TEST_F(AlgoGraph, SketchAppTestDirected) {
@@ -1326,7 +1326,7 @@ TEST_F(AlgoGraph, SketchAppTestDirected) {
   char * writable = new char[graph_dir_arg.size() + 1];
   std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
   writable[graph_dir_arg.size()] = '\0';
-  char *arguments[] = { "app", 
+  char *arguments[] = { "sketch_app", 
                         "--K=64", 
                         writable, 
                         "--output_file=temp_file_app_test_directed",

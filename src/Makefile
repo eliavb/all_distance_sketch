@@ -81,7 +81,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = test_all$(EXEEXT) sketch_app$(EXEEXT) \
 	reverse_rank_batch_app$(EXEEXT) reverse_rank_app$(EXEEXT) \
-	t_skim_reverse_rank_app$(EXEEXT) dijkstra_app$(EXEEXT)
+	t_skim_reverse_rank_app$(EXEEXT) t_skim_exact_app$(EXEEXT) \
+	dijkstra_app$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(dist_noinst_DATA) $(include_HEADERS)
@@ -155,6 +156,10 @@ am_sketch_app_OBJECTS = sketch_calculation_app.$(OBJEXT) \
 	$(am__objects_3)
 sketch_app_OBJECTS = $(am_sketch_app_OBJECTS)
 sketch_app_LDADD = $(LDADD)
+am_t_skim_exact_app_OBJECTS = t_skim_exact_app.$(OBJEXT) \
+	$(am__objects_3)
+t_skim_exact_app_OBJECTS = $(am_t_skim_exact_app_OBJECTS)
+t_skim_exact_app_LDADD = $(LDADD)
 am_t_skim_reverse_rank_app_OBJECTS =  \
 	t_skim_reverse_rank_app.$(OBJEXT) $(am__objects_3)
 t_skim_reverse_rank_app_OBJECTS =  \
@@ -210,12 +215,13 @@ am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(liball_distance_sketch_a_SOURCES) $(dijkstra_app_SOURCES) \
 	$(reverse_rank_app_SOURCES) $(reverse_rank_batch_app_SOURCES) \
-	$(sketch_app_SOURCES) $(t_skim_reverse_rank_app_SOURCES) \
-	$(test_all_SOURCES)
+	$(sketch_app_SOURCES) $(t_skim_exact_app_SOURCES) \
+	$(t_skim_reverse_rank_app_SOURCES) $(test_all_SOURCES)
 DIST_SOURCES = $(liball_distance_sketch_a_SOURCES) \
 	$(dijkstra_app_SOURCES) $(reverse_rank_app_SOURCES) \
 	$(reverse_rank_batch_app_SOURCES) $(sketch_app_SOURCES) \
-	$(t_skim_reverse_rank_app_SOURCES) $(test_all_SOURCES)
+	$(t_skim_exact_app_SOURCES) $(t_skim_reverse_rank_app_SOURCES) \
+	$(test_all_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -360,6 +366,7 @@ sketch_app_SOURCES = app/sketch_calculation_app.cpp $(ALL)
 reverse_rank_batch_app_SOURCES = app/reverse_rank_batch_app.cpp $(ALL)
 reverse_rank_app_SOURCES = app/reverse_rank_app.cpp $(ALL)
 t_skim_reverse_rank_app_SOURCES = app/t_skim_reverse_rank_app.cpp $(ALL)
+t_skim_exact_app_SOURCES = app/t_skim_exact_app.cpp $(ALL)
 dijkstra_app_SOURCES = app/dijkstra_app.cpp $(ALL)
 lib_LIBRARIES = liball_distance_sketch.a
 liball_distance_sketch_a_SOURCES = $(HDRS) $(PROTOS_TO_BUILD)
@@ -497,6 +504,10 @@ sketch_app$(EXEEXT): $(sketch_app_OBJECTS) $(sketch_app_DEPENDENCIES) $(EXTRA_sk
 	@rm -f sketch_app$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(sketch_app_OBJECTS) $(sketch_app_LDADD) $(LIBS)
 
+t_skim_exact_app$(EXEEXT): $(t_skim_exact_app_OBJECTS) $(t_skim_exact_app_DEPENDENCIES) $(EXTRA_t_skim_exact_app_DEPENDENCIES) 
+	@rm -f t_skim_exact_app$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(t_skim_exact_app_OBJECTS) $(t_skim_exact_app_LDADD) $(LIBS)
+
 t_skim_reverse_rank_app$(EXEEXT): $(t_skim_reverse_rank_app_OBJECTS) $(t_skim_reverse_rank_app_DEPENDENCIES) $(EXTRA_t_skim_reverse_rank_app_DEPENDENCIES) 
 	@rm -f t_skim_reverse_rank_app$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(t_skim_reverse_rank_app_OBJECTS) $(t_skim_reverse_rank_app_LDADD) $(LIBS)
@@ -519,6 +530,7 @@ include ./$(DEPDIR)/reverse_rank_app.Po
 include ./$(DEPDIR)/reverse_rank_batch_app.Po
 include ./$(DEPDIR)/run_all.Po
 include ./$(DEPDIR)/sketch_calculation_app.Po
+include ./$(DEPDIR)/t_skim_exact_app.Po
 include ./$(DEPDIR)/t_skim_reverse_rank_app.Po
 
 .cc.o:
@@ -632,6 +644,20 @@ sketch_calculation_app.obj: app/sketch_calculation_app.cpp
 #	$(AM_V_CXX)source='app/sketch_calculation_app.cpp' object='sketch_calculation_app.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sketch_calculation_app.obj `if test -f 'app/sketch_calculation_app.cpp'; then $(CYGPATH_W) 'app/sketch_calculation_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/sketch_calculation_app.cpp'; fi`
+
+t_skim_exact_app.o: app/t_skim_exact_app.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT t_skim_exact_app.o -MD -MP -MF $(DEPDIR)/t_skim_exact_app.Tpo -c -o t_skim_exact_app.o `test -f 'app/t_skim_exact_app.cpp' || echo '$(srcdir)/'`app/t_skim_exact_app.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/t_skim_exact_app.Tpo $(DEPDIR)/t_skim_exact_app.Po
+#	$(AM_V_CXX)source='app/t_skim_exact_app.cpp' object='t_skim_exact_app.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o t_skim_exact_app.o `test -f 'app/t_skim_exact_app.cpp' || echo '$(srcdir)/'`app/t_skim_exact_app.cpp
+
+t_skim_exact_app.obj: app/t_skim_exact_app.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT t_skim_exact_app.obj -MD -MP -MF $(DEPDIR)/t_skim_exact_app.Tpo -c -o t_skim_exact_app.obj `if test -f 'app/t_skim_exact_app.cpp'; then $(CYGPATH_W) 'app/t_skim_exact_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/t_skim_exact_app.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/t_skim_exact_app.Tpo $(DEPDIR)/t_skim_exact_app.Po
+#	$(AM_V_CXX)source='app/t_skim_exact_app.cpp' object='t_skim_exact_app.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o t_skim_exact_app.obj `if test -f 'app/t_skim_exact_app.cpp'; then $(CYGPATH_W) 'app/t_skim_exact_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/t_skim_exact_app.cpp'; fi`
 
 t_skim_reverse_rank_app.o: app/t_skim_reverse_rank_app.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT t_skim_reverse_rank_app.o -MD -MP -MF $(DEPDIR)/t_skim_reverse_rank_app.Tpo -c -o t_skim_reverse_rank_app.o `test -f 'app/t_skim_reverse_rank_app.cpp' || echo '$(srcdir)/'`app/t_skim_reverse_rank_app.cpp

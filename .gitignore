@@ -10,3 +10,4 @@ src/*.o
 src/*.a
 result.json
 benchmark_threads.py
+.ipynb_checkpoints

@@ -69,7 +69,6 @@ class Cover {
       is_covered[seed] = true;
       cover[seed] = SeedCover();
       cover[seed].index = cover.size();
-      cover[seed].covered_nodes.push_back(seed);
       LOG_M(DEBUG5, "seed=" << seed);
       cover[seed].seed = seed;
     }
@@ -391,7 +390,6 @@ class TSkimBase {
     int num_passed = 0;
     for (int i=0; i < rankers_nodes_.size(); i++) {
       int source_node_id = rankers_nodes_[i];
-      // std::cout << "\r" << num_passed  << "/" << rankers_nodes_.size();
       ++num_passed;
       if (cover_->IsCovered(source_node_id)) {
         continue;

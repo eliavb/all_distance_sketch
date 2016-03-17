@@ -2,6 +2,7 @@
 #include "../t_skim_reverse_rank.h"
 #include "../../graph/snap_graph_adaptor.h"
 #include <algorithm>
+
 namespace all_distance_sketch {
 
 // EXAMPLE: With a test fixture and TEST_Fs
@@ -26,8 +27,8 @@ class TSkimTest : public ::testing::Test {
 
   std::string mySampleData;
 };
-/*
-template <class InputIterator1, class InputIterator2>
+
+/*template <class InputIterator1, class InputIterator2>
   bool is_permutation (InputIterator1 first1, InputIterator1 last1,
                        InputIterator2 first2)
 {
@@ -63,7 +64,11 @@ TEST_F(TSkimTest, TSkimLongChain) {
   for (int i = 0; i < num_nodes; ++i) {
     visited.push_back(i);
   }
-  EXPECT_TRUE( is_permutation(visited.begin(), visited.end(), cover.GetSeedCover(99).covered_nodes.begin()));
+  
+  std::sort(visited.begin(), visited.end());
+  auto visited_during_run = cover.GetSeedCover(99).covered_nodes;
+  std::sort(visited_during_run.begin(), visited_during_run.end());
+  EXPECT_TRUE( visited == visited_during_run);
 }
 
 #if 1

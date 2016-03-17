@@ -129,7 +129,7 @@ void DumpGraphSketchToFile(const AllDistanceSketchGpb& graph_sketch,
 
 void LoadGraphSketchFromFiles(AllDistanceSketchGpb* graph_sketch,
                              std::string file) {
-	std::string pattern = file + "_*";
+	std::string pattern = file + "_[0-9]*";
     auto files = glob(pattern);
     for (const auto file_name : files) {
         std::cout << file_name << std::endl;

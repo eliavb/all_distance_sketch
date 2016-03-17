@@ -118,6 +118,64 @@ class CollectorNodesUpToTRank {
   int T_;
 };
 
+template<class Z>
+class CollectorNodesUpToUpperBoundRankRank {
+ public:
+  void InitCollectorNodesUpToUpperBoundRankRank(int T) {
+    T_ = T;
+  }
+  inline void Started(int source_node_id, graph::Graph<Z>* graph) {
+    nodes_found_.clear();
+    algo_statistics_.Clear();
+    nodes_under_T.clear();
+    current_distance = -1;
+  }
+
+  inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
+    graph::EdgeWeight distance = heap_value.GetDistance();
+    if (current_distance != distance) {
+      nodes_found_.resize(nodes_found_.size() + 1);
+      current_distance = distance;
+    }
+    nodes_found_.back().push_back(heap_value);
+    ++algo_statistics_.num_visited_nodes;
+  }
+
+  inline bool ShouldPrune(int visited_node_id,
+                          graph::EdgeWeight distance_from_source_to_visited_node) {
+    int num_nodes_ranked = 0;
+    for (int i=0; i < nodes_found_.size(); i++) {
+      num_nodes_ranked += nodes_found_[i].size();
+    }
+    return num_nodes_ranked >= T_;
+  }
+
+  inline bool ShouldStop() { return algo_statistics_.num_visited_nodes >= T_; }
+
+  inline void RelaxedPath(int node_id) { }
+
+  const std::vector<NodeIdDistanceData>& get_nodes_found() {
+    int num_nodes_collected = 0;
+    int vector_size = nodes_found_.size();
+    for (int i=0; i < vector_size; i++) {
+      num_nodes_collected += nodes_found_[i].size();
+      if (num_nodes_collected >= T_) {
+        break;
+      }
+      nodes_under_T.insert(nodes_under_T.end(), nodes_found_[i].begin(), nodes_found_[i].end());
+    }
+    LOG_M(DEBUG4, "returnin vector of size= " << nodes_under_T.size());
+    return nodes_under_T;
+  }
+ private:
+  PrunningAlgoStatistics algo_statistics_;
+  std::vector< std::vector<NodeIdDistanceData> > nodes_found_;
+  std::vector<NodeIdDistanceData> nodes_under_T;
+  std::vector<graph::EdgeWeight> rank_buckets;
+  int T_;
+  graph::EdgeWeight current_distance;
+};
+
 template<class T>
 class DijkstraRankCallBack {
  public:
