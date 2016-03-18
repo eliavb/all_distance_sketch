@@ -76,19 +76,9 @@ void calculate_exact_data_structures(graph::Graph<Z>* graph,
 
         for (const auto node_details : collector.get_nodes_found()) {
             const auto reachable_node_id = node_details.GetNId();
+            LOG_M(DEBUG5, "node=" << source_node_id << " reachable_node_id=" << reachable_node_id);
             (*reachable_nodes)[source_node_id].push_back(reachable_node_id);
             (*reverse_refernce)[reachable_node_id].push_back(source_node_id);
-        }
-    }
-    for (int node_id =0; node_id < reachable_nodes->size(); node_id++) {
-        int num_reachable = (*reachable_nodes)[node_id].size();
-        int nodes_reverse = 0;
-        for (int j=0; j < reverse_refernce->size(); j++) {
-            for (auto node : (*reverse_refernce)[j]) {
-                if (node == node_id) {
-                    nodes_reverse += 1;
-                }
-            }
         }
     }
 }

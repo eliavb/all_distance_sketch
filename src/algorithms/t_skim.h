@@ -66,7 +66,7 @@ class Cover {
       }
     }
     inline void AddSeed(int seed) {
-      is_covered[seed] = true;
+      // is_covered[seed] = true;
       cover[seed] = SeedCover();
       cover[seed].index = cover.size();
       LOG_M(DEBUG5, "seed=" << seed);
@@ -324,7 +324,6 @@ class TSkimBase {
     for (int j=0; j < covered_nodes.size(); j++) {
       int covered_node = covered_nodes[j];
       if (cover_->IsCovered(covered_node)) {
-        // Covered by a different node
         continue;
       }
       LOG_M(DEBUG3, "Seed=" << seed << "Covered node= " << covered_node);
@@ -332,7 +331,6 @@ class TSkimBase {
       cover_->AddNodeToSeed(seed, covered_node);
       node_influence_.erase(covered_node);
     }
-
     for (int j=0; j < covered_nodes.size(); j++) {
       int covered_node = covered_nodes[j];
       if (reachable_nodes_.count(covered_node) == 0) {
@@ -445,8 +443,14 @@ class TSkimBase {
         continue;
       }
       std::unordered_map<int, int> influence_change;
-      auto num_covered_nodes_by_seed = AddSeed(seed, &influence_change);
+      int num_covered_nodes_by_seed = AddSeed(seed, &influence_change);
       if (this->wanted_nodes_.size() == this->graph_->GetNumNodes()) {
+        if (num_covered_nodes_by_seed != seed_influence) {
+          LOG_M(NOTICE, "Assumption failed num covered nodes not equal to Influence" <<
+                      " num_covered_nodes=" << num_covered_nodes <<
+                      " seed_influence="<< seed_influence << 
+                      " seed=" << seed);
+        }
         assert(num_covered_nodes_by_seed == seed_influence);
       }
       if (num_covered_nodes_by_seed > last_cover_size && 

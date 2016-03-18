@@ -84,8 +84,10 @@ class TSkimExactComputationBased : public TSkimBase<Z> {
   }
 
   int AddSeed(int seed, std::unordered_map<int, int>* influence_change) {
-    LOG_M(DEBUG3, "seed node = " << seed);
-    return TSkimBase<Z>::UpdateCover(seed, influence_change, (*reverse_refernce_)[seed]);
+    LOG_M(DEBUG3, "seed node = " << seed << " seed cover size=" << (*reverse_refernce_)[seed].size());
+    int num_covered = TSkimBase<Z>::UpdateCover(seed, influence_change, (*reverse_refernce_)[seed]);
+    LOG_M(DEBUG3, "seed node = " << seed << " num_covered=" << num_covered);
+    return num_covered;
   }
 
   const std::vector<int>& CalculateVisitedNodes(int source_node_id) {
