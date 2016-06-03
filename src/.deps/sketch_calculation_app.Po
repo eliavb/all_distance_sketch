@@ -813,8 +813,8 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /usr/include/boost/random/variate_generator.hpp \
  /usr/include/boost/random/linear_congruential.hpp \
  app/../graph/../utils/utils.h app/../graph/snap_graph_adaptor.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/base.h /usr/include/fcntl.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/Snap.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/base.h /usr/include/fcntl.h \
  /usr/include/bits/fcntl.h /usr/include/bits/fcntl-linux.h \
  /usr/include/bits/uio.h /usr/include/signal.h /usr/include/bits/signum.h \
  /usr/include/bits/siginfo.h /usr/include/bits/sigaction.h \
@@ -831,69 +831,68 @@ sketch_calculation_app.o: app/sketch_calculation_app.cpp \
  /usr/include/netinet/in.h /usr/include/bits/in.h \
  /usr/include/rpc/netdb.h /usr/include/bits/netdb.h \
  /usr/include/arpa/inet.h /usr/include/sys/epoll.h \
- /usr/include/bits/epoll.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/bd.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/fl.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/dt.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/ut.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/ds.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/bits.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/hash.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/xml.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/xmath.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/xmlser.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/unicode.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/unicodestring.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/tm.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/shash.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/os.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/console.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/app.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/env.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/wch.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/xdt.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/xfl.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/blobbs.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/fds.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/lx.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/macro.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/pp.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/url.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/exp.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/http.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/html.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/md5.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/ss.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/json.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/zipfl.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/gnuplot.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/linalg.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/gbase.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/util.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/graph.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/network.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/bignet.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/timenet.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/subgraph.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/anf.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/bfsdfs.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/cncom.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/kcore.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/alg.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/triad.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/gsvd.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/gstat.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/centr.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/cmty.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/flow.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/ggen.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/ff.h \
- /work/eng/eliavb/include/Snap-2.3/glib-core/bd.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/gio.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/gviz.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/ghash.h \
- /work/eng/eliavb/include/Snap-2.3/snap-core/statplot.h \
- app/../graph/graph.h app/../algorithms/dijkstra_shortest_paths.h \
+ /usr/include/bits/epoll.h /work/eng/eliavb/Snap-2.3/glib-core/bd.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/fl.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/dt.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/ut.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/ds.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/bits.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/hash.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/xml.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/xmath.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/xmlser.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/unicode.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/unicodestring.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/tm.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/shash.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/os.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/console.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/app.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/env.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/wch.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/xdt.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/xfl.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/blobbs.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/fds.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/lx.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/macro.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/pp.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/url.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/exp.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/http.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/html.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/md5.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/ss.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/json.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/zipfl.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/gnuplot.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/linalg.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/gbase.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/util.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/graph.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/network.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/bignet.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/timenet.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/subgraph.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/anf.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/bfsdfs.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/cncom.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/kcore.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/alg.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/triad.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/gsvd.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/gstat.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/centr.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/cmty.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/flow.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/ggen.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/ff.h \
+ /work/eng/eliavb/Snap-2.3/glib-core/bd.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/gio.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/gviz.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/ghash.h \
+ /work/eng/eliavb/Snap-2.3/snap-core/statplot.h app/../graph/graph.h \
+ app/../algorithms/dijkstra_shortest_paths.h \
  app/../algorithms/../common.h app/../algorithms/../utils/thread_utils.h \
  app/../algorithms/../utils/../common.h \
  app/../algorithms/../sketch/node_sketch.h \
@@ -2780,9 +2779,9 @@ app/../graph/../utils/utils.h:
 
 app/../graph/snap_graph_adaptor.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/Snap.h:
+/work/eng/eliavb/Snap-2.3/snap-core/Snap.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/base.h:
+/work/eng/eliavb/Snap-2.3/glib-core/base.h:
 
 /usr/include/fcntl.h:
 
@@ -2854,127 +2853,127 @@ app/../graph/snap_graph_adaptor.h:
 
 /usr/include/bits/epoll.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/bd.h:
+/work/eng/eliavb/Snap-2.3/glib-core/bd.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/fl.h:
+/work/eng/eliavb/Snap-2.3/glib-core/fl.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/dt.h:
+/work/eng/eliavb/Snap-2.3/glib-core/dt.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/ut.h:
+/work/eng/eliavb/Snap-2.3/glib-core/ut.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/ds.h:
+/work/eng/eliavb/Snap-2.3/glib-core/ds.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/bits.h:
+/work/eng/eliavb/Snap-2.3/glib-core/bits.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/hash.h:
+/work/eng/eliavb/Snap-2.3/glib-core/hash.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/xml.h:
+/work/eng/eliavb/Snap-2.3/glib-core/xml.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/xmath.h:
+/work/eng/eliavb/Snap-2.3/glib-core/xmath.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/xmlser.h:
+/work/eng/eliavb/Snap-2.3/glib-core/xmlser.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/unicode.h:
+/work/eng/eliavb/Snap-2.3/glib-core/unicode.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/unicodestring.h:
+/work/eng/eliavb/Snap-2.3/glib-core/unicodestring.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/tm.h:
+/work/eng/eliavb/Snap-2.3/glib-core/tm.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/shash.h:
+/work/eng/eliavb/Snap-2.3/glib-core/shash.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/os.h:
+/work/eng/eliavb/Snap-2.3/glib-core/os.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/console.h:
+/work/eng/eliavb/Snap-2.3/glib-core/console.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/app.h:
+/work/eng/eliavb/Snap-2.3/glib-core/app.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/env.h:
+/work/eng/eliavb/Snap-2.3/glib-core/env.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/wch.h:
+/work/eng/eliavb/Snap-2.3/glib-core/wch.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/xdt.h:
+/work/eng/eliavb/Snap-2.3/glib-core/xdt.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/xfl.h:
+/work/eng/eliavb/Snap-2.3/glib-core/xfl.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/blobbs.h:
+/work/eng/eliavb/Snap-2.3/glib-core/blobbs.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/fds.h:
+/work/eng/eliavb/Snap-2.3/glib-core/fds.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/lx.h:
+/work/eng/eliavb/Snap-2.3/glib-core/lx.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/macro.h:
+/work/eng/eliavb/Snap-2.3/glib-core/macro.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/pp.h:
+/work/eng/eliavb/Snap-2.3/glib-core/pp.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/url.h:
+/work/eng/eliavb/Snap-2.3/glib-core/url.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/exp.h:
+/work/eng/eliavb/Snap-2.3/glib-core/exp.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/http.h:
+/work/eng/eliavb/Snap-2.3/glib-core/http.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/html.h:
+/work/eng/eliavb/Snap-2.3/glib-core/html.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/md5.h:
+/work/eng/eliavb/Snap-2.3/glib-core/md5.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/ss.h:
+/work/eng/eliavb/Snap-2.3/glib-core/ss.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/json.h:
+/work/eng/eliavb/Snap-2.3/glib-core/json.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/zipfl.h:
+/work/eng/eliavb/Snap-2.3/glib-core/zipfl.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/gnuplot.h:
+/work/eng/eliavb/Snap-2.3/glib-core/gnuplot.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/linalg.h:
+/work/eng/eliavb/Snap-2.3/glib-core/linalg.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/gbase.h:
+/work/eng/eliavb/Snap-2.3/snap-core/gbase.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/util.h:
+/work/eng/eliavb/Snap-2.3/snap-core/util.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/graph.h:
+/work/eng/eliavb/Snap-2.3/snap-core/graph.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/network.h:
+/work/eng/eliavb/Snap-2.3/snap-core/network.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/bignet.h:
+/work/eng/eliavb/Snap-2.3/snap-core/bignet.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/timenet.h:
+/work/eng/eliavb/Snap-2.3/snap-core/timenet.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/subgraph.h:
+/work/eng/eliavb/Snap-2.3/snap-core/subgraph.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/anf.h:
+/work/eng/eliavb/Snap-2.3/snap-core/anf.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/bfsdfs.h:
+/work/eng/eliavb/Snap-2.3/snap-core/bfsdfs.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/cncom.h:
+/work/eng/eliavb/Snap-2.3/snap-core/cncom.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/kcore.h:
+/work/eng/eliavb/Snap-2.3/snap-core/kcore.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/alg.h:
+/work/eng/eliavb/Snap-2.3/snap-core/alg.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/triad.h:
+/work/eng/eliavb/Snap-2.3/snap-core/triad.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/gsvd.h:
+/work/eng/eliavb/Snap-2.3/snap-core/gsvd.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/gstat.h:
+/work/eng/eliavb/Snap-2.3/snap-core/gstat.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/centr.h:
+/work/eng/eliavb/Snap-2.3/snap-core/centr.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/cmty.h:
+/work/eng/eliavb/Snap-2.3/snap-core/cmty.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/flow.h:
+/work/eng/eliavb/Snap-2.3/snap-core/flow.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/ggen.h:
+/work/eng/eliavb/Snap-2.3/snap-core/ggen.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/ff.h:
+/work/eng/eliavb/Snap-2.3/snap-core/ff.h:
 
-/work/eng/eliavb/include/Snap-2.3/glib-core/bd.h:
+/work/eng/eliavb/Snap-2.3/glib-core/bd.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/gio.h:
+/work/eng/eliavb/Snap-2.3/snap-core/gio.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/gviz.h:
+/work/eng/eliavb/Snap-2.3/snap-core/gviz.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/ghash.h:
+/work/eng/eliavb/Snap-2.3/snap-core/ghash.h:
 
-/work/eng/eliavb/include/Snap-2.3/snap-core/statplot.h:
+/work/eng/eliavb/Snap-2.3/snap-core/statplot.h:
 
 app/../graph/graph.h:
 

@@ -87,9 +87,7 @@ subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(dist_noinst_DATA) $(include_HEADERS)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/ax_cxx_compile_stdcxx.m4 \
-	$(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -257,11 +255,11 @@ AUTOCONF = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing autoconf
 AUTOHEADER = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing autoheader
 AUTOMAKE = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing automake-1.13
 AWK = gawk
-CPPFLAGS =  -I/work/eng/eliavb/include/gtest-1.7.0/include/ -I/work/eng/eliavb/include/Snap-2.3/snap-adv/ -I/work/eng/eliavb/include/Snap-2.3/snap-core/ -I/work/eng/eliavb/include/Snap-2.3/snap-exp/ -I/work/eng/eliavb/include/Snap-2.3/glib-core/ -I/work/eng/eliavb/protobuf_install/include/
+CPPFLAGS =  -I/work/eng/eliavb/googletest-release-1.7.0/include/ -I/work/eng/eliavb/Snap-2.3/snap-adv/ -I/work/eng/eliavb/Snap-2.3/snap-core/ -I/work/eng/eliavb/Snap-2.3/snap-exp/ -I/work/eng/eliavb/Snap-2.3/glib-core/ -I/work/eng/eliavb/protobuf_install/include/
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -g -O2 -std=gnu++11
+CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DEFS = -DPACKAGE_NAME=\"all_distance_sketch\" -DPACKAGE_TARNAME=\"all_distance_sketch\" -DPACKAGE_VERSION=\"0.1\" -DPACKAGE_STRING=\"all_distance_sketch\ 0.1\" -DPACKAGE_BUGREPORT=\"eliavbuh@gmail.com\" -DPACKAGE_URL=\"\" -DPACKAGE=\"all_distance_sketch\" -DVERSION=\"0.1\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_STDBOOL_H=1 -DHAVE_GETTIMEOFDAY=1
 DEPDIR = .deps
@@ -271,15 +269,14 @@ ECHO_T =
 EGREP = /usr/bin/grep -E
 EXEEXT = 
 GREP = /usr/bin/grep
-HAVE_CXX11 = 
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LDFLAGS =  -L/work/eng/eliavb/protobuf_install/lib
+LDFLAGS =  -L/work/eng/eliavb/protobuf_install/lib/
 LIBOBJS = 
-LIBS =  /work/eng/eliavb/include/Snap-2.3/snap-core/Snap.o /work/eng/eliavb/bin/libgtest.a -lpthread
+LIBS =  /work/eng/eliavb/Snap-2.3/snap-core/Snap.o /work/eng/eliavb/googletest-release-1.7.0/libgtest.a -lpthread
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} /work/eng/eliavb/all_distance_sketch/missing makeinfo
 MKDIR_P = /usr/bin/mkdir -p
@@ -294,11 +291,11 @@ PACKAGE_VERSION = 0.1
 PATH_SEPARATOR = :
 PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
-PKG_CONFIG_PATH = /work/eng/eliavb/protobuf_install/lib/pkgconfig/
+PKG_CONFIG_PATH = /work/eng/eliavb/protobuf_install/lib/pkgconfig
 PROTOBUF_CFLAGS = -pthread -I/work/eng/eliavb/protobuf_install/include  
 PROTOBUF_LIBS = -pthread -L/work/eng/eliavb/protobuf_install/lib -lprotobuf -lpthread  
 PROTOBUF_VERSION = 
-PROTOC =  /work/eng/eliavb/protobuf_install/bin/protoc
+PROTOC = /work/eng/eliavb/protobuf_install/bin/protoc
 RANLIB = ranlib
 SET_MAKE = 
 SHELL = /bin/sh
@@ -336,7 +333,7 @@ mandir = ${datarootdir}/man
 mkdir_p = $(MKDIR_P)
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /work/eng/eliavb/install
+prefix = /work/eng/eliavb/ads_install
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin

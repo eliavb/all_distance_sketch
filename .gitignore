@@ -8,6 +8,9 @@ src/proto/*.pb.cc
 src/proto/*.pb.h
 src/*.o
 src/*.a
+src/*_app
 result.json
 benchmark_threads.py
 .ipynb_checkpoints
+autom4te.cache/*
+*.log
