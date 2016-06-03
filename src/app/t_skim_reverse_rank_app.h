@@ -29,9 +29,9 @@ bool parse_command_line_args(int ac, char* av[], int* T,
             ("T", po::value<int>(T)->required(), 
                   "Defines the influence of a node. If pi_{us} < T then s coveres u")
             ("K", po::value<int>(K)->required(), 
-                  "K = 1/epsilon^2 sets the precision")
+                  "K = 1/epsilon^2 sets the precision (Only relevant if you don't provide sketch_file option)")
             ("num_threads", po::value<int>(num_threads)->default_value(1), 
-                  "num_threads to use")
+                  "num_threads to use (Only relevant if you don't provide sketch_file option)")
             ("min_influence_for_seed_set", po::value<int>(min_influence_for_seed_set), 
                   "min influence to enter to the seed set")
             ("directed", po::value<bool>(directed), 
@@ -39,7 +39,7 @@ bool parse_command_line_args(int ac, char* av[], int* T,
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
                   "Directory with the graph to calculate the sketch on")
             ("sketch_file", po::value< std::string >(sketch_file),
-                  "File with the calculated sketch")
+                  "File prefix with the calculated sketch. The prefix should match what you entered in the sketch_app")
             ("output_file", po::value< std::string > (output_file)->required(), 
                   "output file path, here the cover will be saved in Gpb format (Gpb defined in src/proto/cover.proto)") 
         ;

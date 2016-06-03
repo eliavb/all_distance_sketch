@@ -36,7 +36,7 @@ bool parse_command_line_args(int ac, char* av[], int* source_id,
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
                   "Directory with the graph to calculate the sketch on")
             ("sketch_file", po::value< std::string >(sketch_file),
-                  "File with the calculated sketch")
+                  "File prefix with the calculated sketch. The prefix should match what you entered in the sketch_app")
             ("output_file", po::value< std::string > (output_file)->required(), 
                   "output file path, here the sketch Gpb will be saved")
         ;

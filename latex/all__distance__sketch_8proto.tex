@@ -27,13 +27,10 @@ message {\bfseries Single\+Node\+Sketch\+Gpb}
 \item 
 message {\bfseries All\+Distance\+Sketch\+Gpb}
 \item 
-\hypertarget{all__distance__sketch_8proto_a32963866b255f89d4a856253fd8b9c92}{}optional bool {\bfseries should\+\_\+calc\+\_\+z\+\_\+values} = 2\label{all__distance__sketch_8proto_a32963866b255f89d4a856253fd8b9c92}
+\hypertarget{all__distance__sketch_8proto_a765881cd2a0b68feb5c22546efca3c0d}{}repeated Single\+Node\+Sketch\+Gpb {\bfseries nodes\+\_\+sketches} = 2\label{all__distance__sketch_8proto_a765881cd2a0b68feb5c22546efca3c0d}
 
 \item 
-\hypertarget{all__distance__sketch_8proto_a765881cd2a0b68feb5c22546efca3c0d}{}repeated Single\+Node\+Sketch\+Gpb {\bfseries nodes\+\_\+sketches} = 3\label{all__distance__sketch_8proto_a765881cd2a0b68feb5c22546efca3c0d}
-
-\item 
-\hypertarget{all__distance__sketch_8proto_aed58d88cd21da325983b8812c64a1556}{}repeated Node\+Threshold\+Gpb {\bfseries node\+\_\+thresholds} = 4\label{all__distance__sketch_8proto_aed58d88cd21da325983b8812c64a1556}
+\hypertarget{all__distance__sketch_8proto_aed58d88cd21da325983b8812c64a1556}{}repeated Node\+Threshold\+Gpb {\bfseries node\+\_\+thresholds} = 3\label{all__distance__sketch_8proto_aed58d88cd21da325983b8812c64a1556}
 
 \end{DoxyCompactItemize}
 
@@ -57,8 +54,12 @@ Format to save the Graph\+Sketch.
       optional \textcolor{keywordtype}{double} random\_id=3;
   \}
 
+message ConfigurationGpb \{
+  optional uint64 k = 1;
+  optional \textcolor{keywordtype}{bool} should\_calc\_z\_values = 2;
+\}
 
-  optional uint64 k = 1
+  optional ConfigurationGpb configuration = 1
 \end{DoxyCode}
 \hypertarget{all__distance__sketch_8proto_a439dc8f2c6166ba58d497513ebc92723}{}\index{all\+\_\+distance\+\_\+sketch.\+proto@{all\+\_\+distance\+\_\+sketch.\+proto}!Single\+Node\+Sketch\+Gpb@{Single\+Node\+Sketch\+Gpb}}
 \index{Single\+Node\+Sketch\+Gpb@{Single\+Node\+Sketch\+Gpb}!all\+\_\+distance\+\_\+sketch.\+proto@{all\+\_\+distance\+\_\+sketch.\+proto}}

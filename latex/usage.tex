@@ -18,7 +18,8 @@ Allowed options:
   --num_threads arg (=1) num_threads to use
   --directed arg         is the graph directed
   --graph_dir arg        Directory with the graph to calculate the sketch on
-  --output_file arg      output file path, here the sketch Gpb will be saved 
+  --output_file arg      output file path pattern, here the sketch Gpb will be saved with the 
+                         prefix entered and suffix _[%d] 
                          (Gpb defined in src/proto/all_distance_sketch.proto)
 \end{DoxyVerb}
 
@@ -31,7 +32,40 @@ App for calculating the reverse ranks of a single node. \begin{DoxyVerb}>bin/rev
   --num_threads arg (=1) num_threads to use
   --directed arg         is the graph directed
   --graph_dir arg        Directory with the graph to calculate the sketch on
-  --sketch_file arg      File with the calculated sketch
+  --sketch_file arg      File prefix with the calculated sketch. The prefix should match what you entered in the sketch_app 
   --output_file arg      output file path, here the sketch Gpb will be saved 
-                         (Gpb defined in src/proto/all_distance_sketch.proto)\end{DoxyVerb}
+                         (Gpb defined in src/proto/all_distance_sketch.proto)
+\end{DoxyVerb}
+
+
+App for calculating the exact reverse rank greedy cover.
+
+\begin{DoxyVerb}>bin/t_skim_exact_app --help
+    Allowed options:
+  --help                produce help message
+  --T arg               Defines the influence of a node. If pi_{us} < T then s 
+                        coveres u
+  --directed arg        is the graph directed
+  --graph_dir arg       Directory with the graph to calculate the sketch on
+  --output_file arg     output file path, here the cover will be saved in Gpb 
+                        format (Gpb defined in src/proto/cover.proto)
+\end{DoxyVerb}
+
+
+App for calculating the approximate reverse rank greedy cover using T\+Skim. \begin{DoxyVerb}>bin/t_skim_reverse_rank_app --help
+    Usage: options_description [options]
+    Allowed options:
+  --help                           produce help message
+  --T arg                          Defines the influence of a node. If pi_{us} 
+                                   < T then s coveres u
+  --K arg                          K = 1/epsilon^2 sets the precision (Only relevant if you don't provide sketch_file option)
+  --num_threads arg (=1)           num_threads to use (Only relevant if you don't provide sketch_file option)
+  --min_influence_for_seed_set arg min influence to enter to the seed set
+  --directed arg                   is the graph directed
+  --graph_dir arg                  Directory with the graph to calculate the 
+                                   sketch on
+  --sketch_file arg                File prefix with the calculated sketch. The prefix should match what you entered in the sketch_app
+  --output_file arg                output file path, here the cover will be 
+                                   saved in Gpb format (Gpb defined in 
+                                   src/proto/cover.proto)\end{DoxyVerb}
  

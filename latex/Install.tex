@@ -46,11 +46,20 @@ The file should contain the location of S\+N\+A\+P and Gtest\+:
 \paragraph*{config.\+site content}
 
 \begin{DoxyVerb}CPPFLAGS="${CPPFLAGS} -I${GTEST_DIR}/include/ -I{SNAP_DIR}/snap-adv/ \
--I{SNAP_DIR}/snap-core/ -I{SNAP_DIR}/snap-exp/ -I{SNAP_DIR}/glib-core/" 
+-I{SNAP_DIR}/snap-core/ -I{SNAP_DIR}/snap-exp/ -I{SNAP_DIR}/glib-core/ -I${PROTO_DEST}/include/" 
 LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread"
 LDFLAGS="${LDFLAGS} -L${PROTO_DEST}/lib"
 PROTOC="${PROTO_DEST}/bin/protoc"
 PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/" 
+\end{DoxyVerb}
+
+
+\paragraph*{Example for a config.\+site}
+
+\begin{DoxyVerb}CPPFLAGS="${CPPFLAGS} -I/work/eng/eliavb/googletest-release-1.7.0/include/ -I/work/eng/eliavb/Snap-2.3/snap-adv/ -I/work/eng/eliavb/Snap-2.3/snap-core/ -I/work/eng/eliavb/Snap-2.3/snap-exp/ -I/work/eng/eliavb/Snap-2.3/glib-core/ -I/work/eng/eliavb/protobuf_install/include/" 
+LIBS="${LIBS} /work/eng/eliavb/Snap-2.3/snap-core/Snap.o /work/eng/eliavb/googletest-release-1.7.0/libgtest.a -lpthread"
+LDFLAGS="${LDFLAGS} -L/work/eng/eliavb/protobuf_install/lib/"
+PROTOC="/work/eng/eliavb/protobuf_install/bin/protoc"
 \end{DoxyVerb}
 
 

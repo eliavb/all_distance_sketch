@@ -34,7 +34,7 @@ bool parse_command_line_args(int ac, char* av[], int* K,
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
                   "Directory with the graph to calculate the sketch on")
             ("output_file", po::value< std::string > (output_file)->required(), 
-                  "output file path, here the sketch Gpb will be saved (Gpb defined in src/proto/all_distance_sketch.proto)")
+                  "output file path pattern, here the sketch Gpb will be saved with the prefix entered and suffix _[%d] (Gpb defined in src/proto/all_distance_sketch.proto)")
         ;
 
         po::positional_options_description p;

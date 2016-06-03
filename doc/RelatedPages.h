@@ -61,12 +61,21 @@
 
 
   		CPPFLAGS="${CPPFLAGS} -I${GTEST_DIR}/include/ -I{SNAP_DIR}/snap-adv/ \
-  		-I{SNAP_DIR}/snap-core/ -I{SNAP_DIR}/snap-exp/ -I{SNAP_DIR}/glib-core/" 
+  		-I{SNAP_DIR}/snap-core/ -I{SNAP_DIR}/snap-exp/ -I{SNAP_DIR}/glib-core/ -I${PROTO_DEST}/include/" 
   		LIBS="${LIBS} {SNAP_DIR}/snap-core/Snap.o ${GTEST_DIR}/libgtest.a -lpthread"
   		LDFLAGS="${LDFLAGS} -L${PROTO_DEST}/lib"
 		PROTOC="${PROTO_DEST}/bin/protoc"
 		PKG_CONFIG_PATH="${PROTO_DEST}/lib/pkgconfig/" 
 	
+	
+	#### Example for a config.site ####
+		
+
+		CPPFLAGS="${CPPFLAGS} -I/work/eng/eliavb/googletest-release-1.7.0/include/ -I/work/eng/eliavb/Snap-2.3/snap-adv/ -I/work/eng/eliavb/Snap-2.3/snap-core/ -I/work/eng/eliavb/Snap-2.3/snap-exp/ -I/work/eng/eliavb/Snap-2.3/glib-core/ -I/work/eng/eliavb/protobuf_install/include/" 
+		LIBS="${LIBS} /work/eng/eliavb/Snap-2.3/snap-core/Snap.o /work/eng/eliavb/googletest-release-1.7.0/libgtest.a -lpthread"
+		LDFLAGS="${LDFLAGS} -L/work/eng/eliavb/protobuf_install/lib/"
+		PROTOC="/work/eng/eliavb/protobuf_install/bin/protoc"
+
 	
 	Case you enounter:
 
@@ -147,8 +156,9 @@
 		  --num_threads arg (=1) num_threads to use
 		  --directed arg         is the graph directed
 		  --graph_dir arg        Directory with the graph to calculate the sketch on
-		  --output_file arg      output file path, here the sketch Gpb will be saved 
-		                         (Gpb defined in src/proto/all_distance_sketch.proto)
+		  --output_file arg      output file path pattern, here the sketch Gpb will be saved with the 
+		  						 prefix entered and suffix _[%d] 
+		  						 (Gpb defined in src/proto/all_distance_sketch.proto)
 
 	App for calculating the reverse ranks of a single node.
 
@@ -160,9 +170,44 @@
 		  --num_threads arg (=1) num_threads to use
 		  --directed arg         is the graph directed
 		  --graph_dir arg        Directory with the graph to calculate the sketch on
-		  --sketch_file arg      File with the calculated sketch
+		  --sketch_file arg      File prefix with the calculated sketch. The prefix should match what you entered in the sketch_app 
 		  --output_file arg      output file path, here the sketch Gpb will be saved 
 		                         (Gpb defined in src/proto/all_distance_sketch.proto)
+
+	
+	App for calculating the exact reverse rank greedy cover.
+
+
+		>bin/t_skim_exact_app --help
+			Allowed options:
+		  --help                produce help message
+		  --T arg               Defines the influence of a node. If pi_{us} < T then s 
+		                        coveres u
+		  --directed arg        is the graph directed
+		  --graph_dir arg       Directory with the graph to calculate the sketch on
+		  --output_file arg     output file path, here the cover will be saved in Gpb 
+		                        format (Gpb defined in src/proto/cover.proto)
+	
+	
+	App for calculating the approximate reverse rank greedy cover using TSkim.
+
+		>bin/t_skim_reverse_rank_app --help
+			Usage: options_description [options]
+			Allowed options:
+		  --help                           produce help message
+		  --T arg                          Defines the influence of a node. If pi_{us} 
+		                                   < T then s coveres u
+		  --K arg                          K = 1/epsilon^2 sets the precision (Only relevant if you don't provide sketch_file option)
+		  --num_threads arg (=1)           num_threads to use (Only relevant if you don't provide sketch_file option)
+		  --min_influence_for_seed_set arg min influence to enter to the seed set
+		  --directed arg                   is the graph directed
+		  --graph_dir arg                  Directory with the graph to calculate the 
+		                                   sketch on
+		  --sketch_file arg                File prefix with the calculated sketch. The prefix should match what you entered in the sketch_app
+		  --output_file arg                output file path, here the cover will be 
+		                                   saved in Gpb format (Gpb defined in 
+		                                   src/proto/cover.proto)
+
 */
 
 /*!
