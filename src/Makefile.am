@@ -9,8 +9,8 @@ AM_LDFLAGS = -lboost_system$(BOOST_LIB_SUFFIX) -lboost_program_options -lprotobu
 # the previous manual Makefile
 HDRS = $(wildcard ./*/*.h) $(wildcard ./*.h)
 TEST_SRC = $(wildcard ./*/ut/*.cpp)
-bin_PROGRAMS = test_all sketch_app reverse_rank_batch_app reverse_rank_app t_skim_reverse_rank_app t_skim_exact_app dijkstra_app 
-PROTOS_TO_BUILD = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h $(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc $(builddir)/proto/cover.pb.h $(builddir)/proto/cover.pb.cc 
+bin_PROGRAMS = test_all sketch_app reverse_rank_batch_app reverse_rank_app t_skim_reverse_rank_app t_skim_exact_app dijkstra_app distance_diffusion_app reach_diffusion_app
+PROTOS_TO_BUILD = $(builddir)/proto/all_distance_sketch.pb.cc $(builddir)/proto/all_distance_sketch.pb.h $(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc $(builddir)/proto/cover.pb.h $(builddir)/proto/cover.pb.cc $(builddir)/proto/embedding.pb.cc $(builddir)/proto/embedding.pb.h
 ALL = $(HDRS) $(TEST_SRC) $(PROTOS_TO_BUILD)
 test_all_SOURCES = graph/ut/run_all.cpp $(ALL)
 sketch_app_SOURCES = app/sketch_calculation_app.cpp $(ALL)
@@ -19,6 +19,8 @@ reverse_rank_app_SOURCES = app/reverse_rank_app.cpp $(ALL)
 t_skim_reverse_rank_app_SOURCES = app/t_skim_reverse_rank_app.cpp $(ALL)
 t_skim_exact_app_SOURCES = app/t_skim_exact_app.cpp $(ALL)
 dijkstra_app_SOURCES = app/dijkstra_app.cpp $(ALL)
+distance_diffusion_app_SOURCES = app/distance_diffusion_app.cpp $(ALL)
+reach_diffusion_app_SOURCES = app/reach_diffusion_app.cpp $(ALL)
 lib_LIBRARIES = liball_distance_sketch.a
 liball_distance_sketch_a_SOURCES = $(HDRS) $(PROTOS_TO_BUILD)
 include_HEADERS = ./all_distance_sketch.h
@@ -31,6 +33,8 @@ $(builddir)/proto/ranking.pb.h $(builddir)/proto/ranking.pb.cc: $(srcdir)/proto/
 	@$(PROTOC) --cpp_out=$(builddir) --python_out=$(builddir) $(srcdir)/proto/ranking.proto
 $(builddir)/proto/cover.pb.cc $(builddir)/proto/cover.pb.h: $(srcdir)/proto/cover.proto
 	@$(PROTOC) --cpp_out=$(builddir) --python_out=$(builddir) $(srcdir)/proto/cover.proto
+$(builddir)/proto/embedding.pb.cc $(builddir)/proto/embedding.pb.h: $(srcdir)/proto/embedding.proto
+	@$(PROTOC) --cpp_out=$(builddir) --python_out=$(builddir) $(srcdir)/proto/embedding.proto
 
 dist_noinst_DATA = $(wildcard ./proto/*)
 MOSTLYCLEANFILES = $(PROTOS_TO_BUILD)

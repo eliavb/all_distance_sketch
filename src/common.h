@@ -32,6 +32,7 @@
 #include "boost/random/linear_congruential.hpp"
 
 
+
 #define PROTO_BUF 1
 
 #define NOTICE 6
@@ -53,6 +54,7 @@
 namespace all_distance_sketch {
 /*! \cond
 */
+typedef float LABEL_WEIGHT;
 typedef std::vector<bool> TBitSet;
 /*! \endcond
 */
@@ -60,6 +62,7 @@ typedef std::vector<bool> TBitSet;
 /*! Constants */
 namespace constants {
     const float UNREACHABLE = 999999999; /*!< Constant to mark unreachable */
+    const float INF = 99999999;
 }  // namespace constants
 
 /*! Graph namesapce */

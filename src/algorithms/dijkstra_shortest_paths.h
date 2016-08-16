@@ -7,222 +7,320 @@
 #include "../sketch/graph_sketch.h"
 
 /*! \file dijkstra_shortest_paths.h
-    \brief Optimized version of Dijkstra algorithm for the sketch calculation algorithm
-*/
+  \brief Optimized version of Dijkstra algorithm for the sketch calculation algorithm
+  */
 
 namespace all_distance_sketch {
 
 /*! \cond
 */
 
-struct PrunningAlgoStatistics {
-  PrunningAlgoStatistics() : num_visited_nodes(0),
-                             num_pruned_nodes(0),
-                             num_relaxed_edges(0) {}
-  unsigned int num_visited_nodes;
-  unsigned int num_pruned_nodes;
-  unsigned int num_relaxed_edges;
+  struct PrunningAlgoStatistics {
+    PrunningAlgoStatistics() : num_visited_nodes(0),
+    num_pruned_nodes(0),
+    num_relaxed_edges(0) {}
+    unsigned int num_visited_nodes;
+    unsigned int num_pruned_nodes;
+    unsigned int num_relaxed_edges;
 
-  void Clear() {
-    num_visited_nodes = 0;
-    num_pruned_nodes = 0;
-    num_relaxed_edges = 0;
-  }
-
-  friend std::ostream& operator<<(std::ostream& os,
-                                  const PrunningAlgoStatistics& algo_statistics) {
-    os << " num Nodes Visited=" << algo_statistics.num_visited_nodes <<
-          " num Pruned Nodes=" << algo_statistics.num_pruned_nodes <<
-          " num Relaxed Edges=" << algo_statistics.num_relaxed_edges;
-    return os;
-  }
-};
-
-struct compareNodeDistanceAndId {
-  inline bool operator()(const NodeIdDistanceData& n1,
-                        const NodeIdDistanceData& n2) const {
-    if (n1.GetDistance() < n2.GetDistance()) {
-      return true;
+    void Clear() {
+      num_visited_nodes = 0;
+      num_pruned_nodes = 0;
+      num_relaxed_edges = 0;
     }
-    if (n1.GetDistance() > n2.GetDistance()) {
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                 const PrunningAlgoStatistics& algo_statistics) {
+      os << " num Nodes Visited=" << algo_statistics.num_visited_nodes <<
+         " num Pruned Nodes=" << algo_statistics.num_pruned_nodes <<
+         " num Relaxed Edges=" << algo_statistics.num_relaxed_edges;
+      return os;
+    }
+  };
+
+  struct compareNodeDistanceAndId {
+    inline bool operator()(const NodeIdDistanceData& n1,
+                           const NodeIdDistanceData& n2) const {
+      if (n1.GetDistance() < n2.GetDistance()) {
+        return true;
+      }
+      if (n1.GetDistance() > n2.GetDistance()) {
+        return false;
+      }
+      if (n1.GetNId() < n2.GetNId()) {
+        return true;
+      }
+      if (n1.GetNId() > n2.GetNId()) {
+        return false;
+      }
       return false;
     }
-    if (n1.GetNId() < n2.GetNId()) {
+  };
+
+  struct DijkstraParams {
+    std::set< NodeIdDistanceData, compareNodeDistanceAndId > heap;
+    std::vector<graph::EdgeWeight> min_distance;
+    TBitSet poped;
+    TBitSet touched;
+  };
+
+  template<class T>
+      class DefaultDijkstraCallBacks {
+       public:
+        inline void Started(int source_node_id, graph::Graph<T>* graph) { return; }
+
+        inline void NodePopedFromHeap(int poped_node_id,
+                                      const NodeIdDistanceData& heap_value)
+        { return; }
+
+        inline bool ShouldPrune(int visited_node_id,
+                                graph::EdgeWeight distance_from_source_to_visited_node)
+        { return false; }
+
+        inline bool ShouldStop() { return false; }
+
+        inline void RelaxedPath(int node_id) { }
+      };
+
+  template<class Z>
+      class CollectorNodesUpToTRank {
+       public:
+        void InitCollectorNodesUpToTRank(int T) {
+          T_ = T;
+        }
+        inline void Started(int source_node_id, graph::Graph<Z>* graph) {
+          nodes_found_.clear();
+          algo_statistics_.Clear();
+        }
+
+        inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
+          if (algo_statistics_.num_visited_nodes <= T_) {
+            nodes_found_.push_back(heap_value);
+          }
+          ++algo_statistics_.num_visited_nodes;
+        }
+
+        inline bool ShouldPrune(int visited_node_id,
+                                graph::EdgeWeight distance_from_source_to_visited_node) {
+          return algo_statistics_.num_visited_nodes >= T_;
+        }
+
+        inline bool ShouldStop() { return algo_statistics_.num_visited_nodes >= T_; }
+
+        inline void RelaxedPath(int node_id) { }
+
+        const std::vector<NodeIdDistanceData>& get_nodes_found() {
+          return nodes_found_;
+        }
+       private:
+        PrunningAlgoStatistics algo_statistics_;
+        std::vector<NodeIdDistanceData> nodes_found_;
+        int T_;
+      };
+
+  template<class Z>
+      class CollectorNodesUpToUpperBoundRankRank {
+       public:
+        void InitCollectorNodesUpToUpperBoundRankRank(int T) {
+          T_ = T;
+        }
+        inline void Started(int source_node_id, graph::Graph<Z>* graph) {
+          nodes_found_.clear();
+          algo_statistics_.Clear();
+          nodes_under_T.clear();
+          current_distance = -1;
+        }
+
+        inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
+          graph::EdgeWeight distance = heap_value.GetDistance();
+          if (current_distance != distance) {
+            nodes_found_.resize(nodes_found_.size() + 1);
+            current_distance = distance;
+          }
+          nodes_found_.back().push_back(heap_value);
+          ++algo_statistics_.num_visited_nodes;
+        }
+
+        inline bool ShouldPrune(int visited_node_id,
+                                graph::EdgeWeight distance_from_source_to_visited_node) {
+          int num_nodes_ranked = 0;
+          for (int i=0; i < nodes_found_.size(); i++) {
+            num_nodes_ranked += nodes_found_[i].size();
+          }
+          return num_nodes_ranked >= T_;
+        }
+
+        inline bool ShouldStop() { return false; }
+
+        inline void RelaxedPath(int node_id) { }
+
+        const std::vector<NodeIdDistanceData>& get_nodes_found() {
+          int num_nodes_collected = 0;
+          int vector_size = nodes_found_.size();
+          for (int i=0; i < vector_size; i++) {
+            num_nodes_collected += nodes_found_[i].size();
+            if (num_nodes_collected >= T_) {
+              break;
+            }
+            nodes_under_T.insert(nodes_under_T.end(), nodes_found_[i].begin(), nodes_found_[i].end());
+          }
+          LOG_M(DEBUG4, "returnin vector of size= " << nodes_under_T.size());
+          return nodes_under_T;
+        }
+       private:
+        PrunningAlgoStatistics algo_statistics_;
+        std::vector< std::vector<NodeIdDistanceData> > nodes_found_;
+        std::vector<NodeIdDistanceData> nodes_under_T;
+        std::vector<graph::EdgeWeight> rank_buckets;
+        int T_;
+        graph::EdgeWeight current_distance;
+      };
+
+  template<class T>
+      class DijkstraRankCallBack {
+       public:
+        inline void Started(int source_node_id, graph::Graph<T>* graph) {
+          dijkstra_rank_.clear();
+          dijkstra_rank_.resize(graph->GetMxNId(), constants::UNREACHABLE);
+          dijkstra_rank_[source_node_id] = 0;
+          algo_statistics_.Clear();
+        }
+
+        inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
+          dijkstra_rank_[poped_node_id] = algo_statistics_.num_visited_nodes;
+          ++algo_statistics_.num_visited_nodes;
+        }
+
+        inline bool ShouldPrune(int visited_node_id, graph::EdgeWeight distance_from_source_to_visited_node) { return false; }
+
+        inline bool ShouldStop() { return false; }
+
+        inline void RelaxedPath(int node_id) { }
+
+        const std::vector<int>& get_dijkstra_rank() {
+          return dijkstra_rank_;
+        }
+
+       private:
+        PrunningAlgoStatistics algo_statistics_;
+        std::vector<int> dijkstra_rank_;
+      };
+
+  template<class T>
+      class SketchDijkstraCallBacks {
+       public:
+        void InitSketchDijkstraCallBacks(GraphSketch* graph_sketch) {
+          graph_sketch_ = graph_sketch;
+          is_multi_threaded_ = false;
+          should_calculate_dijkstra_rank_ = false;
+          sketch_lock_ = NULL;
+          stop_after_ = -1;
+          algo_statistics_.Clear();
+        }
+
+        void set_multi_threaded_params(bool multi_threaded_run, thread::ModuloLock * lock) {
+          is_multi_threaded_ = multi_threaded_run;
+          sketch_lock_ = lock;
+        }
+
+        void set_should_calculate_dijkstra_rank(bool should_calc) {
+          should_calculate_dijkstra_rank_ = should_calc;
+        }
+
+        inline void Started(int source_node_id, graph::Graph<T>* graph) {
+          algo_statistics_.Clear();
+          source_node_id_ = source_node_id;
+          source_node_random_id_ = graph_sketch_->GetNodeRandomId(source_node_id_);
+          if (should_calculate_dijkstra_rank_) {
+            dijkstra_rank_.clear();
+            dijkstra_rank_.resize(graph->GetMxNId(), constants::UNREACHABLE);
+            dijkstra_rank_[source_node_id_] = 0;
+          }
+        }
+
+        inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
+          ++algo_statistics_.num_visited_nodes;
+          if (should_calculate_dijkstra_rank_) {
+            dijkstra_rank_[poped_node_id] = algo_statistics_.num_visited_nodes;
+          }
+        }
+
+        inline bool ShouldPrune(int visited_node_id, graph::EdgeWeight distance_from_source_to_visited_node) {
+          bool should_prune = false;
+          bool added_node_to_ads = true;
+          NodeSketch * visited_noted_sketch = NULL;
+          if (graph_sketch_->ShouldPrune(distance_from_source_to_visited_node, visited_node_id)) {
+            ++algo_statistics_.num_pruned_nodes;
+            return true;
+          }
+
+          // Get Node NodeSketch
+          NodeDistanceIdRandomIdData visitingNode(distance_from_source_to_visited_node,
+                                            visited_node_id, graph_sketch_->GetNodeRandomId(visited_node_id));
+          visited_noted_sketch = graph_sketch_->GetNodeSketch(visitingNode);
+          // Distance from source to visiting node
+          NodeDistanceIdRandomIdData sourceNodeDetails(distance_from_source_to_visited_node, source_node_id_, source_node_random_id_);
+          // Update the visiting node NodeSketch with the source Node
+          if (is_multi_threaded_) {
+            sketch_lock_->Lock(visited_node_id);
+            added_node_to_ads = visited_noted_sketch->AddToCandidates(sourceNodeDetails);
+            sketch_lock_->UnLock(visited_node_id);
+          } else {
+            added_node_to_ads = visited_noted_sketch->Add(sourceNodeDetails);
+          }
+
+          if (added_node_to_ads == false && visited_node_id != source_node_id_) {
+            ++algo_statistics_.num_pruned_nodes;
+          return true;
+        }
+
+    return should_prune;
+  }
+
+  inline bool ShouldStop() {
+    if (stop_after_ != -1 && algo_statistics_.num_visited_nodes > stop_after_) {
       return true;
-    }
-    if (n1.GetNId() > n2.GetNId()) {
-      return false;
     }
     return false;
   }
-};
-
-struct DijkstraParams {
-  std::set< NodeIdDistanceData, compareNodeDistanceAndId > heap;
-  std::vector<graph::EdgeWeight> min_distance;
-  TBitSet poped;
-  TBitSet touched;
-};
-
-template<class T>
-class DefaultDijkstraCallBacks {
- public:
-  inline void Started(int source_node_id, graph::Graph<T>* graph) { return; }
-
-  inline void NodePopedFromHeap(int poped_node_id,
-                                const NodeIdDistanceData& heap_value)
-                                { return; }
-
-  inline bool ShouldPrune(int visited_node_id,
-                          graph::EdgeWeight distance_from_source_to_visited_node)
-                          { return false; }
-
-  inline bool ShouldStop() { return false; }
-
-  inline void RelaxedPath(int node_id) { }
-};
-
-template<class Z>
-class CollectorNodesUpToTRank {
- public:
-  void InitCollectorNodesUpToTRank(int T) {
-    T_ = T;
-  }
-  inline void Started(int source_node_id, graph::Graph<Z>* graph) {
-    nodes_found_.clear();
-    algo_statistics_.Clear();
+  
+  inline void RelaxedPath(int node_id) {
+    ++algo_statistics_.num_relaxed_edges;
   }
 
-  inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
-    if (algo_statistics_.num_visited_nodes <= T_) {
-      nodes_found_.push_back(heap_value);
-    }
-    ++algo_statistics_.num_visited_nodes;
+  inline int get_num_pruned_nodes() {
+    return algo_statistics_.num_pruned_nodes;
   }
-
-  inline bool ShouldPrune(int visited_node_id,
-                          graph::EdgeWeight distance_from_source_to_visited_node) {
-    return algo_statistics_.num_visited_nodes >= T_;
-  }
-
-  inline bool ShouldStop() { return algo_statistics_.num_visited_nodes >= T_; }
-
-  inline void RelaxedPath(int node_id) { }
-
-  const std::vector<NodeIdDistanceData>& get_nodes_found() {
-    return nodes_found_;
-  }
- private:
+private:
+  GraphSketch * graph_sketch_;
+  bool is_multi_threaded_;
+  bool should_calculate_dijkstra_rank_;
+  thread::ModuloLock * sketch_lock_;
+  int stop_after_;
   PrunningAlgoStatistics algo_statistics_;
-  std::vector<NodeIdDistanceData> nodes_found_;
-  int T_;
-};
 
-template<class Z>
-class CollectorNodesUpToUpperBoundRankRank {
- public:
-  void InitCollectorNodesUpToUpperBoundRankRank(int T) {
-    T_ = T;
-  }
-  inline void Started(int source_node_id, graph::Graph<Z>* graph) {
-    nodes_found_.clear();
-    algo_statistics_.Clear();
-    nodes_under_T.clear();
-    current_distance = -1;
-  }
-
-  inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
-    graph::EdgeWeight distance = heap_value.GetDistance();
-    if (current_distance != distance) {
-      nodes_found_.resize(nodes_found_.size() + 1);
-      current_distance = distance;
-    }
-    nodes_found_.back().push_back(heap_value);
-    ++algo_statistics_.num_visited_nodes;
-  }
-
-  inline bool ShouldPrune(int visited_node_id,
-                          graph::EdgeWeight distance_from_source_to_visited_node) {
-    int num_nodes_ranked = 0;
-    for (int i=0; i < nodes_found_.size(); i++) {
-      num_nodes_ranked += nodes_found_[i].size();
-    }
-    return num_nodes_ranked >= T_;
-  }
-
-  inline bool ShouldStop() { return false; }
-
-  inline void RelaxedPath(int node_id) { }
-
-  const std::vector<NodeIdDistanceData>& get_nodes_found() {
-    int num_nodes_collected = 0;
-    int vector_size = nodes_found_.size();
-    for (int i=0; i < vector_size; i++) {
-      num_nodes_collected += nodes_found_[i].size();
-      if (num_nodes_collected >= T_) {
-        break;
-      }
-      nodes_under_T.insert(nodes_under_T.end(), nodes_found_[i].begin(), nodes_found_[i].end());
-    }
-    LOG_M(DEBUG4, "returnin vector of size= " << nodes_under_T.size());
-    return nodes_under_T;
-  }
- private:
-  PrunningAlgoStatistics algo_statistics_;
-  std::vector< std::vector<NodeIdDistanceData> > nodes_found_;
-  std::vector<NodeIdDistanceData> nodes_under_T;
-  std::vector<graph::EdgeWeight> rank_buckets;
-  int T_;
-  graph::EdgeWeight current_distance;
-};
-
-template<class T>
-class DijkstraRankCallBack {
- public:
-  inline void Started(int source_node_id, graph::Graph<T>* graph) {
-    dijkstra_rank_.clear();
-    dijkstra_rank_.resize(graph->GetMxNId(), constants::UNREACHABLE);
-    dijkstra_rank_[source_node_id] = 0;
-    algo_statistics_.Clear();
-  }
-
-  inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
-    dijkstra_rank_[poped_node_id] = algo_statistics_.num_visited_nodes;
-    ++algo_statistics_.num_visited_nodes;
-  }
-
-  inline bool ShouldPrune(int visited_node_id, graph::EdgeWeight distance_from_source_to_visited_node) { return false; }
-
-  inline bool ShouldStop() { return false; }
-
-  inline void RelaxedPath(int node_id) { }
-
-  const std::vector<int>& get_dijkstra_rank() {
-    return dijkstra_rank_;
-  }
-
- private:
-  PrunningAlgoStatistics algo_statistics_;
+  int source_node_id_;
+  RandomId source_node_random_id_;
   std::vector<int> dijkstra_rank_;
 };
 
 template<class T>
-class SketchDijkstraCallBacks {
+class SketchDijkstraCallBacksInverseWeight {
  public:
-  void InitSketchDijkstraCallBacks(GraphSketch* graph_sketch) { 
+  void InitSketchDijkstraCallBacks(GraphSketch* graph_sketch) {
     graph_sketch_ = graph_sketch;
     is_multi_threaded_ = false;
     should_calculate_dijkstra_rank_ = false;
     sketch_lock_ = NULL;
     stop_after_ = -1;
     algo_statistics_.Clear();
-  }                             
+  }
 
   void set_multi_threaded_params(bool multi_threaded_run, thread::ModuloLock * lock) {
     is_multi_threaded_ = multi_threaded_run;
     sketch_lock_ = lock;
   }
-    
+
   void set_should_calculate_dijkstra_rank(bool should_calc) {
     should_calculate_dijkstra_rank_ = should_calc;
   }
@@ -237,7 +335,7 @@ class SketchDijkstraCallBacks {
       dijkstra_rank_[source_node_id_] = 0;
     }
   }
-  
+
   inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
     ++algo_statistics_.num_visited_nodes;
     if (should_calculate_dijkstra_rank_) {
@@ -253,22 +351,29 @@ class SketchDijkstraCallBacks {
       ++algo_statistics_.num_pruned_nodes;
       return true;
     }
-    
+
     // Get Node NodeSketch
     NodeDistanceIdRandomIdData visitingNode(distance_from_source_to_visited_node,
-                                            visited_node_id, graph_sketch_->GetNodeRandomId(visited_node_id));
+                                      visited_node_id, graph_sketch_->GetNodeRandomId(visited_node_id));
     visited_noted_sketch = graph_sketch_->GetNodeSketch(visitingNode);
     // Distance from source to visiting node
+    if (distance_from_source_to_visited_node == constants::INF) {
+      distance_from_source_to_visited_node = 0;
+    } else if (distance_from_source_to_visited_node == 0) {
+      distance_from_source_to_visited_node = constants::INF;
+    } else {
+      distance_from_source_to_visited_node = (1/distance_from_source_to_visited_node);
+    }
     NodeDistanceIdRandomIdData sourceNodeDetails(distance_from_source_to_visited_node, source_node_id_, source_node_random_id_);
     // Update the visiting node NodeSketch with the source Node
     if (is_multi_threaded_) {
-       sketch_lock_->Lock(visited_node_id);
-       added_node_to_ads = visited_noted_sketch->AddToCandidates(sourceNodeDetails);
-       sketch_lock_->UnLock(visited_node_id);
+      sketch_lock_->Lock(visited_node_id);
+      added_node_to_ads = visited_noted_sketch->AddToCandidates(sourceNodeDetails);
+      sketch_lock_->UnLock(visited_node_id);
     } else {
-       added_node_to_ads = visited_noted_sketch->Add(sourceNodeDetails);
+      added_node_to_ads = visited_noted_sketch->Add(sourceNodeDetails);
     }
-    
+
     if (added_node_to_ads == false && visited_node_id != source_node_id_) {
       ++algo_statistics_.num_pruned_nodes;
       return true;
@@ -358,14 +463,14 @@ static void PrunedDijkstra(typename T::TNode source,
                     " Is Node? " << graph->IsNode(visited_node_id));
 
       if (param->poped[id_of_neighbor_of_visited_node] == true) {
-	       continue;
+        continue;
       }
 
       // std::pair<bool, graph::EdgeWeight> edge_u_v = graph->GetEdgeWeight(visited_node_id, id_of_neighbor_of_visited_node);
       graph::EdgeWeight distance_through_u = distance_from_source_to_visited_node + (*nodeWeights)[i].get_edge_weight(); // + edge_u_v.second; 
       if ((param->touched[id_of_neighbor_of_visited_node] == false) ||
-	        (distance_through_u < param->min_distance[id_of_neighbor_of_visited_node])) {
-        
+          (distance_through_u < param->min_distance[id_of_neighbor_of_visited_node])) {
+
         if (param->touched[id_of_neighbor_of_visited_node] == false) {
           LOG_M(DEBUG1, "Node " << id_of_neighbor_of_visited_node << " Untouced ");
         } else {
@@ -373,11 +478,11 @@ static void PrunedDijkstra(typename T::TNode source,
                         " neighbor=" << id_of_neighbor_of_visited_node <<
                         " Distance before relax=" << param->min_distance[id_of_neighbor_of_visited_node] <<
                         " distance through visited_node_id=" << distance_through_u);
-	      }
-        
+        }
+
         call_backs->RelaxedPath(id_of_neighbor_of_visited_node);
-	      // UNREACHABLE only if this is our first time
-    	  if ( param->touched[id_of_neighbor_of_visited_node] == false ) { 
+        // UNREACHABLE only if this is our first time
+        if ( param->touched[id_of_neighbor_of_visited_node] == false ) {
           param->heap.insert(NodeIdDistanceData(id_of_neighbor_of_visited_node, distance_through_u));
           LOG_M(DEBUG1, "Inserting node " << id_of_neighbor_of_visited_node << " to heap with distance " << distance_through_u);
         } else {
@@ -385,10 +490,10 @@ static void PrunedDijkstra(typename T::TNode source,
           param->heap.insert(NodeIdDistanceData(id_of_neighbor_of_visited_node, distance_through_u));
           LOG_M(DEBUG5, "Decreasing distance of node " << id_of_neighbor_of_visited_node <<
                         " from " << param->min_distance[id_of_neighbor_of_visited_node] <<
-    		                " to " << distance_through_u);
+                        " to " << distance_through_u);
         }
-    	 param->touched[id_of_neighbor_of_visited_node] = true;
-    	 param->min_distance[id_of_neighbor_of_visited_node] = distance_through_u;
+        param->touched[id_of_neighbor_of_visited_node] = true;
+        param->min_distance[id_of_neighbor_of_visited_node] = distance_through_u;
       }
     }
   }

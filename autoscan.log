@@ -1,0 +1,35 @@
+autoscan: warning: missing AC_CHECK_FUNCS([memset]) wanted by: 
+	src/proto/all_distance_sketch.pb.cc:274
+	src/proto/all_distance_sketch.pb.cc:316
+	src/proto/all_distance_sketch.pb.cc:324
+	src/proto/all_distance_sketch.pb.cc:546
+	src/proto/all_distance_sketch.pb.cc:588
+	src/proto/all_distance_sketch.pb.cc:596
+	src/proto/all_distance_sketch.pb.cc:820
+	src/proto/all_distance_sketch.pb.cc:862
+	src/proto/all_distance_sketch.pb.cc:872
+	src/proto/all_distance_sketch.pb.cc:1170
+	src/proto/all_distance_sketch.pb.cc:1212
+	src/proto/all_distance_sketch.pb.cc:1220
+	src/proto/all_distance_sketch.pb.cc:1476
+	src/proto/all_distance_sketch.pb.cc:1518
+	src/proto/all_distance_sketch.pb.cc:1526
+	src/proto/all_distance_sketch.pb.cc:1749
+	src/proto/all_distance_sketch.pb.cc:1790
+	src/proto/ranking.pb.cc:156
+	src/proto/ranking.pb.cc:198
+	src/proto/ranking.pb.cc:206
+	src/proto/ranking.pb.cc:431
+	src/proto/ranking.pb.cc:473
+	src/proto/ranking.pb.cc:482
+	src/proto/cover.pb.cc:152
+	src/proto/cover.pb.cc:189
+	src/proto/cover.pb.cc:417
+	src/proto/cover.pb.cc:453
+autoscan: warning: missing AC_CHECK_HEADERS([fcntl.h]) wanted by: 
+	src/sketch/utils.h:8
+autoscan: warning: missing AC_TYPE_UINT32_T wanted by: 
+	src/sketch/utils.h:57
+	src/sketch/utils.h:141
+autoscan: warning: missing AC_TYPE_UINT8_T wanted by: 
+	src/sketch/utils.h:40

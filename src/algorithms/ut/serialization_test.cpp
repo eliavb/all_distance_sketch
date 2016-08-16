@@ -136,7 +136,8 @@ TEST_F(SerialGraph, ZValuesCalculation) {
   graph_sketch_after_load.LoadGraphSketchFromGpb(all_distance_sketch_gpb);
   // Node 7
   std::vector<NodeProb> insert_prob;
-  graph_sketch_after_load.CalculateInsertProb(7, &insert_prob);
+  graph_sketch_after_load.CalculateInsertProb(7);
+  insert_prob = graph_sketch_after_load.GetInsertProb(7);
   std::reverse(insert_prob.begin(), insert_prob.end());
   std::vector<int> node_ids = {7, 2, 6, 1, 0};
   std::vector<double> node_probs = {1, 0.45, 0.45, 0.32, 0.23 };
@@ -147,7 +148,8 @@ TEST_F(SerialGraph, ZValuesCalculation) {
   }
 
   // Node 9
-  graph_sketch_after_load.CalculateInsertProb(9, &insert_prob);
+  graph_sketch_after_load.CalculateInsertProb(9);
+  insert_prob = graph_sketch_after_load.GetInsertProb(9);
   std::reverse(insert_prob.begin(), insert_prob.end());
   node_ids = {9, 1, 4, 3, 0};
   node_probs = {1, 0.69, 0.69, 0.33, 0.32};

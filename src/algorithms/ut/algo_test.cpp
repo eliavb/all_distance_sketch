@@ -3,9 +3,7 @@
 #include "../reverse_rank.h"
 #include "../sketch_calculation.h"
 #include "../../graph/snap_graph_adaptor.h"
-#include "../../app/sketch_calculation_app.h"
-#include "../../app/reverse_rank_app.h"
-#include "../../app/t_skim_reverse_rank_app.h"
+
 
 using namespace all_distance_sketch;
 
@@ -663,8 +661,8 @@ TEST_F(AlgoGraph, CalculateInsertProb) {
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graphAds);
 
   // Node 7
-  std::vector<NodeProb> insert_prob;
-  graphAds.CalculateInsertProb(7, &insert_prob);
+  graphAds.CalculateInsertProb(7);
+  std::vector<NodeProb> insert_prob = graphAds.GetInsertProb(7);
   std::reverse(insert_prob.begin(), insert_prob.end());
   std::vector<int> node_ids = {7, 2, 6, 1, 0};
   std::vector<double> node_probs = {1, 0.45, 0.45, 0.32, 0.23 };
@@ -675,7 +673,8 @@ TEST_F(AlgoGraph, CalculateInsertProb) {
   }
 
   // Node 9
-  graphAds.CalculateInsertProb(9, &insert_prob);
+  graphAds.CalculateInsertProb(9);
+  insert_prob = graphAds.GetInsertProb(9);
   std::reverse(insert_prob.begin(), insert_prob.end());
   node_ids = {9, 1, 4, 3, 0};
   node_probs = {1, 0.69, 0.69, 0.33, 0.32};
@@ -701,10 +700,11 @@ TEST_F(AlgoGraph, ZValueCalculation) {
 
   graphAds.InitGraphSketch(k, graph.GetMxNId());
   graphAds.SetNodesDistribution(&dist);
+  graphAds.set_should_calc_zvalues(true);
   CalculateGraphSketch< graph::TDirectedGraph >(&graph, &graphAds);
 
-  std::vector<NodeProb> insert_prob;
-  graphAds.CalculateInsertProb(1, &insert_prob);
+  graphAds.CalculateInsertProb(1);
+  std::vector<NodeProb> insert_prob = graphAds.GetInsertProb(1);
   std::reverse(insert_prob.begin(), insert_prob.end());
   
   EXPECT_EQ(insert_prob.size(), 2);
@@ -1291,265 +1291,4 @@ TEST_F(AlgoGraph, CheckRankUpTo100) {
   for (auto node_rank : stop_after_100.get_ranks()) {
     EXPECT_TRUE(node_rank.second <= 100);
   }
-}
-
-TEST_F(AlgoGraph, SketchAppTestUndirected) {
-  std::string graph_dir_arg = "--graph_dir=";
-  graph_dir_arg += GetSampleData();
-  char * writable = new char[graph_dir_arg.size() + 1];
-  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
-  writable[graph_dir_arg.size()] = '\0';
-  char *arguments[] = { "sketch_app", 
-                        "--K=64", 
-                        writable,
-                        "--directed=false",
-                        "--output_file=temp_file_app_test"};
-  EXPECT_EQ(sketch_app_main(5, arguments), 0);
-
-  graph::Graph< graph::TUnDirectedGraph> graph;
-  graph.LoadGraphFromDir(GetSampleData());
-  GraphSketch graph_sketch;
-  int k = 64;
-  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
-  CalculateGraphSketch<graph::TUnDirectedGraph>(&graph, &graph_sketch);
-
-  GraphSketch graph_sketch_from_app;
-  std::string file_name = "temp_file_app_test";
-  load_sketch(&graph_sketch_from_app, file_name);
-  EXPECT_EQ(graph_sketch_from_app, graph_sketch);
-
-}
-
-TEST_F(AlgoGraph, SketchAppTestDirected) {
-  std::string graph_dir_arg = "--graph_dir=";
-  graph_dir_arg += GetSampleData();
-  char * writable = new char[graph_dir_arg.size() + 1];
-  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
-  writable[graph_dir_arg.size()] = '\0';
-  char *arguments[] = { "sketch_app", 
-                        "--K=64", 
-                        writable, 
-                        "--output_file=temp_file_app_test_directed",
-                        "--directed=true"};
-  EXPECT_EQ(sketch_app_main(5, arguments), 0);
-
-  graph::Graph< graph::TDirectedGraph> graph;
-  graph.LoadGraphFromDir(GetSampleData());
-  GraphSketch graph_sketch;
-  int k = 64;
-  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
-  CalculateGraphSketch<graph::TDirectedGraph>(&graph, &graph_sketch);
-
-  GraphSketch graph_sketch_from_app;
-  std::string file_name = "temp_file_app_test_directed";
-  load_sketch(&graph_sketch_from_app, file_name);
-  EXPECT_EQ(graph_sketch_from_app, graph_sketch);
-
-  std::remove("temp_file_app_test_directed");
-}
-
-TEST_F(AlgoGraph, ReverseRankAppTestUndirected) {
-  /*
-  --source_id arg        id of source node
-  --K arg                K = 1/epsilon^2 sets the precision
-  --num_threads arg (=1) num_threads to use
-  --directed arg         is the graph directed
-  --graph_dir arg        Directory with the graph to calculate the sketch on
-  --sketch_file arg      File with the calculated sketch
-  --output_file arg
-  */
-  std::string graph_dir_arg = "--graph_dir=";
-  graph_dir_arg += GetSampleData();
-  char * writable = new char[graph_dir_arg.size() + 1];
-  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
-  writable[graph_dir_arg.size()] = '\0';
-  char *arguments[] = { "app",
-                        "--source_id=0", 
-                        "--K=64",
-                        writable, 
-                        "--output_file=temp_file_reverse_rank_app_test"};
-  EXPECT_EQ(reverse_rank_app_main(5, arguments), 0);
-
-  graph::Graph< graph::TUnDirectedGraph> graph;
-  graph.LoadGraphFromDir(GetSampleData());
-  std::cout << "Max node id=" << graph.GetMxNId() << std::endl;
-  GraphSketch graph_sketch;
-  int k = 64;
-  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
-  CalculateGraphSketch<graph::TUnDirectedGraph>(&graph, &graph_sketch);
-  int node_id = 0;
-  std::vector<int> ranking;
-  CalculateReverseRank<graph::TUnDirectedGraph> (node_id,
-                                                 &graph,
-                                                 &graph_sketch,
-                                                 &ranking);
-
-  std::fstream input("temp_file_reverse_rank_app_test", std::ios::in | std::ios::binary);
-  NodeRanksGpb node_ranks;
-  EXPECT_TRUE(node_ranks.ParseFromIstream(&input));
-  for (int i=0; i < node_ranks.node_ranks_size(); i++) {
-    const NodeRankGpb& rank = node_ranks.node_ranks(i);
-    int node_id = rank.node_id();
-    int node_rank = rank.node_rank();
-    EXPECT_EQ(node_rank, ranking[node_id]);
-  }
-  std::remove("temp_file_reverse_rank_app_test");
-}
-
-TEST_F(AlgoGraph, ReverseRankAppTestDirected) {
-  /*
-  --source_id arg        id of source node
-  --K arg                K = 1/epsilon^2 sets the precision
-  --num_threads arg (=1) num_threads to use
-  --directed arg         is the graph directed
-  --graph_dir arg        Directory with the graph to calculate the sketch on
-  --sketch_file arg      File with the calculated sketch
-  --output_file arg
-  */
-  graph::Graph< graph::TDirectedGraph> graph;
-  graph.LoadGraphFromDir("./data/youtube");
-  
-  std::string graph_dir_arg = "--graph_dir=";
-  graph_dir_arg += "./data/youtube";
-  char * writable = new char[graph_dir_arg.size() + 1];
-  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
-  writable[graph_dir_arg.size()] = '\0';
-  char *arguments[] = { "app",
-                        "--source_id=32", 
-                        "--K=4",
-                        writable, 
-                        "--output_file=temp_file_reverse_rank_app_test",
-                        "--directed=true"};
-  EXPECT_EQ(reverse_rank_app_main(6, arguments), 0);
-  
-  GraphSketch graph_sketch;
-  int k = 4;
-  graph_sketch.InitGraphSketch(k, graph.GetMxNId());
-  CalculateGraphSketch<graph::TDirectedGraph>(&graph, &graph_sketch);
-  graph::Graph<graph::TDirectedGraph> graph_transpose;
-  graph.Transpose(&graph_transpose);
-  
-
-  int node_id = 32;
-  std::vector<int> ranking;
-  CalculateReverseRank<graph::TDirectedGraph> (node_id,
-                                               &graph_transpose,
-                                               &graph_sketch,
-                                               &ranking);
-  std::fstream input("temp_file_reverse_rank_app_test", std::ios::in | std::ios::binary);
-  NodeRanksGpb node_ranks;
-  EXPECT_TRUE(node_ranks.ParseFromIstream(&input));
-  std::cout << "size=" << node_ranks.node_ranks_size() << " ranking=" << ranking.size() << std::endl;
-  for (int i=0; i < node_ranks.node_ranks_size(); i++) {
-    const NodeRankGpb& rank = node_ranks.node_ranks(i);
-    int node_id = rank.node_id();
-    int node_rank = rank.node_rank();
-    std::cout << node_rank << std::endl;
-    EXPECT_EQ(node_rank, ranking[node_id]);
-  }
-  std::remove("temp_file_reverse_rank_app_test");
-}
-
-
-TEST_F(AlgoGraph, TSkimAppTestUndirected) {
-  std::string graph_dir_arg = "--graph_dir=";
-  graph_dir_arg += GetSampleData();
-  char * writable = new char[graph_dir_arg.size() + 1];
-  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
-  writable[graph_dir_arg.size()] = '\0';
-  char *arguments[] = { "app", 
-                        "--K=64", 
-                        "--T=10",
-                        "--min_influence_for_seed_set=10",
-                        writable, 
-                        "--output_file=temp_file_t_skim_app_test"};
-  EXPECT_EQ(t_skim_app_main(6, arguments), 0);
-  
-  graph::Graph< graph::TUnDirectedGraph> graph;
-  graph.LoadGraphFromDir(GetSampleData());
-  int k = 64;
-  int T=10;
-  int min_influence_for_seed_set=10;
-  std::string file_name = "temp_file_t_skim_app_test";
-  Cover cover;
-  TSkimReverseRank< graph::TUnDirectedGraph > t_skim_algo_un_directed;
-  t_skim_algo_un_directed.InitTSkim(T, k, min_influence_for_seed_set, &cover, &graph);
-  t_skim_algo_un_directed.Run();
-
-  
-  std::fstream input("temp_file_t_skim_app_test", std::ios::in | std::ios::binary);
-  CoverGpb coverGpb;
-  EXPECT_TRUE(coverGpb.ParseFromIstream(&input));
-
-  for (int i=0; i < coverGpb.seeds_size(); i++) {
-    const SeedInfoGpb& seed_info = coverGpb.seeds(i);
-    int seed_node_id = seed_info.seed_node_id();
-    for (int j=0; j < seed_info.node_ids_size(); j++) {
-      int node_id = seed_info.node_ids(j);
-      auto seed_cover = cover.GetSeedCover(seed_node_id);
-      EXPECT_EQ(seed_cover.seed, seed_node_id);
-      bool found = false;
-      EXPECT_TRUE(seed_cover.covered_nodes.size() != 0);
-      for (int k=0; k < seed_cover.covered_nodes.size(); k++) {
-        if (seed_cover.covered_nodes[k] == node_id) {
-          found = true;
-          break;
-        }
-      }
-      EXPECT_TRUE(found);
-    }
-  }
-  std::remove("temp_file_t_skim_app_test");
-}
-
-TEST_F(AlgoGraph, TSkimAppTestDirected) {
-  std::string graph_dir_arg = "--graph_dir=";
-  graph_dir_arg += GetSampleData();
-  char * writable = new char[graph_dir_arg.size() + 1];
-  std::copy(graph_dir_arg.begin(), graph_dir_arg.end(), writable);
-  writable[graph_dir_arg.size()] = '\0';
-  char *arguments[] = { "app", 
-                        "--K=64", 
-                        "--T=10",
-                        "--min_influence_for_seed_set=10",
-                        writable, 
-                        "--output_file=temp_file_t_skim_directed_app_test",
-                        "--directed=true"};
-  EXPECT_EQ(t_skim_app_main(7, arguments), 0);
-  
-  graph::Graph< graph::TDirectedGraph> graph;
-  graph.LoadGraphFromDir(GetSampleData());
-  int k = 64;
-  int T=10;
-  int min_influence_for_seed_set=10;
-  std::string file_name = "temp_file_t_skim_directed_app_test";
-  Cover cover;
-  TSkimReverseRank< graph::TDirectedGraph > t_skim_algo_directed;
-  t_skim_algo_directed.InitTSkim(T, k, min_influence_for_seed_set, &cover, &graph);
-  t_skim_algo_directed.Run();
-
-  
-  std::fstream input("temp_file_t_skim_directed_app_test", std::ios::in | std::ios::binary);
-  CoverGpb coverGpb;
-  EXPECT_TRUE(coverGpb.ParseFromIstream(&input));
-
-  for (int i=0; i < coverGpb.seeds_size(); i++) {
-    const SeedInfoGpb& seed_info = coverGpb.seeds(i);
-    int seed_node_id = seed_info.seed_node_id();
-    for (int j=0; j < seed_info.node_ids_size(); j++) {
-      int node_id = seed_info.node_ids(j);
-      auto seed_cover = cover.GetSeedCover(seed_node_id);
-      EXPECT_EQ(seed_cover.seed, seed_node_id);
-      bool found = false;
-      EXPECT_TRUE(seed_cover.covered_nodes.size() != 0);
-      for (int k=0; k < seed_cover.covered_nodes.size(); k++) {
-        if (seed_cover.covered_nodes[k] == node_id) {
-          found = true;
-          break;
-        }
-      }
-      EXPECT_TRUE(found);
-    }
-  }
-  std::remove("temp_file_t_skim_directed_app_test");
 }

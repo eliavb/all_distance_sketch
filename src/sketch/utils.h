@@ -75,7 +75,7 @@ void OpenFileWrite(const std::string& file_name,
               int* fd,
               ZeroCopyOutputStream** raw_output,
               CodedOutputStream** coded_output) {
-    (*fd) = open(file_name.c_str(), O_CREAT | O_RDWR);
+    (*fd) = open(file_name.c_str(), O_CREAT | O_RDWR, 755);
     chmod(file_name.c_str(), 777);
     (*raw_output) = new FileOutputStream(*fd);
     (*coded_output) = new CodedOutputStream(*raw_output);
@@ -158,6 +158,14 @@ void LoadGraphSketchFromFiles(AllDistanceSketchGpb* graph_sketch,
                 break;
             }
         }
+    }
+}
+
+void DeleteFilesWithPrefix(std::string file_prefix) {
+    std::string pattern = file_prefix + "_[0-9]*";
+    auto files = glob(pattern);
+    for (const auto file_name : files) {
+        std::remove(file_name.c_str());
     }
 }
 

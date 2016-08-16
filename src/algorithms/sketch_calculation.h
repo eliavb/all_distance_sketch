@@ -103,6 +103,10 @@ static void CalculateGraphSketch(graph::Graph<T> *graph,
     const std::vector<NodeDistanceIdRandomIdData> * distribution = graph_sketch->GetNodesDistribution();
     for (unsigned int i=0; i < distribution->size(); i++) {
       typename T::TNode source((*distribution)[i].GetNId());
+      if ((*distribution)[i].GetRandomId() == ILLEGAL_RANDOM_ID) {
+        continue;
+      }
+      std::cout << "running from " << (*distribution)[i].GetNId() << std::endl;
       if (graph->IsNode((*distribution)[i].GetNId())) {
           CalculateNodeSketch<T>(source, graph, &call_backs, &param);
       }
@@ -226,6 +230,9 @@ static void CalculateSketchBatch(graph::Graph<T> *graph,
                                  unsigned int end_index) {
     for (unsigned int i=start_index; (i < distribution->size() && i < end_index ); i++) {
         typename T::TNode source((*distribution)[i].GetNId());
+        if ((*distribution)[i].GetRandomId() == ILLEGAL_RANDOM_ID) {
+          continue;
+        }
         if (graph->IsNode((*distribution)[i].GetNId())) {
             CalculateNodeSketch<T>(source, graph, call_backs, dijkstra_param);
         }

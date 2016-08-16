@@ -33,15 +33,39 @@ void load_graph(bool directed,
     }
 }
 
+void load_labels(std::string seed_set_file, NodesFeaturesSortedContainer* seed_set, int vector_dim) {
+  graph::Graph< graph::TDirectedGraph> directed_seed_set_graph;
+  load_graph(true, seed_set_file, &directed_seed_set_graph, NULL);
+  FEATURE_WEIGHTS_VECTOR node_vector;
+  for (auto node_it = directed_seed_set_graph.BegNI(); node_it != directed_seed_set_graph.EndNI(); node_it++ ) {
+    node_vector.resize(vector_dim, 0);
+    auto node_id = node_it.GetId();
+    auto vertex = directed_seed_set_graph.GetNI(node_id);
+    // Create seed set embedding
+    double denominator = sqrt(vertex.GetOutDeg());
+    for (int i = 0 ; i < vertex.GetOutDeg(); i++) {
+      int label_id = vertex.GetOutNId(i);
+      // Normalize the vector
+      node_vector[label_id] = 1 / denominator;
+    }
+    seed_set->AddNodeFeature(node_id, node_vector);
+    node_vector.clear();
+  }
+}
+
 void calc_graph_sketch(int K,
                        int num_threads,
                        bool directed,
                        GraphSketch* graph_sketch,
                        std::string graph_dir,
                        graph::Graph< graph::TDirectedGraph>* directed_graph,
-                       graph::Graph< graph::TUnDirectedGraph>* un_directed_graph) {
+                       graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
+                       bool is_graph_sketch_initalized=false) {
     int max_node_id = directed ? directed_graph->GetMxNId() : un_directed_graph->GetMxNId();
-    graph_sketch->InitGraphSketch(K, max_node_id);
+    // Gives to the possibility to do custom initialization from outside
+    if (is_graph_sketch_initalized == false) {
+      graph_sketch->InitGraphSketch(K, max_node_id);
+    }
     if (directed) {
         if (num_threads == 1) {
             CalculateGraphSketch<graph::TDirectedGraph> (directed_graph,
@@ -62,4 +86,34 @@ void calc_graph_sketch(int K,
         }
     }
 }
+
+void load_file_to_vec(std::vector<int>* vec, std::string file_path) {
+  std::ifstream infile(file_path);
+  std::string line;
+  while (std::getline(infile, line)) {
+    int node_id = atoi(line.c_str());
+    std::cout << "loaded node id=" << node_id << std::endl;
+    vec->push_back(node_id);
+  }
+}
+
+void load_distribution_file_to_vec(std::vector<double>* vec, std::string file_path) {
+  std::ifstream infile(file_path);
+  std::string line;
+  vec->clear();
+  while (std::getline(infile, line)) {
+    // std::cout << line << std::endl;
+    std::stringstream linestream(line);
+    std::string cell;
+    std::getline(linestream, cell, ',');
+    int node_id = atoi(cell.c_str());
+    std::getline(linestream, cell, ',');
+    double random_id = atof(cell.c_str());
+    if (node_id >= vec->size()) {
+      vec->resize(node_id+1, ILLEGAL_RANDOM_ID);  
+    }
+    (*vec)[node_id] = random_id;
+  }
+}
+
 #endif  //  ALL_DISTANCE_SKETCH_SRC_APP_UTILS_H_

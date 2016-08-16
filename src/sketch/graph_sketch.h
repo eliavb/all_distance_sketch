@@ -12,8 +12,10 @@ typedef std::vector<NodeSketch> NodesSketch;
 /*! Itertor
 */
 typedef NodesSketch::iterator NodesSketchItr;
+typedef NodeSketch NodeBottomKSketch;
 /*! \brief Data structure for the graph sketch
 */
+
 class GraphSketch {
  public:
   /*! \brief Init the class
@@ -40,6 +42,10 @@ class GraphSketch {
   */
   void set_should_calc_zvalues(bool should_calc) {
     should_calc_z_value_ = should_calc;
+  }
+
+  bool get_should_calc_zvalues() const {
+    return should_calc_z_value_;
   }
 
 #if PROTO_BUF
@@ -74,6 +80,8 @@ class GraphSketch {
   */
   void SaveGraphSketchToGpb(AllDistanceSketchGpb* all_distance_sketch) {
       all_distance_sketch->mutable_configuration()->set_k(K_);
+      std::cout << " should_calc_z_value_=" << should_calc_z_value_ << std::endl;
+      all_distance_sketch->mutable_configuration()->set_should_calc_z_values(should_calc_z_value_);
       // Save the prunning_thresholds_ & random ids
       SaveThresholdAndRandomId(all_distance_sketch);
       // Save each node NodeSketch
@@ -138,39 +146,11 @@ class GraphSketch {
                                                reserve_size_,
                                                should_calc_z_value_);
 
-            // Load All nodes in the sketch
-            for (int k=0; 
-                k < all_distance_sketch.nodes_sketches(i).node_in_sketch_size(); 
-                k++) {
-                const NodeSummaryDetailsGpb& node_in_sketch = \
-                    all_distance_sketch.nodes_sketches(i).node_in_sketch(k);
-                if (node_in_sketch.has_node_id() == false ||
-                    node_in_sketch.has_distance() == false) {
-                  LOG_M(
-                      NOTICE,
-                      "Loading nodes NodeSketch, Load from bad file!!! missing "
-                      "data "
-                          << " node id == " << node_in_sketch.has_node_id()
-                          << " distance == " << node_in_sketch.has_distance());
-                    return false;    
-                }
-                int sketch_node_id = node_in_sketch.node_id();
-                graph::EdgeWeight distance = node_in_sketch.distance();
-                NodeIdDistanceData node_in_sketch_details(sketch_node_id, distance);
-                nodes_ads_[node_id].nodes_id_distance_.push_back(
-                    node_in_sketch_details);
+            // Load a node in the sketch
+            if (nodes_ads_[node_id].LoadNodeSketchFromGpb(all_distance_sketch.nodes_sketches(i)) == false) {
+              LOG_M(NOTICE, "failed to load node " << node_id << " stopping load of graph sketch!");
+              return false;
             }
-            ZValues z;
-            for (int j=0; 
-                 j < all_distance_sketch.nodes_sketches(i).z_value_size(); ++j) {
-              const ZValuesGpb& z_value_in_sketch = \
-                      all_distance_sketch.nodes_sketches(i).z_value(j);
-              graph::EdgeWeight distance = z_value_in_sketch.distance();
-              int node_id = z_value_in_sketch.node_id();
-              NodeIdDistanceData d(node_id, distance);
-              z[distance] = d;
-            }
-            nodes_ads_[node_id].set_z_values(&z);
         }
         SetDisributionToNodes();
         return true;
@@ -196,21 +176,7 @@ class GraphSketch {
           }
           // Setting up the node details
           SingleNodeSketchGpb* single_node_sketch = all_distance_sketch->add_nodes_sketches();
-          single_node_sketch->set_node_id(i);
-          single_node_sketch->set_node_random_id(nodes_random_id_[i]);
-          // Getting the node sketch
-          const NodeIdDistanceVector* nodes_in_sketch =
-              &(nodes_ads_[i].nodes_id_distance_);
-          for (int j=0; j < nodes_in_sketch->size(); j++) {
-            NodeSummaryDetailsGpb * node_details = single_node_sketch->add_node_in_sketch();
-            node_details->set_node_id((*nodes_in_sketch)[j].GetNId());
-            node_details->set_distance((*nodes_in_sketch)[j].GetDistance());
-          }
-          for (const auto zvalue : nodes_ads_[i].GetZValues() ) {
-             ZValuesGpb* z_value = single_node_sketch->add_z_value();
-             z_value->set_distance(zvalue.first);
-             z_value->set_node_id(zvalue.second.GetNId());
-          }
+          nodes_ads_[i].SaveNodeSketchToGpb(single_node_sketch);
         }
     }
 
@@ -226,8 +192,12 @@ class GraphSketch {
       return distance >= prunning_thresholds_[node_id].GetDistance();
     }
 
-    void CalculateInsertProb(int node_id, std::vector<NodeProb> * insert_prob) {
-      nodes_ads_[node_id].CalculateInsertProb(insert_prob);
+    void CalculateInsertProb(int node_id) {
+      nodes_ads_[node_id].CalculateInsertProb();
+    }
+
+    const std::vector<NodeProb>& GetInsertProb(int node_id) {
+      return nodes_ads_[node_id].GetInsertProb();
     }
 
     void SetPrunningThresholds() {
@@ -237,6 +207,8 @@ class GraphSketch {
     }
 
     NodeSketch* UTGetNodeSketch(int node_id) { return &nodes_ads_[node_id]; }
+
+    NodeSketch* GetNodeSketch(int node_id) { return &nodes_ads_[node_id]; }
 /*! \endcond
 */
     NodeSketch* GetNodeSketch(const NodeIdRandomIdData& node_details) {
@@ -295,9 +267,18 @@ class GraphSketch {
                           "rhs = " << other.GetK());
             return false;
         }
-        if ((*GetNodesDistributionLean()) != (*other.GetNodesDistributionLean())) {
-            LOG_M(NOTICE, "Distribution are not euqal!");
+        const std::vector<RandomId>* one = GetNodesDistributionLean();
+        const std::vector<RandomId>* two = other.GetNodesDistributionLean();
+        if (one->size() != two->size()) {
+            LOG_M(NOTICE, "Distribution sizes are not euqal!");
             return false;
+        }
+        
+        for (int i=0; i < one->size(); i++) {
+          if (double_equals((*one)[i], (*two)[i]) == false) {
+            LOG_M(NOTICE, "Distribution values are not euqal! first " << (*one)[i] << " second " << (*two)[i]);
+            return false;
+          }
         }
 
         if ( (*GetThresholds()) != (*other.GetThresholds())) {
@@ -314,6 +295,10 @@ class GraphSketch {
           LOG_M(NOTICE, "Nodes NodeSketch are not equal!");
             return false;
         }
+        if (should_calc_z_value_ != other.get_should_calc_zvalues()) {
+          LOG_M(NOTICE, "Z value configuration is not equal!");
+          return false;
+        }
         return true;
     }
     
@@ -326,7 +311,7 @@ class GraphSketch {
           calculator = &c;
         }
         typedef boost::minstd_rand base_generator_type;
-        base_generator_type generator(42u);
+        base_generator_type generator(rand()); // 42u
         boost::uniform_real<> uni_dist(0, 1);
         boost::variate_generator<base_generator_type&, boost::uniform_real<> > uni(generator, uni_dist);
         nodes_random_id_.resize(max_node_id);
@@ -339,16 +324,6 @@ class GraphSketch {
 
         ExtractSortedVersionFromDist();
         SetDisributionToNodes();
-        /*
-        for (unsigned int i=0; i < num_nodes; i++) {
-          int node_id = nodes_id == NULL ? i : (*nodes_id)[i];
-          NodeDistanceIdRandomIdData b(0, node_id, nodes_random_id_[node_id]);
-          nodes_random_id_sorted_increasing_.push_back(b);
-        }
-
-        std::sort(nodes_random_id_sorted_increasing_.begin(),
-                  nodes_random_id_sorted_increasing_.end(),
-                  compare_node_randomid_decreasing());*/
     }    
 
     const std::vector<NodeDistanceIdRandomIdData>* GetNodesDistribution()
@@ -376,6 +351,7 @@ class GraphSketch {
     }
     /*! \brief sets the random id for each node.
         The default distribution is unifrom [0,1]
+        Set -1 to skip a node
     */
     void SetNodesDistribution(const std::vector<RandomId>* nodes_random_id) {
       nodes_random_id_.clear();
@@ -403,6 +379,9 @@ class GraphSketch {
     void ExtractSortedVersionFromDist() {
       nodes_random_id_sorted_increasing_.clear();
       for (unsigned int i = 0; i < nodes_random_id_.size(); i++) {
+        if (nodes_random_id_[i] == -1) {
+          continue;
+        }
         NodeDistanceIdRandomIdData b(0, i, nodes_random_id_[i]);
         nodes_random_id_sorted_increasing_.push_back(b);
         }

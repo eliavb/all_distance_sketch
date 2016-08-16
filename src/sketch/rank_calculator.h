@@ -57,7 +57,10 @@ class UniformRankCalculator : public RankCalculatorInterface {
 	}
 
 	double CalculateNodeRank(int node_id) {
-		return (*m_dis)();
+		// double scale = 0.00001;
+		double value = (*m_dis)();
+		// return (int)(value / scale) * scale;
+		return value;
 	}
 
 	double GetNodeInsertProb(int node_id, double threshold_prob) {
