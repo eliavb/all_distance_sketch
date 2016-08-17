@@ -38,8 +38,6 @@ bool parse_command_line_args(int ac, char* av[], int* K,
                   "Should we calculate the insertion probability of nodes. default false")
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
                   "Directory with the graph to calculate the sketch on")
-            ("nodes_to_run", po::value< std::string >(nodes_to_run),
-                  "path to file with node ids. Only from the nodes specified we will run the algorithm. default the algorithm will run from every node")
             ("nodes_distribution", po::value< std::string >(nodes_distribution),
                   "path to file with nodes distribution. CSV file with the first entry is the node id and the second is the random id. default is uniform(0,1)")
             ("output_file", po::value< std::string > (output_file)->required(), 
@@ -63,10 +61,6 @@ bool parse_command_line_args(int ac, char* av[], int* K,
         cout << "K=" << *K << endl;
         cout << "should_calc_insert_prob=" << *should_calc_insert_prob << endl;
         cout << "#threads=" << *num_threads << endl;
-        if (nodes_to_run->size() != 0 && nodes_distribution->size() == 0) {
-            std::cout << " when specifing nodes_to_run must also provide nodes_distribution" << std::endl;
-            return true;
-        }
     }
     catch(std::exception& e)
     {
@@ -83,24 +77,6 @@ int sketch_app_main(int ac, char*av[]) {
     if (parse_command_line_args(ac, av, &K, &num_threads, &directed, &should_calc_insert_prob, &nodes_to_run_path, &nodes_distribution_path, &graph_dir, &output_file)) {
         return 1;
     }
-    std::vector<RandomId> seed_set_distribution;
-    std::vector<double>* nodes_distribution = NULL;
-    if (nodes_distribution_path.size() != 0) {
-        nodes_distribution = new std::vector<double>();
-        load_distribution_file_to_vec(nodes_distribution, nodes_distribution_path);
-    }
-
-    std::vector<int>* nodes_to_run = NULL;
-    if (nodes_to_run_path.size() != 0) {
-        nodes_to_run = new std::vector<int>();
-        load_file_to_vec(nodes_to_run, nodes_to_run_path);
-        seed_set_distribution.resize(nodes_distribution->size(), ILLEGAL_RANDOM_ID);
-        for (int i=0; i < nodes_to_run->size(); i++) {
-            int seed_id = (*nodes_to_run)[i];
-            seed_set_distribution[seed_id] = (*nodes_distribution)[seed_id];
-        }
-        nodes_distribution = &seed_set_distribution;
-    } 
 
     graph::Graph< graph::TDirectedGraph> directed_graph;
     graph::Graph< graph::TUnDirectedGraph> un_directed_graph;
@@ -108,9 +84,15 @@ int sketch_app_main(int ac, char*av[]) {
     int max_node_id = directed ? directed_graph.GetMxNId() : un_directed_graph.GetMxNId();
 
     GraphSketch graph_sketch;
-    graph_sketch.InitGraphSketch(K, max_node_id, nodes_to_run);
+    graph_sketch.InitGraphSketch(K, max_node_id);
     graph_sketch.set_should_calc_zvalues(should_calc_insert_prob);
-    if (nodes_distribution != NULL) {
+
+    std::vector<RandomId> seed_set_distribution;
+    std::vector<double>* nodes_distribution = NULL;
+    if (nodes_distribution_path.size() != 0) {
+        nodes_distribution = new std::vector<double>();
+        load_distribution_file_to_vec(nodes_distribution, nodes_distribution_path);
+        nodes_distribution->resize(max_node_id, ILLEGAL_RANDOM_ID);
         graph_sketch.SetNodesDistribution(nodes_distribution);
     }
 

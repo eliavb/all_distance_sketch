@@ -120,6 +120,11 @@ public:
                 std::string delimiter = "\t";
                 utils::FileUtils::GetNodePairListFromFile(fullPath, aNodePairList, delimiter);
             }
+            if (utils::FileUtils::hasEnding(ent->d_name, "csv")){
+                std::string fullPath = aPath + FILE_SEPERATOR + ent->d_name;
+                std::string delimiter = ",";
+                utils::FileUtils::GetNodePairListFromFile(fullPath, aNodePairList, delimiter);
+            }
             if (utils::FileUtils::hasEnding(ent->d_name, "edgelist")){
                 std::string fullPath = aPath + FILE_SEPERATOR + ent->d_name;
                 std::string delimiter = " ";

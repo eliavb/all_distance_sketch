@@ -106,7 +106,6 @@ static void CalculateGraphSketch(graph::Graph<T> *graph,
       if ((*distribution)[i].GetRandomId() == ILLEGAL_RANDOM_ID) {
         continue;
       }
-      std::cout << "running from " << (*distribution)[i].GetNId() << std::endl;
       if (graph->IsNode((*distribution)[i].GetNId())) {
           CalculateNodeSketch<T>(source, graph, &call_backs, &param);
       }

@@ -459,11 +459,9 @@ TEST_F(AppData, SketchAppTestSelectiveRunning) {
   std::string distribution_file_name = GetTempFileName();
   ofstream dist_file;
   dist_file.open(distribution_file_name);
-  for (int i=0; i < node_dist->size(); i++) {
-    double random_id = (*node_dist)[i];
-    int node_id = i;
-    dist_file << node_id << "," << random_id << "\n";
-  }
+  dist_file << 1 << "," << (*node_dist)[1] << "\n";
+  dist_file << 10 << "," << (*node_dist)[10] << "\n";
+  dist_file << 50 << "," << (*node_dist)[50] << "\n";
   dist_file.close();
 
   
@@ -474,7 +472,7 @@ TEST_F(AppData, SketchAppTestSelectiveRunning) {
   graph_dir_arg += GetSampleData();
   std::string node_distribution_option = "--nodes_distribution=";
   node_distribution_option += distribution_file_name;
-  
+  /*
   std::vector<int> nodes_to_run = {1, 10, 50};
 
   std::string nodes_to_run_file_name = GetTempFileName();
@@ -484,9 +482,9 @@ TEST_F(AppData, SketchAppTestSelectiveRunning) {
     dist_file << node_id << "\n";
   }
   dist_file.close();
-
   std::string nodes_to_run_option = "--nodes_to_run=";
   nodes_to_run_option += nodes_to_run_file_name;
+  */
 
   char *arguments[] = { "sketch_app", 
                         "--K=64",
@@ -494,9 +492,9 @@ TEST_F(AppData, SketchAppTestSelectiveRunning) {
                         convert_string_to_char_pointer(graph_dir_arg),
                         "--directed=false",
                         convert_string_to_char_pointer(output_option),
-                        convert_string_to_char_pointer(node_distribution_option),
-                        convert_string_to_char_pointer(nodes_to_run_option)};
-  EXPECT_EQ(sketch_app_main(8, arguments), 0);
+                        convert_string_to_char_pointer(node_distribution_option)};
+                        // convert_string_to_char_pointer(nodes_to_run_option)};
+  EXPECT_EQ(sketch_app_main(7, arguments), 0);
   
 
   GraphSketch graph_sketch_from_app;
