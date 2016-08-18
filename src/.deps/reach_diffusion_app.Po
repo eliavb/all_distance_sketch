@@ -1194,6 +1194,7 @@ reach_diffusion_app.o: app/reach_diffusion_app.cpp \
  app/../algorithms/../algorithms/./dijkstra_shortest_paths.h \
  app/../algorithms/../labels/labels.h \
  app/../algorithms/../labels/../common.h \
+ app/../algorithms/../labels/../proto/embedding.pb.h \
  app/../algorithms/../measures/decay_interface.h \
  app/../algorithms/reverse_rank.h app/../algorithms/../proto/ranking.pb.h \
  app/../algorithms/sketch_calculation.h app/../algorithms/t_skim.h \
@@ -3728,6 +3729,8 @@ app/../algorithms/../algorithms/./dijkstra_shortest_paths.h:
 app/../algorithms/../labels/labels.h:
 
 app/../algorithms/../labels/../common.h:
+
+app/../algorithms/../labels/../proto/embedding.pb.h:
 
 app/../algorithms/../measures/decay_interface.h:
 

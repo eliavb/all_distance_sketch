@@ -78,7 +78,7 @@ void calculate_labels_distance_diffusion(graph::Graph<T>* graph,
 			double estimated_rank = decay_func->Alpha(seed_rank) / insert_prob;
 			LOG_M(DEBUG3, "node id=" << node_id <<  " seed node=" << seed_id << " seed_rank=" << seed_rank << " seed distance=" << seed_distance << 
 						  " insert_prob=" << insert_prob << " estimated_rank=" << estimated_rank << " alpha(rank)=" << decay_func->Alpha(seed_rank));
-			normalization_factor += (1 / insert_prob);
+			normalization_factor += (decay_func->Alpha(seed_rank) / insert_prob);
 			const FEATURE_WEIGHTS_VECTOR* vec = seed_set->GetSeedFeature(seed_id);
 			for (int i=0; i < feature_dim; i++) {
 				node_feature_vector[i] += (*vec)[i] * estimated_rank;

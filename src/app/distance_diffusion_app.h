@@ -78,13 +78,15 @@ int distance_diffusion_app_main(int ac, char* av[]) {
     // We will have edges between label -> [node id,...]
     NodesFeaturesSortedContainer seed_set;
     load_labels(seed_set_file, &seed_set, vector_dim);
-
+    LOG_M(NOTICE, "Seed set labels size after load =" << seed_set.Size());
     GraphSketch all_graph_sketch;
     load_sketch(&all_graph_sketch, sketch_file);
+    LOG_M(NOTICE, "Size of full graph sketch after load= " << all_graph_sketch.GetNodesSketch().size());
 
     GraphSketch only_seed_nodes_sketch;
     load_sketch(&only_seed_nodes_sketch, seed_sketch_file);
-    
+    LOG_M(NOTICE, "Size of seed nodes sketch after load= " << only_seed_nodes_sketch.GetNodesSketch().size());
+
     graph::Graph< graph::TDirectedGraph> directed_graph;
     graph::Graph< graph::TUnDirectedGraph> un_directed_graph;
     load_graph(directed, graph_dir, &directed_graph, &un_directed_graph);
@@ -108,7 +110,12 @@ int distance_diffusion_app_main(int ac, char* av[]) {
                                                                 &all_graph_sketch,
                                                                 &only_seed_nodes_sketch);
     }
-
+    EmbeddingGpb embedding;
+    result_node_labels.SaveToGpb(&embedding);
+    std::filebuf fb;
+    fb.open (output_file, std::ios::out);
+    std::ostream os(&fb);
+    embedding.SerializeToOstream(&os);
     return 0;
 }
 

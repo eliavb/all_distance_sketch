@@ -22,7 +22,7 @@ int load_sketch(GraphSketch* graph_sketch,
 }
 
 void load_graph(bool directed,
-				std::string graph_dir,
+				        std::string graph_dir,
                 graph::Graph< graph::TDirectedGraph>* directed_graph,
                 graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
                 bool load_transpose = false) {
@@ -33,16 +33,30 @@ void load_graph(bool directed,
     }
 }
 
+void load_graph_file(bool directed,
+                std::string graph_dir,
+                std::string delimiter,
+                graph::Graph< graph::TDirectedGraph>* directed_graph,
+                graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
+                bool load_transpose = false) {
+  if (directed) {
+        directed_graph->LoadGraphFromFile(graph_dir, delimiter, load_transpose);
+    } else {
+        un_directed_graph->LoadGraphFromFile(graph_dir, delimiter, load_transpose);
+    }
+}
+
 void load_labels(std::string seed_set_file, NodesFeaturesSortedContainer* seed_set, int vector_dim) {
   graph::Graph< graph::TDirectedGraph> directed_seed_set_graph;
-  load_graph(true, seed_set_file, &directed_seed_set_graph, NULL);
+  load_graph_file(true, seed_set_file, ",", &directed_seed_set_graph, NULL);
+  LOG_M(NOTICE, "finished loading labels graph");
   FEATURE_WEIGHTS_VECTOR node_vector;
   for (auto node_it = directed_seed_set_graph.BegNI(); node_it != directed_seed_set_graph.EndNI(); node_it++ ) {
     node_vector.resize(vector_dim, 0);
     auto node_id = node_it.GetId();
     auto vertex = directed_seed_set_graph.GetNI(node_id);
     // Create seed set embedding
-    double denominator = sqrt(vertex.GetOutDeg());
+    double denominator = vertex.GetOutDeg();
     for (int i = 0 ; i < vertex.GetOutDeg(); i++) {
       int label_id = vertex.GetOutNId(i);
       // Normalize the vector

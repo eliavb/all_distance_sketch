@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='proto/embedding.proto',
   package='all_distance_sketch.proto',
-  serialized_pb=_b('\n\x15proto/embedding.proto\x12\x19\x61ll_distance_sketch.proto\":\n\x10NodeEmbeddingGpb\x12\x14\n\x0cseed_node_id\x18\x01 \x01(\x04\x12\x10\n\x08node_ids\x18\x02 \x03(\x01\"J\n\x0c\x45mbeddingGpb\x12:\n\x05seeds\x18\x01 \x03(\x0b\x32+.all_distance_sketch.proto.NodeEmbeddingGpb')
+  serialized_pb=_b('\n\x15proto/embedding.proto\x12\x19\x61ll_distance_sketch.proto\"7\n\x10NodeEmbeddingGpb\x12\x0f\n\x07node_id\x18\x01 \x01(\x04\x12\x12\n\ncoordinate\x18\x02 \x03(\x01\"J\n\x0c\x45mbeddingGpb\x12:\n\x05nodes\x18\x01 \x03(\x0b\x32+.all_distance_sketch.proto.NodeEmbeddingGpb')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -33,14 +33,14 @@ _NODEEMBEDDINGGPB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='seed_node_id', full_name='all_distance_sketch.proto.NodeEmbeddingGpb.seed_node_id', index=0,
+      name='node_id', full_name='all_distance_sketch.proto.NodeEmbeddingGpb.node_id', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='node_ids', full_name='all_distance_sketch.proto.NodeEmbeddingGpb.node_ids', index=1,
+      name='coordinate', full_name='all_distance_sketch.proto.NodeEmbeddingGpb.coordinate', index=1,
       number=2, type=1, cpp_type=5, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -58,7 +58,7 @@ _NODEEMBEDDINGGPB = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=52,
-  serialized_end=110,
+  serialized_end=107,
 )
 
 
@@ -70,7 +70,7 @@ _EMBEDDINGGPB = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='seeds', full_name='all_distance_sketch.proto.EmbeddingGpb.seeds', index=0,
+      name='nodes', full_name='all_distance_sketch.proto.EmbeddingGpb.nodes', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -87,11 +87,11 @@ _EMBEDDINGGPB = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=112,
-  serialized_end=186,
+  serialized_start=109,
+  serialized_end=183,
 )
 
-_EMBEDDINGGPB.fields_by_name['seeds'].message_type = _NODEEMBEDDINGGPB
+_EMBEDDINGGPB.fields_by_name['nodes'].message_type = _NODEEMBEDDINGGPB
 DESCRIPTOR.message_types_by_name['NodeEmbeddingGpb'] = _NODEEMBEDDINGGPB
 DESCRIPTOR.message_types_by_name['EmbeddingGpb'] = _EMBEDDINGGPB
 

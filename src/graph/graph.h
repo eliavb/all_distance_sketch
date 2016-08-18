@@ -229,6 +229,32 @@ class Graph {
         }
     }
 
+    void LoadGraphFromFile(std::string file_name, std::string delimiter, bool aTranspose = false) {
+        utils::FileUtils::NodePairList nodePairList;
+        LOG_M(NOTICE, "File name=" << file_name);
+        utils::FileUtils::GetNodePairListFromFile(file_name, &nodePairList, delimiter);
+        for (utils::FileUtils::NodePairList::iterator itr = nodePairList.begin(); itr != nodePairList.end(); ++itr) {
+            int uNodeId = itr->first;
+            LOG_M(DEBUG5, "Found node " << uNodeId);
+            if (IsNode(uNodeId) == false) {
+                LOG_M(DEBUG5, "inserting node " << uNodeId << " it does not exists");
+                AddNode(uNodeId);
+            }
+            int vNodeId = itr->second;
+            LOG_M(DEBUG5, "Found node " << vNodeId);
+            if (IsNode(vNodeId) == false) {
+                LOG_M(DEBUG5, "Inserting node " << vNodeId << " it does not exists");
+                AddNode(vNodeId);
+            }
+            LOG_M(DEBUG1, "Node src " << uNodeId << " Node dest " << vNodeId);
+            if (aTranspose == false) {
+                AddEdge(uNodeId, vNodeId);
+            } else {
+                AddEdge(vNodeId, uNodeId);
+            }
+        }
+    }
+
     /*! \cond
     */
     WeightMap weight_map_;

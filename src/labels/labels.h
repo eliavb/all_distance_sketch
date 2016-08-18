@@ -2,10 +2,13 @@
 #define SRC_GRAPH_LABELS_LABELS_H_
 
 #include "../common.h"
+#include "../proto/embedding.pb.h"
 
 namespace all_distance_sketch {
 
 typedef std::vector<LABEL_WEIGHT> FEATURE_WEIGHTS_VECTOR;
+typedef proto::EmbeddingGpb EmbeddingGpb;
+typedef proto::NodeEmbeddingGpb NodeEmbeddingGpb;
 
 class NodeFeature
 {
@@ -23,6 +26,13 @@ public:
 
 	const FEATURE_WEIGHTS_VECTOR& GetFeatureWeights() {
 		return labels_;
+	}
+
+	void SaveToGpb(NodeEmbeddingGpb* node_embedding) {
+		node_embedding->set_node_id(node_id_);
+		for (int i=0; i< labels_.size(); i++) {
+			node_embedding->add_coordinate(labels_[i]);
+		}
 	}
 
 private:
@@ -77,6 +87,10 @@ public:
 		return NULL;
 	}
 
+	int Size() {
+		return nodes_labels_.size();
+	}
+
 private:
 	std::vector<NodeFeature> nodes_labels_;
 };
@@ -96,6 +110,13 @@ public:
 
 	const std::vector<NodeFeature>& GetNodesFeatures() {
 		return nodes_labels_;
+	}
+
+	void SaveToGpb(EmbeddingGpb* embedding) {
+		for (int i=0; i < nodes_labels_.size(); i++) {
+			NodeEmbeddingGpb* node_embedding = embedding->add_nodes();
+			nodes_labels_[i].SaveToGpb(node_embedding);
+		}
 	}
 
 private:
