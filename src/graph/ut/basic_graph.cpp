@@ -50,6 +50,25 @@ TEST_F(BasicGraph, BuildGraph) {
      // EXPECT_EQ(graph.IsEdge(i+1, i), true);
   }
 }
+
+TEST_F(BasicGraph, BuildGraphFractionWeights) {
+  all_distance_sketch::graph::Graph< all_distance_sketch::graph::TDirectedGraph > graph;
+  int count = 100;
+  for (int i = 0; i < count; ++i) {
+    graph.AddNode(i);
+  }
+  
+  for (int i = 0; i < count-1; ++i) {
+    graph.AddEdge(i, i+1, 0.1);
+  }
+
+  for (int i = 0; i < count-1; ++i) {
+     EXPECT_EQ(graph.IsEdge(i, i+1), true);
+     auto res = graph.GetEdgeWeight(i, i+1);
+     EXPECT_TRUE(double_equals(res.second, 0.1));
+  }
+}
+
 /*
 TEST_F(BasicGraph, BuildDGraph) {
   all_distance_sketch::graph::DGraph graph;

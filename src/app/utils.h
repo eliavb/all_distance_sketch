@@ -33,6 +33,44 @@ void load_graph(bool directed,
     }
 }
 
+void load_graph_random_edges(bool directed,
+                std::string graph_dir,
+                graph::Graph< graph::TDirectedGraph>* directed_graph,
+                graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
+
+                bool load_transpose = false) {
+  if (directed) {
+        directed_graph->LoadGraphFromDir(graph_dir, load_transpose);
+    } else {
+        un_directed_graph->LoadGraphFromDir(graph_dir, load_transpose);
+    }
+}
+
+// TODO (eliav) : Add alpha interface to allow different decay functions
+template<class T, typename Z>
+void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<T>* graph_out) {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+
+  for (auto it=graph->BegNI(); it != graph->EndNI(); it++) {
+    auto node_id = it.GetId();
+    auto vertex = graph->GetNI(node_id);
+    graph_out->AddNode(node_id);
+  }
+  for (auto it=graph->BegNI(); it != graph->EndNI(); it++) {
+    auto node_id = it.GetId();
+    auto vertex = graph->GetNI(node_id);
+    int node_out_deg = vertex.GetOutDeg();
+    for (int i = 0 ; i < vertex.GetOutDeg(); i++) {
+      int n_id = vertex.GetOutNId(i);
+      int n_out_deg = graph->GetNI(n_id).GetOutDeg();
+      int max_out_deg = std::max(n_out_deg, n_id);
+      Z d(1 / float(max_out_deg));
+      graph_out->AddEdge(node_id, n_id, d(gen));
+    }
+  }
+}
+
 void load_graph_file(bool directed,
                 std::string graph_dir,
                 std::string delimiter,

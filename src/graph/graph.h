@@ -118,7 +118,7 @@ class Graph {
         return graph_.AddNode(node_id);
     }
 
-    int AddEdge(const int& aSrcNId, const int& aDstNId, int weight = 1) {
+    int AddEdge(const int& aSrcNId, const int& aDstNId, double weight = 1) {
         int edgeId = graph_.AddEdge(aSrcNId, aDstNId);
         if (edgeId == -1) {
             LOG_M(DEBUG5, "Inserting edge, source node=" << aSrcNId

@@ -224,7 +224,7 @@ TEST_F(BasicLabel, CheckDistanceDiffusion) {
         //std::cout << " insert_prob_2=" << insert_prob_2 << " estimated rank=" << 1/(insert_prob_2 * 3 ) << std::endl;
         //std::cout << " base=" << (1 / insert_prob_1) + (1 / insert_prob_2) << std::endl;
         double expected_result = 1/(insert_prob_1 * 2) + 1/(insert_prob_2 * 3 );
-        expected_result = expected_result / ((1 / insert_prob_1) + (1 / insert_prob_2));
+        expected_result = expected_result / ((1 / (insert_prob_1 * 2)) + (1 / (insert_prob_2 * 3)));
         EXPECT_EQ( static_cast<int>(feature_weight * 1000), static_cast<int>(expected_result * 1000));
       }
     }
@@ -316,7 +316,7 @@ TEST_F(BasicLabel, CheckVectorCalculation1) {
       // std::cout << " insert_prob_0=" << insert_prob_0 << " insert_prob_2=" << insert_prob_2 << std::endl;
       // std::cout << " feature weight=" << feature_weight << std::endl;
       double expected_result = 1/(insert_prob_0 * 2) + 2/(insert_prob_2 * 2);
-      expected_result = expected_result / ((1 / insert_prob_0) + (1 / insert_prob_2));
+      expected_result = expected_result / ((1 / (2 * insert_prob_0)) + (1 / ( 2 * insert_prob_2)));
       EXPECT_EQ( static_cast<int>(feature_weight * 1000), static_cast<int>(expected_result * 1000));
       // std::cout << static_cast<int>(feature_weight * 1000) << std::endl;
     }
@@ -382,7 +382,7 @@ TEST_F(BasicLabel, CheckVectorCalculation2) {
       for (int i=0; i < num_seeds; i++) {
         double insert_prob = node_sketch->GetInsertProbAccordingToDistance(1);
         expected_results += 1/(insert_prob * num_seeds);
-        base += 1 / insert_prob;
+        base += 1 / (insert_prob * num_seeds);
       }
       expected_results = expected_results / base;
       EXPECT_TRUE( std::abs(feature_weight - expected_results) < 0.001) ;

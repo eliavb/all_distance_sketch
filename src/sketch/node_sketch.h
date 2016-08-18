@@ -22,10 +22,6 @@ namespace all_distance_sketch {
   typedef proto::SingleNodeSketchGpb::ZValuesGpb ZValuesGpb;
 #endif
 
-bool double_equals(double a, double b, double epsilon = 0.000001) {
-    return std::abs(a - b) < epsilon;
-}
-
 
   /*! \brief Container class to store node id and distance
   */

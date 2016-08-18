@@ -52,6 +52,11 @@
 #define _unused(x) ((void)x)
 
 namespace all_distance_sketch {
+
+bool double_equals(double a, double b, double epsilon = 0.000001) {
+    return std::abs(a - b) < epsilon;
+}
+
 /*! \cond
 */
 typedef float LABEL_WEIGHT;
