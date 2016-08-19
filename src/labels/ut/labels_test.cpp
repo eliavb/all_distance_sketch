@@ -205,8 +205,8 @@ TEST_F(BasicLabel, CheckDistanceDiffusion) {
   NodesFeaturesContainer output_features;
   GraphSketch all_graph_sketch;
   GraphSketch only_seed_nodes_sketch;
-  InitGraphSketches(&graph, &seed_set, K, &all_graph_sketch, &only_seed_nodes_sketch);
-  calculate_labels_distance_diffusion<all_distance_sketch::graph::TDirectedGraph>(
+  InitGraphSketchesDistanceDiffusion(&graph, &seed_set, K, &all_graph_sketch, &only_seed_nodes_sketch);
+  calculate_labels_diffusion<all_distance_sketch::graph::TDirectedGraph>(
                                       &graph, 
                                       feature_dim,
                                       &seed_set,
@@ -244,7 +244,7 @@ TEST_F(BasicLabel, CheckSeedOnly) {
   seed_set.AddNodeFeature(3, vec);
   seed_set.AddNodeFeature(6, vec);
   seed_set.AddNodeFeature(7, vec);
-  InitGraphSketches(&graph, &seed_set, K,
+  InitGraphSketchesDistanceDiffusion(&graph, &seed_set, K,
                     &all_graph_sketch, &only_seed_nodes_sketch);
   for (auto it=only_seed_nodes_sketch.Begin(); it != only_seed_nodes_sketch.End(); it++) {
     const NodeIdDistanceVector* vec = it->GetNodeAdsVector();
@@ -283,7 +283,7 @@ TEST_F(BasicLabel, CheckVectorCalculation1) {
   seed_set.AddNodeFeature(0, vec_1);
   seed_set.AddNodeFeature(1, vec_2);
   // Calculate the graph sketches according to the seed sets
-  InitGraphSketches(&graph, &seed_set, K,
+  InitGraphSketchesDistanceDiffusion(&graph, &seed_set, K,
                     &all_graph_sketch, &only_seed_nodes_sketch);
   // We need to first make sure that they are the only ones in the ADS
   for (auto it=only_seed_nodes_sketch.Begin(); it != only_seed_nodes_sketch.End(); it++) {
@@ -296,7 +296,7 @@ TEST_F(BasicLabel, CheckVectorCalculation1) {
   // We run the algorithm and make sure that the outcome is the wanted one
   InverseDecay decay_func;
   NodesFeaturesContainer output_features;
-  calculate_labels_distance_diffusion<all_distance_sketch::graph::TDirectedGraph>(
+  calculate_labels_diffusion<all_distance_sketch::graph::TDirectedGraph>(
                                       &graph,
                                       feature_dim,
                                       &seed_set,
@@ -350,7 +350,7 @@ TEST_F(BasicLabel, CheckVectorCalculation2) {
     seed_set.AddNodeFeature(i, vec_1);
   }
   // Calculate the graph sketches according to the seed sets
-  InitGraphSketches(&graph, &seed_set, K,
+  InitGraphSketchesDistanceDiffusion(&graph, &seed_set, K,
                     &all_graph_sketch, &only_seed_nodes_sketch);
   // We need to first make sure that they are the only ones in the ADS
   for (auto it=only_seed_nodes_sketch.Begin(); it != only_seed_nodes_sketch.End(); it++) {
@@ -363,7 +363,7 @@ TEST_F(BasicLabel, CheckVectorCalculation2) {
   // We run the algorithm and make sure that the outcome is the wanted one
   InverseDecay decay_func;
   NodesFeaturesContainer output_features;
-  calculate_labels_distance_diffusion<all_distance_sketch::graph::TDirectedGraph>(
+  calculate_labels_diffusion<all_distance_sketch::graph::TDirectedGraph>(
                                       &graph,
                                       feature_dim,
                                       &seed_set,

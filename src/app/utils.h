@@ -33,19 +33,6 @@ void load_graph(bool directed,
     }
 }
 
-void load_graph_random_edges(bool directed,
-                std::string graph_dir,
-                graph::Graph< graph::TDirectedGraph>* directed_graph,
-                graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
-
-                bool load_transpose = false) {
-  if (directed) {
-        directed_graph->LoadGraphFromDir(graph_dir, load_transpose);
-    } else {
-        un_directed_graph->LoadGraphFromDir(graph_dir, load_transpose);
-    }
-}
-
 // TODO (eliav) : Add alpha interface to allow different decay functions
 template<class T, class M, typename Z>
 void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out) {
@@ -65,8 +52,7 @@ void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out
       int n_id = vertex.GetOutNId(i);
       double random_edge_weight = d(gen);
       LOG_M(DEBUG5, " edge between " << node_id << "->" << n_id << " edge weight=" << random_edge_weight);  
-      // LOG_M(DEBUG5, " max_out_deg " << node_id << "->" << n_id << " max_out_deg=" << max_out_deg);  
-      graph_out->AddEdge(node_id, n_id, random_edge_weight + 200);
+      graph_out->AddEdge(node_id, n_id, random_edge_weight + 50);
     }
   }
 }
@@ -92,11 +78,13 @@ void load_labels(std::string seed_set_file, NodesFeaturesSortedContainer* seed_s
   for (auto node_it = directed_seed_set_graph.BegNI(); node_it != directed_seed_set_graph.EndNI(); node_it++ ) {
     node_vector.resize(vector_dim, 0);
     auto node_id = node_it.GetId();
+    LOG_M(DEBUG5, "node_id=" << node_id);
     auto vertex = directed_seed_set_graph.GetNI(node_id);
     // Create seed set embedding
     double denominator = vertex.GetOutDeg();
     for (int i = 0 ; i < vertex.GetOutDeg(); i++) {
       int label_id = vertex.GetOutNId(i);
+      LOG_M(DEBUG5, "label_id=" << label_id);
       // Normalize the vector
       node_vector[label_id] = 1 / denominator;
     }
@@ -183,9 +171,7 @@ void dump_labels_to_csv(std::string f_name,
     }
     ofs << "\n";
   }
-
   ofs.close();
-
 }
 
 #endif  //  ALL_DISTANCE_SKETCH_SRC_APP_UTILS_H_

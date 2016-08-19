@@ -307,7 +307,7 @@ private:
 template<class T>
 class SketchDijkstraCallBacksInverseWeight {
  public:
-  void InitSketchDijkstraCallBacks(GraphSketch* graph_sketch) {
+  void InitSketchDijkstraCallBacksInverseWeight(GraphSketch* graph_sketch) {
     graph_sketch_ = graph_sketch;
     is_multi_threaded_ = false;
     should_calculate_dijkstra_rank_ = false;

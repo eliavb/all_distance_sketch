@@ -885,10 +885,12 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../app/ut/../../algorithms/../algorithms/../graph/graph.h \
  graph/ut/../../app/ut/../../algorithms/../algorithms/../utils/thread_utils.h \
  graph/ut/../../app/ut/../../algorithms/../algorithms/./dijkstra_shortest_paths.h \
+ graph/ut/../../app/ut/../../algorithms/../algorithms/./dijkstra_min_weight_path.h \
  graph/ut/../../app/ut/../../algorithms/../labels/labels.h \
  graph/ut/../../app/ut/../../algorithms/../labels/../common.h \
  graph/ut/../../app/ut/../../algorithms/../labels/../proto/embedding.pb.h \
  graph/ut/../../app/ut/../../algorithms/../measures/decay_interface.h \
+ graph/ut/../../app/ut/../../algorithms/reach_diffusion.h \
  graph/ut/../../app/ut/../../algorithms/reverse_rank.h \
  graph/ut/../../app/ut/../../algorithms/../proto/ranking.pb.h \
  graph/ut/../../app/ut/../../algorithms/sketch_calculation.h \
@@ -3163,6 +3165,8 @@ graph/ut/../../app/ut/../../algorithms/../algorithms/../utils/thread_utils.h:
 
 graph/ut/../../app/ut/../../algorithms/../algorithms/./dijkstra_shortest_paths.h:
 
+graph/ut/../../app/ut/../../algorithms/../algorithms/./dijkstra_min_weight_path.h:
+
 graph/ut/../../app/ut/../../algorithms/../labels/labels.h:
 
 graph/ut/../../app/ut/../../algorithms/../labels/../common.h:
@@ -3170,6 +3174,8 @@ graph/ut/../../app/ut/../../algorithms/../labels/../common.h:
 graph/ut/../../app/ut/../../algorithms/../labels/../proto/embedding.pb.h:
 
 graph/ut/../../app/ut/../../algorithms/../measures/decay_interface.h:
+
+graph/ut/../../app/ut/../../algorithms/reach_diffusion.h:
 
 graph/ut/../../app/ut/../../algorithms/reverse_rank.h:
 

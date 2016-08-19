@@ -18,6 +18,12 @@ public:
 	void InitNodeFeature(int node_id, const FEATURE_WEIGHTS_VECTOR& node_label) {
 		node_id_ = node_id;
 		labels_ = node_label;
+		/*
+		std::cout << " node_id=" << node_id << std::endl;
+		for (int i=0; i < labels_.size(); i++) {
+			std::cout << "i=" << i << " " << labels_[i] << std::endl;
+		}*/
+
 	}
 	
 	int GetNId() const{

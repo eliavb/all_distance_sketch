@@ -7,6 +7,7 @@
 #include "../utils/thread_utils.h"
 
 #include "./dijkstra_shortest_paths.h"
+#include "./dijkstra_min_weight_path.h"
 
 /*! \file sketch_calculation.h
     \brief Sketch calculation algorithms
@@ -41,6 +42,10 @@ static void CalculateGraphSketchMultiCore(graph::Graph<T>* graph,
 template <class T>
 static void CalculateGraphSketch(graph::Graph<T> *graph,
                                  GraphSketch * graph_sketch);
+
+template <class T>
+static void CalculateGraphSketchInverseWeight(graph::Graph<T> *graph,
+                                              GraphSketch * graph_sketch);
 
 /*! \cond
 */
@@ -94,6 +99,17 @@ static void CalculateNodeSketch(typename T::TNode source,
 }
 
 template <class T>
+static void CalculateNodeSketchMinWeight(typename T::TNode source,
+                                 graph::Graph<T> *graph,
+                                 SketchDijkstraCallBacksInverseWeight<T>* call_backs,
+                                 DijkstraParamsMaxWeight * param) {
+    PrunedDijkstraMinWeight<T, SketchDijkstraCallBacksInverseWeight<T> >(source,
+                                                  graph,
+                                                  call_backs,
+                                                  param);
+}
+
+template <class T>
 static void CalculateGraphSketch(graph::Graph<T> *graph,
                                  GraphSketch * graph_sketch) {
     // The vector is sorted
@@ -111,6 +127,25 @@ static void CalculateGraphSketch(graph::Graph<T> *graph,
       }
     }
     graph_sketch->CalculateAllDistanceNeighborhood();
+}
+
+template <class T>
+static void CalculateGraphSketchInverseWeight(graph::Graph<T> *graph,
+                                              GraphSketch * graph_sketch) {
+  DijkstraParamsMaxWeight param;
+  SketchDijkstraCallBacksInverseWeight<T> call_backs;
+  call_backs.InitSketchDijkstraCallBacksInverseWeight(graph_sketch);
+  const std::vector<NodeDistanceIdRandomIdData> * distribution = graph_sketch->GetNodesDistribution();
+  for (unsigned int i=0; i < distribution->size(); i++) {
+    typename T::TNode source((*distribution)[i].GetNId());
+    if ((*distribution)[i].GetRandomId() == ILLEGAL_RANDOM_ID) {
+      continue;
+    }
+    if (graph->IsNode((*distribution)[i].GetNId())) {
+        CalculateNodeSketchMinWeight<T>(source, graph, &call_backs, &param);
+    }
+  }
+  graph_sketch->CalculateAllDistanceNeighborhood(); 
 }
 
 static int GetBatchSize(int numthreads, int approxSize) {

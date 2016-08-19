@@ -1191,11 +1191,13 @@ t_skim_exact_app.o: app/t_skim_exact_app.cpp /usr/include/stdc-predef.h \
  app/../algorithms/../algorithms/../graph/graph.h \
  app/../algorithms/../algorithms/../utils/thread_utils.h \
  app/../algorithms/../algorithms/./dijkstra_shortest_paths.h \
+ app/../algorithms/../algorithms/./dijkstra_min_weight_path.h \
  app/../algorithms/../labels/labels.h \
  app/../algorithms/../labels/../common.h \
  app/../algorithms/../labels/../proto/embedding.pb.h \
  app/../algorithms/../measures/decay_interface.h \
- app/../algorithms/reverse_rank.h app/../algorithms/../proto/ranking.pb.h \
+ app/../algorithms/reach_diffusion.h app/../algorithms/reverse_rank.h \
+ app/../algorithms/../proto/ranking.pb.h \
  app/../algorithms/sketch_calculation.h app/../algorithms/t_skim.h \
  app/../algorithms/./sketch_calculation.h \
  app/../algorithms/../graph/graph.h app/../algorithms/./reverse_rank.h \
@@ -3725,6 +3727,8 @@ app/../algorithms/../algorithms/../utils/thread_utils.h:
 
 app/../algorithms/../algorithms/./dijkstra_shortest_paths.h:
 
+app/../algorithms/../algorithms/./dijkstra_min_weight_path.h:
+
 app/../algorithms/../labels/labels.h:
 
 app/../algorithms/../labels/../common.h:
@@ -3732,6 +3736,8 @@ app/../algorithms/../labels/../common.h:
 app/../algorithms/../labels/../proto/embedding.pb.h:
 
 app/../algorithms/../measures/decay_interface.h:
+
+app/../algorithms/reach_diffusion.h:
 
 app/../algorithms/reverse_rank.h:
 

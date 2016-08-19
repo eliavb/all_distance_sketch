@@ -82,8 +82,7 @@ POST_UNINSTALL = :
 bin_PROGRAMS = test_all$(EXEEXT) sketch_app$(EXEEXT) \
 	reverse_rank_batch_app$(EXEEXT) reverse_rank_app$(EXEEXT) \
 	t_skim_reverse_rank_app$(EXEEXT) t_skim_exact_app$(EXEEXT) \
-	dijkstra_app$(EXEEXT) distance_diffusion_app$(EXEEXT) \
-	reach_diffusion_app$(EXEEXT)
+	dijkstra_app$(EXEEXT) diffusion_app$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp $(dist_noinst_DATA) $(include_HEADERS)
@@ -140,17 +139,12 @@ liball_distance_sketch_a_OBJECTS =  \
 	$(am_liball_distance_sketch_a_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
 am__objects_3 = $(am__objects_1) $(am__objects_1) $(am__objects_2)
+am_diffusion_app_OBJECTS = diffusion_app.$(OBJEXT) $(am__objects_3)
+diffusion_app_OBJECTS = $(am_diffusion_app_OBJECTS)
+diffusion_app_LDADD = $(LDADD)
 am_dijkstra_app_OBJECTS = dijkstra_app.$(OBJEXT) $(am__objects_3)
 dijkstra_app_OBJECTS = $(am_dijkstra_app_OBJECTS)
 dijkstra_app_LDADD = $(LDADD)
-am_distance_diffusion_app_OBJECTS = distance_diffusion_app.$(OBJEXT) \
-	$(am__objects_3)
-distance_diffusion_app_OBJECTS = $(am_distance_diffusion_app_OBJECTS)
-distance_diffusion_app_LDADD = $(LDADD)
-am_reach_diffusion_app_OBJECTS = reach_diffusion_app.$(OBJEXT) \
-	$(am__objects_3)
-reach_diffusion_app_OBJECTS = $(am_reach_diffusion_app_OBJECTS)
-reach_diffusion_app_LDADD = $(LDADD)
 am_reverse_rank_app_OBJECTS = reverse_rank_app.$(OBJEXT) \
 	$(am__objects_3)
 reverse_rank_app_OBJECTS = $(am_reverse_rank_app_OBJECTS)
@@ -220,18 +214,16 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(liball_distance_sketch_a_SOURCES) $(dijkstra_app_SOURCES) \
-	$(distance_diffusion_app_SOURCES) \
-	$(reach_diffusion_app_SOURCES) $(reverse_rank_app_SOURCES) \
+SOURCES = $(liball_distance_sketch_a_SOURCES) $(diffusion_app_SOURCES) \
+	$(dijkstra_app_SOURCES) $(reverse_rank_app_SOURCES) \
 	$(reverse_rank_batch_app_SOURCES) $(sketch_app_SOURCES) \
 	$(t_skim_exact_app_SOURCES) $(t_skim_reverse_rank_app_SOURCES) \
 	$(test_all_SOURCES)
 DIST_SOURCES = $(liball_distance_sketch_a_SOURCES) \
-	$(dijkstra_app_SOURCES) $(distance_diffusion_app_SOURCES) \
-	$(reach_diffusion_app_SOURCES) $(reverse_rank_app_SOURCES) \
-	$(reverse_rank_batch_app_SOURCES) $(sketch_app_SOURCES) \
-	$(t_skim_exact_app_SOURCES) $(t_skim_reverse_rank_app_SOURCES) \
-	$(test_all_SOURCES)
+	$(diffusion_app_SOURCES) $(dijkstra_app_SOURCES) \
+	$(reverse_rank_app_SOURCES) $(reverse_rank_batch_app_SOURCES) \
+	$(sketch_app_SOURCES) $(t_skim_exact_app_SOURCES) \
+	$(t_skim_reverse_rank_app_SOURCES) $(test_all_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -381,8 +373,7 @@ reverse_rank_app_SOURCES = app/reverse_rank_app.cpp $(ALL)
 t_skim_reverse_rank_app_SOURCES = app/t_skim_reverse_rank_app.cpp $(ALL)
 t_skim_exact_app_SOURCES = app/t_skim_exact_app.cpp $(ALL)
 dijkstra_app_SOURCES = app/dijkstra_app.cpp $(ALL)
-distance_diffusion_app_SOURCES = app/distance_diffusion_app.cpp $(ALL)
-reach_diffusion_app_SOURCES = app/reach_diffusion_app.cpp $(ALL)
+diffusion_app_SOURCES = app/diffusion_app.cpp $(ALL)
 lib_LIBRARIES = liball_distance_sketch.a
 liball_distance_sketch_a_SOURCES = $(HDRS) $(PROTOS_TO_BUILD)
 include_HEADERS = ./all_distance_sketch.h
@@ -503,17 +494,13 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
+diffusion_app$(EXEEXT): $(diffusion_app_OBJECTS) $(diffusion_app_DEPENDENCIES) $(EXTRA_diffusion_app_DEPENDENCIES) 
+	@rm -f diffusion_app$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(diffusion_app_OBJECTS) $(diffusion_app_LDADD) $(LIBS)
+
 dijkstra_app$(EXEEXT): $(dijkstra_app_OBJECTS) $(dijkstra_app_DEPENDENCIES) $(EXTRA_dijkstra_app_DEPENDENCIES) 
 	@rm -f dijkstra_app$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(dijkstra_app_OBJECTS) $(dijkstra_app_LDADD) $(LIBS)
-
-distance_diffusion_app$(EXEEXT): $(distance_diffusion_app_OBJECTS) $(distance_diffusion_app_DEPENDENCIES) $(EXTRA_distance_diffusion_app_DEPENDENCIES) 
-	@rm -f distance_diffusion_app$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(distance_diffusion_app_OBJECTS) $(distance_diffusion_app_LDADD) $(LIBS)
-
-reach_diffusion_app$(EXEEXT): $(reach_diffusion_app_OBJECTS) $(reach_diffusion_app_DEPENDENCIES) $(EXTRA_reach_diffusion_app_DEPENDENCIES) 
-	@rm -f reach_diffusion_app$(EXEEXT)
-	$(AM_V_CXXLD)$(CXXLINK) $(reach_diffusion_app_OBJECTS) $(reach_diffusion_app_LDADD) $(LIBS)
 
 reverse_rank_app$(EXEEXT): $(reverse_rank_app_OBJECTS) $(reverse_rank_app_DEPENDENCIES) $(EXTRA_reverse_rank_app_DEPENDENCIES) 
 	@rm -f reverse_rank_app$(EXEEXT)
@@ -547,11 +534,10 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all_distance_sketch.pb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cover.pb.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/diffusion_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dijkstra_app.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/distance_diffusion_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/embedding.pb.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ranking.pb.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/reach_diffusion_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/reverse_rank_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/reverse_rank_batch_app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/run_all.Po@am__quote@
@@ -629,6 +615,20 @@ embedding.pb.obj: $(builddir)/proto/embedding.pb.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o embedding.pb.obj `if test -f '$(builddir)/proto/embedding.pb.cc'; then $(CYGPATH_W) '$(builddir)/proto/embedding.pb.cc'; else $(CYGPATH_W) '$(srcdir)/$(builddir)/proto/embedding.pb.cc'; fi`
 
+diffusion_app.o: app/diffusion_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT diffusion_app.o -MD -MP -MF $(DEPDIR)/diffusion_app.Tpo -c -o diffusion_app.o `test -f 'app/diffusion_app.cpp' || echo '$(srcdir)/'`app/diffusion_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/diffusion_app.Tpo $(DEPDIR)/diffusion_app.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/diffusion_app.cpp' object='diffusion_app.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o diffusion_app.o `test -f 'app/diffusion_app.cpp' || echo '$(srcdir)/'`app/diffusion_app.cpp
+
+diffusion_app.obj: app/diffusion_app.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT diffusion_app.obj -MD -MP -MF $(DEPDIR)/diffusion_app.Tpo -c -o diffusion_app.obj `if test -f 'app/diffusion_app.cpp'; then $(CYGPATH_W) 'app/diffusion_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/diffusion_app.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/diffusion_app.Tpo $(DEPDIR)/diffusion_app.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/diffusion_app.cpp' object='diffusion_app.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o diffusion_app.obj `if test -f 'app/diffusion_app.cpp'; then $(CYGPATH_W) 'app/diffusion_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/diffusion_app.cpp'; fi`
+
 dijkstra_app.o: app/dijkstra_app.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT dijkstra_app.o -MD -MP -MF $(DEPDIR)/dijkstra_app.Tpo -c -o dijkstra_app.o `test -f 'app/dijkstra_app.cpp' || echo '$(srcdir)/'`app/dijkstra_app.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/dijkstra_app.Tpo $(DEPDIR)/dijkstra_app.Po
@@ -642,34 +642,6 @@ dijkstra_app.obj: app/dijkstra_app.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/dijkstra_app.cpp' object='dijkstra_app.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o dijkstra_app.obj `if test -f 'app/dijkstra_app.cpp'; then $(CYGPATH_W) 'app/dijkstra_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/dijkstra_app.cpp'; fi`
-
-distance_diffusion_app.o: app/distance_diffusion_app.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT distance_diffusion_app.o -MD -MP -MF $(DEPDIR)/distance_diffusion_app.Tpo -c -o distance_diffusion_app.o `test -f 'app/distance_diffusion_app.cpp' || echo '$(srcdir)/'`app/distance_diffusion_app.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/distance_diffusion_app.Tpo $(DEPDIR)/distance_diffusion_app.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/distance_diffusion_app.cpp' object='distance_diffusion_app.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o distance_diffusion_app.o `test -f 'app/distance_diffusion_app.cpp' || echo '$(srcdir)/'`app/distance_diffusion_app.cpp
-
-distance_diffusion_app.obj: app/distance_diffusion_app.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT distance_diffusion_app.obj -MD -MP -MF $(DEPDIR)/distance_diffusion_app.Tpo -c -o distance_diffusion_app.obj `if test -f 'app/distance_diffusion_app.cpp'; then $(CYGPATH_W) 'app/distance_diffusion_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/distance_diffusion_app.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/distance_diffusion_app.Tpo $(DEPDIR)/distance_diffusion_app.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/distance_diffusion_app.cpp' object='distance_diffusion_app.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o distance_diffusion_app.obj `if test -f 'app/distance_diffusion_app.cpp'; then $(CYGPATH_W) 'app/distance_diffusion_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/distance_diffusion_app.cpp'; fi`
-
-reach_diffusion_app.o: app/reach_diffusion_app.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reach_diffusion_app.o -MD -MP -MF $(DEPDIR)/reach_diffusion_app.Tpo -c -o reach_diffusion_app.o `test -f 'app/reach_diffusion_app.cpp' || echo '$(srcdir)/'`app/reach_diffusion_app.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reach_diffusion_app.Tpo $(DEPDIR)/reach_diffusion_app.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/reach_diffusion_app.cpp' object='reach_diffusion_app.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o reach_diffusion_app.o `test -f 'app/reach_diffusion_app.cpp' || echo '$(srcdir)/'`app/reach_diffusion_app.cpp
-
-reach_diffusion_app.obj: app/reach_diffusion_app.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reach_diffusion_app.obj -MD -MP -MF $(DEPDIR)/reach_diffusion_app.Tpo -c -o reach_diffusion_app.obj `if test -f 'app/reach_diffusion_app.cpp'; then $(CYGPATH_W) 'app/reach_diffusion_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/reach_diffusion_app.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reach_diffusion_app.Tpo $(DEPDIR)/reach_diffusion_app.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='app/reach_diffusion_app.cpp' object='reach_diffusion_app.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o reach_diffusion_app.obj `if test -f 'app/reach_diffusion_app.cpp'; then $(CYGPATH_W) 'app/reach_diffusion_app.cpp'; else $(CYGPATH_W) '$(srcdir)/app/reach_diffusion_app.cpp'; fi`
 
 reverse_rank_app.o: app/reverse_rank_app.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT reverse_rank_app.o -MD -MP -MF $(DEPDIR)/reverse_rank_app.Tpo -c -o reverse_rank_app.o `test -f 'app/reverse_rank_app.cpp' || echo '$(srcdir)/'`app/reverse_rank_app.cpp

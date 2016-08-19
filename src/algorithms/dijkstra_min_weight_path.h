@@ -39,7 +39,7 @@ struct DijkstraParamsMaxWeight {
 };
 
 template <class T, class CallBacks>
-static void PrunedDijkstraMaxWeight(typename T::TNode source,
+static void PrunedDijkstraMinWeight(typename T::TNode source,
                            graph::Graph<T> *graph,
                            CallBacks* call_backs,
                            DijkstraParamsMaxWeight * param) {

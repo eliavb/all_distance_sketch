@@ -9,7 +9,7 @@
 namespace all_distance_sketch {
 
 template <class T>
-void InitGraphSketches(graph::Graph<T>* graph,
+void InitGraphSketchesDistanceDiffusion(graph::Graph<T>* graph,
 				 		NodesFeaturesSortedContainer* seed_set,
 				 		int K,
 				 		GraphSketch* all_graph_sketch,
@@ -40,13 +40,14 @@ void InitGraphSketches(graph::Graph<T>* graph,
 
 
 template <class T>
-void calculate_labels_distance_diffusion(graph::Graph<T>* graph,
-												int feature_dim,
-										 		NodesFeaturesSortedContainer* seed_set,
-										 		DecayInterface* decay_func,
-										 		NodesFeaturesContainer* node_labels,
-										 		GraphSketch* all_graph_sketch,
-										 		GraphSketch* only_seed_nodes_sketch) {
+void calculate_labels_diffusion(graph::Graph<T>* graph,
+								int feature_dim,
+						 		NodesFeaturesSortedContainer* seed_set,
+						 		DecayInterface* decay_func,
+						 		NodesFeaturesContainer* node_labels,
+						 		GraphSketch* all_graph_sketch,
+						 		GraphSketch* only_seed_nodes_sketch,
+						 		int num_seeds_to_consider = constants::INF) {
 	bool should_delete_graph_sketches = false;
 	// Iterate each node in the graph
 	for (auto nodeItr = graph->BegNI();  nodeItr != graph->EndNI() ; nodeItr++ ){
@@ -64,7 +65,8 @@ void calculate_labels_distance_diffusion(graph::Graph<T>* graph,
 		node_feature_vector.resize(feature_dim, 0);
 		double normalization_factor = 0;
 		bool is_seed_node = false;
-		for (auto node_seed_ads_itr = node_ads_vector->begin(); node_seed_ads_itr != node_ads_vector->end(); node_seed_ads_itr++) {
+		int num_seeds = 0;
+		for (auto node_seed_ads_itr = node_ads_vector->rbegin(); node_seed_ads_itr != node_ads_vector->rend(); node_seed_ads_itr++) {
 			// Seed node Id
 			int seed_id = node_seed_ads_itr->GetNId();
 			// ignore the seed nodes
@@ -80,13 +82,17 @@ void calculate_labels_distance_diffusion(graph::Graph<T>* graph,
 			double insert_prob = node_sketch_all_graph->GetInsertProbAccordingToDistance(seed_distance);
 			// Get feature vector of seed label
 			double estimated_rank = decay_func->Alpha(seed_rank) / insert_prob;
-			LOG_M(DEBUG3, "node id=" << node_id <<  " seed node=" << seed_id << " seed_rank=" << seed_rank << " seed distance=" << seed_distance << 
+			LOG_M(DEBUG5, "node id=" << node_id <<  " seed node=" << seed_id << " seed_rank=" << seed_rank << " seed distance=" << seed_distance << 
 						  " insert_prob=" << insert_prob << " estimated_rank=" << estimated_rank << " alpha(rank)=" << decay_func->Alpha(seed_rank));
 			normalization_factor += estimated_rank;
 			const FEATURE_WEIGHTS_VECTOR* vec = seed_set->GetSeedFeature(seed_id);
 			for (int i=0; i < feature_dim; i++) {
 				node_feature_vector[i] += (*vec)[i] * estimated_rank;
 				LOG_M(DEBUG5, "(*vec)[i]=" << (*vec)[i] << " post mul=" << node_feature_vector[i]);
+			}
+			num_seeds += 1;
+			if (num_seeds == num_seeds_to_consider) {
+				break;
 			}
 		}
 		if (is_seed_node) {

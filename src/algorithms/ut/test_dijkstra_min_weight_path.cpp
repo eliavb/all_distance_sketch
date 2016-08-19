@@ -35,7 +35,7 @@ TEST_F(MaxAlgoGraph, DijkstraSingleNode) {
   graph::TUnDirectedGraph::TNode source(0);
   DijkstraParamsMaxWeight param;
   DefaultDijkstraCallBacks< graph::TUnDirectedGraph > call_backs;
-  PrunedDijkstraMaxWeight< graph::TUnDirectedGraph, DefaultDijkstraCallBacks<graph::TUnDirectedGraph> >
+  PrunedDijkstraMinWeight< graph::TUnDirectedGraph, DefaultDijkstraCallBacks<graph::TUnDirectedGraph> >
                           (source,
                           &graph,
                           &call_backs,
@@ -55,7 +55,7 @@ TEST_F(MaxAlgoGraph, DijkstraSingleNode2) {
   graph::TUnDirectedGraph::TNode source(0);
   DijkstraParamsMaxWeight param;
   DefaultDijkstraCallBacks< graph::TUnDirectedGraph > call_backs;
-  PrunedDijkstraMaxWeight< graph::TUnDirectedGraph, DefaultDijkstraCallBacks<graph::TUnDirectedGraph> >
+  PrunedDijkstraMinWeight< graph::TUnDirectedGraph, DefaultDijkstraCallBacks<graph::TUnDirectedGraph> >
                           (source,
                           &graph,
                           &call_backs,
@@ -77,7 +77,7 @@ TEST_F(MaxAlgoGraph, DijkstraSingleNode3) {
   graph::TUnDirectedGraph::TNode source(0);
   DijkstraParamsMaxWeight param;
   DefaultDijkstraCallBacks< graph::TUnDirectedGraph > call_backs;
-  PrunedDijkstraMaxWeight< graph::TUnDirectedGraph, DefaultDijkstraCallBacks<graph::TUnDirectedGraph> >
+  PrunedDijkstraMinWeight< graph::TUnDirectedGraph, DefaultDijkstraCallBacks<graph::TUnDirectedGraph> >
                           (source,
                           &graph,
                           &call_backs,
@@ -104,7 +104,7 @@ TEST_F(MaxAlgoGraph, DijkstraSingleNode4) {
   graph::TDirectedGraph::TNode source(0);
   DijkstraParamsMaxWeight param;
   DefaultDijkstraCallBacks< graph::TDirectedGraph > call_backs;
-  PrunedDijkstraMaxWeight< graph::TDirectedGraph, DefaultDijkstraCallBacks<graph::TDirectedGraph> >
+  PrunedDijkstraMinWeight< graph::TDirectedGraph, DefaultDijkstraCallBacks<graph::TDirectedGraph> >
                           (source,
                           &graph,
                           &call_backs,
@@ -131,7 +131,7 @@ TEST_F(MaxAlgoGraph, DijkstraSingleNode5) {
   graph::TDirectedGraph::TNode source(0);
   DijkstraParamsMaxWeight param;
   DefaultDijkstraCallBacks< graph::TDirectedGraph > call_backs;
-  PrunedDijkstraMaxWeight< graph::TDirectedGraph, DefaultDijkstraCallBacks<graph::TDirectedGraph> >
+  PrunedDijkstraMinWeight< graph::TDirectedGraph, DefaultDijkstraCallBacks<graph::TDirectedGraph> >
                           (source,
                           &graph,
                           &call_backs,
@@ -156,7 +156,7 @@ TEST_F(MaxAlgoGraph, DijkstraSingleNode6) {
   graph::TDirectedGraph::TNode source(0);
   DijkstraParamsMaxWeight param;
   DefaultDijkstraCallBacks< graph::TDirectedGraph > call_backs;
-  PrunedDijkstraMaxWeight< graph::TDirectedGraph, DefaultDijkstraCallBacks<graph::TDirectedGraph> >
+  PrunedDijkstraMinWeight< graph::TDirectedGraph, DefaultDijkstraCallBacks<graph::TDirectedGraph> >
                           (source,
                           &graph,
                           &call_backs,
