@@ -128,11 +128,11 @@ namespace all_distance_sketch {
   class Neighbourhood {
    public:
     Neighbourhood() {}
-    Neighbourhood(int distance, int size) : distance_(distance), size_(size) {}
+    Neighbourhood(graph::EdgeWeight distance, int size) : distance_(distance), size_(size) {}
 
     int GetSize() const { return size_; }
 
-    int GetDistance() const { return distance_; }
+    graph::EdgeWeight GetDistance() const { return distance_; }
 
     bool operator==(const Neighbourhood& other) const {
       bool is_equal = (GetSize() == other.GetSize()) &&
@@ -146,7 +146,7 @@ namespace all_distance_sketch {
 
 
    private:
-    int distance_;
+    graph::EdgeWeight distance_;
     int size_;
   };
 
@@ -462,7 +462,7 @@ namespace all_distance_sketch {
      *  Return the size of the neighborhood <= distance
      */
     // TODO(eliav) : Talk to Edith
-    int GetSizeNeighborhoodUpToDistance(graph::EdgeWeight distance) {
+    double GetSizeNeighborhoodUpToDistance(graph::EdgeWeight distance) {
       compare_neighbourhood_distance obj;
       Neighbourhood entry(distance, 0);
       NeighbourhoodVector::iterator up = std::upper_bound(
@@ -495,7 +495,6 @@ namespace all_distance_sketch {
     /*
      * Calculate for each distance the neighborhood size.
      */
-    // TODO(eliav) : Talk to Edith
     void CalculateAllDistanceNeighborhood() {
       neighbourhoods_.clear();
       if (nodes_id_distance_.size() == 0) {
@@ -505,7 +504,7 @@ namespace all_distance_sketch {
       std::vector<NodeDistanceIdRandomIdData> neighborhoodVector;
       NodeIdDistanceVector::reverse_iterator it;
       neighbourhoods_.clear();
-      unsigned int currentDistance = 0;
+      double currentDistance = 0;
       compare_node_randomid_decreasing obj;
       for (it = nodes_id_distance_.rbegin(); it != nodes_id_distance_.rend();
            it++) {

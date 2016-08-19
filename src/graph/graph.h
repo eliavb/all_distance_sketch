@@ -220,7 +220,7 @@ class Graph {
                 LOG_M(DEBUG5, "Inserting node " << vNodeId << " it does not exists");
                 AddNode(vNodeId);
             }
-            LOG_M(DEBUG1, "Node src " << uNodeId << " Node dest " << vNodeId);
+            LOG_M(DEBUG5, "Node src " << uNodeId << " Node dest " << vNodeId);
             if (aTranspose == false) {
                 AddEdge(uNodeId, vNodeId);
             } else {

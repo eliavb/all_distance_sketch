@@ -24,7 +24,7 @@ public:
 		return node_id_;
 	}
 
-	const FEATURE_WEIGHTS_VECTOR& GetFeatureWeights() {
+	const FEATURE_WEIGHTS_VECTOR& GetFeatureWeights() const {
 		return labels_;
 	}
 
@@ -32,6 +32,19 @@ public:
 		node_embedding->set_node_id(node_id_);
 		for (int i=0; i< labels_.size(); i++) {
 			node_embedding->add_coordinate(labels_[i]);
+		}
+	}
+
+	void Add(const NodeFeature& other) {
+		const FEATURE_WEIGHTS_VECTOR& other_features = other.GetFeatureWeights();
+		for (int i=0; i < labels_.size(); i++) {
+			labels_[i] += other_features[i];
+		}
+	}
+
+	void Apply(std::function< double(double) >& lambda) {
+		for (int i=0; i < labels_.size(); i++) {
+			labels_[i] = lambda(labels_[i]);
 		}
 	}
 
@@ -108,7 +121,7 @@ public:
 		nodes_labels_.push_back(element_to_insert);
 	}
 
-	const std::vector<NodeFeature>& GetNodesFeatures() {
+	const std::vector<NodeFeature>& GetNodesFeatures() const {
 		return nodes_labels_;
 	}
 
@@ -116,6 +129,23 @@ public:
 		for (int i=0; i < nodes_labels_.size(); i++) {
 			NodeEmbeddingGpb* node_embedding = embedding->add_nodes();
 			nodes_labels_[i].SaveToGpb(node_embedding);
+		}
+	}
+
+	void Add(const NodesFeaturesContainer& other) {
+		auto other_nodes_feature = other.GetNodesFeatures();
+		if (nodes_labels_.size() == 0) {
+			nodes_labels_ = other_nodes_feature;
+			return;
+		}
+		for (int i=0; i < nodes_labels_.size(); i++) {
+			nodes_labels_[i].Add(other_nodes_feature[i]);
+		}
+	}
+
+	void Apply(std::function< double(double) >& lambda) {
+		for (int i=0; i < nodes_labels_.size(); i++) {
+			nodes_labels_[i].Apply(lambda);
 		}
 	}
 

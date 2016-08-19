@@ -13,12 +13,16 @@ void InitGraphSketches(graph::Graph<T>* graph,
 				 		NodesFeaturesSortedContainer* seed_set,
 				 		int K,
 				 		GraphSketch* all_graph_sketch,
-				 		GraphSketch* only_seed_nodes_sketch) {
+				 		GraphSketch* only_seed_nodes_sketch,
+				 		std::vector<double>* nodes_distribution = NULL) {
 	// Init both graph sketches
 	all_graph_sketch->InitGraphSketch(K, graph->GetMxNId());
 	only_seed_nodes_sketch->InitGraphSketch(K, graph->GetMxNId());
 	all_graph_sketch->set_should_calc_zvalues(true);
 	only_seed_nodes_sketch->set_should_calc_zvalues(true);
+	if (nodes_distribution != NULL) {
+		all_graph_sketch->SetNodesDistribution(nodes_distribution);
+	}
 	// At this point the seed sketch distribution is equal to the full graph distribution (random ids)
 	const std::vector<RandomId>* dist = all_graph_sketch->GetNodesDistributionLean();
 	std::vector<RandomId> seed_set_distribution;
@@ -71,27 +75,31 @@ void calculate_labels_distance_diffusion(graph::Graph<T>* graph,
 			// Distance from seed to the source node
 			graph::EdgeWeight seed_distance = node_seed_ads_itr->GetDistance();
 			// The rank of the seed compared to all other nodes in the graph
-			int seed_rank = node_sketch_all_graph->GetSizeNeighborhoodUpToDistance(seed_distance);
+			double seed_rank = node_sketch_all_graph->GetSizeNeighborhoodUpToDistance(seed_distance);
 			// Insert probability based on the full graph
 			double insert_prob = node_sketch_all_graph->GetInsertProbAccordingToDistance(seed_distance);
 			// Get feature vector of seed label
 			double estimated_rank = decay_func->Alpha(seed_rank) / insert_prob;
 			LOG_M(DEBUG3, "node id=" << node_id <<  " seed node=" << seed_id << " seed_rank=" << seed_rank << " seed distance=" << seed_distance << 
 						  " insert_prob=" << insert_prob << " estimated_rank=" << estimated_rank << " alpha(rank)=" << decay_func->Alpha(seed_rank));
-			normalization_factor += (decay_func->Alpha(seed_rank) / insert_prob);
+			normalization_factor += estimated_rank;
 			const FEATURE_WEIGHTS_VECTOR* vec = seed_set->GetSeedFeature(seed_id);
 			for (int i=0; i < feature_dim; i++) {
 				node_feature_vector[i] += (*vec)[i] * estimated_rank;
-				LOG_M(DEBUG5," post mul=" << node_feature_vector[i]);
+				LOG_M(DEBUG5, "(*vec)[i]=" << (*vec)[i] << " post mul=" << node_feature_vector[i]);
 			}
 		}
 		if (is_seed_node) {
 			continue;
 		}
 		LOG_M(DEBUG3, "node_id=" << node_id << " normalization_factor=" << normalization_factor);
-		for (int i=0; i < node_feature_vector.size(); i++) {
+		double norm = 0;
+		for (int i=0; i < feature_dim; i++) {
 			node_feature_vector[i] = node_feature_vector[i] / normalization_factor;
+			norm += node_feature_vector[i];
+			LOG_M(DEBUG5, "node_id=" << node_id <<  " post normalization_factor=" << node_feature_vector[i]);
 		}
+		LOG_M(DEBUG5, "vector norm after normalization_factor=" << norm);
 		node_labels->AddNodeFeature(node_id, node_feature_vector);
 	}
 	if (should_delete_graph_sketches) {

@@ -47,26 +47,26 @@ void load_graph_random_edges(bool directed,
 }
 
 // TODO (eliav) : Add alpha interface to allow different decay functions
-template<class T, typename Z>
-void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<T>* graph_out) {
+template<class T, class M, typename Z>
+void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out) {
   std::random_device rd;
   std::mt19937 gen(rd());
 
   for (auto it=graph->BegNI(); it != graph->EndNI(); it++) {
     auto node_id = it.GetId();
-    auto vertex = graph->GetNI(node_id);
     graph_out->AddNode(node_id);
   }
   for (auto it=graph->BegNI(); it != graph->EndNI(); it++) {
     auto node_id = it.GetId();
     auto vertex = graph->GetNI(node_id);
     int node_out_deg = vertex.GetOutDeg();
+    Z d(1 / double(node_out_deg));
     for (int i = 0 ; i < vertex.GetOutDeg(); i++) {
       int n_id = vertex.GetOutNId(i);
-      int n_out_deg = graph->GetNI(n_id).GetOutDeg();
-      int max_out_deg = std::max(n_out_deg, n_id);
-      Z d(1 / float(max_out_deg));
-      graph_out->AddEdge(node_id, n_id, d(gen));
+      double random_edge_weight = d(gen);
+      LOG_M(DEBUG5, " edge between " << node_id << "->" << n_id << " edge weight=" << random_edge_weight);  
+      // LOG_M(DEBUG5, " max_out_deg " << node_id << "->" << n_id << " max_out_deg=" << max_out_deg);  
+      graph_out->AddEdge(node_id, n_id, random_edge_weight + 200);
     }
   }
 }
@@ -144,7 +144,7 @@ void load_file_to_vec(std::vector<int>* vec, std::string file_path) {
   std::string line;
   while (std::getline(infile, line)) {
     int node_id = atoi(line.c_str());
-    std::cout << "loaded node id=" << node_id << std::endl;
+    // std::cout << "loaded node id=" << node_id << std::endl;
     vec->push_back(node_id);
   }
 }
@@ -166,6 +166,26 @@ void load_distribution_file_to_vec(std::vector<double>* vec, std::string file_pa
     }
     (*vec)[node_id] = random_id;
   }
+}
+
+void dump_labels_to_csv(std::string f_name,
+                        const NodesFeaturesContainer& labels) {
+  std::ofstream ofs;
+  ofs.open (f_name, std::ofstream::out);
+  auto nodes_labels = labels.GetNodesFeatures();
+  for (int i=0; i < nodes_labels.size(); i++) {
+    int node_id = nodes_labels[i].GetNId();
+    ofs << std::to_string(node_id);
+    auto label_weights = nodes_labels[i].GetFeatureWeights();
+    for (int j=0; j < label_weights.size(); j++) {
+      ofs << ",";
+      ofs << std::to_string(label_weights[j]);
+    }
+    ofs << "\n";
+  }
+
+  ofs.close();
+
 }
 
 #endif  //  ALL_DISTANCE_SKETCH_SRC_APP_UTILS_H_
