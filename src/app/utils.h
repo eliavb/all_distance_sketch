@@ -35,7 +35,7 @@ void load_graph(bool directed,
 
 // TODO (eliav) : Add alpha interface to allow different decay functions
 template<class T, class M, typename Z>
-void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out) {
+void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out, int add_constant_weight_to_edge) {
   std::random_device rd;
   std::mt19937 gen(rd());
 
@@ -52,7 +52,7 @@ void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out
       int n_id = vertex.GetOutNId(i);
       double random_edge_weight = d(gen);
       LOG_M(DEBUG5, " edge between " << node_id << "->" << n_id << " edge weight=" << random_edge_weight);  
-      graph_out->AddEdge(node_id, n_id, random_edge_weight + 50);
+      graph_out->AddEdge(node_id, n_id, random_edge_weight + add_constant_weight_to_edge);
     }
   }
 }

@@ -64,15 +64,13 @@ void calculate_labels_diffusion(graph::Graph<T>* graph,
 		FEATURE_WEIGHTS_VECTOR node_feature_vector;
 		node_feature_vector.resize(feature_dim, 0);
 		double normalization_factor = 0;
-		bool is_seed_node = false;
 		int num_seeds = 0;
 		for (auto node_seed_ads_itr = node_ads_vector->rbegin(); node_seed_ads_itr != node_ads_vector->rend(); node_seed_ads_itr++) {
 			// Seed node Id
 			int seed_id = node_seed_ads_itr->GetNId();
 			// ignore the seed nodes
 			if (seed_id == node_id) {
-				is_seed_node = true;
-				break;
+				continue;
 			}
 			// Distance from seed to the source node
 			graph::EdgeWeight seed_distance = node_seed_ads_itr->GetDistance();
@@ -94,9 +92,6 @@ void calculate_labels_diffusion(graph::Graph<T>* graph,
 			if (num_seeds == num_seeds_to_consider) {
 				break;
 			}
-		}
-		if (is_seed_node) {
-			continue;
 		}
 		LOG_M(DEBUG3, "node_id=" << node_id << " normalization_factor=" << normalization_factor);
 		double norm = 0;

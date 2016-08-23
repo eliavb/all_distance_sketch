@@ -21,6 +21,7 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
                                                  // std::string* seed_sketch_file,
                                                  int* K,
                                                  int* num_seeds_to_consider,
+                                                 int* add_constant_weight_to_edge,
                                                  std::string* type,
                                                  std::string* nodes_distribution,
                                                  int* num_iterations,
@@ -42,6 +43,8 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
                   "K = 1 / (epsilon^2). Where epsilon is the error")
             ("num_seeds_to_consider", po::value<int>(num_seeds_to_consider),
                   "num_seeds_to_consider, default all")
+            ("add_constant_weight_to_edge", po::value<int>(add_constant_weight_to_edge),
+                  "Add constant to edge weight, default 0")
             ("nodes_distribution", po::value< std::string >(nodes_distribution),
                   "path to file with nodes distribution. CSV file with the first entry is the node id and the second is the random id. default is uniform(0,1)")
             ("type", po::value< std::string >(type)->required(),
@@ -74,9 +77,9 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
         cout << "num_seeds_to_consider=" << *num_seeds_to_consider << endl;
         cout << "graph_dir=" << *graph_dir << endl;
         cout << "seed_set_file=" << *seed_set_file << endl;
+        cout << "add_constant_weight_to_edge" << *add_constant_weight_to_edge << endl;
         cout << "nodes_distribution" << *nodes_distribution << endl;
-        // cout << "sketch_file=" << *sketch_file << endl;
-        // cout << "seed_sketch_file=" << *sketch_file << endl;
+        cout << "type=" << *type << endl;
         cout << "num_iterations=" << *num_iterations << endl;
         cout << "output_file=" << *output_file << endl;
         
@@ -90,7 +93,7 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
     return false;
 }
 
-void single_iteration_distance_diffusion(bool directed, int K, int num_seeds_to_consider, const std::string& type, int vector_dim, graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
+void single_iteration_distance_diffusion(bool directed, int K, int num_seeds_to_consider, int add_constant_weight_to_edge, const std::string& type, int vector_dim, graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
                                         graph::Graph< graph::TDirectedGraph>* directed_graph, NodesFeaturesSortedContainer* seed_set,
                                         std::vector<double>* nodes_distribution, NodesFeaturesContainer* result) {
     GraphSketch all_graph_sketch;
@@ -105,9 +108,9 @@ void single_iteration_distance_diffusion(bool directed, int K, int num_seeds_to_
 
     graph::Graph< graph::TDirectedGraph> directed_random_graph;
     if (directed) {
-        create_random_edge_graph<graph::TDirectedGraph, graph::TDirectedGraph, std::exponential_distribution<> >(directed_graph, &directed_random_graph);
+        create_random_edge_graph<graph::TDirectedGraph, graph::TDirectedGraph, std::exponential_distribution<> >(directed_graph, &directed_random_graph, add_constant_weight_to_edge);
     } else {
-        create_random_edge_graph<graph::TUnDirectedGraph, graph::TDirectedGraph, std::exponential_distribution<> >(un_directed_graph, &directed_random_graph);
+        create_random_edge_graph<graph::TUnDirectedGraph, graph::TDirectedGraph, std::exponential_distribution<> >(un_directed_graph, &directed_random_graph, add_constant_weight_to_edge);
     }
     if (type == "distance") {
         InitGraphSketchesDistanceDiffusion<graph::TDirectedGraph> (&directed_random_graph, seed_set, K, &all_graph_sketch, &only_seed_nodes_sketch, nodes_distribution);
@@ -139,10 +142,11 @@ void process_and_write_result(std::vector<NodesFeaturesContainer>* result_node_l
 
 int diffusion_app_main(int ac, char* av[]) {
     bool directed;
-    int vector_dim, num_iterations, K, num_seeds_to_consider;
+    int vector_dim, num_iterations, K, num_seeds_to_consider, add_constant_weight_to_edge;
     std::string output_file, graph_dir, seed_set_file, nodes_distribution_path, type;
     if (parse_command_line_args(ac, av, &directed, &vector_dim, &graph_dir, &seed_set_file,
-                                        &K, &num_seeds_to_consider, &type, &nodes_distribution_path , &num_iterations, &output_file)) {
+                                        &K, &num_seeds_to_consider, &add_constant_weight_to_edge, &type,
+                                        &nodes_distribution_path , &num_iterations, &output_file)) {
       return 1;
     }
 
@@ -162,7 +166,9 @@ int diffusion_app_main(int ac, char* av[]) {
     load_labels(seed_set_file, &seed_set, vector_dim);
     std::vector<std::thread> threads;
     for (int i=0; i < num_iterations; i++) {
-        threads.push_back(std::thread(single_iteration_distance_diffusion, directed, K, num_seeds_to_consider, type, vector_dim, &un_directed_graph, &directed_graph, &seed_set, nodes_distribution, &(result_node_labels[i])));
+        threads.push_back(std::thread(single_iteration_distance_diffusion, directed, K, num_seeds_to_consider,
+                                      add_constant_weight_to_edge, type, vector_dim, &un_directed_graph, &directed_graph, 
+                                      &seed_set, nodes_distribution, &(result_node_labels[i])));
     }
     for (int i=0; i < threads.size(); i++) {
         threads[i].join();
