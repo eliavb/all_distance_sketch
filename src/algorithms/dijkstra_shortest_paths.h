@@ -267,6 +267,10 @@ namespace all_distance_sketch {
             sketch_lock_->UnLock(visited_node_id);
           } else {
             added_node_to_ads = visited_noted_sketch->Add(sourceNodeDetails);
+            LOG_M(DEBUG5, "source_node_id_=" << source_node_id_ << " visited_node_id=" << visited_node_id << 
+                            " distance_from_source_to_visited_node=" << distance_from_source_to_visited_node <<
+                            " did enter? " << added_node_to_ads);
+            
           }
 
           if (added_node_to_ads == false && visited_node_id != source_node_id_) {
@@ -456,12 +460,11 @@ static void PrunedDijkstra(typename T::TNode source,
     graph::TEdgesWeights * nodeWeights = graph->GetNodeWeights(visited_node_id);
     for (int i = 0 ; i < neighbors.GetOutDeg(); i++) {
       int id_of_neighbor_of_visited_node = neighbors.GetOutNId(i);
-      LOG_M(DEBUG4, " Node u= " << visited_node_id <<
+      LOG_M(DEBUG5, " Node u= " << visited_node_id <<
                     " neighbor= " << id_of_neighbor_of_visited_node <<
                     " Out deg= " << neighbors.GetOutDeg() <<
                     " Index " << i <<
                     " Is Node? " << graph->IsNode(visited_node_id));
-
       if (param->poped[id_of_neighbor_of_visited_node] == true) {
         continue;
       }

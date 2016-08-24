@@ -61,6 +61,7 @@ void calculate_labels_diffusion(graph::Graph<T>* graph,
 		NodeSketch* node_sketch_only_seeds = only_seed_nodes_sketch->GetNodeSketch(node_id);
 		LOG_M(DEBUG3, " node id" << node_id << " node_sketch_only_seeds=" << node_sketch_only_seeds);
 		const NodeIdDistanceVector* node_ads_vector = node_sketch_only_seeds->GetNodeAdsVector();
+		LOG_M(DEBUG3, " node id" << node_id << " num seeds in all seed ads=" << node_ads_vector->size());
 		FEATURE_WEIGHTS_VECTOR node_feature_vector;
 		node_feature_vector.resize(feature_dim, 0);
 		double normalization_factor = 0;

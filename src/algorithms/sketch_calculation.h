@@ -113,6 +113,7 @@ template <class T>
 static void CalculateGraphSketch(graph::Graph<T> *graph,
                                  GraphSketch * graph_sketch) {
     // The vector is sorted
+    int num_nodes_ran_from = 0;
     DijkstraParams param;
     SketchDijkstraCallBacks<T> call_backs;
     call_backs.InitSketchDijkstraCallBacks(graph_sketch);
@@ -123,9 +124,11 @@ static void CalculateGraphSketch(graph::Graph<T> *graph,
         continue;
       }
       if (graph->IsNode((*distribution)[i].GetNId())) {
+          num_nodes_ran_from += 1;
           CalculateNodeSketch<T>(source, graph, &call_backs, &param);
       }
     }
+    LOG_M(DEBUG2, "ran from " << num_nodes_ran_from);
     graph_sketch->CalculateAllDistanceNeighborhood();
 }
 

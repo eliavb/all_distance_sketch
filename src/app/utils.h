@@ -21,6 +21,38 @@ int load_sketch(GraphSketch* graph_sketch,
   return 0;
 }
 
+template<class T>
+void get_num_reachable(int src_node_id, graph::Graph< T >* graph, std::set<int>* reachable_from_src) {
+  std::set<int> in_q;
+  std::list<int> queue;
+  std::set<int> traversed;
+  queue.push_back(src_node_id);
+  in_q.insert(src_node_id);
+  while (queue.size() != 0) {
+    // Pop Q
+    int node_id = queue.front();
+    queue.pop_front();
+    // Move from pending to traversed
+    auto it_in_q = in_q.find(node_id);
+    in_q.erase(it_in_q);
+    traversed.insert(node_id);
+    // Traverse
+    auto neighbors = graph->GetNI(node_id);
+    for (int i = 0 ; i < neighbors.GetOutDeg(); i++) {
+      int id_of_neighbor_node = neighbors.GetOutNId(i);
+      if (traversed.count(id_of_neighbor_node) != 0) {
+        continue;
+      }
+      if (in_q.count(id_of_neighbor_node) != 0) {
+        continue;
+      }
+      queue.push_back(id_of_neighbor_node);
+      in_q.insert(id_of_neighbor_node);
+    }
+  }
+  *reachable_from_src = traversed;
+}
+
 void load_graph(bool directed,
 				        std::string graph_dir,
                 graph::Graph< graph::TDirectedGraph>* directed_graph,
@@ -31,6 +63,9 @@ void load_graph(bool directed,
     } else {
         un_directed_graph->LoadGraphFromDir(graph_dir, load_transpose);
     }
+    // std::set<int> reachable_from_src;
+    // get_num_reachable<graph::TUnDirectedGraph> (5535, un_directed_graph, &reachable_from_src);
+    // std::cout << " num reachable nodes from " << 5355 << " =" << reachable_from_src.size() << std::endl;
 }
 
 // TODO (eliav) : Add alpha interface to allow different decay functions
@@ -55,6 +90,12 @@ void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out
       graph_out->AddEdge(node_id, n_id, random_edge_weight + add_constant_weight_to_edge);
     }
   }
+  std::set<int> reachable_from_src;
+  get_num_reachable<T> (5535, graph, &reachable_from_src);
+  std::cout << " graph num reachable nodes from " << 5355 << " =" << reachable_from_src.size() << std::endl;
+  reachable_from_src.clear();
+  get_num_reachable<M> (5535, graph_out, &reachable_from_src);
+  std::cout << " graph_out num reachable nodes from " << 5355 << " =" << reachable_from_src.size() << std::endl;
 }
 
 void load_graph_file(bool directed,

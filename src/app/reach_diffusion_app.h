@@ -24,7 +24,7 @@ bool parse_command_line_args(int ac, char* av[], int* source_id,
             ("help", "produce help message")
             ("source_id", po::value<int>(source_id)->required(), 
                   "id of source node")
-            ("directed", po::value<bool>(directed), 
+            ("directed", po::value<bool>(directed)->required(), 
                   "is the graph directed")
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
                   "Directory with the graph to calculate the sketch on")

@@ -31,11 +31,11 @@ bool parse_command_line_args(int ac, char* av[], int* source_id,
                   "K = 1/epsilon^2 sets the precision")
             ("num_threads", po::value<int>(num_threads)->default_value(1), 
                   "num_threads to use")
-            ("directed", po::value<bool>(directed), 
+            ("directed", po::value<bool>(directed)->required(), 
                   "is the graph directed")
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
                   "Directory with the graph to calculate the sketch on")
-            ("sketch_file", po::value< std::string >(sketch_file),
+            ("sketch_file", po::value< std::string >(sketch_file)->default_value(""),
                   "File prefix with the calculated sketch. The prefix should match what you entered in the sketch_app")
             ("output_file", po::value< std::string > (output_file)->required(), 
                   "output file path, here the sketch Gpb will be saved")

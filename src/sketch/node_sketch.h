@@ -288,14 +288,15 @@ namespace all_distance_sketch {
       return;
     }
 
-    // TODO(eliav) : Add possibility to change from min to max
     bool Add(NodeIdDistanceData node_details) {
       //  If the NodeSketch size is smaller than K we will always add
 
       if (nodes_id_distance_.size() < K_) {
-        LOG_M(DEBUG4, " Adding to NodeSketch since size < k, "
-              << " size=" << nodes_id_distance_.size()
-              << " k=" << K_);
+        if (node_id_ == 5535) {
+          LOG_M(DEBUG4, " Adding to NodeSketch since size < k, "
+                << " size=" << nodes_id_distance_.size()
+                << " k=" << K_);
+        }
         // nodes_id_distance_.push_back(node_details);
         compare_node_distance_increasing obj;
         NodeIdDistanceVectorItr up =

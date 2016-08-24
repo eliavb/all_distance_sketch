@@ -32,13 +32,13 @@ bool parse_command_line_args(int ac, char* av[], int* K,
                   "K = 1/epsilon^2 sets the precision of the approximation")
             ("num_threads", po::value<int>(num_threads)->default_value(1), 
                   "num_threads to use")
-            ("directed", po::value<bool>(directed), 
+            ("directed", po::value<bool>(directed)->required(), 
                   "is the graph directed")
-            ("should_calc_insert_prob", po::value<bool>(should_calc_insert_prob), 
+            ("should_calc_insert_prob", po::value<bool>(should_calc_insert_prob)->default_value(false), 
                   "Should we calculate the insertion probability of nodes. default false")
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
                   "Directory with the graph to calculate the sketch on")
-            ("nodes_distribution", po::value< std::string >(nodes_distribution),
+            ("nodes_distribution", po::value< std::string >(nodes_distribution)->default_value(""),
                   "path to file with nodes distribution. CSV file with the first entry is the node id and the second is the random id. default is uniform(0,1)")
             ("output_file", po::value< std::string > (output_file)->required(), 
                   "output file path pattern, here the sketch Gpb will be saved with the prefix entered and suffix _[%d] (Gpb defined in src/proto/all_distance_sketch.proto)")

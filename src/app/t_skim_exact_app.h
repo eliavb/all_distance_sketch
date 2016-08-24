@@ -24,7 +24,7 @@ bool parse_command_line_args(int ac, char* av[], int* T,
             ("help", "produce help message")
             ("T", po::value<int>(T)->required(), 
                   "Defines the influence of a node. If pi_{us} < T then s coveres u")
-            ("directed", po::value<bool>(directed), 
+            ("directed", po::value<bool>(directed)->required(), 
                   "is the graph directed")
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
                   "Directory with the graph to calculate the sketch on")

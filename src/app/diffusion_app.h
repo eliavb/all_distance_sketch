@@ -31,9 +31,9 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
         po::options_description desc("Allowed options");
         desc.add_options()
             ("help", "produce help message")
-            ("directed", po::value<bool>(directed), 
+            ("directed", po::value<bool>(directed)->required(),
                   "is the graph directed")
-            ("vector_dim", po::value<int>(vector_dim), 
+            ("vector_dim", po::value<int>(vector_dim)->required(),
                   "embedding vector dimension")
             ("graph_dir", po::value< std::string >(graph_dir)->required(),
                   "Directory with the graph to calculate the sketch on")
@@ -41,11 +41,11 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
                   "path to file containing the labels of the seed set. CSV file first entry represents the user and the second entry represents the group index")
             ("K", po::value<int>(K)->required(),
                   "K = 1 / (epsilon^2). Where epsilon is the error")
-            ("num_seeds_to_consider", po::value<int>(num_seeds_to_consider),
+            ("num_seeds_to_consider", po::value<int>(num_seeds_to_consider)->default_value(constants::INF),
                   "num_seeds_to_consider, default all")
-            ("add_constant_weight_to_edge", po::value<int>(add_constant_weight_to_edge),
+            ("add_constant_weight_to_edge", po::value<int>(add_constant_weight_to_edge)->default_value(0),
                   "Add constant to edge weight, default 0")
-            ("nodes_distribution", po::value< std::string >(nodes_distribution),
+            ("nodes_distribution", po::value< std::string >(nodes_distribution)->default_value(""),
                   "path to file with nodes distribution. CSV file with the first entry is the node id and the second is the random id. default is uniform(0,1)")
             ("type", po::value< std::string >(type)->required(),
                   "type of diffusion {distance|reach}")
@@ -159,6 +159,8 @@ int diffusion_app_main(int ac, char* av[]) {
     graph::Graph< graph::TDirectedGraph> directed_graph;
     graph::Graph< graph::TUnDirectedGraph> un_directed_graph;
     load_graph(directed, graph_dir, &directed_graph, &un_directed_graph);
+    std::cout << "nodes=" << un_directed_graph.GetNumNodes() << std::endl;
+    std::cout << "edges=" << un_directed_graph.GetNumEdges() << std::endl;
     // We will have edges between label -> [node id,...]
     std::vector<NodesFeaturesContainer> result_node_labels;
     result_node_labels.resize(num_iterations);
