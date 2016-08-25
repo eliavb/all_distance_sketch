@@ -90,12 +90,6 @@ void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out
       graph_out->AddEdge(node_id, n_id, random_edge_weight + add_constant_weight_to_edge);
     }
   }
-  std::set<int> reachable_from_src;
-  get_num_reachable<T> (5535, graph, &reachable_from_src);
-  std::cout << " graph num reachable nodes from " << 5355 << " =" << reachable_from_src.size() << std::endl;
-  reachable_from_src.clear();
-  get_num_reachable<M> (5535, graph_out, &reachable_from_src);
-  std::cout << " graph_out num reachable nodes from " << 5355 << " =" << reachable_from_src.size() << std::endl;
 }
 
 void load_graph_file(bool directed,
