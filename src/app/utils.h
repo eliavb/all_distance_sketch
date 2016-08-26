@@ -70,7 +70,7 @@ void load_graph(bool directed,
 
 // TODO (eliav) : Add alpha interface to allow different decay functions
 template<class T, class M, typename Z>
-void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out, int add_constant_weight_to_edge) {
+void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out, int add_constant_weight_to_edge, DecayInterface* decay) {
   std::random_device rd;
   std::mt19937 gen(rd());
 
@@ -82,7 +82,7 @@ void create_random_edge_graph(graph::Graph<T>* graph, graph::Graph<M>* graph_out
     auto node_id = it.GetId();
     auto vertex = graph->GetNI(node_id);
     int node_out_deg = vertex.GetOutDeg();
-    Z d(1 / double(node_out_deg));
+    Z d(decay->Alpha(node_out_deg));
     for (int i = 0 ; i < vertex.GetOutDeg(); i++) {
       int n_id = vertex.GetOutNId(i);
       double random_edge_weight = d(gen);

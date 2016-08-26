@@ -342,15 +342,22 @@ class SketchDijkstraCallBacksInverseWeight {
 
   inline void NodePopedFromHeap(int poped_node_id, const NodeIdDistanceData& heap_value) {
     ++algo_statistics_.num_visited_nodes;
-    if (should_calculate_dijkstra_rank_) {
-      dijkstra_rank_[poped_node_id] = algo_statistics_.num_visited_nodes;
-    }
   }
 
   inline bool ShouldPrune(int visited_node_id, graph::EdgeWeight distance_from_source_to_visited_node) {
     bool should_prune = false;
     bool added_node_to_ads = true;
     NodeSketch * visited_noted_sketch = NULL;
+    
+    // Distance from source to visiting node
+    if (distance_from_source_to_visited_node == constants::INF) {
+      distance_from_source_to_visited_node = 0;
+    } else if (distance_from_source_to_visited_node == 0) {
+      distance_from_source_to_visited_node = constants::INF;
+    } else {
+      distance_from_source_to_visited_node = (1/distance_from_source_to_visited_node);
+    }
+
     if (graph_sketch_->ShouldPrune(distance_from_source_to_visited_node, visited_node_id)) {
       ++algo_statistics_.num_pruned_nodes;
       return true;
@@ -360,14 +367,7 @@ class SketchDijkstraCallBacksInverseWeight {
     NodeDistanceIdRandomIdData visitingNode(distance_from_source_to_visited_node,
                                       visited_node_id, graph_sketch_->GetNodeRandomId(visited_node_id));
     visited_noted_sketch = graph_sketch_->GetNodeSketch(visitingNode);
-    // Distance from source to visiting node
-    if (distance_from_source_to_visited_node == constants::INF) {
-      distance_from_source_to_visited_node = 0;
-    } else if (distance_from_source_to_visited_node == 0) {
-      distance_from_source_to_visited_node = constants::INF;
-    } else {
-      distance_from_source_to_visited_node = (1/distance_from_source_to_visited_node);
-    }
+    
     NodeDistanceIdRandomIdData sourceNodeDetails(distance_from_source_to_visited_node, source_node_id_, source_node_random_id_);
     // Update the visiting node NodeSketch with the source Node
     if (is_multi_threaded_) {

@@ -23,6 +23,8 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
                                                  int* num_seeds_to_consider,
                                                  int* add_constant_weight_to_edge,
                                                  std::string* type,
+                                                 std::string* decay_func_rank,
+                                                 std::string* decay_func_weights,
                                                  std::string* nodes_distribution,
                                                  int* num_iterations,
                                                  // std::string* sketch_file,
@@ -49,6 +51,10 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
                   "path to file with nodes distribution. CSV file with the first entry is the node id and the second is the random id. default is uniform(0,1)")
             ("type", po::value< std::string >(type)->required(),
                   "type of diffusion {distance|reach}")
+            ("decay_func_rank", po::value< std::string >(decay_func_rank)->required(),
+                  "type of decay for the rank calculation {inverse|inverse_root|inverse_log|inverse_root_log}")
+            ("decay_func_weights", po::value< std::string >(decay_func_weights)->required(),
+                  "type of decay for the weights. the weights will be calculated using exp(decay(degree)) {inverse|inverse_root|inverse_log|inverse_root_log}")
             /*
             ("sketch_file", po::value< std::string >(sketch_file),
                   "File prefix with the calculated sketch. The prefix should match what you entered in the sketch_app")
@@ -80,6 +86,8 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
         cout << "add_constant_weight_to_edge" << *add_constant_weight_to_edge << endl;
         cout << "nodes_distribution" << *nodes_distribution << endl;
         cout << "type=" << *type << endl;
+        std::cout << "decay_func_rank=" << *decay_func_rank << std::endl;
+        std::cout << "decay_func_weights=" << *decay_func_weights << std::endl;
         cout << "num_iterations=" << *num_iterations << endl;
         cout << "output_file=" << *output_file << endl;
         
@@ -93,7 +101,24 @@ bool parse_command_line_args(int ac, char* av[], bool* directed,
     return false;
 }
 
-void single_iteration_distance_diffusion(bool directed, int K, int num_seeds_to_consider, int add_constant_weight_to_edge, const std::string& type, int vector_dim, graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
+DecayInterface* get_decay_function(const std::string& decay_func) {
+    if (decay_func == "inverse") {
+        return new InverseDecay();
+    }
+    if (decay_func == "inverse_root") {
+        return new InverseRootDecay();
+    }
+    if (decay_func == "inverse_log") {
+        return new InverseLogDecay();
+    }
+    if (decay_func == "inverse_root_log") {
+        return new InverseRootLogDecay();
+    }
+    return NULL;
+}
+
+void single_iteration_distance_diffusion(bool directed, int K, int num_seeds_to_consider, int add_constant_weight_to_edge, const std::string& type, const std::string decay_func_str,
+                                        const std::string& decay_func_weights_str, int vector_dim, graph::Graph< graph::TUnDirectedGraph>* un_directed_graph,
                                         graph::Graph< graph::TDirectedGraph>* directed_graph, NodesFeaturesSortedContainer* seed_set,
                                         std::vector<double>* nodes_distribution, NodesFeaturesContainer* result) {
     GraphSketch all_graph_sketch;
@@ -107,10 +132,11 @@ void single_iteration_distance_diffusion(bool directed, int K, int num_seeds_to_
     }
 
     graph::Graph< graph::TDirectedGraph> directed_random_graph;
+    DecayInterface* decay_func_weights = get_decay_function(decay_func_weights_str);
     if (directed) {
-        create_random_edge_graph<graph::TDirectedGraph, graph::TDirectedGraph, std::exponential_distribution<> >(directed_graph, &directed_random_graph, add_constant_weight_to_edge);
+        create_random_edge_graph<graph::TDirectedGraph, graph::TDirectedGraph, std::exponential_distribution<> >(directed_graph, &directed_random_graph, add_constant_weight_to_edge, decay_func_weights);
     } else {
-        create_random_edge_graph<graph::TUnDirectedGraph, graph::TDirectedGraph, std::exponential_distribution<> >(un_directed_graph, &directed_random_graph, add_constant_weight_to_edge);
+        create_random_edge_graph<graph::TUnDirectedGraph, graph::TDirectedGraph, std::exponential_distribution<> >(un_directed_graph, &directed_random_graph, add_constant_weight_to_edge, decay_func_weights);
     }
     if (type == "distance") {
         InitGraphSketchesDistanceDiffusion<graph::TDirectedGraph> (&directed_random_graph, seed_set, K, &all_graph_sketch, &only_seed_nodes_sketch, nodes_distribution);
@@ -122,11 +148,11 @@ void single_iteration_distance_diffusion(bool directed, int K, int num_seeds_to_
         return;
     }
     
-    InverseDecay decay_func;
+    DecayInterface* decay_func = get_decay_function(decay_func_str);
     calculate_labels_diffusion<graph::TDirectedGraph>(&directed_random_graph,
                                                                 vector_dim,
                                                                 seed_set,
-                                                                &decay_func,
+                                                                decay_func,
                                                                 result,
                                                                 &all_graph_sketch,
                                                                 &only_seed_nodes_sketch,
@@ -143,9 +169,9 @@ void process_and_write_result(std::vector<NodesFeaturesContainer>* result_node_l
 int diffusion_app_main(int ac, char* av[]) {
     bool directed;
     int vector_dim, num_iterations, K, num_seeds_to_consider, add_constant_weight_to_edge;
-    std::string output_file, graph_dir, seed_set_file, nodes_distribution_path, type;
+    std::string output_file, graph_dir, seed_set_file, nodes_distribution_path, type, decay_func_rank, decay_func_weights;
     if (parse_command_line_args(ac, av, &directed, &vector_dim, &graph_dir, &seed_set_file,
-                                        &K, &num_seeds_to_consider, &add_constant_weight_to_edge, &type,
+                                        &K, &num_seeds_to_consider, &add_constant_weight_to_edge, &type, &decay_func_rank, &decay_func_weights,
                                         &nodes_distribution_path , &num_iterations, &output_file)) {
       return 1;
     }
@@ -169,7 +195,7 @@ int diffusion_app_main(int ac, char* av[]) {
     std::vector<std::thread> threads;
     for (int i=0; i < num_iterations; i++) {
         threads.push_back(std::thread(single_iteration_distance_diffusion, directed, K, num_seeds_to_consider,
-                                      add_constant_weight_to_edge, type, vector_dim, &un_directed_graph, &directed_graph, 
+                                      add_constant_weight_to_edge, type, decay_func_rank, decay_func_weights, vector_dim, &un_directed_graph, &directed_graph, 
                                       &seed_set, nodes_distribution, &(result_node_labels[i])));
     }
     for (int i=0; i < threads.size(); i++) {
