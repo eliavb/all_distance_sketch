@@ -92,6 +92,12 @@ void CloseFile(int* fd,
 
 void DumpGraphSketchToFile(const AllDistanceSketchGpb& graph_sketch,
                            std::string output_file) {
+    
+    std::fstream output(output_file, std::ios::out | std::ios::trunc | ios::binary);
+    if (!graph_sketch.SerializeToOstream(&output)) {
+      std::cerr << "Failed to write AllDistanceSketchGpb" << std::endl;
+    }
+    /*
     int fd;
     ZeroCopyOutputStream* raw_output = NULL;
     CodedOutputStream* coded_output = NULL;
@@ -125,10 +131,17 @@ void DumpGraphSketchToFile(const AllDistanceSketchGpb& graph_sketch,
         }
     }
     CloseFile(&fd, raw_output, coded_output);
+    */
 }
 
 void LoadGraphSketchFromFiles(AllDistanceSketchGpb* graph_sketch,
                              std::string file) {
+    
+    std::fstream input(file, ios::in | ios::binary);
+    if (!graph_sketch->ParseFromIstream(&input)) {
+      std::cerr << "Failed to parse AllDistanceSketchGpb." << std::endl;
+    }
+    /*
 	std::string pattern = file + "_[0-9]*";
     auto files = glob(pattern);
     for (const auto file_name : files) {
@@ -159,6 +172,7 @@ void LoadGraphSketchFromFiles(AllDistanceSketchGpb* graph_sketch,
             }
         }
     }
+    */
 }
 
 void DeleteFilesWithPrefix(std::string file_prefix) {

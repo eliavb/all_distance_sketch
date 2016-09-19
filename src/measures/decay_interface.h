@@ -39,6 +39,9 @@ class InverseLogDecay : public DecayInterface {
   	if (distance == 0) {
   		return 0;
   	}
+    if (distance == 1) {
+      return 1;
+    }
   	return 1 / std::log(distance); }
 };
 
@@ -48,6 +51,9 @@ class InverseRootLogDecay : public DecayInterface {
   	if (distance == 0) {
   		return 0;
   	}
+    if (distance == 1) {
+      return 1;
+    }
   	return 1 / std::sqrt(std::log(distance)); }
 };
 

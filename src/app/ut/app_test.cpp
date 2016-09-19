@@ -138,9 +138,10 @@ TEST_F(AppData, ReverseRankAppTestUndirected) {
   char *arguments[] = { "app",
                         "--source_id=0", 
                         "--K=64",
+                        "--directed=false",
                         writable, 
                         convert_string_to_char_pointer(output_file)};
-  EXPECT_EQ(reverse_rank_app_main(5, arguments), 0);
+  EXPECT_EQ(reverse_rank_app_main(6, arguments), 0);
 
   graph::Graph< graph::TUnDirectedGraph> graph;
   graph.LoadGraphFromDir(GetSampleData());
@@ -238,10 +239,11 @@ TEST_F(AppData, TSkimAppTestUndirected) {
   char *arguments[] = { "app", 
                         "--K=64", 
                         "--T=10",
+                        "--directed=false",
                         "--min_influence_for_seed_set=10",
                         writable, 
                         convert_string_to_char_pointer(output_file)};
-  EXPECT_EQ(t_skim_app_main(6, arguments), 0);
+  EXPECT_EQ(t_skim_app_main(7, arguments), 0);
   
   graph::Graph< graph::TUnDirectedGraph> graph;
   graph.LoadGraphFromDir(GetSampleData());

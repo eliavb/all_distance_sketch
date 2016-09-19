@@ -16,3 +16,5 @@ autom4te.cache/*
 *.log
 *.status
 .ipynb_checkpoints
+app_test_*
+config*log
