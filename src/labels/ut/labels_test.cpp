@@ -308,6 +308,9 @@ TEST_F(BasicLabel, CheckVectorCalculation1) {
   // features
   for (auto node_feature_info : output_features.GetNodesFeatures()) {
     int node_id = node_feature_info.GetNId();
+    if (node_id == 0 || node_id == 1) {
+      continue;
+    }
     for (auto feature_weight : node_feature_info.GetFeatureWeights()) {
       NodeSketch* node_sketch = all_graph_sketch.GetNodeSketch(node_id);
       auto insert_prob_0 = node_sketch->GetInsertProbAccordingToDistance(1);
@@ -316,8 +319,13 @@ TEST_F(BasicLabel, CheckVectorCalculation1) {
       // std::cout << " insert_prob_0=" << insert_prob_0 << " insert_prob_2=" << insert_prob_2 << std::endl;
       // std::cout << " feature weight=" << feature_weight << std::endl;
       double expected_result = 1/(insert_prob_0 * 2) + 2/(insert_prob_2 * 2);
+      // std::cout << "expected_result= " << expected_result << std::endl;
       expected_result = expected_result / ((1 / (2 * insert_prob_0)) + (1 / ( 2 * insert_prob_2)));
-      EXPECT_EQ( static_cast<int>(feature_weight * 1000), static_cast<int>(expected_result * 1000));
+      // std::cout << "expected_result= " << expected_result << std::endl;
+      // std::cout << std::abs(feature_weight - expected_result) << std::endl;
+      bool res = std::abs(feature_weight - expected_result) < 0.001;
+      // std::cout << res << std::endl;
+      EXPECT_TRUE(res);
       // std::cout << static_cast<int>(feature_weight * 1000) << std::endl;
     }
   }
@@ -375,6 +383,9 @@ TEST_F(BasicLabel, CheckVectorCalculation2) {
   // features
   for (auto node_feature_info : output_features.GetNodesFeatures()) {
     int node_id = node_feature_info.GetNId();
+    if (node_id < num_seeds) {
+      continue;
+    }
     for (auto feature_weight : node_feature_info.GetFeatureWeights()) {
       NodeSketch* node_sketch = all_graph_sketch.GetNodeSketch(node_id);
       double expected_results = 0;

@@ -136,7 +136,6 @@ const int NodeRankGpb::kNodeRankFieldNumber;
 NodeRankGpb::NodeRankGpb()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:all_distance_sketch.proto.NodeRankGpb)
 }
 
 void NodeRankGpb::InitAsDefaultInstance() {
@@ -146,7 +145,6 @@ NodeRankGpb::NodeRankGpb(const NodeRankGpb& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:all_distance_sketch.proto.NodeRankGpb)
 }
 
 void NodeRankGpb::SharedCtor() {
@@ -157,7 +155,6 @@ void NodeRankGpb::SharedCtor() {
 }
 
 NodeRankGpb::~NodeRankGpb() {
-  // @@protoc_insertion_point(destructor:all_distance_sketch.proto.NodeRankGpb)
   SharedDtor();
 }
 
@@ -188,44 +185,30 @@ NodeRankGpb* NodeRankGpb::New() const {
 }
 
 void NodeRankGpb::Clear() {
-#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
-  &reinterpret_cast<NodeRankGpb*>(16)->f) - \
-   reinterpret_cast<char*>(16))
-
-#define ZR_(first, last) do {                              \
-    size_t f = OFFSET_OF_FIELD_(first);                    \
-    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
-    ::memset(&first, 0, n);                                \
-  } while (0)
-
-  ZR_(node_id_, node_rank_);
-
-#undef OFFSET_OF_FIELD_
-#undef ZR_
-
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    node_id_ = GOOGLE_ULONGLONG(0);
+    node_rank_ = GOOGLE_ULONGLONG(0);
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
 bool NodeRankGpb::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:all_distance_sketch.proto.NodeRankGpb)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
+  while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // optional uint64 node_id = 1;
       case 1: {
-        if (tag == 8) {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &node_id_)));
           set_has_node_id();
         } else {
-          goto handle_unusual;
+          goto handle_uninterpreted;
         }
         if (input->ExpectTag(16)) goto parse_node_rank;
         break;
@@ -233,25 +216,25 @@ bool NodeRankGpb::MergePartialFromCodedStream(
 
       // optional uint64 node_rank = 2;
       case 2: {
-        if (tag == 16) {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_node_rank:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &node_rank_)));
           set_has_node_rank();
         } else {
-          goto handle_unusual;
+          goto handle_uninterpreted;
         }
-        if (input->ExpectAtEnd()) goto success;
+        if (input->ExpectAtEnd()) return true;
         break;
       }
 
       default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
+          return true;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -259,18 +242,12 @@ bool NodeRankGpb::MergePartialFromCodedStream(
       }
     }
   }
-success:
-  // @@protoc_insertion_point(parse_success:all_distance_sketch.proto.NodeRankGpb)
   return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:all_distance_sketch.proto.NodeRankGpb)
-  return false;
 #undef DO_
 }
 
 void NodeRankGpb::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:all_distance_sketch.proto.NodeRankGpb)
   // optional uint64 node_id = 1;
   if (has_node_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->node_id(), output);
@@ -285,12 +262,10 @@ void NodeRankGpb::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:all_distance_sketch.proto.NodeRankGpb)
 }
 
 ::google::protobuf::uint8* NodeRankGpb::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:all_distance_sketch.proto.NodeRankGpb)
   // optional uint64 node_id = 1;
   if (has_node_id()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->node_id(), target);
@@ -305,7 +280,6 @@ void NodeRankGpb::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:all_distance_sketch.proto.NodeRankGpb)
   return target;
 }
 
@@ -411,7 +385,6 @@ const int NodeRanksGpb::kNodeRanksFieldNumber;
 NodeRanksGpb::NodeRanksGpb()
   : ::google::protobuf::Message() {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:all_distance_sketch.proto.NodeRanksGpb)
 }
 
 void NodeRanksGpb::InitAsDefaultInstance() {
@@ -421,7 +394,6 @@ NodeRanksGpb::NodeRanksGpb(const NodeRanksGpb& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
-  // @@protoc_insertion_point(copy_constructor:all_distance_sketch.proto.NodeRanksGpb)
 }
 
 void NodeRanksGpb::SharedCtor() {
@@ -432,7 +404,6 @@ void NodeRanksGpb::SharedCtor() {
 }
 
 NodeRanksGpb::~NodeRanksGpb() {
-  // @@protoc_insertion_point(destructor:all_distance_sketch.proto.NodeRanksGpb)
   SharedDtor();
 }
 
@@ -463,21 +434,10 @@ NodeRanksGpb* NodeRanksGpb::New() const {
 }
 
 void NodeRanksGpb::Clear() {
-#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
-  &reinterpret_cast<NodeRanksGpb*>(16)->f) - \
-   reinterpret_cast<char*>(16))
-
-#define ZR_(first, last) do {                              \
-    size_t f = OFFSET_OF_FIELD_(first);                    \
-    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
-    ::memset(&first, 0, n);                                \
-  } while (0)
-
-  ZR_(source_node_id_, max_node_id_);
-
-#undef OFFSET_OF_FIELD_
-#undef ZR_
-
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    source_node_id_ = GOOGLE_ULONGLONG(0);
+    max_node_id_ = GOOGLE_ULONGLONG(0);
+  }
   node_ranks_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -485,23 +445,20 @@ void NodeRanksGpb::Clear() {
 
 bool NodeRanksGpb::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:all_distance_sketch.proto.NodeRanksGpb)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
+  while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // optional uint64 source_node_id = 1;
       case 1: {
-        if (tag == 8) {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &source_node_id_)));
           set_has_source_node_id();
         } else {
-          goto handle_unusual;
+          goto handle_uninterpreted;
         }
         if (input->ExpectTag(16)) goto parse_max_node_id;
         break;
@@ -509,14 +466,15 @@ bool NodeRanksGpb::MergePartialFromCodedStream(
 
       // optional uint64 max_node_id = 2;
       case 2: {
-        if (tag == 16) {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_max_node_id:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &max_node_id_)));
           set_has_max_node_id();
         } else {
-          goto handle_unusual;
+          goto handle_uninterpreted;
         }
         if (input->ExpectTag(26)) goto parse_node_ranks;
         break;
@@ -524,24 +482,24 @@ bool NodeRanksGpb::MergePartialFromCodedStream(
 
       // repeated .all_distance_sketch.proto.NodeRankGpb node_ranks = 3;
       case 3: {
-        if (tag == 26) {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_node_ranks:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                 input, add_node_ranks()));
         } else {
-          goto handle_unusual;
+          goto handle_uninterpreted;
         }
         if (input->ExpectTag(26)) goto parse_node_ranks;
-        if (input->ExpectAtEnd()) goto success;
+        if (input->ExpectAtEnd()) return true;
         break;
       }
 
       default: {
-      handle_unusual:
-        if (tag == 0 ||
-            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          goto success;
+          return true;
         }
         DO_(::google::protobuf::internal::WireFormat::SkipField(
               input, tag, mutable_unknown_fields()));
@@ -549,18 +507,12 @@ bool NodeRanksGpb::MergePartialFromCodedStream(
       }
     }
   }
-success:
-  // @@protoc_insertion_point(parse_success:all_distance_sketch.proto.NodeRanksGpb)
   return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:all_distance_sketch.proto.NodeRanksGpb)
-  return false;
 #undef DO_
 }
 
 void NodeRanksGpb::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:all_distance_sketch.proto.NodeRanksGpb)
   // optional uint64 source_node_id = 1;
   if (has_source_node_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->source_node_id(), output);
@@ -581,12 +533,10 @@ void NodeRanksGpb::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
-  // @@protoc_insertion_point(serialize_end:all_distance_sketch.proto.NodeRanksGpb)
 }
 
 ::google::protobuf::uint8* NodeRanksGpb::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // @@protoc_insertion_point(serialize_to_array_start:all_distance_sketch.proto.NodeRanksGpb)
   // optional uint64 source_node_id = 1;
   if (has_source_node_id()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->source_node_id(), target);
@@ -608,7 +558,6 @@ void NodeRanksGpb::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:all_distance_sketch.proto.NodeRanksGpb)
   return target;
 }
 

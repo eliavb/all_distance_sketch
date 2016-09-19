@@ -751,10 +751,6 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  graph/ut/../../sketch/ut/../../proto/all_distance_sketch.pb.h \
  /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/common.h \
  /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/generated_message_util.h \
- /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/once.h \
- /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/atomicops.h \
- /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/platform_macros.h \
- /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/atomicops_internals_x86_gcc.h \
  /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/message.h \
  /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/message_lite.h \
  /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/descriptor.h \
@@ -874,7 +870,6 @@ run_all.o: graph/ut/run_all.cpp /usr/include/stdc-predef.h \
  /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl.h \
  /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/io/zero_copy_stream.h \
  /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h \
- /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/stl_util.h \
  graph/ut/../../app/ut/../../algorithms/../sketch/../common.h \
  graph/ut/../../app/ut/../../algorithms/dijkstra_min_weight_path.h \
  graph/ut/../../app/ut/../../algorithms/dijkstra_shortest_paths.h \
@@ -2883,14 +2878,6 @@ graph/ut/../../sketch/ut/../../proto/all_distance_sketch.pb.h:
 
 /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/generated_message_util.h:
 
-/usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/once.h:
-
-/usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/atomicops.h:
-
-/usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/platform_macros.h:
-
-/usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/atomicops_internals_x86_gcc.h:
-
 /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/message.h:
 
 /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/message_lite.h:
@@ -3142,8 +3129,6 @@ graph/ut/../../app/ut/../../algorithms/../sketch/utils.h:
 /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/io/zero_copy_stream.h:
 
 /usr/local/google/home/eliav/protobuf_install/include/google/protobuf/io/zero_copy_stream_impl_lite.h:
-
-/usr/local/google/home/eliav/protobuf_install/include/google/protobuf/stubs/stl_util.h:
 
 graph/ut/../../app/ut/../../algorithms/../sketch/../common.h:
 

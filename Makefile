@@ -403,7 +403,7 @@ AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
-CPPFLAGS = 
+CPPFLAGS =  -I/usr/local/google/home/eliav/Downloads/googletest-release-1.7.0/include/ -I/usr/local/google/home/eliav/Downloads/Snap-2.3/snap-adv/ -I/usr/local/google/home/eliav/Downloads/Snap-2.3/snap-core/ -I/usr/local/google/home/eliav/Downloads/Snap-2.3/snap-exp/ -I/usr/local/google/home/eliav/Downloads/Snap-2.3/glib-core/ -I/usr/local/google/home/eliav/protobuf_install/include -I/usr/local/google/home/eliav/boost_install/include/
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
@@ -422,9 +422,9 @@ INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LDFLAGS = 
+LDFLAGS =  -L/usr/local/google/home/eliav/protobuf_install/lib/ -L/usr/local/google/home/eliav/boost_install/lib/
 LIBOBJS = 
-LIBS = 
+LIBS =  /usr/local/google/home/eliav/Downloads/Snap-2.3/snap-core/Snap.o /usr/local/google/home/eliav/Downloads/googletest-release-1.7.0/libgtest.a -lpthread -lboost_system -lboost_program_options -lprotobuf
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} /usr/local/google/home/eliav/all_distance_sketch/missing makeinfo
 MKDIR_P = /bin/mkdir -p
