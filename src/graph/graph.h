@@ -208,13 +208,14 @@ class Graph {
         utils::FileUtils::NodePairList nodePairList;
         utils::FileUtils::GetNodePairListFromDir(aPath, &nodePairList);
         for (utils::FileUtils::NodePairList::iterator itr = nodePairList.begin(); itr != nodePairList.end(); ++itr) {
-            int uNodeId = itr->first;
+            double w = std::get<2>(*itr);
+            int uNodeId = std::get<0>(*itr);
             LOG_M(DEBUG5, "Found node " << uNodeId);
             if (IsNode(uNodeId) == false) {
                 LOG_M(DEBUG5, "inserting node " << uNodeId << " it does not exists");
                 AddNode(uNodeId);
             }
-            int vNodeId = itr->second;
+            int vNodeId = std::get<1>(*itr);
             LOG_M(DEBUG5, "Found node " << vNodeId);
             if (IsNode(vNodeId) == false) {
                 LOG_M(DEBUG5, "Inserting node " << vNodeId << " it does not exists");
@@ -222,9 +223,9 @@ class Graph {
             }
             LOG_M(DEBUG5, "Node src " << uNodeId << " Node dest " << vNodeId);
             if (aTranspose == false) {
-                AddEdge(uNodeId, vNodeId);
+                AddEdge(uNodeId, vNodeId, w);
             } else {
-                AddEdge(vNodeId, uNodeId);
+                AddEdge(vNodeId, uNodeId, w);
             }
         }
     }
@@ -234,13 +235,14 @@ class Graph {
         LOG_M(NOTICE, "File name=" << file_name);
         utils::FileUtils::GetNodePairListFromFile(file_name, &nodePairList, delimiter);
         for (utils::FileUtils::NodePairList::iterator itr = nodePairList.begin(); itr != nodePairList.end(); ++itr) {
-            int uNodeId = itr->first;
+            double w = std::get<2>(*itr);
+            int uNodeId = std::get<0>(*itr);
             LOG_M(DEBUG5, "Found node " << uNodeId);
             if (IsNode(uNodeId) == false) {
                 LOG_M(DEBUG5, "inserting node " << uNodeId << " it does not exists");
                 AddNode(uNodeId);
             }
-            int vNodeId = itr->second;
+            int vNodeId = std::get<1>(*itr);
             LOG_M(DEBUG5, "Found node " << vNodeId);
             if (IsNode(vNodeId) == false) {
                 LOG_M(DEBUG5, "Inserting node " << vNodeId << " it does not exists");
@@ -248,9 +250,9 @@ class Graph {
             }
             LOG_M(DEBUG1, "Node src " << uNodeId << " Node dest " << vNodeId);
             if (aTranspose == false) {
-                AddEdge(uNodeId, vNodeId);
+                AddEdge(uNodeId, vNodeId, w);
             } else {
-                AddEdge(vNodeId, uNodeId);
+                AddEdge(vNodeId, uNodeId, w);
             }
         }
     }

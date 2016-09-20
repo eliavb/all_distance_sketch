@@ -16,7 +16,7 @@ class FileUtils {
 
 public:
 
-    typedef std::list< std::pair< int, int> > NodePairList;
+    typedef std::list< std::tuple< int, int, double> > NodePairList;
 
     static bool hasEnding (std::string const &fullString, std::string const &ending)
     {
@@ -42,11 +42,11 @@ public:
         delete [] p;
     }
 
-    static void getNodeIdsFromLine(std::string line, int * u, int * v, std::string delimiter){
-        int values[2] = {0, 0};
+    static void getNodeIdsFromLine(std::string line, int * u, int * v, double* weight, std::string delimiter){
+        double values[3] = {0, 0, 1};
         int i = 0;
         char * pch;
-        char p[20];
+        char p[30];
         strcpy(p, line.c_str());
         pch = strtok(p, delimiter.c_str());
         while (pch != NULL) {
@@ -56,8 +56,9 @@ public:
         }
         *u = values[0];
         *v = values[1];
+        *weight = values[2];
         if (__DEBUG == 1){
-            std::cout << "Node src=" << *u << " Node dest=" << *v << std::endl;
+            std::cout << "Node src=" << *u << " Node dest=" << *v << " weight=" << *weight << std::endl;
         }
     }
 
@@ -86,6 +87,7 @@ public:
         std::string line;
         std::ifstream graphFile (aFilePath.c_str());
         int u, v;
+        double w;
         if (__DEBUG){
             std::cout << "Extacting values from file=" << aFilePath << std::endl;
         }
@@ -93,8 +95,8 @@ public:
         {
             while ( getline (graphFile,line) )
             {
-                getNodeIdsFromLine(line, &u, &v, delimiter);
-                std::pair<int, int> nodePair = std::pair<int, int>(u, v);
+                getNodeIdsFromLine(line, &u, &v, &w, delimiter);
+                std::tuple<int, int, double> nodePair = std::tuple<int, int, double>(u, v, w);
                 aNodePairList->push_back(nodePair);
             }
             graphFile.close();

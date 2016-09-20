@@ -7,6 +7,7 @@
 // C++ Headers
 #include <mutex>
 #include <thread>
+#include <tuple>
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
